@@ -1,0 +1,16 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: Identity CI
+
+on:
+  push:
+    paths:
+      - Identity/**
+      - .github/workflows/identity-ci.yaml
+
+jobs:
+  format:
+    name: Format
+    uses: ./.github/workflows/backend-format.yaml
+    with:
+      project-directory: Identity
