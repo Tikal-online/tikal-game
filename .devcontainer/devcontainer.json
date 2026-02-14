@@ -1,0 +1,15 @@
+{
+  "name": "ASP.NET Core",
+  "image": "mcr.microsoft.com/devcontainers/dotnet:10.0",
+  "features": {
+    "ghcr.io/devcontainers/features/git:1": {}
+  },
+  "remoteEnv": {
+    "ASPNETCORE_Kestrel__Certificates__Default__Password": "secret",
+    "ASPNETCORE_Kestrel__Certificates__Default__Path": "/home/vscode/.aspnet/https/aspnetapp.pfx"
+  },
+  "mounts": [
+    "source=${env:HOME}${env:USERPROFILE}/.aspnet/https,target=/home/vscode/.aspnet/https,type=bind"
+  ],
+  "remoteUser": "vscode"
+}
