@@ -6,7 +6,6 @@ on:
   push:
     paths:
       - Identity/**
-      - .github/workflows/backend/**
       - .github/workflows/identity-ci.yaml
 
 jobs:
