@@ -2,7 +2,8 @@
   "name": "ASP.NET Core",
   "image": "mcr.microsoft.com/devcontainers/dotnet:10.0",
   "features": {
-    "ghcr.io/devcontainers/features/git:1": {}
+    "ghcr.io/devcontainers/features/git:1": {},
+    "ghcr.io/devcontainers-extra/features/mise:1": {}
   },
   "remoteEnv": {
     "ASPNETCORE_Kestrel__Certificates__Default__Password": "secret",
