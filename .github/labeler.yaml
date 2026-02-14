@@ -8,6 +8,10 @@ area/identity:
   - changed-files:
       - any-glob-to-any-file: "Identity/**"
 
+area/backend:
+  - changed-files:
+      - any-glob-to-any-file: "Backend/**"
+
 area/docs:
   - changed-files:
       - any-glob-to-any-file: "*.md"

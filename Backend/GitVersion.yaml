@@ -1,0 +1,10 @@
+---
+# yaml-language-server: $schema=https://gitversion.net/schemas/6.4/GitVersion.configuration.json
+workflow: TrunkBased/preview1
+tag-prefix: "tikal-backend-"
+major-version-bump-message: "^(build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)(\\([\\w\\s-,/\\\\]*\\))?(!:|:.*\\n\\n((.+\\n)+\\n)?BREAKING CHANGE:\\s.+)"
+minor-version-bump-message: "^(feat)(\\([\\w\\s-,/\\\\]*\\))?:"
+patch-version-bump-message: "^(fix|perf)(\\([\\w\\s-,/\\\\]*\\))?:"
+ignore:
+  paths:
+    - "^(?!Backend\/).*"
