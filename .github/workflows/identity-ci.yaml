@@ -9,6 +9,6 @@ on:
 
 jobs:
   enforce-formatting:
-    uses: ./.github/workflows/backend/format.yaml
+    uses: ./.github/workflows/backend-format.yaml
     with:
       project-directory: Identity
