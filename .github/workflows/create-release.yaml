@@ -1,0 +1,42 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: Create Release
+
+on:
+  workflow_call:
+    inputs:
+      project-directory:
+        required: true
+        type: string
+      project-name:
+        required: true
+        type: string
+
+jobs:
+  create-release:
+    name: Create Release 
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+
+      - name: Install GitVersion
+        uses: gittools/actions/gitversion/setup@d0139503a9321f76b4a417dfdc8aebcec24decdd # v4.2.0
+        with:
+          versionSpec: "6.4.x"
+          preferLatestVersion: true
+
+      - name: Determine Version
+        id: version_step
+        uses: gittools/actions/gitversion/execute@d0139503a9321f76b4a417dfdc8aebcec24decdd # v4.2.0
+        with:
+          configFilePath: "${{ inputs.project-directory }}/GitVersion.yaml"
+
+      - name: Create Release
+        uses: ncipollo/release-action@b7eabc95ff50cbeeedec83973935c8f306dfcd0b # v1.20.0
+        with:
+          tag: ${{ inputs.project-name }}-${{ steps.version_step.outputs.semVer }}
+          name: ${{ inputs.project-name }} ${{ steps.version_step.outputs.semVer }}
+          generateReleaseNotes: true
