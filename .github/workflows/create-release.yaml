@@ -41,4 +41,3 @@ jobs:
         with:
           tag: ${{ inputs.project-name }}-${{ steps.version_step.outputs.semVer }}
           name: ${{ inputs.project-name }} ${{ steps.version_step.outputs.semVer }}
-          generateReleaseNotes: true
