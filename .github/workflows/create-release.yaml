@@ -40,23 +40,26 @@ jobs:
         run: |
           PREVIOUS_TAG=$(git tag -l "${{ inputs.project-name }}-*" --sort=-version:refname | head -n 1)
 
-          echo "## What's Changed" > CHANGELOG.md
-          echo "" >> CHANGELOG.md
+          {
+            echo "## What's Changed"
+            echo ""
 
-          echo "### Features" >> CHANGELOG.md
-          echo "" >> CHANGELOG.md
+            echo "### Features"
+            echo ""
 
-          git log ${PREVIOUS_TAG}.. --grep="^feat" --pretty=format:"- %s by @%an" ${{ inputs.project-directory }} >> CHANGELOG.md
-          echo "" >> CHANGELOG.md
+            git log ${PREVIOUS_TAG}.. --grep="^feat" --pretty=format:"- %s by @%an" ${{ inputs.project-directory }}
+            echo ""
 
-          echo "### Bugfixes" >> CHANGELOG.md
-          echo "" >> CHANGELOG.md
+            echo "### Bugfixes"
+            echo ""
 
-          git log ${PREVIOUS_TAG}.. --grep="^fix" --pretty=format:"- %s by @%an" ${{ inputs.project-directory }} >> CHANGELOG.md
-          echo "" >> CHANGELOG.md
+            git log ${PREVIOUS_TAG}.. --grep="^fix" --pretty=format:"- %s by @%an" ${{ inputs.project-directory }}
+            echo ""
+          } >> CHANGELOG.md
 
       - name: Create Release
         uses: ncipollo/release-action@b7eabc95ff50cbeeedec83973935c8f306dfcd0b # v1.20.0
         with:
           tag: ${{ inputs.project-name }}-${{ steps.version_step.outputs.semVer }}
           name: ${{ inputs.project-name }} ${{ steps.version_step.outputs.semVer }}
+          bodyFile: CHANGELOG.md
