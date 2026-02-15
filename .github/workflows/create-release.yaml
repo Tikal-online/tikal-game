@@ -35,7 +35,7 @@ jobs:
         uses: gittools/actions/gitversion/execute@d0139503a9321f76b4a417dfdc8aebcec24decdd # v4.2.0
         with:
           configFilePath: "${{ inputs.project-directory }}/GitVersion.yaml"
-      
+
       - name: Generate Changelog
         run: |
           PREVIOUS_TAG=$(git tag -l "${{ inputs.project-name }}-*" --sort=-version:refname | head -n 1)
