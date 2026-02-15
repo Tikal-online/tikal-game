@@ -30,6 +30,7 @@ jobs:
     needs: Release
     if: github.ref == 'refs/heads/main'
     uses: ./.github/workflows/deploy-release.yaml
+    secrets: inherit
     with:
       dockerfile: ./Identity/Dockerfile
       project-name: identity
