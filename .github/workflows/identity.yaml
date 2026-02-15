@@ -24,3 +24,13 @@ jobs:
     with:
       project-directory: Identity
       project-name: identity
+
+  deploy:
+    name: Deploy
+    needs: Release
+    if: github.ref == 'refs/heads/main'
+    uses: ./.github/workflows/deploy-release.yaml
+    with:
+      dockerfile: ./Identity/Dockerfile
+      project-name: identity
+      version: ${{ needs.release.outputs.version }}
