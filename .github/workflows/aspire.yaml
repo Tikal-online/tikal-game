@@ -1,0 +1,15 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: Aspire CI
+
+on:
+  push:
+    paths:
+      - Aspire/**
+
+jobs:
+  format:
+    name: Format
+    uses: ./.github/workflows/backend-format.yaml
+    with:
+      project-directory: Aspire
