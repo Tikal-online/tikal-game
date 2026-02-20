@@ -1,0 +1,13 @@
+{
+  "solution": {
+    "path": "../Tikal.sln",
+    "projects": [
+      "Identity/Identity.WebHost/Identity.WebHost.csproj",
+      "Identity/API/RestApi.Controllers/RestApi.Controllers.csproj",
+      "Identity/Modules/Users/Users.Application/Users.Application.csproj",
+      "Identity/Modules/Users/Users.Contracts/Users.Contracts.csproj",
+      "Identity/Modules/Users/Users.Domain/Users.Domain.csproj",
+      "Identity/Modules/Users/Users.Infrastructure/Users.Infrastructure.csproj"
+    ]
+  }
+}
