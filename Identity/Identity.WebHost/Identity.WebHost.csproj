@@ -9,14 +9,22 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="FluentValidation.DependencyInjectionExtensions"/>
         <PackageReference Include="Microsoft.AspNetCore.OpenApi"/>
+        <PackageReference Include="Scalar.AspNetCore"/>
     </ItemGroup>
 
     <ItemGroup>
-      <Content Include="..\..\.dockerignore">
-        <Link>.dockerignore</Link>
-      </Content>
-      <Content Include="packages.lock.json" />
+        <Content Include="..\..\.dockerignore">
+            <Link>.dockerignore</Link>
+        </Content>
+        <Content Include="packages.lock.json"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\API\RestApi.Controllers\RestApi.Controllers.csproj"/>
+        <ProjectReference Include="..\Modules\Accounts\Users.Application\Users.Application.csproj"/>
+        <ProjectReference Include="..\Modules\Accounts\Users.Infrastructure\Users.Infrastructure.csproj"/>
     </ItemGroup>
 
 </Project>

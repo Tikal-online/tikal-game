@@ -2,30 +2,6 @@
   "version": 2,
   "dependencies": {
     "net10.0": {
-      "FluentValidation.DependencyInjectionExtensions": {
-        "type": "Direct",
-        "requested": "[12.1.1, )",
-        "resolved": "12.1.1",
-        "contentHash": "D0VXh4dtjjX2aQizuaa0g6R8X3U1JaVqJPfGCvLwZX9t/O2h7tkpbitbadQMfwcgSPdDbI2vDxuwRMv/Uf9dHA==",
-        "dependencies": {
-          "FluentValidation": "12.1.1"
-        }
-      },
-      "Microsoft.AspNetCore.OpenApi": {
-        "type": "Direct",
-        "requested": "[10.0.0, )",
-        "resolved": "10.0.0",
-        "contentHash": "0aqIF1t+sA2T62LIeMtXGSiaV7keGQaJnvwwmu+htQdjCaKYARfXAeqp4nHH9y2etpilyZ/tnQzZg4Ilmo/c4Q==",
-        "dependencies": {
-          "Microsoft.OpenApi": "2.0.0"
-        }
-      },
-      "Scalar.AspNetCore": {
-        "type": "Direct",
-        "requested": "[2.12.45, )",
-        "resolved": "2.12.45",
-        "contentHash": "ajiIUinV3RJjSDcRSggkXmA2Mmy+JD/jN2ZShSOo0n07c7JwqAvX9e8uEOnF1UNH08bxopMnVQ2d/IJh4D/uCw=="
-      },
       "MediatR.Contracts": {
         "type": "Transitive",
         "resolved": "2.0.1",
@@ -60,24 +36,6 @@
           "Microsoft.IdentityModel.Logging": "8.14.0"
         }
       },
-      "Microsoft.OpenApi": {
-        "type": "Transitive",
-        "resolved": "2.0.0",
-        "contentHash": "GGYLfzV/G/ct80OZ45JxnWP7NvMX1BCugn/lX7TH5o0lcVaviavsLMTxmFV2AybXWjbi3h6FF1vgZiTK6PXndw=="
-      },
-      "restapi.controllers": {
-        "type": "Project",
-        "dependencies": {
-          "Users.Contracts": "[1.0.0, )"
-        }
-      },
-      "shared.application": {
-        "type": "Project",
-        "dependencies": {
-          "FluentValidation": "[12.1.1, )",
-          "Shared.Contracts": "[1.0.0, )"
-        }
-      },
       "shared.contracts": {
         "type": "Project",
         "dependencies": {
@@ -85,34 +43,11 @@
           "OneOf": "[3.0.271, )"
         }
       },
-      "users.application": {
-        "type": "Project",
-        "dependencies": {
-          "Shared.Application": "[1.0.0, )",
-          "Users.Contracts": "[1.0.0, )",
-          "Users.Domain": "[1.0.0, )"
-        }
-      },
       "users.contracts": {
         "type": "Project",
         "dependencies": {
           "Shared.Contracts": "[1.0.0, )"
         }
-      },
-      "users.domain": {
-        "type": "Project"
-      },
-      "users.infrastructure": {
-        "type": "Project",
-        "dependencies": {
-          "Users.Application": "[1.0.0, )"
-        }
-      },
-      "FluentValidation": {
-        "type": "CentralTransitive",
-        "requested": "[12.1.1, )",
-        "resolved": "12.1.1",
-        "contentHash": "EPpkIe1yh1a0OXyC100oOA8WMbZvqUu5plwhvYcb7oSELfyUZzfxV48BLhvs3kKo4NwG7MGLNgy1RJiYtT8Dpw=="
       },
       "MediatR": {
         "type": "CentralTransitive",
