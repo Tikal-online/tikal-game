@@ -23,8 +23,8 @@
 
     <ItemGroup>
         <ProjectReference Include="..\API\RestApi.Controllers\RestApi.Controllers.csproj"/>
-        <ProjectReference Include="..\Modules\Accounts\Users.Application\Users.Application.csproj"/>
-        <ProjectReference Include="..\Modules\Accounts\Users.Infrastructure\Users.Infrastructure.csproj"/>
+        <ProjectReference Include="..\Modules\Users\Users.Application\Users.Application.csproj"/>
+        <ProjectReference Include="..\Modules\Users\Users.Infrastructure\Users.Infrastructure.csproj"/>
     </ItemGroup>
 
 </Project>

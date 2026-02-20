@@ -7,6 +7,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Identity", "Identity", "{1879B5A4-646D-464C-B750-AA3FF29809C0}"
 	ProjectSection(SolutionItems) = preProject
 		Identity\GitVersion.yaml = Identity\GitVersion.yaml
+		Identity\Filter.slnf = Identity\Filter.slnf
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Identity.WebHost", "Identity\Identity.WebHost\Identity.WebHost.csproj", "{CEDC793A-1983-4474-AADC-2A38A40B281C}"
@@ -22,15 +23,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{E543DA72-C5C
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Users", "Users", "{EAE57747-DA5F-43EA-AF5C-5D00E6B6E6DF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Users.Application", "Identity\Modules\Accounts\Users.Application\Users.Application.csproj", "{464C824E-BBF7-4622-8A53-4502E0B2BFB8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Users.Application", "Identity\Modules\Users\Users.Application\Users.Application.csproj", "{464C824E-BBF7-4622-8A53-4502E0B2BFB8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Users.Domain", "Identity\Modules\Accounts\Users.Domain\Users.Domain.csproj", "{7AEF792E-329D-4271-AC76-EF2E42BA3DE8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Users.Domain", "Identity\Modules\Users\Users.Domain\Users.Domain.csproj", "{7AEF792E-329D-4271-AC76-EF2E42BA3DE8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Users.Infrastructure", "Identity\Modules\Accounts\Users.Infrastructure\Users.Infrastructure.csproj", "{F0E24F87-3C6F-405D-B10D-BC97C9E8502E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Users.Infrastructure", "Identity\Modules\Users\Users.Infrastructure\Users.Infrastructure.csproj", "{F0E24F87-3C6F-405D-B10D-BC97C9E8502E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestApi.Controllers", "Identity\API\RestApi.Controllers\RestApi.Controllers.csproj", "{290E4C21-B8F7-40E2-9645-519461286AEA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Users.Contracts", "Identity\Modules\Accounts\Users.Contracts\Users.Contracts.csproj", "{8AED5664-FAAF-453C-8465-67409ED38555}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Users.Contracts", "Identity\Modules\Users\Users.Contracts\Users.Contracts.csproj", "{8AED5664-FAAF-453C-8465-67409ED38555}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{CF83F39D-ABE6-4967-A61E-B8B88A61729B}"
 EndProject
