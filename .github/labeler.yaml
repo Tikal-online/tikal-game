@@ -4,6 +4,10 @@ area/github:
   - changed-files:
       - any-glob-to-any-file: ".github/**/*"
 
+area/aspire:
+  - changed-files:
+      - any-glob-to-any-file: "Aspire/**"
+
 area/identity:
   - changed-files:
       - any-glob-to-any-file: "Identity/**"
