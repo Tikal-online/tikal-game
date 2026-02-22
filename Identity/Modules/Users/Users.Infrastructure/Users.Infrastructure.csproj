@@ -17,8 +17,4 @@
         <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore"/>
     </ItemGroup>
 
-    <ItemGroup>
-        <Folder Include="Database\Migrations\"/>
-    </ItemGroup>
-
 </Project>
