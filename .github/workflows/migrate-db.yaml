@@ -1,0 +1,88 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: Migrate Database
+
+on:
+  workflow_call:
+    secrets:
+      AZURE_CREDENTIALS:
+        required: true
+    inputs:
+      project-directory:
+        required: true
+        type: string
+      keyvault_name:
+        required: true
+        type: string
+
+env:
+  NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages
+
+jobs:
+  migrate:
+    name: Migrate Database
+    runs-on: tikal-azure-runner
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@baa11fbfe1d6520db94683bd5c7a3818018e4309 # v5.1.0
+        with:
+          global-json-file: global.json
+          cache: true
+          cache-dependency-path: "${{ inputs.project-directory }}/**/packages.lock.json"
+
+      - name: Install dotnet-ef
+        run: dotnet tool install --global dotnet-ef
+
+      - name: Restore projects
+        run: dotnet restore ${{ inputs.project-directory }}/Filter.slnf --locked-mode
+
+      - name: Build projects
+        run: dotnet build ${{ inputs.project-directory }}/Filter.slnf --no-restore
+
+      - name: Create migration bundles for all modules
+        run: |
+          for dir in "${{ inputs.project-directory }}"/Modules/*/; do
+            name=$(basename "$dir")
+            dotnet ef migrations bundle \
+              --context "${name}DbContext" \
+              --startup-project "${{ inputs.project-directory }}/${{ inputs.project-directory }}.WebHost" \
+              --project "${{ inputs.project-directory }}/Modules/${name}/${name}.Infrastructure" \
+              --output "${name}-efbundle"
+          done
+
+      - name: Setup Azure CLI
+        uses: azure/login@a457da9ea143d694b1b9c7c869ebb04ebe844ef5 # v2.3.0
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Retrieve database connection string from Key Vault
+        id: keyvault
+        uses: azure/cli@9f7ce6f37c31b777ec6c6b6d1dfe7db79f497956 # v2.2.0
+        with:
+          inlineScript: |
+            DB_NAME=$(az keyvault secret show --name Database--DatabaseName --vault-name ${{ inputs.keyvault_name }} --query value -o tsv)
+            echo "::add-mask::$DB_NAME"
+            echo "DB_NAME=$DB_NAME" >> $GITHUB_ENV
+            DB_HOST=$(az keyvault secret show --name Database--Host --vault-name ${{ inputs.keyvault_name }} --query value -o tsv)
+            echo "::add-mask::$DB_HOST"
+            echo "DB_HOST=$DB_HOST" >> $GITHUB_ENV
+            DB_PASSWORD=$(az keyvault secret show --name Database--Password --vault-name ${{ inputs.keyvault_name }} --query value -o tsv)
+            echo "::add-mask::$DB_PASSWORD"
+            echo "DB_PASSWORD=$DB_PASSWORD" >> $GITHUB_ENV
+            DB_PORT=$(az keyvault secret show --name Database--Port --vault-name ${{ inputs.keyvault_name }} --query value -o tsv)
+            echo "::add-mask::$DB_PORT"
+            echo "DB_PORT=$DB_PORT" >> $GITHUB_ENV
+            DB_USERNAME=$(az keyvault secret show --name Database--Username --vault-name ${{ inputs.keyvault_name }} --query value -o tsv)
+            echo "::add-mask::$DB_USERNAME"
+            echo "DB_USERNAME=$DB_USERNAME" >> $GITHUB_ENV
+
+      - name: Apply migrations for all modules
+        run: |
+          for dir in "${{ inputs.project-directory }}"/Modules/*/; do
+            name=$(basename "$dir")
+            ./"${name}-efbundle" \
+              --connection "Server=${{ env.DB_HOST }};Database=${{ env.DB_NAME }};Port=${{ env.DB_PORT }};User Id=${{ env.DB_USERNAME }};Password=${{ env.DB_PASSWORD }};Ssl Mode=Require;"
+          done
