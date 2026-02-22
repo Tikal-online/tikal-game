@@ -37,10 +37,10 @@ jobs:
         run: dotnet tool install --global dotnet-ef
 
       - name: Restore projects
-        run: dotnet restore ${{ inputs.project-directory }}/Filter.slnf --locked-mode
+        run: dotnet restore ${{ inputs.project-directory }} --locked-mode
 
       - name: Build projects
-        run: dotnet build ${{ inputs.project-directory }}/Filter.slnf --no-restore
+        run: dotnet build ${{ inputs.project-directory }} --no-restore
 
       - name: Create migration bundles for all modules
         run: |
