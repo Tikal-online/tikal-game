@@ -33,7 +33,7 @@ jobs:
           cache: true
           cache-dependency-path: "${{ inputs.project-directory }}/**/packages.lock.json"
 
-      - name: Install dotnet-ef 
+      - name: Install dotnet-ef
         run: dotnet tool install --global dotnet-ef
 
       - name: Restore projects
@@ -55,7 +55,7 @@ jobs:
         uses: azure/cli@9f7ce6f37c31b777ec6c6b6d1dfe7db79f497956 # v2.2.0
         with:
           inlineScript: |
-            DB_NAME=$(az keyvault secret show --name Database--DatabaseName --vault-name ${{ inputs.keyvualt_name }} --query value -o tsv)
+            DB_NAME=$(az keyvault secret show --name Database--DatabaseName --vault-name ${{ inputs.keyvault_name }} --query value -o tsv)
             echo "::add-mask::$DB_NAME"
             echo "DB_NAME=$DB_NAME" >> $GITHUB_ENV
             DB_HOST=$(az keyvault secret show --name Database--Host --vault-name ${{ inputs.keyvault_name }} --query value -o tsv)
