@@ -9,4 +9,12 @@
         <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
     </PropertyGroup>
 
+    <ItemGroup>
+        <PackageReference Include="Aspire.Hosting.PostgreSQL"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Identity\Identity.WebHost\Identity.WebHost.csproj"/>
+    </ItemGroup>
+
 </Project>
