@@ -11,7 +11,7 @@ on:
       project-directory:
         required: true
         type: string
-      keyvault_name:
+      keyvault-name:
         required: true
         type: string
 
@@ -63,19 +63,19 @@ jobs:
         uses: azure/cli@9f7ce6f37c31b777ec6c6b6d1dfe7db79f497956 # v2.2.0
         with:
           inlineScript: |
-            DB_NAME=$(az keyvault secret show --name Database--DatabaseName --vault-name ${{ inputs.keyvault_name }} --query value -o tsv)
+            DB_NAME=$(az keyvault secret show --name Database--DatabaseName --vault-name ${{ inputs.keyvault-name }} --query value -o tsv)
             echo "::add-mask::$DB_NAME"
             echo "DB_NAME=$DB_NAME" >> $GITHUB_ENV
-            DB_HOST=$(az keyvault secret show --name Database--Host --vault-name ${{ inputs.keyvault_name }} --query value -o tsv)
+            DB_HOST=$(az keyvault secret show --name Database--Host --vault-name ${{ inputs.keyvault-name }} --query value -o tsv)
             echo "::add-mask::$DB_HOST"
             echo "DB_HOST=$DB_HOST" >> $GITHUB_ENV
-            DB_PASSWORD=$(az keyvault secret show --name Database--Password --vault-name ${{ inputs.keyvault_name }} --query value -o tsv)
+            DB_PASSWORD=$(az keyvault secret show --name Database--Password --vault-name ${{ inputs.keyvault-name }} --query value -o tsv)
             echo "::add-mask::$DB_PASSWORD"
             echo "DB_PASSWORD=$DB_PASSWORD" >> $GITHUB_ENV
-            DB_PORT=$(az keyvault secret show --name Database--Port --vault-name ${{ inputs.keyvault_name }} --query value -o tsv)
+            DB_PORT=$(az keyvault secret show --name Database--Port --vault-name ${{ inputs.keyvault-name }} --query value -o tsv)
             echo "::add-mask::$DB_PORT"
             echo "DB_PORT=$DB_PORT" >> $GITHUB_ENV
-            DB_USERNAME=$(az keyvault secret show --name Database--Username --vault-name ${{ inputs.keyvault_name }} --query value -o tsv)
+            DB_USERNAME=$(az keyvault secret show --name Database--Username --vault-name ${{ inputs.keyvault-name }} --query value -o tsv)
             echo "::add-mask::$DB_USERNAME"
             echo "DB_USERNAME=$DB_USERNAME" >> $GITHUB_ENV
 

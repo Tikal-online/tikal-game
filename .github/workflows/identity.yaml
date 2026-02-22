@@ -25,9 +25,19 @@ jobs:
       project-directory: Identity
       project-name: identity
 
+  migrate:
+    name: Migrate
+    needs: Release
+    if: github.ref == 'refs/heads/main'
+    uses: ./.github/workflows/migrate-db.yaml
+    secrets: inherit
+    with:
+      project-directory: Identity
+      keyvault-name: tikal-identity-keyvault
+
   deploy:
     name: Deploy
-    needs: Release
+    needs: [Migrate, Release]
     if: github.ref == 'refs/heads/main'
     uses: ./.github/workflows/deploy-release.yaml
     secrets: inherit

@@ -10,6 +10,15 @@ builder.Services.AddMediatR();
 
 builder.Services.AddValidators();
 
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.AddDevDbContext(builder.Configuration);
+}
+else
+{
+    builder.Services.AddProdDbContext(builder.Configuration);
+}
+
 builder.Services.AddInfrastructure();
 
 builder.Services.AddExceptionHandlers();
@@ -22,6 +31,7 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
+    app.ApplyMigrations();
     app.MapOpenApi();
     app.MapScalarApiReference();
 }
