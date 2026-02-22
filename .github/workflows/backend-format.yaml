@@ -28,7 +28,7 @@ jobs:
           cache-dependency-path: "${{ inputs.project-directory }}/**/packages.lock.json"
 
       - name: Restore projects
-        run: dotnet restore ${{ inputs.project-directory }}/Filter.slnf --locked-mode
+        run: dotnet restore ${{ inputs.project-directory }} --locked-mode
 
       - name: Enforce formatting
-        run: dotnet format ${{ inputs.project-directory }}/Filter.slnf whitespace --verify-no-changes --no-restore
+        run: dotnet format ${{ inputs.project-directory }} whitespace --verify-no-changes --no-restore
