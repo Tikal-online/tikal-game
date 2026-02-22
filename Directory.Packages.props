@@ -15,6 +15,6 @@
         <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.3"/>
         <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.0"/>
         <PackageVersion Include="OneOf" Version="3.0.271"/>
-        <PackageVersion Include="Scalar.AspNetCore" Version="2.12.45"/>
+        <PackageVersion Include="Scalar.AspNetCore" Version="2.12.46"/>
     </ItemGroup>
 </Project>
