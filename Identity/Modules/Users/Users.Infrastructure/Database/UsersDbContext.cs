@@ -7,6 +7,8 @@ namespace Users.Infrastructure.Database;
 
 public class UsersDbContext : IdentityDbContext<UserEntity, IdentityRole<int>, int>
 {
+    public const string Schema = "users";
+
     public UsersDbContext(DbContextOptions<UsersDbContext> options)
         : base(options)
     {
@@ -16,6 +18,6 @@ public class UsersDbContext : IdentityDbContext<UserEntity, IdentityRole<int>, i
     {
         base.OnModelCreating(builder);
 
-        builder.HasDefaultSchema("users");
+        builder.HasDefaultSchema(Schema);
     }
 }
