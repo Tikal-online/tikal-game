@@ -10,16 +10,7 @@ builder.Services.AddMediatR();
 
 builder.Services.AddValidators();
 
-if (builder.Environment.IsDevelopment())
-{
-    builder.Services.AddDevDbContext(builder.Configuration);
-}
-else
-{
-    builder.Services.AddProdDbContext(builder.Configuration);
-}
-
-builder.Services.AddInfrastructure();
+builder.Services.AddInfrastructure(builder.Configuration);
 
 builder.Services.AddExceptionHandlers();
 
