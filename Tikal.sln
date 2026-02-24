@@ -18,6 +18,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildConfig", "BuildConfig"
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{290FE9A2-3193-4605-BE1C-9268CB90E3F4}"
+	ProjectSection(SolutionItems) = preProject
+		Identity\Modules\Tests.slnf = Identity\Modules\Tests.slnf
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{E543DA72-C5C0-4390-BDC9-C715EE568D25}"
 EndProject
