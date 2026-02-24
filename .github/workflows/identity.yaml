@@ -22,7 +22,7 @@ jobs:
 
   release:
     name: Release
-    needs: Unit Tests
+    needs: Unit-Tests
     permissions:
       contents: write
     if: github.ref == 'refs/heads/main'
