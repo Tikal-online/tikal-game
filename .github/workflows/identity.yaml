@@ -14,9 +14,15 @@ jobs:
     with:
       project-directory: Identity
 
+  unit-tests:
+    name: Unit Tests
+    uses: ./.github/workflows/backend-unit-test.yaml
+    with:
+      project-directory: Identity
+
   release:
     name: Release
-    needs: Format
+    needs: Unit Tests
     permissions:
       contents: write
     if: github.ref == 'refs/heads/main'
