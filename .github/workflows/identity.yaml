@@ -16,7 +16,7 @@ jobs:
 
   unit-tests:
     name: Unit Tests
-    needs Format
+    needs: Format
     uses: ./.github/workflows/backend-unit-test.yaml
     with:
       project-directory: Identity
