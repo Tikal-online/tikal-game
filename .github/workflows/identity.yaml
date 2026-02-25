@@ -21,9 +21,16 @@ jobs:
     with:
       project-directory: Identity
 
+  integration-tests:
+    name: Integration Tests
+    needs: Format
+    uses: ./.github/workflows/backend-integration-test.yaml
+    with:
+      project-directory: Identity
+
   release:
     name: Release
-    needs: Unit-Tests
+    needs: [Unit-Tests, Integration-Tests]
     permissions:
       contents: write
     if: github.ref == 'refs/heads/main'

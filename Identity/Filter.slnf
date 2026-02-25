@@ -3,6 +3,7 @@
     "path": "../Tikal.sln",
     "projects": [
       "Identity/Identity.WebHost/Identity.WebHost.csproj",
+      "Identity/Identity.IntegrationTests/Identity.IntegrationTests.csproj",
       "Identity/API/RestApi.Controllers/RestApi.Controllers.csproj",
       "Identity/Modules/Users/Users.Application/Users.Application.csproj",
       "Identity/Modules/Users/Users.Application.Tests/Users.Application.Tests.csproj",
