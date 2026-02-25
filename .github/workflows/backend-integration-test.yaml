@@ -25,10 +25,10 @@ jobs:
           cache-dependency-path: "${{ inputs.project-directory }}/**/packages.lock.json"
 
       - name: Restore projects
-        run: dotnet restore ${{ inputs.project-directory }}/Modules --locked-mode
+        run: dotnet restore ${{ inputs.project-directory }}/${{ inputs.project-directory }}.IntegrationTests --locked-mode
 
       - name: Build projects
-        run: dotnet build ${{ inputs.project-directory }}/Modules --no-restore
+        run: dotnet build ${{ inputs.project-directory }}/${{ inputs.project-directory }}.IntegrationTests --no-restore
 
       - name: Run Integration Tests
-        run: dotnet test --project ${{ inputs.project-directory }}/${{ inputs.project-directory }}.IntegrationTests --no-build
+        run: dotnet test --project ${{ inputs.project-directory }}/ --no-build
