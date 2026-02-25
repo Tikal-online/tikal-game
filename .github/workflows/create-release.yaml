@@ -70,7 +70,7 @@ jobs:
             echo "### Dependency Updates"
             echo ""
 
-            git log "${PREVIOUS_TAG}".. --grep="^chore(deps)" --pretty=format:"- %s by @%an" ${{ inputs.project-directory }}
+            git log "${PREVIOUS_TAG}".. --grep="^chore" --pretty=format:"- %s by @%an" ${{ inputs.project-directory }}
             echo ""
           } >> CHANGELOG.md
 
