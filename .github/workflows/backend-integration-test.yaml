@@ -1,0 +1,34 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: Integration Tests
+
+on:
+  workflow_call:
+    inputs:
+      project-directory:
+        required: true
+        type: string
+
+jobs:
+  unit-test:
+    name: Integration Tests
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@baa11fbfe1d6520db94683bd5c7a3818018e4309 # v5.1.0
+        with:
+          global-json-file: global.json
+          cache: true
+          cache-dependency-path: "${{ inputs.project-directory }}/**/packages.lock.json"
+
+      - name: Restore projects
+        run: dotnet restore ${{ inputs.project-directory }}/Modules --locked-mode
+
+      - name: Build projects
+        run: dotnet build ${{ inputs.project-directory }}/Modules --no-restore
+
+      - name: Run Integration Tests
+        run: dotnet test --project ${{ inputs.project-directory }}/${{ inputs.project-directory }}.IntegrationTests --no-build

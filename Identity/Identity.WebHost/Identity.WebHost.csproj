@@ -31,4 +31,8 @@
         <ProjectReference Include="..\Modules\Users\Users.Infrastructure\Users.Infrastructure.csproj"/>
     </ItemGroup>
 
+    <ItemGroup>
+        <InternalsVisibleTo Include="Identity.IntegrationTests"/>
+    </ItemGroup>
+
 </Project>

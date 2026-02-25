@@ -18,13 +18,15 @@ public static class UsersModule
             {
                 optionsBuilder.UseNpgsql(
                     connectionString,
-                    o => o.MigrationsHistoryTable(
+                    options => options.MigrationsHistoryTable(
                         HistoryRepository.DefaultTableName,
-                        UsersDbContext.Schema
-                    ));
+                        UsersDbContext.Schema));
             });
 
-            services.AddIdentity<UserEntity, IdentityRole<int>>()
+            services.AddIdentity<UserEntity, IdentityRole<int>>(options =>
+                {
+                    options.User.AllowedUserNameCharacters = string.Empty;
+                })
                 .AddEntityFrameworkStores<UsersDbContext>();
 
             services.AddScoped<UserRepository, IdentityUserRepository>();
