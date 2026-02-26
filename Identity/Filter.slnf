@@ -1,6 +1,6 @@
 {
   "solution": {
-    "path": "../Tikal.sln",
+    "path": "../Tikal.slnx",
     "projects": [
       "Identity/Identity.WebHost/Identity.WebHost.csproj",
       "Identity/Identity.IntegrationTests/Identity.IntegrationTests.csproj",

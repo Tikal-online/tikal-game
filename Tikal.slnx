@@ -1,31 +1,32 @@
 <Solution>
     <Folder Name="/Identity/">
-        <File Path="Identity/Filter.slnf"/>
-        <File Path="Identity/GitVersion.yaml"/>
-        <Project Path="Identity/Identity.IntegrationTests/Identity.IntegrationTests.csproj"/>
-        <Project Path="Identity/Identity.WebHost/Identity.WebHost.csproj"/>
+        <File Path="Identity/Filter.slnf" />
+        <File Path="Identity/GitVersion.yaml" />
+        <Project Path="Identity/Identity.IntegrationTests/Identity.IntegrationTests.csproj" />
+        <Project Path="Identity/Identity.WebHost/Identity.WebHost.csproj" />
     </Folder>
     <Folder Name="/Identity/API/">
-        <Project Path="Identity/API/RestApi.Controllers/RestApi.Controllers.csproj"/>
+        <Project Path="Identity/API/RestApi.Controllers/RestApi.Controllers.csproj" />
     </Folder>
     <Folder Name="/Identity/BuildConfig/">
-        <File Path="Directory.Packages.props"/>
+        <File Path="Directory.Build.props" />
+        <File Path="Directory.Packages.props" />
     </Folder>
     <Folder Name="/Identity/Modules/">
-        <File Path="Identity/Modules/Tests.slnf"/>
+        <File Path="Identity/Modules/Tests.slnf" />
     </Folder>
     <Folder Name="/Identity/Modules/Users/">
-        <Project Path="Identity/Modules/Users/Users.Application.Tests/Users.Application.Tests.csproj"/>
-        <Project Path="Identity/Modules/Users/Users.Application/Users.Application.csproj"/>
-        <Project Path="Identity/Modules/Users/Users.Contracts/Users.Contracts.csproj"/>
-        <Project Path="Identity/Modules/Users/Users.Domain/Users.Domain.csproj"/>
-        <Project Path="Identity/Modules/Users/Users.Infrastructure/Users.Infrastructure.csproj"/>
+        <Project Path="Identity/Modules/Users/Users.Application.Tests/Users.Application.Tests.csproj" />
+        <Project Path="Identity/Modules/Users/Users.Application/Users.Application.csproj" />
+        <Project Path="Identity/Modules/Users/Users.Contracts/Users.Contracts.csproj" />
+        <Project Path="Identity/Modules/Users/Users.Domain/Users.Domain.csproj" />
+        <Project Path="Identity/Modules/Users/Users.Infrastructure/Users.Infrastructure.csproj" />
     </Folder>
     <Folder Name="/Shared/">
-        <Project Path="Shared/Shared.Application/Shared.Application.csproj"/>
-        <Project Path="Shared/Shared.Contracts/Shared.Contracts.csproj"/>
-        <Project Path="Shared/Shared.Infrastructure/Shared.Infrastructure.csproj"/>
+        <Project Path="Shared/Shared.Application/Shared.Application.csproj" />
+        <Project Path="Shared/Shared.Contracts/Shared.Contracts.csproj" />
+        <Project Path="Shared/Shared.Infrastructure/Shared.Infrastructure.csproj" />
     </Folder>
-    <Project Path="Aspire/Aspire.csproj"/>
-    <Project Path="Backend/Backend.csproj"/>
+    <Project Path="Aspire/Aspire.csproj" />
+    <Project Path="Backend/Backend.csproj" />
 </Solution>
