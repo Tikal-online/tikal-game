@@ -9,6 +9,7 @@ if (builder.Environment.IsProduction())
     builder.Configuration.ConfigureKeyVault();
 }
 
+builder.Logging.ClearProviders();
 builder.Services.ConfigureOpenTelemetry();
 
 builder.Services.AddControllers().AddApplicationPart(AssemblyReference.Assembly);
