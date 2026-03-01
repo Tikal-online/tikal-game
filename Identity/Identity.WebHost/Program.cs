@@ -23,11 +23,15 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.ApplyMigrations();
+    app.MapScalarApiReference();
+}
+else
+{
+    app.MapScalarApiReference(options => { options.AddServer("https://auth.tikalonline.com"); });
 }
 
 app.MapOpenApi();
 
-app.MapScalarApiReference();
 
 app.UseExceptionHandler();
 
