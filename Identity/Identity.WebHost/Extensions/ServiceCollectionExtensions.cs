@@ -2,6 +2,9 @@ using FluentValidation;
 using Identity.WebHost.Configuration;
 using Identity.WebHost.ExceptionHandlers;
 using MediatR;
+using Npgsql;
+using OpenTelemetry.Logs;
+using OpenTelemetry.Trace;
 using Shared.Application.Pipelines;
 using Users.Application;
 using Users.Infrastructure;
@@ -34,6 +37,24 @@ internal static class ServiceCollectionExtensions
 
     extension(IServiceCollection services)
     {
+        public void ConfigureOpenTelemetry()
+        {
+            services.AddOpenTelemetry()
+                .WithTracing(tracing =>
+                {
+                    tracing
+                        .AddAspNetCoreInstrumentation()
+                        .AddHttpClientInstrumentation()
+                        .AddNpgsql()
+                        .AddOtlpExporter();
+                })
+                .WithLogging(logging =>
+                {
+                    logging
+                        .AddOtlpExporter();
+                });
+        }
+
         public void AddMediatR()
         {
             services.AddMediatR(c =>
