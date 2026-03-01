@@ -23,9 +23,11 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.ApplyMigrations();
-    app.MapOpenApi();
-    app.MapScalarApiReference();
 }
+
+app.MapOpenApi();
+
+app.MapScalarApiReference();
 
 app.UseExceptionHandler();
 
