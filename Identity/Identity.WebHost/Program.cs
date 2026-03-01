@@ -4,6 +4,11 @@ using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+if (builder.Environment.IsProduction())
+{
+    builder.Configuration.ConfigureKeyVault();
+}
+
 builder.Services.AddControllers().AddApplicationPart(AssemblyReference.Assembly);
 
 builder.Services.AddMediatR();
