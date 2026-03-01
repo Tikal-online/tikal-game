@@ -36,14 +36,14 @@ jobs:
           global-json-file: global.json
 
       - name: Install GitVersion
-        uses: gittools/actions/gitversion/setup@54b6560187372b52d97cc6dd69f4a99f392ab463 # v4.3.2
+        uses: gittools/actions/gitversion/setup@71a79f7569b981036febd9ce5870f87e069928e7 # v4.3.3
         with:
           versionSpec: "6.4.x"
           preferLatestVersion: true
 
       - name: Determine Version
         id: version_step
-        uses: gittools/actions/gitversion/execute@54b6560187372b52d97cc6dd69f4a99f392ab463 # v4.3.2
+        uses: gittools/actions/gitversion/execute@71a79f7569b981036febd9ce5870f87e069928e7 # v4.3.3
         with:
           configFilePath: "${{ inputs.project-directory }}/GitVersion.yaml"
 
