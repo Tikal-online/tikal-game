@@ -877,7 +877,7 @@
           "OpenTelemetry.Instrumentation.AspNetCore": "[1.15.0, )",
           "OpenTelemetry.Instrumentation.Http": "[1.15.0, )",
           "RestApi.Controllers": "[1.0.0, )",
-          "Scalar.AspNetCore": "[2.12.47, )",
+          "Scalar.AspNetCore": "[2.12.50, )",
           "Users.Application": "[1.0.0, )",
           "Users.Infrastructure": "[1.0.0, )"
         }
@@ -1075,9 +1075,9 @@
       },
       "Scalar.AspNetCore": {
         "type": "CentralTransitive",
-        "requested": "[2.12.47, )",
-        "resolved": "2.12.47",
-        "contentHash": "4DE6HjwBnOzV01+rxDqJC730Y6HQ/PovB5h05DTRWJCffhYQTCmmI+EQtaJtIlhDq/BOezebjZLx43MdIPIbgA=="
+        "requested": "[2.12.50, )",
+        "resolved": "2.12.50",
+        "contentHash": "VjP0hDqICp70OuDtasziehQfs3t2TuhlXfWoOgc5H06iiYLAajclEjfrNDqqD2CTxBPMoU243BXmEphCRF/QTQ=="
       }
     }
   }
