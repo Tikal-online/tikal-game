@@ -4,6 +4,7 @@ using Identity.WebHost.ExceptionHandlers;
 using MediatR;
 using Npgsql;
 using OpenTelemetry.Logs;
+using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;
 using Shared.Application.Pipelines;
 using Users.Application;
@@ -46,6 +47,14 @@ internal static class ServiceCollectionExtensions
                         .AddAspNetCoreInstrumentation()
                         .AddHttpClientInstrumentation()
                         .AddNpgsql()
+                        .AddOtlpExporter();
+                })
+                .WithMetrics(metrics =>
+                {
+                    metrics
+                        .AddAspNetCoreInstrumentation()
+                        .AddHttpClientInstrumentation()
+                        .AddNpgsqlInstrumentation()
                         .AddOtlpExporter();
                 })
                 .WithLogging(logging =>
