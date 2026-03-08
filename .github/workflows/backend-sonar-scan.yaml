@@ -59,10 +59,14 @@ jobs:
           dotnet-sonarscanner begin /k:"Identity" /o:"tikal-online" /d:sonar.token="${{ secrets.IDENTITY_SONAR_TOKEN }}"
 
       - name: Restore projects
-        run: dotnet restore ${{ inputs.project-directory }}/Modules --locked-mode
+        run: |
+          dotnet restore ${{ inputs.project-directory }} --locked-mode
+          dotnet restore ${{ inputs.project-directory }}/Modules --locked-mode
 
       - name: Build projects
-        run: dotnet build ${{ inputs.project-directory }}/Modules --no-restore
+        run: |
+          dotnet build ${{ inputs.project-directory }} --no-restore
+          dotnet build ${{ inputs.project-directory }}/Modules --no-restore
 
       - name: End SonarQube Analysis
         env:
