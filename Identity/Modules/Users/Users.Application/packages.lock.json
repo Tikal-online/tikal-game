@@ -60,7 +60,7 @@
       "shared.contracts": {
         "type": "Project",
         "dependencies": {
-          "MediatR": "[14.0.0, )",
+          "MediatR": "[14.1.0, )",
           "OneOf": "[3.0.271, )"
         }
       },
@@ -81,9 +81,9 @@
       },
       "MediatR": {
         "type": "CentralTransitive",
-        "requested": "[14.0.0, )",
-        "resolved": "14.0.0",
-        "contentHash": "r5fwUO6NBvOFKaiMRx/gRrD1MEHHOio5yEdzSLs2OMeD2e9ZKnZaBQM6A6vVBEWJF4VY41vplXmDMOY1YvpqNA==",
+        "requested": "[14.1.0, )",
+        "resolved": "14.1.0",
+        "contentHash": "pdxza1pLqAk+06LV3THzNJrw5K5Ah6EC17TEkoC90gsAxwtXDJAQrGuDSDinHGgxWKWEn5ebqTNN3k1bLJOb0g==",
         "dependencies": {
           "MediatR.Contracts": "[2.0.1, 3.0.0)",
           "Microsoft.Extensions.DependencyInjection.Abstractions": "10.0.0",
