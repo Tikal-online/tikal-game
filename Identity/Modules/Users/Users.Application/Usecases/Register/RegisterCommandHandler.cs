@@ -11,9 +11,12 @@ public class RegisterCommandHandler : CommandHandler<RegisterCommand, OneOf<User
 {
     private readonly UserRepository userRepository;
 
-    public RegisterCommandHandler(UserRepository userRepository)
+    private readonly UserMetrics userMetrics;
+
+    public RegisterCommandHandler(UserRepository userRepository, UserMetrics userMetrics)
     {
         this.userRepository = userRepository;
+        this.userMetrics = userMetrics;
     }
 
     public async Task<OneOf<UserDto, DuplicateUsernameError>> Handle(
@@ -33,8 +36,15 @@ public class RegisterCommandHandler : CommandHandler<RegisterCommand, OneOf<User
         var result = await userRepository.CreateUser(newUser, request.Password, cancellationToken);
 
         return result.Match<OneOf<UserDto, DuplicateUsernameError>>(
-            createdUser => new UserDto { Username = createdUser.Username },
+            createdUser => handleSuccess(createdUser),
             duplicateUsernameError => duplicateUsernameError
         );
+    }
+
+    private UserDto handleSuccess(User createdUser)
+    {
+        userMetrics.UserCreated();
+
+        return new UserDto { Username = createdUser.Username };
     }
 }

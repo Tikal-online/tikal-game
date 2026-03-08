@@ -9,11 +9,9 @@ namespace Users.Application.Tests.Usecases.Register;
 
 public class RegisterCommandHandlerTests
 {
-    #region dependencies
-
+    // dependencies
     private Mock<UserRepository> userRepository;
-
-    #endregion
+    private Mock<UserMetrics> userMetrics;
 
     // under test
     private RegisterCommandHandler handler;
@@ -22,8 +20,9 @@ public class RegisterCommandHandlerTests
     public void Setup()
     {
         userRepository = new Mock<UserRepository>();
+        userMetrics = new Mock<UserMetrics>();
 
-        handler = new RegisterCommandHandler(userRepository.Object);
+        handler = new RegisterCommandHandler(userRepository.Object, userMetrics.Object);
     }
 
     private void SetUpHappyPath(RegisterCommand command)
@@ -40,7 +39,6 @@ public class RegisterCommandHandlerTests
             .Setup(r => r.CreateUser(It.IsAny<User>(), command.Password, It.IsAny<CancellationToken>()))
             .ReturnsAsync(user);
     }
-
 
     [TestCaseSource(typeof(RegisterCommandTestCases), nameof(RegisterCommandTestCases.ValidRegisterCommands))]
     public async Task GivenExistingUsername_WhenHandle_ThenReturnsDuplicateUsernameError(RegisterCommand command)
@@ -93,5 +91,18 @@ public class RegisterCommandHandlerTests
             Assert.That(result.Value, Is.InstanceOf<UserDto>());
             Assert.That(result.AsT0.Username, Is.EqualTo(command.Username));
         }
+    }
+
+    [TestCaseSource(typeof(RegisterCommandTestCases), nameof(RegisterCommandTestCases.ValidRegisterCommands))]
+    public async Task GivenUserCreationSucceeds_WhenHandle_ThenSetsMetric(RegisterCommand command)
+    {
+        // given
+        SetUpHappyPath(command);
+
+        // when
+        await handler.Handle(command, CancellationToken.None);
+
+        // then
+        userMetrics.Verify(u => u.UserCreated(), Times.Once);
     }
 }

@@ -52,6 +52,7 @@ internal static class ServiceCollectionExtensions
                 .WithMetrics(metrics =>
                 {
                     metrics
+                        .AddMeter("Identity.*")
                         .AddAspNetCoreInstrumentation()
                         .AddHttpClientInstrumentation()
                         .AddNpgsqlInstrumentation()
@@ -77,6 +78,11 @@ internal static class ServiceCollectionExtensions
         public void AddValidators()
         {
             services.AddValidatorsFromAssemblies([AssemblyReference.Assembly]);
+        }
+
+        public void AddApplication()
+        {
+            services.AddUsersApplication();
         }
 
         public void AddInfrastructure(IConfiguration configuration)
