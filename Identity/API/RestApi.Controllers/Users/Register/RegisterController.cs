@@ -34,9 +34,7 @@ public partial class RegisterController : ControllerBase
         );
     }
 
-    private OkObjectResult handleSuccess(
-        UserDto userDto
-    )
+    private OkObjectResult handleSuccess(UserDto userDto)
     {
         return Ok(userDto);
     }
