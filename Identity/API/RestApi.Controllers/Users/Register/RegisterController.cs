@@ -1,4 +1,5 @@
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Users.Contracts.Commands;
 using Users.Contracts.Dtos;
@@ -18,6 +19,9 @@ public partial class RegisterController : ControllerBase
     }
 
     [HttpPost]
+    [ProducesResponseType<UserDto>(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    [EndpointDescription("Registers a new user with the given credentials")]
     public async Task<IActionResult> Register([FromBody] RegisterDto registerDto, CancellationToken cancellationToken)
     {
         var command = new RegisterCommand(registerDto.Username, registerDto.Password);
@@ -30,9 +34,7 @@ public partial class RegisterController : ControllerBase
         );
     }
 
-    private OkObjectResult handleSuccess(
-        UserDto userDto
-    )
+    private OkObjectResult handleSuccess(UserDto userDto)
     {
         return Ok(userDto);
     }
