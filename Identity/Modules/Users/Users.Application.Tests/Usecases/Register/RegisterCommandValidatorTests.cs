@@ -20,7 +20,6 @@ public class RegisterCommandValidatorTests
     {
         // when
         var result = validator.TestValidate(validCommand);
-
         // then
         result.ShouldNotHaveAnyValidationErrors();
     }

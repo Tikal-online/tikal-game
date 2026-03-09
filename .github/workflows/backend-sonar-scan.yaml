@@ -8,6 +8,9 @@ on:
       project-directory:
         required: true
         type: string
+    secrets:
+      IDENTITY_SONAR_TOKEN:
+        required: true
 
 jobs:
   sonarqube-scan:
@@ -57,7 +60,7 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.IDENTITY_SONAR_TOKEN }}
         run: |
-          dotnet-sonarscanner begin /k:"Identity" /o:"tikal-online" /d:sonar.token="$SONAR_TOKEN"
+          dotnet-sonarscanner begin /k:"${{ inputs.project-directory }}" /o:"tikal-online" /d:sonar.token="$SONAR_TOKEN"
 
       - name: Restore projects
         run: |
