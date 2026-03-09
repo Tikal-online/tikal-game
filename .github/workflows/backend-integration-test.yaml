@@ -24,7 +24,7 @@ jobs:
         with:
           global-json-file: global.json
           cache: true
-          cache-dependency-path: "${{ inputs.project-directory }}/**/packages.lock.json"
+          cache-dependency-path: "${{ inputs.project-directory }}/${{ inputs.project-directory }}.IntegrationTests/packages.lock.json"
 
       - name: Restore projects
         run: dotnet restore ${{ inputs.project-directory }}/${{ inputs.project-directory }}.IntegrationTests --locked-mode
