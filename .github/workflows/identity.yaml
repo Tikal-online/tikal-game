@@ -4,8 +4,16 @@ name: Identity CI/CD
 
 on:
   push:
+    branches:
+      - main
     paths:
       - Identity/**
+      - Shared/**
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - Identity/**
+      - Shared/**
 
 jobs:
   format:
@@ -31,8 +39,8 @@ jobs:
   sonar-scan:
     name: Sonarqube Scan
     needs: [Unit-Tests, Integration-Tests]
-    if: github.ref == 'refs/heads/main' || github.event_name == 'pull_request'
     uses: ./.github/workflows/backend-sonar-scan.yaml
+    secrets: inherit
     with:
       project-directory: Identity
 
