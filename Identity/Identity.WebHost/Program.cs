@@ -35,10 +35,6 @@ if (app.Environment.IsDevelopment())
     app.ApplyMigrations();
     app.MapScalarApiReference();
 }
-else
-{
-    app.MapScalarApiReference(options => { options.AddServer("https://auth.tikalonline.com"); });
-}
 
 app.MapOpenApi();
 
@@ -50,4 +46,4 @@ app.MapHealthChecks("/healthcheck");
 
 app.MapControllers();
 
-app.Run();
+await app.RunAsync();
