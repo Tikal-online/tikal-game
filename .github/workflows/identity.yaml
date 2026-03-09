@@ -4,8 +4,16 @@ name: Identity CI/CD
 
 on:
   push:
+    branches:
+      - main
     paths:
       - Identity/**
+      - Shared/**
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - Identity/**
+      - Shared/**
 
 jobs:
   format:
@@ -28,9 +36,19 @@ jobs:
     with:
       project-directory: Identity
 
+  sonar-scan:
+    name: Sonarqube Scan
+    needs: [Unit-Tests, Integration-Tests]
+    if: github.ref == 'refs/heads/main' || github.event_name == 'pull_request'
+    uses: ./.github/workflows/backend-sonar-scan.yaml
+    with:
+      project-directory: Identity
+    secrets:
+      IDENTITY_SONAR_TOKEN: ${{ secrets.IDENTITY_SONAR_TOKEN }}
+
   release:
     name: Release
-    needs: [Unit-Tests, Integration-Tests]
+    needs: Sonar-Scan
     permissions:
       contents: write
     if: github.ref == 'refs/heads/main'

@@ -34,6 +34,7 @@ public class RegisterTests : IntegrationTestFixture
     {
         // given
         await Client.PostAsJsonAsync(url, registerDto);
+
         // when
         var response = await Client.PostAsJsonAsync(url, registerDto);
 
