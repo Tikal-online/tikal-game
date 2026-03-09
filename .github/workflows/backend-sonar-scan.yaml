@@ -62,7 +62,7 @@ jobs:
         run: |
           dotnet-sonarscanner begin \
             /k:"${{ inputs.project-directory }}" \
-            /o:"tikal-online" \
+            /o:"fmahdi09" \
             /d:sonar.token="$SONAR_TOKEN" \
             /d:sonar.scanner.scanAll=false \
             /d:sonar.exclusions="**/Migrations/**"
