@@ -60,7 +60,12 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.IDENTITY_SONAR_TOKEN }}
         run: |
-          dotnet-sonarscanner begin /k:"${{ inputs.project-directory }}" /o:"tikal-online" /d:sonar.token="$SONAR_TOKEN" /d:sonar.scanner.scanAll=false
+          dotnet-sonarscanner begin \
+            /k:"${{ inputs.project-directory }}" \
+            /o:"tikal-online" \
+            /d:sonar.token="$SONAR_TOKEN" \
+            /d:sonar.scanner.scanAll=false \
+            /d:sonar.exclusions="**/Migrations/**"
 
       - name: Restore projects
         run: |
