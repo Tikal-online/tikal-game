@@ -61,11 +61,11 @@
       },
       "Npgsql.OpenTelemetry": {
         "type": "Direct",
-        "requested": "[10.0.1, )",
-        "resolved": "10.0.1",
-        "contentHash": "G9fEIBaHggZXWfDSDnKLc0XwKcbuU6i2eXp7zDqpgYxbhCmIN9fRgaSOGyyMNHSo/yY1IB4G4CjW5VO/SKRR0g==",
+        "requested": "[10.0.2, )",
+        "resolved": "10.0.2",
+        "contentHash": "kjc+3DzqjaFk0L3cmR92emyJd7GAgwSiiyuzvumHFEp0EVp6GbrtdIe0jD8NANdPVqYM8prH9ND8GQsQAFXCKA==",
         "dependencies": {
-          "Npgsql": "10.0.1",
+          "Npgsql": "10.0.2",
           "OpenTelemetry.API": "1.14.0"
         }
       },
@@ -303,8 +303,8 @@
       },
       "Npgsql": {
         "type": "Transitive",
-        "resolved": "10.0.1",
-        "contentHash": "XyUcxEfqlFomhNTG/ZdGlec+uSOQArKz0Mzz8jYKP/Jj9GM2YabU5CVZtp0yiC4f9hRp+tRZTnHMatJeJ3rwgw=="
+        "resolved": "10.0.2",
+        "contentHash": "q5RfBI+wywJSFUNDE1L4ZbHEHCFTblo8Uf6A6oe4feOUFYiUQXyAf9GBh5qEZpvJaHiEbpBPkQumjEhXCJxdrg=="
       },
       "OpenTelemetry": {
         "type": "Transitive",
