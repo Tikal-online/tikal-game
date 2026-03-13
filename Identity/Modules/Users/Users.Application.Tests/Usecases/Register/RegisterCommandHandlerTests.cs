@@ -98,6 +98,7 @@ public class RegisterCommandHandlerTests
     {
         // given
         SetUpHappyPath(command);
+
         // when
         await handler.Handle(command, CancellationToken.None);
 
