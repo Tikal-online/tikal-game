@@ -33,4 +33,17 @@ jobs:
         run: dotnet build ${{ inputs.project-directory }}/${{ inputs.project-directory }}.IntegrationTests --no-restore
 
       - name: Run Integration Tests
-        run: dotnet test --project ${{ inputs.project-directory }}/${{ inputs.project-directory }}.IntegrationTests --no-build
+        run: |
+          dotnet test \
+            --project ${{ inputs.project-directory }}/${{ inputs.project-directory }}.IntegrationTests \
+            --coverlet \
+            --coverlet-output-format opencover \
+            --results-directory TestResults/IntegrationTests \
+            --no-build
+
+      - name: Upload test results
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        with:
+          name: ${{ inputs.project-directory }}-integration-test-coverage
+          path: TestResults
+        if: ${{ always() }}
