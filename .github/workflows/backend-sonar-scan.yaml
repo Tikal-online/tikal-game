@@ -83,6 +83,7 @@ jobs:
           dotnet-sonarscanner end /d:sonar.token="$SONAR_TOKEN"
 
       - name: Create SonarQube Summary
+        if: github.ref == 'refs/heads/main'
         env:
           SONAR_HOST_URL: https://sonarcloud.io
           SONAR_TOKEN: ${{ secrets.IDENTITY_SONAR_TOKEN }}
