@@ -64,8 +64,7 @@ jobs:
             /k:"${{ inputs.project-directory }}" \
             /o:"fmahdi09" \
             /d:sonar.token="$SONAR_TOKEN" \
-            /d:sonar.scanner.scanAll=false \
-            /d:sonar.exclusions="**/Migrations/**"
+            /d:sonar.scanner.scanAll=false
 
       - name: Restore projects
         run: |
@@ -82,3 +81,80 @@ jobs:
           SONAR_TOKEN: ${{ secrets.IDENTITY_SONAR_TOKEN }}
         run: |
           dotnet-sonarscanner end /d:sonar.token="$SONAR_TOKEN"
+
+      - name: Create SonarQube Summary
+        env:
+          SONAR_HOST_URL: https://sonarcloud.io
+          SONAR_TOKEN: ${{ secrets.IDENTITY_SONAR_TOKEN }}
+          SONAR_PROJECT_KEY: ${{ inputs.project-directory }}
+          COMMIT_SHA: ${{ github.sha }}
+        run: |
+          QG_RESPONSE=$(curl -s -u "$SONAR_TOKEN:" \
+            "$SONAR_HOST_URL/api/qualitygates/project_status?projectKey=$SONAR_PROJECT_KEY&branch=main")
+
+          QG_STATUS=$(echo "$QG_RESPONSE" | jq -r '.projectStatus.status')
+
+          MEASURES_RESPONSE=$(curl -s -u "$SONAR_TOKEN:" \
+            "$SONAR_HOST_URL/api/measures/component?component=$SONAR_PROJECT_KEY&branch=main&metricKeys=bugs,vulnerabilities,code_smells,coverage,duplicated_lines_density,ncloc,security_hotspots,reliability_rating,security_rating,sqale_rating")
+
+          extract() {
+            echo "$MEASURES_RESPONSE" | jq -r --arg key "$1" \
+              '.component.measures[] | select(.metric == $key) | .value // "N/A"'
+          }
+
+          BUGS=$(extract bugs)
+          VULNS=$(extract vulnerabilities)
+          SMELLS=$(extract code_smells)
+          COVERAGE=$(extract coverage)
+          DUPLICATION=$(extract duplicated_lines_density)
+          LINES=$(extract ncloc)
+          HOTSPOTS=$(extract security_hotspots)
+
+          # Convert letter ratings (1=A, 2=B, 3=C, 4=D, 5=E)
+          rating() {
+            case "$1" in
+              1.0) echo "A" ;; 2.0) echo "B" ;; 3.0) echo "C" ;;
+              4.0) echo "D" ;; 5.0) echo "E" ;; *) echo "N/A" ;;
+            esac
+          }
+
+          RELIABILITY=$(rating "$(extract reliability_rating)")
+          SECURITY=$(rating "$(extract security_rating)")
+          MAINTAINABILITY=$(rating "$(extract sqale_rating)")
+
+          if [ "$QG_STATUS" = "OK" ]; then
+            BADGE="✅ **Passed**"
+          elif [ "$QG_STATUS" = "WARN" ]; then
+            BADGE="⚠️ **Warning**"
+          else
+            BADGE="❌ **Failed**"
+          fi
+
+          cat >> "$GITHUB_STEP_SUMMARY" << EOF
+          ## 🔍 SonarQube Analysis
+
+          **Quality Gate:** $BADGE
+          **Commit:** \`${COMMIT_SHA:0:7}\`
+
+          ### Metrics
+
+          | Metric                   | Value             |
+          |--------------------------|-------------------|
+          | 🐛 Bugs                  | $BUGS             |
+          | 🔒 Vulnerabilities       | $VULNS            |
+          | 🔥 Security Hotspots     | $HOTSPOTS         |
+          | 🧹 Code Smells           | $SMELLS           |
+          | 🧪 Coverage              | ${COVERAGE}%      |
+          | 🔁 Duplication           | ${DUPLICATION}%   |
+          | 📏 Lines of Code         | $LINES            |
+
+          ### Ratings
+
+          | Area                | Rating  |
+          |---------------------|---------|
+          | 🛡️ Reliability      | $RELIABILITY |
+          | 🔐 Security         | $SECURITY    |
+          | 🔧 Maintainability  | $MAINTAINABILITY |
+
+          [View Full Report]($SONAR_HOST_URL/dashboard?id=$SONAR_PROJECT_KEY&branch=main)
+          EOF
