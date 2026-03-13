@@ -33,4 +33,17 @@ jobs:
         run: dotnet build ${{ inputs.project-directory }}/Modules --no-restore
 
       - name: Run Unit Tests
-        run: dotnet test --solution ${{ inputs.project-directory }}/Modules/Tests.slnf --no-build
+        run: |
+          dotnet test \
+            --solution ${{ inputs.project-directory }}/Modules/Tests.slnf \
+            --coverlet \
+            --coverlet-output-format opencover \
+            --results-directory TestResults/UnitTests \
+            --no-build
+
+      - name: Upload test results
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        with:
+          name: unit-test-results
+          path: TestResults
+        if: ${{ always() }}
