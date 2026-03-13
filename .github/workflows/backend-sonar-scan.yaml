@@ -64,7 +64,8 @@ jobs:
             /k:"${{ inputs.project-directory }}" \
             /o:"fmahdi09" \
             /d:sonar.token="$SONAR_TOKEN" \
-            /d:sonar.scanner.scanAll=false
+            /d:sonar.scanner.scanAll=false \
+            /d:sonar.cs.opencover.reportPaths=./TestResults/**/coverage.opencover.xml
 
       - name: Restore projects
         run: |
@@ -75,6 +76,13 @@ jobs:
         run: |
           dotnet build ${{ inputs.project-directory }} --no-restore
           dotnet build ${{ inputs.project-directory }}/Modules --no-restore
+
+      - name: Download test coverage
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          pattern: ${{ inputs.project-directory }}-*-test-coverage
+          path: ./TestResults
+          merge-multiple: true
 
       - name: End SonarQube Analysis
         env:
