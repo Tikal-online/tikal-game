@@ -84,10 +84,10 @@ public class RegisterCommandHandlerTests
         SetUpHappyPath(command);
 
         // when
+
         var result = await handler.Handle(command, CancellationToken.None);
 
         // then
-
         using (Assert.EnterMultipleScope())
         {
             Assert.That(result.Value, Is.InstanceOf<UserDto>());

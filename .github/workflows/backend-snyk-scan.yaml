@@ -64,3 +64,8 @@ jobs:
           --remote-repo-url="${{ inputs.project-directory }}-Dependencies"
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+      - name: Upload result to GitHub Code Scanning
+        uses: github/codeql-action/upload-sarif@v4
+        with:
+          sarif_file: ${{ inputs.project-directory }}/snyk-code.sarif
