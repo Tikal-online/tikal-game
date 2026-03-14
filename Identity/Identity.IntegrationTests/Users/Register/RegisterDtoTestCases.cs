@@ -13,6 +13,7 @@ public static class RegisterDtoTestCases
         new() { Username = "Username", Password = "" },
         // password doesnt fulfill criteria
         new() { Username = "MyUser123", Password = "password" },
+        new() { Username = "MyUser123", Password = "password" },
         // username too long
         new()
         {
