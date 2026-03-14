@@ -46,6 +46,7 @@ public class RegisterCommandHandlerTests
         // given
         SetUpHappyPath(command);
 
+
         var existingUser = new User(1, command.Username);
 
         userRepository
