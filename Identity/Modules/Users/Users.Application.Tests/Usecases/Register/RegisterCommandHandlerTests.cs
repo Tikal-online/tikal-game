@@ -64,7 +64,6 @@ public class RegisterCommandHandlerTests
     public async Task GivenUserCreationFails_WhenHandle_ThenReturnsDuplicateUsernameError(RegisterCommand command)
     {
         // given
-
         SetUpHappyPath(command);
 
         userRepository
@@ -72,6 +71,7 @@ public class RegisterCommandHandlerTests
             .ReturnsAsync(new DuplicateUsernameError(command.Username));
 
         // when
+        
         var result = await handler.Handle(command, CancellationToken.None);
 
         // then
