@@ -39,16 +39,24 @@ jobs:
   sonar-scan:
     name: Sonarqube Scan
     needs: [Unit-Tests, Integration-Tests]
-    if: github.ref == 'refs/heads/main' || github.event_name == 'pull_request'
     uses: ./.github/workflows/backend-sonar-scan.yaml
     with:
       project-directory: Identity
     secrets:
       IDENTITY_SONAR_TOKEN: ${{ secrets.IDENTITY_SONAR_TOKEN }}
 
+  snyk-scan:
+    name: Snyk Scan
+    needs: [Unit-Tests, Integration-Tests]
+    uses: ./.github/workflows/backend-snyk-scan.yaml
+    with:
+      project-directory: Identity
+    secrets:
+      SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
   release:
     name: Release
-    needs: Sonar-Scan
+    needs: [Sonar-Scan, Snyk-Scan]
     permissions:
       contents: write
     if: github.ref == 'refs/heads/main'
