@@ -7,7 +7,7 @@ public static class RegisterCommandTestCases
     public static IEnumerable<RegisterCommand> InvalidRegisterCommands =>
     [
         // empty username
-        new("", "Password1!"),
+        new("", "Password123!"),
         // empty password
         new("Username", ""),
         // password doesnt fulfill criteria
