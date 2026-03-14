@@ -16,7 +16,6 @@ public class RegisterTests : IntegrationTestFixture
         var response = await Client.PostAsJsonAsync(url, registerDto);
 
         // then
-
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
     }
 
@@ -24,6 +23,7 @@ public class RegisterTests : IntegrationTestFixture
     public async Task GivenInvalidRegisterDto_WhenRegister_ThenReturnsBadRequest(RegisterDto registerDto)
     {
         // when
+
         var response = await Client.PostAsJsonAsync(url, registerDto);
 
         // then

@@ -37,10 +37,10 @@ jobs:
           cache: true
           cache-dependency-path: "./**/packages.lock.json"
 
-      - name: Build projects
+      - name: Restore projects
         run: |
-          dotnet build --no-restore
-          dotnet build Modules --no-restore
+          dotnet restore --locked-mode
+          dotnet restore Modules --locked-mode
 
       - name: Build projects
         run: |
