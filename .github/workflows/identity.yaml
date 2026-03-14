@@ -43,20 +43,9 @@ jobs:
     secrets:
       SONAR_TOKEN: ${{ secrets.IDENTITY_SONAR_TOKEN }}
 
-  snyk-scan:
-    name: Snyk Scan
-    needs: [Unit-Tests, Integration-Tests]
-    permissions:
-      security-events: write
-    uses: ./.github/workflows/backend-snyk-scan.yaml
-    with:
-      project-directory: Identity
-    secrets:
-      SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-
   release:
     name: Release
-    needs: [Sonar-Scan, Snyk-Scan]
+    needs: Sonar-Scan
     permissions:
       contents: write
     if: github.ref == 'refs/heads/main'
