@@ -101,10 +101,10 @@ public class RegisterCommandHandlerTests
         SetUpHappyPath(command);
 
         // when
-
         await handler.Handle(command, CancellationToken.None);
 
         // then
+
         userMetrics.Verify(u => u.UserCreated(), Times.Once);
     }
 }

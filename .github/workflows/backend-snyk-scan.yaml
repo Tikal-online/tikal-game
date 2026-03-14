@@ -47,7 +47,7 @@ jobs:
           snyk code test \
           --sarif-file-output=snyk-code.sarif \
           --report \
-          --target-name="${{ inputs.project-directory }}" \
+          --target-name="${{ inputs.project-directory }}-Code" \
           --project-name="${{ inputs.project-directory }}Code-Analysis" \
           || true
         env:
@@ -62,7 +62,6 @@ jobs:
         run: |
           snyk monitor \
           --all-projects \
-          --remote-repo-url="${{ inputs.project-directory }}" \
-          --project-name-prefix="${{ inputs.project-directory }}/"
+          --remote-repo-url="${{ inputs.project-directory }}-Dependencies"
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
