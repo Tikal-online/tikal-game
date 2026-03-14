@@ -43,7 +43,7 @@ jobs:
           dotnet restore Modules --locked-mode
 
       - name: Snyk code test
-        run: snyk code test --sarif-file-output=snyk-code.sarif || true
+        run: snyk code test --sarif-file-output=snyk-code.sarif --report --project-name=Tikal-online/tikal-game || true
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
