@@ -44,7 +44,6 @@ public class RegisterCommandHandlerTests
     public async Task GivenExistingUsername_WhenHandle_ThenReturnsDuplicateUsernameError(RegisterCommand command)
     {
         // given
-
         SetUpHappyPath(command);
 
         var existingUser = new User(1, command.Username);
