@@ -29,8 +29,25 @@ jobs:
         uses: snyk/actions/setup@806182742461562b67788a64410098c9d9b96adb
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@c2fa09f4bde5ebb9d1777cf28262a3eb3db3ced7 # v5.2.0
+        with:
+          global-json-file: global.json
+          cache: true
+          cache-dependency-path: "./**/packages.lock.json"
 
-      - name: Snyk Code test
-        run: snyk code test --org=fmahdi09
+      - name: Build projects
+        run: |
+          dotnet build --no-restore
+          dotnet build Modules --no-restore
+
+      - name: Build projects
+        run: |
+          dotnet build --no-restore
+          dotnet build Modules --no-restore
+
+      - name: Snyk open source monitor
+        run: snyk monitor --all-projects
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
