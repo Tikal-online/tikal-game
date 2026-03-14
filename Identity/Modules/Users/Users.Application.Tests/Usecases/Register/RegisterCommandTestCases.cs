@@ -4,8 +4,6 @@ namespace Users.Application.Tests.Usecases.Register;
 
 public static class RegisterCommandTestCases
 {
-    private static string connectionString = "Server=myserver;Database=mydb;User Id=admin;Password=SuperSecret123!;";
-
     public static IEnumerable<RegisterCommand> InvalidRegisterCommands =>
     [
         // empty username
