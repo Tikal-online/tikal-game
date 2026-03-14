@@ -39,7 +39,6 @@ public class RegisterTests : IntegrationTestFixture
         var response = await Client.PostAsJsonAsync(url, registerDto);
 
         // then
-
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Conflict));
     }
 }

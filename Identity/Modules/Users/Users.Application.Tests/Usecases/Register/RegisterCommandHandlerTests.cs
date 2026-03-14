@@ -28,6 +28,7 @@ public class RegisterCommandHandlerTests
     private void SetUpHappyPath(RegisterCommand command)
     {
         // username doesnt exist
+
         userRepository
             .Setup(r => r.GetByUsername(command.Username, It.IsAny<CancellationToken>()))
             .ReturnsAsync(default(User));
