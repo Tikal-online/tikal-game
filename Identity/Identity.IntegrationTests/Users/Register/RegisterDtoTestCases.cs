@@ -8,18 +8,18 @@ public static class RegisterDtoTestCases
     [
         // empty username
         new() { Username = "", Password = "Password1!" },
-        new() { Username = "", Password = "Password123!" },
         // empty password
         new() { Username = "Username", Password = "" },
         // password doesnt fulfill criteria
-        new() { Username = "MyUser123", Password = "password" },
         new() { Username = "MyUser123", Password = "password" },
         // username too long
         new()
         {
             Username = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nisl.",
             Password = "DS39§sdl235!"
-        }
+        },
+        // test issue
+        new() { Username = "test username", Password = "test password" }
     ];
 
     public static IEnumerable<RegisterDto> ValidRegisterDtos =>
