@@ -71,10 +71,10 @@ public class RegisterCommandHandlerTests
             .ReturnsAsync(new DuplicateUsernameError(command.Username));
 
         // when
-
         var result = await handler.Handle(command, CancellationToken.None);
 
         // then
+
         Assert.That(result.Value, Is.InstanceOf<DuplicateUsernameError>());
     }
 
