@@ -48,8 +48,7 @@ jobs:
           --sarif-file-output=snyk-code.sarif \
           --report \
           --target-name="${{ inputs.project-directory }}-Code" \
-          --project-name="${{ inputs.project-directory }}Code-Analysis" \
-          || true
+          --project-name="${{ inputs.project-directory }}Code-Analysis"
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 

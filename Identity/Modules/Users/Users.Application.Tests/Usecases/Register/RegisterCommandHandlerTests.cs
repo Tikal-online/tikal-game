@@ -87,6 +87,7 @@ public class RegisterCommandHandlerTests
         var result = await handler.Handle(command, CancellationToken.None);
 
         // then
+
         using (Assert.EnterMultipleScope())
         {
             Assert.That(result.Value, Is.InstanceOf<UserDto>());
@@ -104,7 +105,6 @@ public class RegisterCommandHandlerTests
         await handler.Handle(command, CancellationToken.None);
 
         // then
-
         userMetrics.Verify(u => u.UserCreated(), Times.Once);
     }
 }
