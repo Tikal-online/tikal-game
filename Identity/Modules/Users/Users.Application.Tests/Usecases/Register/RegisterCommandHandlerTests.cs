@@ -81,7 +81,6 @@ public class RegisterCommandHandlerTests
     public async Task GivenUserCreationSucceeds_WhenHandle_ThenReturnsCreatedUser(RegisterCommand command)
     {
         // given
-
         SetUpHappyPath(command);
 
         // when
@@ -102,6 +101,7 @@ public class RegisterCommandHandlerTests
         SetUpHappyPath(command);
 
         // when
+
         await handler.Handle(command, CancellationToken.None);
 
         // then

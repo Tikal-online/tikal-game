@@ -48,7 +48,7 @@ jobs:
           --sarif-file-output=snyk-code.sarif \
           --report \
           --target-name="${{ inputs.project-directory }}" \
-          --project-name="${{ inputs.project-directory }}-code-analysis" \
+          --project-name="${{ inputs.project-directory }}Code-Analysis" \
           || true
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
@@ -59,6 +59,10 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
       - name: Snyk open source monitor
-        run: snyk monitor --all-projects
+        run: |
+          snyk monitor \
+          --all-projects \
+          --remote-repo-url="${{ inputs.project-directory }}" \
+          --project-name-prefix="${{ inputs.project-directory }}/"
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
