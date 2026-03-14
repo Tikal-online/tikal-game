@@ -28,12 +28,12 @@ public class RegisterCommandHandlerTests
     private void SetUpHappyPath(RegisterCommand command)
     {
         // username doesnt exist
-
         userRepository
             .Setup(r => r.GetByUsername(command.Username, It.IsAny<CancellationToken>()))
             .ReturnsAsync(default(User));
 
         // user creation successful
+
         var user = new User(1, command.Username);
 
         userRepository
