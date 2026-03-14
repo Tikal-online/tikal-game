@@ -19,7 +19,7 @@ public partial class RegisterController : ControllerBase
     }
 
     [HttpPost]
-    [ProducesResponseType<UserDto>(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     [EndpointDescription("Registers a new user with the given credentials")]
     public async Task<IActionResult> Register([FromBody] RegisterDto registerDto, CancellationToken cancellationToken)
@@ -29,14 +29,9 @@ public partial class RegisterController : ControllerBase
         var result = await sender.Send(command, cancellationToken);
 
         return result.Match(
-            handleSuccess,
+            _ => Ok(),
             handleDuplicateUsernameError
         );
-    }
-
-    private OkObjectResult handleSuccess(UserDto userDto)
-    {
-        return Ok(userDto);
     }
 
     private IActionResult handleDuplicateUsernameError(DuplicateUsernameError duplicateUsernameError)
