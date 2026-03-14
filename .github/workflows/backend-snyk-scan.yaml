@@ -43,7 +43,7 @@ jobs:
           dotnet restore Modules --locked-mode
 
       - name: Snyk code test
-        run: snyk code test --all-projects
+        run: snyk code test --all-projects --sarif > snyk-code.sarif
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 

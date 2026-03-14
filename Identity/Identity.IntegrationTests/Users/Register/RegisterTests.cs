@@ -33,10 +33,10 @@ public class RegisterTests : IntegrationTestFixture
     public async Task GivenExistingUsername_WhenRegister_ThenReturnsConflict(RegisterDto registerDto)
     {
         // given
-
         await Client.PostAsJsonAsync(url, registerDto);
 
         // when
+
         var response = await Client.PostAsJsonAsync(url, registerDto);
 
         // then
