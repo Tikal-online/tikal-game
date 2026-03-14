@@ -13,7 +13,9 @@ public class RegisterTests : IntegrationTestFixture
     public async Task GivenValidDto_WhenRegister_ThenReturnsSuccess(RegisterDto registerDto)
     {
         // when
+
         var response = await Client.PostAsJsonAsync(url, registerDto);
+
         // then
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
     }

@@ -31,6 +31,6 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
       - name: Snyk Code test
-        run: snyk code test
+        run: snyk code test --org=fmahdi09
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
