@@ -48,6 +48,8 @@ jobs:
   snyk-scan:
     name: Snyk Scan
     needs: [Unit-Tests, Integration-Tests]
+    permissions:
+      security-events: write
     uses: ./.github/workflows/backend-snyk-scan.yaml
     with:
       project-directory: Identity

@@ -16,9 +16,6 @@ jobs:
   snyk-scan:
     name: Snyk Scan
     runs-on: ubuntu-24.04
-    permissions:
-      contents: read
-      security-events: write
     defaults:
       run:
         working-directory: ${{ inputs.project-directory }}
