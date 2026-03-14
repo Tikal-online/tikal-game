@@ -42,11 +42,16 @@ jobs:
           dotnet restore --locked-mode
           dotnet restore Modules --locked-mode
 
+      - name: Snyk code test
+        run: snyk code test --all-projects
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
       - name: Snyk open source test
         run: snyk test --all-projects
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-     
+
       - name: Snyk open source monitor
         run: snyk monitor --all-projects
         env:
