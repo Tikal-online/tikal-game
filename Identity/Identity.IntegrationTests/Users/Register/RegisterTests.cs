@@ -26,7 +26,6 @@ public class RegisterTests : IntegrationTestFixture
         var response = await Client.PostAsJsonAsync(url, registerDto);
 
         // then
-
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
     }
 
@@ -34,6 +33,7 @@ public class RegisterTests : IntegrationTestFixture
     public async Task GivenExistingUsername_WhenRegister_ThenReturnsConflict(RegisterDto registerDto)
     {
         // given
+
         await Client.PostAsJsonAsync(url, registerDto);
 
         // when
