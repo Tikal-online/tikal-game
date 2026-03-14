@@ -56,7 +56,6 @@ public class RegisterCommandHandlerTests
         var result = await handler.Handle(command, CancellationToken.None);
 
         // then
-
         Assert.That(result.Value, Is.InstanceOf<DuplicateUsernameError>());
     }
 
