@@ -19,7 +19,8 @@ public static class RegisterDtoTestCases
             Password = "DS39§sdl235!"
         },
         // test issue
-        new() { Username = "test username", Password = "test password" }
+        new() { Username = "test username", Password = "test password" },
+        new() { Username = "test username", Password = "test password3" }
     ];
 
     public static IEnumerable<RegisterDto> ValidRegisterDtos =>
