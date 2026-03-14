@@ -74,7 +74,6 @@ public class RegisterCommandHandlerTests
         var result = await handler.Handle(command, CancellationToken.None);
 
         // then
-
         Assert.That(result.Value, Is.InstanceOf<DuplicateUsernameError>());
     }
 
@@ -82,6 +81,7 @@ public class RegisterCommandHandlerTests
     public async Task GivenUserCreationSucceeds_WhenHandle_ThenReturnsCreatedUser(RegisterCommand command)
     {
         // given
+
         SetUpHappyPath(command);
 
         // when

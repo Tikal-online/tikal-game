@@ -48,17 +48,17 @@ jobs:
           --sarif-file-output=snyk-code.sarif \
           --report \
           --target-name="${{ inputs.project-directory }}" \
-          --project-name="Code Analysis" \
+          --project-name="${{ inputs.project-directory }}-code-analysis" \
           || true
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
       - name: Snyk open source test
-        run: snyk test --all-projects --target-name="${{ inputs.project-directory }}"
+        run: snyk test --all-projects
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
       - name: Snyk open source monitor
-        run: snyk monitor --all-projects --target-name="${{ inputs.project-directory }}"
+        run: snyk monitor --all-projects
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
