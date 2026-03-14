@@ -34,7 +34,7 @@ jobs:
         run: snyk code test --sarif > snyk-code.sarif || true
 
       - name: Debug
-        run: cat ${{ inputs.project-directory }}/snyk-code.sarif
+        run: ls -la
 
       - name: Upload result to GitHub Code Scanning
         uses: github/codeql-action/upload-sarif@v4
