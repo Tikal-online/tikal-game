@@ -11,9 +11,9 @@ public static class RegisterCommandTestCases
         // empty password
         new("Username", ""),
         // password doesnt fulfill criteria
-        new("MyUser123", "password"),
+        new("MyUser123", "password123"),
         // username too long
-        new("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nisl.", "DS39§sdl235!")
+        new("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nisl.", "DS39§sdl235!?")
     ];
 
     public static IEnumerable<RegisterCommand> ValidRegisterCommands =>
