@@ -19,7 +19,7 @@ public static class RegisterDtoTestCases
             Password = "DS39§sdl235!"
         },
         // password doesnt fulfill criteria
-        new() { Username = "MyUser123", Password = "password123" }
+        new() { Username = "MyUser123", Password = "password1234" }
     ];
 
     public static IEnumerable<RegisterDto> ValidRegisterDtos =>
