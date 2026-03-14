@@ -8,6 +8,7 @@ public static class RegisterDtoTestCases
     [
         // empty username
         new() { Username = "", Password = "Password1!" },
+        new() { Username = "", Password = "Password123!" },
         // empty password
         new() { Username = "Username", Password = "" },
         // password doesnt fulfill criteria
