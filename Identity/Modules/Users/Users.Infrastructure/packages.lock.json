@@ -340,18 +340,6 @@
           "Microsoft.Extensions.Primitives": "10.0.5"
         }
       },
-      "Microsoft.Extensions.Options.ConfigurationExtensions": {
-        "type": "Transitive",
-        "resolved": "10.0.5",
-        "contentHash": "BB9uUW3+6Rxu1R97OB1H/13lUF8P2+H1+eDhpZlK30kDh/6E4EKHBUqTp+ilXQmZLzsRErxON8aBSR6WpUKJdg==",
-        "dependencies": {
-          "Microsoft.Extensions.Configuration.Abstractions": "10.0.5",
-          "Microsoft.Extensions.Configuration.Binder": "10.0.5",
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "10.0.5",
-          "Microsoft.Extensions.Options": "10.0.5",
-          "Microsoft.Extensions.Primitives": "10.0.5"
-        }
-      },
       "Microsoft.Extensions.Primitives": {
         "type": "Transitive",
         "resolved": "10.0.5",
@@ -449,6 +437,7 @@
       "users.application": {
         "type": "Project",
         "dependencies": {
+          "Microsoft.Extensions.Options.ConfigurationExtensions": "[10.0.5, )",
           "Shared.Application": "[1.0.0, )",
           "Users.Contracts": "[1.0.0, )",
           "Users.Domain": "[1.0.0, )"
@@ -491,6 +480,19 @@
           "Microsoft.EntityFrameworkCore.Analyzers": "10.0.5",
           "Microsoft.Extensions.Caching.Memory": "10.0.5",
           "Microsoft.Extensions.Logging": "10.0.5"
+        }
+      },
+      "Microsoft.Extensions.Options.ConfigurationExtensions": {
+        "type": "CentralTransitive",
+        "requested": "[10.0.5, )",
+        "resolved": "10.0.5",
+        "contentHash": "BB9uUW3+6Rxu1R97OB1H/13lUF8P2+H1+eDhpZlK30kDh/6E4EKHBUqTp+ilXQmZLzsRErxON8aBSR6WpUKJdg==",
+        "dependencies": {
+          "Microsoft.Extensions.Configuration.Abstractions": "10.0.5",
+          "Microsoft.Extensions.Configuration.Binder": "10.0.5",
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "10.0.5",
+          "Microsoft.Extensions.Options": "10.0.5",
+          "Microsoft.Extensions.Primitives": "10.0.5"
         }
       },
       "Npgsql.EntityFrameworkCore.PostgreSQL": {

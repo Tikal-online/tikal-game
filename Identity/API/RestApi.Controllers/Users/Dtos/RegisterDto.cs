@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Users.Contracts.Dtos;
+namespace RestApi.Controllers.Users.Dtos;
 
 public record RegisterDto
 {

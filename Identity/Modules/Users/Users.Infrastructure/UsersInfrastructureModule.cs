@@ -8,7 +8,7 @@ using Users.Infrastructure.Entities;
 
 namespace Users.Infrastructure;
 
-public static class UsersModule
+public static class UsersInfrastructureModule
 {
     extension(IServiceCollection services)
     {

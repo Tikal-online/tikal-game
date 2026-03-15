@@ -1,7 +1,7 @@
 using System.Net;
 using System.Net.Http.Json;
 using NUnit.Framework;
-using Users.Contracts.Dtos;
+using RestApi.Controllers.Users.Dtos;
 
 namespace Identity.IntegrationTests.Users.Register;
 

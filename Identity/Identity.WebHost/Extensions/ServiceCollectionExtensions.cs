@@ -23,8 +23,8 @@ internal static class ServiceCollectionExtensions
             return connectionString;
         }
 
-        var options = new DatabaseOptions();
-        configuration.GetSection(DatabaseOptions.Position).Bind(options);
+        var options = new DatabaseConfiguration();
+        configuration.GetSection(DatabaseConfiguration.Section).Bind(options);
 
         connectionString = $"Server={options.Host};" +
                            $"Port={options.Port};" +
@@ -85,6 +85,11 @@ internal static class ServiceCollectionExtensions
             var connectionString = GetConnectionString(configuration);
 
             services.AddUsersInfrastructure(connectionString);
+        }
+
+        public void AddApplication(IConfiguration configuration)
+        {
+            services.AddUsersApplication(configuration);
         }
 
         public void AddExceptionHandlers()
