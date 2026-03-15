@@ -30,6 +30,10 @@ public class RegisterCommandHandler : CommandHandler<RegisterCommand, OneOf<Succ
 
         var newUser = new User { Name = request.Username };
 
+        var userRole = new Role { Name = "User" };
+
+        newUser.Roles.Add(userRole);
+
         var result = await userRepository.CreateUser(newUser, request.Password, cancellationToken);
 
         return result.Match<OneOf<Success, DuplicateUsernameError>>(

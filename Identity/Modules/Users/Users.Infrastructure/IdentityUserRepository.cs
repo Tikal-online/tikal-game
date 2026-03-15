@@ -42,6 +42,15 @@ public class IdentityUserRepository : UserRepository
             return new DuplicateUsernameError(user.Name);
         }
 
-        return new User { Id = createdUser.Id, Name = createdUser.UserName };
+        var roles = user.Roles.Select(r => r.Name).ToList();
+
+        await userManager.AddToRolesAsync(createdUser, roles);
+
+        return new User
+        {
+            Id = createdUser.Id,
+            Name = createdUser.UserName,
+            Roles = roles.Select(r => new Role { Name = r }).ToList()
+        };
     }
 }
