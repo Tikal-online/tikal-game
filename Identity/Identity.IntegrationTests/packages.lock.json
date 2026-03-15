@@ -887,13 +887,6 @@
           "Users.Contracts": "[1.0.0, )"
         }
       },
-      "shared.application": {
-        "type": "Project",
-        "dependencies": {
-          "FluentValidation": "[12.1.1, )",
-          "Shared.Contracts": "[1.0.0, )"
-        }
-      },
       "shared.contracts": {
         "type": "Project",
         "dependencies": {
@@ -904,8 +897,8 @@
       "users.application": {
         "type": "Project",
         "dependencies": {
+          "FluentValidation": "[12.1.1, )",
           "Microsoft.Extensions.Options.ConfigurationExtensions": "[10.0.5, )",
-          "Shared.Application": "[1.0.0, )",
           "Users.Contracts": "[1.0.0, )",
           "Users.Domain": "[1.0.0, )"
         }

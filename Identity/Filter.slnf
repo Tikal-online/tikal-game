@@ -2,9 +2,7 @@
   "solution": {
     "path": "../Tikal.slnx",
     "projects": [
-      "Identity/Shared/Shared.Application/Shared.Application.csproj",
       "Identity/Shared/Shared.Contracts/Shared.Contracts.csproj",
-      "Identity/Shared/Shared.Infrastructure/Shared.Infrastructure.csproj",
       "Identity/Identity.WebHost/Identity.WebHost.csproj",
       "Identity/Identity.IntegrationTests/Identity.IntegrationTests.csproj",
       "Identity/API/RestApi.Controllers/RestApi.Controllers.csproj",

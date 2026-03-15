@@ -1,12 +1,12 @@
 using FluentValidation;
 using Identity.WebHost.Configuration;
 using Identity.WebHost.ExceptionHandlers;
+using Identity.WebHost.Pipelines;
 using MediatR;
 using Npgsql;
 using OpenTelemetry.Logs;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;
-using Shared.Application.Pipelines;
 using Users.Application;
 using Users.Infrastructure;
 

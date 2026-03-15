@@ -404,13 +404,6 @@
           "Users.Contracts": "[1.0.0, )"
         }
       },
-      "shared.application": {
-        "type": "Project",
-        "dependencies": {
-          "FluentValidation": "[12.1.1, )",
-          "Shared.Contracts": "[1.0.0, )"
-        }
-      },
       "shared.contracts": {
         "type": "Project",
         "dependencies": {
@@ -421,7 +414,7 @@
       "users.application": {
         "type": "Project",
         "dependencies": {
-          "Shared.Application": "[1.0.0, )",
+          "FluentValidation": "[12.1.1, )",
           "Users.Contracts": "[1.0.0, )",
           "Users.Domain": "[1.0.0, )"
         }
