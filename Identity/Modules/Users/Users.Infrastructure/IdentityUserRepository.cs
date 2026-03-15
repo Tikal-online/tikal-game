@@ -20,7 +20,7 @@ public class IdentityUserRepository : UserRepository
     {
         var user = await userManager.FindByNameAsync(username);
 
-        return user is null ? null : new User(user.Id, user.UserName ?? "");
+        return user is null ? null : new User { Id = user.Id, Name = user.UserName ?? "" };
     }
 
     public async Task<OneOf<User, DuplicateUsernameError>> CreateUser(
@@ -32,16 +32,25 @@ public class IdentityUserRepository : UserRepository
         var createdUser = new UserEntity
         {
             Id = user.Id,
-            UserName = user.Username
+            UserName = user.Name
         };
 
         var creationResult = await userManager.CreateAsync(createdUser, password);
 
         if (!creationResult.Succeeded)
         {
-            return new DuplicateUsernameError(user.Username);
+            return new DuplicateUsernameError(user.Name);
         }
 
-        return new User(createdUser.Id, createdUser.UserName);
+        var roles = user.Roles.Select(r => r.Name).ToList();
+
+        await userManager.AddToRolesAsync(createdUser, roles);
+
+        return new User
+        {
+            Id = createdUser.Id,
+            Name = createdUser.UserName,
+            Roles = roles.Select(r => new Role { Name = r }).ToList()
+        };
     }
 }

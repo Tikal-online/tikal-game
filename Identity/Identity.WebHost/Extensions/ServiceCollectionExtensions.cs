@@ -80,11 +80,6 @@ internal static class ServiceCollectionExtensions
             services.AddValidatorsFromAssemblies([AssemblyReference.Assembly]);
         }
 
-        public void AddApplication()
-        {
-            services.AddUsersApplication();
-        }
-
         public void AddInfrastructure(IConfiguration configuration)
         {
             var connectionString = GetConnectionString(configuration);

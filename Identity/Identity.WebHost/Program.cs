@@ -18,8 +18,6 @@ builder.Services.AddMediatR();
 
 builder.Services.AddValidators();
 
-builder.Services.AddApplication();
-
 builder.Services.AddInfrastructure(builder.Configuration);
 
 builder.Services.AddExceptionHandlers();

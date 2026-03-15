@@ -19,5 +19,22 @@ public class UsersDbContext : IdentityDbContext<UserEntity, IdentityRole<int>, i
         base.OnModelCreating(builder);
 
         builder.HasDefaultSchema(Schema);
+
+        builder.Entity<IdentityRole<int>>().HasData(
+            new IdentityRole<int>
+            {
+                Id = 1,
+                Name = "Admin",
+                NormalizedName = "ADMIN",
+                ConcurrencyStamp = "eb379da1-ecd9-4e84-90f3-3fd466a08603"
+            },
+            new IdentityRole<int>
+            {
+                Id = 2,
+                Name = "User",
+                NormalizedName = "USER",
+                ConcurrencyStamp = "a8943a20-a54e-4cab-897f-54aeff8a51de"
+            }
+        );
     }
 }
