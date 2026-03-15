@@ -14,4 +14,8 @@
         <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions"/>
     </ItemGroup>
 
+    <ItemGroup>
+        <InternalsVisibleTo Include="Users.Application.Tests"/>
+    </ItemGroup>
+
 </Project>
