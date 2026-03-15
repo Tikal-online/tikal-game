@@ -2,15 +2,15 @@ namespace Identity.WebHost.Configuration;
 
 public class DatabaseConfiguration
 {
-    public const string Position = "Database";
+    public const string Section = "Database";
 
-    public required string Host { get; init; }
+    public string Host { get; set; } = string.Empty;
 
-    public required int Port { get; init; }
+    public int Port { get; set; }
 
-    public required string DatabaseName { get; init; }
+    public string DatabaseName { get; set; } = string.Empty;
 
-    public required string Username { get; init; }
+    public string Username { get; set; } = string.Empty;
 
-    public required string Password { get; init; }
+    public string Password { get; set; } = string.Empty;
 }

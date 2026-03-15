@@ -23,9 +23,8 @@ internal static class ServiceCollectionExtensions
             return connectionString;
         }
 
-        var options = configuration.GetSection(DatabaseConfiguration.Position).Get<DatabaseConfiguration>()
-                      ?? throw new InvalidOperationException(
-                          $"Missing {DatabaseConfiguration.Position} configuration.");
+        var options = new DatabaseConfiguration();
+        configuration.GetSection(DatabaseConfiguration.Section).Bind(options);
 
         connectionString = $"Server={options.Host};" +
                            $"Port={options.Port};" +
