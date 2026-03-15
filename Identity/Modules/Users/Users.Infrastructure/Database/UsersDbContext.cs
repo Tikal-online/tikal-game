@@ -1,11 +1,11 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Users.Infrastructure.Entities;
+using Users.Domain.Entities;
 
 namespace Users.Infrastructure.Database;
 
-public class UsersDbContext : IdentityDbContext<UserEntity, IdentityRole<int>, int>
+public class UsersDbContext : IdentityDbContext<User, IdentityRole<int>, int>
 {
     public const string Schema = "users";
 

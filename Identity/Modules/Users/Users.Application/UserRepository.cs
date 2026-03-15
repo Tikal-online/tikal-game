@@ -6,11 +6,9 @@ namespace Users.Application;
 
 public interface UserRepository
 {
-    Task<User?> GetByUsername(string username, CancellationToken cancellationToken);
+    Task<User?> GetByUsername(string username);
 
-    Task<OneOf<User, DuplicateUsernameError>> CreateUser(
-        User user,
-        string password,
-        CancellationToken cancellationToken
-    );
+    Task<OneOf<User, DuplicateUsernameError>> CreateUser(User user, string password);
+
+    Task AssignRole(User user, string role);
 }

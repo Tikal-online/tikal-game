@@ -901,13 +901,6 @@
           "OneOf": "[3.0.271, )"
         }
       },
-      "shared.infrastructure": {
-        "type": "Project",
-        "dependencies": {
-          "Microsoft.EntityFrameworkCore": "[10.0.5, )",
-          "Npgsql.EntityFrameworkCore.PostgreSQL": "[10.0.1, )"
-        }
-      },
       "users.application": {
         "type": "Project",
         "dependencies": {
@@ -924,14 +917,17 @@
         }
       },
       "users.domain": {
-        "type": "Project"
+        "type": "Project",
+        "dependencies": {
+          "Microsoft.AspNetCore.Identity": "[2.3.9, )",
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "[10.0.5, )"
+        }
       },
       "users.infrastructure": {
         "type": "Project",
         "dependencies": {
-          "Microsoft.AspNetCore.Identity": "[2.3.9, )",
-          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "[10.0.5, )",
-          "Shared.Infrastructure": "[1.0.0, )",
+          "Microsoft.EntityFrameworkCore": "[10.0.5, )",
+          "Npgsql.EntityFrameworkCore.PostgreSQL": "[10.0.1, )",
           "Users.Application": "[1.0.0, )"
         }
       },

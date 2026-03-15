@@ -21,24 +21,24 @@ public class RegisterCommandHandler : CommandHandler<RegisterCommand, OneOf<Succ
         CancellationToken cancellationToken
     )
     {
-        var existingUser = await userRepository.GetByUsername(request.Username, cancellationToken);
+        var existingUser = await userRepository.GetByUsername(request.Username);
 
         if (existingUser is not null)
         {
             return new DuplicateUsernameError(request.Username);
         }
 
-        var newUser = new User { Name = request.Username };
+        var newUser = new User { UserName = request.Username };
 
-        var userRole = new Role { Name = "User" };
+        var userCreationResult = await userRepository.CreateUser(newUser, request.Password);
 
-        newUser.Roles.Add(userRole);
+        if (!userCreationResult.TryPickT0(out var user, out var error))
+        {
+            return error;
+        }
 
-        var result = await userRepository.CreateUser(newUser, request.Password, cancellationToken);
+        await userRepository.AssignRole(user, "User");
 
-        return result.Match<OneOf<Success, DuplicateUsernameError>>(
-            _ => new Success(),
-            duplicateUsernameError => duplicateUsernameError
-        );
+        return new Success();
     }
 }
