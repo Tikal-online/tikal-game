@@ -1,4 +1,4 @@
-using Users.Contracts.Dtos;
+using RestApi.Controllers.Users.Dtos;
 
 namespace Identity.IntegrationTests.Users.Register;
 

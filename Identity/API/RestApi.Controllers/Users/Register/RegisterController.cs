@@ -1,8 +1,8 @@
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using RestApi.Controllers.Users.Dtos;
 using Users.Contracts.Commands;
-using Users.Contracts.Dtos;
 using Users.Contracts.Errors;
 
 namespace RestApi.Controllers.Users.Register;
