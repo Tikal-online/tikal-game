@@ -8,7 +8,7 @@ using Users.Domain.Entities;
 
 namespace Users.Application.Services;
 
-internal interface TokenService
+public interface TokenService
 {
     string GenerateAccessToken(User user, IEnumerable<string> roles);
 
