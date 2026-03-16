@@ -11,4 +11,6 @@ public interface UserRepository
     Task<OneOf<User, DuplicateUsernameError>> CreateUser(User user, string password);
 
     Task AssignRole(User user, string role);
+
+    Task<IEnumerable<string>> GetRoles(User user);
 }

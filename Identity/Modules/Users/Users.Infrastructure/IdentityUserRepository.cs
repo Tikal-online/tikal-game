@@ -36,4 +36,9 @@ public class IdentityUserRepository : UserRepository
     {
         await userManager.AddToRoleAsync(user, role);
     }
+
+    public async Task<IEnumerable<string>> GetRoles(User user)
+    {
+        return await userManager.GetRolesAsync(user);
+    }
 }
