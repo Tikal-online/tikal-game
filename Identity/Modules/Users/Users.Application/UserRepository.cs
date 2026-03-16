@@ -12,5 +12,7 @@ public interface UserRepository
 
     Task AssignRole(User user, string role);
 
-    Task<IEnumerable<string>> GetRoles(User user);
+    Task<IList<string>> GetRoles(User user);
+
+    Task<bool> ValidatePassword(User user, string password);
 }

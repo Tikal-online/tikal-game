@@ -15,9 +15,9 @@ public class IdentityUserRepository : UserRepository
         this.userManager = userManager;
     }
 
-    public async Task<User?> GetByUsername(string username)
+    public Task<User?> GetByUsername(string username)
     {
-        return await userManager.FindByNameAsync(username);
+        return userManager.FindByNameAsync(username);
     }
 
     public async Task<OneOf<User, DuplicateUsernameError>> CreateUser(User user, string password)
@@ -37,8 +37,13 @@ public class IdentityUserRepository : UserRepository
         await userManager.AddToRoleAsync(user, role);
     }
 
-    public async Task<IEnumerable<string>> GetRoles(User user)
+    public Task<IList<string>> GetRoles(User user)
     {
-        return await userManager.GetRolesAsync(user);
+        return userManager.GetRolesAsync(user);
+    }
+
+    public Task<bool> ValidatePassword(User user, string password)
+    {
+        return userManager.CheckPasswordAsync(user, password);
     }
 }
