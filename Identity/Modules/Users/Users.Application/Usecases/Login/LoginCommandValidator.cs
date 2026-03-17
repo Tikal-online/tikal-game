@@ -3,7 +3,7 @@ using Users.Contracts.Commands;
 
 namespace Users.Application.Usecases.Login;
 
-internal sealed class LoginCommandValidator : AbstractValidator<LoginCommand>
+public sealed class LoginCommandValidator : AbstractValidator<LoginCommand>
 {
     public LoginCommandValidator()
     {
