@@ -1,10 +1,10 @@
 using RestApi.Controllers.Users.Dtos;
 
-namespace Identity.IntegrationTests.Users.Register;
+namespace Identity.IntegrationTests.Users.Login;
 
-public static class RegisterDtoTestCases
+internal sealed class LoginDtoTestCases
 {
-    public static IEnumerable<RegisterDto> InvalidRegisterDtos =>
+    public static IEnumerable<LoginDto> InvalidLoginDtos =>
     [
         // empty username
         new() { Username = "", Password = "Password1!" },
@@ -20,7 +20,7 @@ public static class RegisterDtoTestCases
         }
     ];
 
-    public static IEnumerable<RegisterDto> ValidRegisterDtos =>
+    public static IEnumerable<LoginDto> ValidLoginDtos =>
     [
         new() { Username = "Username", Password = "Password1!" },
         new() { Username = "User123", Password = "SuperSecureSecret123?" },

@@ -3,7 +3,7 @@ using FluentValidation.Results;
 using MediatR;
 using Shared.Contracts.Errors;
 
-namespace Shared.Application.Pipelines;
+namespace Identity.WebHost.Pipelines;
 
 public class ValidationException : Exception
 {

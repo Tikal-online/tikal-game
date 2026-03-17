@@ -1,10 +1,7 @@
+using Microsoft.AspNetCore.Identity;
+
 namespace Users.Domain.Entities;
 
-public class User
+public class User : IdentityUser<int>
 {
-    public int Id { get; set; }
-
-    public required string Name { get; set; }
-
-    public List<Role> Roles { get; set; } = [];
 }

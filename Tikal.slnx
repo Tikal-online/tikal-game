@@ -23,9 +23,7 @@
         <Project Path="Identity/Modules/Users/Users.Infrastructure/Users.Infrastructure.csproj" />
     </Folder>
     <Folder Name="/Identity/Shared/">
-        <Project Path="Identity/Shared/Shared.Application/Shared.Application.csproj" />
         <Project Path="Identity/Shared/Shared.Contracts/Shared.Contracts.csproj" />
-        <Project Path="Identity/Shared/Shared.Infrastructure/Shared.Infrastructure.csproj" />
     </Folder>
     <Project Path="Aspire/Aspire.csproj" />
     <Project Path="Backend/Backend.csproj" />

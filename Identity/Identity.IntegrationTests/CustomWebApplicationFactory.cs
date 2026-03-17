@@ -32,6 +32,9 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
 
             RebuildDatabase(services);
         });
+
+        // load appsettings.Test.json
+        builder.UseEnvironment("Test");
     }
 
     private static void RebuildDatabase(IServiceCollection services)

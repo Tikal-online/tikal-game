@@ -1,7 +1,7 @@
 using System.Diagnostics;
+using Identity.WebHost.Pipelines;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using Shared.Application.Pipelines;
 
 namespace Identity.WebHost.ExceptionHandlers;
 

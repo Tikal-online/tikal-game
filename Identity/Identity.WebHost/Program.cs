@@ -20,6 +20,8 @@ builder.Services.AddValidators();
 
 builder.Services.AddInfrastructure(builder.Configuration);
 
+builder.Services.AddApplication(builder.Configuration);
+
 builder.Services.AddExceptionHandlers();
 
 builder.Services.AddOpenApi();

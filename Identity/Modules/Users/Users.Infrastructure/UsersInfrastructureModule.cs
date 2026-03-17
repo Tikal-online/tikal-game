@@ -3,12 +3,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.DependencyInjection;
 using Users.Application;
+using Users.Domain.Entities;
 using Users.Infrastructure.Database;
-using Users.Infrastructure.Entities;
 
 namespace Users.Infrastructure;
 
-public static class UsersModule
+public static class UsersInfrastructureModule
 {
     extension(IServiceCollection services)
     {
@@ -23,7 +23,7 @@ public static class UsersModule
                         UsersDbContext.Schema));
             });
 
-            services.AddIdentity<UserEntity, IdentityRole<int>>(options =>
+            services.AddIdentity<User, IdentityRole<int>>(options =>
                 {
                     options.User.AllowedUserNameCharacters = string.Empty;
                 })

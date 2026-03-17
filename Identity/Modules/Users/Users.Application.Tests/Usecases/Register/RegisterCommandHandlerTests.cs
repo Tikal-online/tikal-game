@@ -27,14 +27,14 @@ public class RegisterCommandHandlerTests
     {
         // username doesnt exist
         userRepository
-            .Setup(r => r.GetByUsername(command.Username, It.IsAny<CancellationToken>()))
+            .Setup(r => r.GetByUsername(command.Username))
             .ReturnsAsync(default(User));
 
         // user creation successful
-        var user = new User { Id = 1, Name = command.Username };
+        var user = new User { Id = 1, UserName = command.Username };
 
         userRepository
-            .Setup(r => r.CreateUser(It.IsAny<User>(), command.Password, It.IsAny<CancellationToken>()))
+            .Setup(r => r.CreateUser(It.IsAny<User>(), command.Password))
             .ReturnsAsync(user);
     }
 
@@ -44,10 +44,10 @@ public class RegisterCommandHandlerTests
         // given
         SetUpHappyPath(command);
 
-        var existingUser = new User { Id = 1, Name = command.Username };
+        var existingUser = new User { Id = 1, UserName = command.Username };
 
         userRepository
-            .Setup(r => r.GetByUsername(command.Username, It.IsAny<CancellationToken>()))
+            .Setup(r => r.GetByUsername(command.Username))
             .ReturnsAsync(existingUser);
 
         // when
@@ -64,7 +64,7 @@ public class RegisterCommandHandlerTests
         SetUpHappyPath(command);
 
         userRepository
-            .Setup(r => r.CreateUser(It.IsAny<User>(), command.Password, It.IsAny<CancellationToken>()))
+            .Setup(r => r.CreateUser(It.IsAny<User>(), command.Password))
             .ReturnsAsync(new DuplicateUsernameError(command.Username));
 
         // when

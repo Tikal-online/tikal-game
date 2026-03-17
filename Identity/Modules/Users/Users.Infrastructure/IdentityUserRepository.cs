@@ -3,54 +3,47 @@ using OneOf;
 using Users.Application;
 using Users.Contracts.Errors;
 using Users.Domain.Entities;
-using Users.Infrastructure.Entities;
 
 namespace Users.Infrastructure;
 
 public class IdentityUserRepository : UserRepository
 {
-    private readonly UserManager<UserEntity> userManager;
+    private readonly UserManager<User> userManager;
 
-    public IdentityUserRepository(UserManager<UserEntity> userManager)
+    public IdentityUserRepository(UserManager<User> userManager)
     {
         this.userManager = userManager;
     }
 
-    public async Task<User?> GetByUsername(string username, CancellationToken cancellationToken)
+    public Task<User?> GetByUsername(string username)
     {
-        var user = await userManager.FindByNameAsync(username);
-
-        return user is null ? null : new User { Id = user.Id, Name = user.UserName ?? "" };
+        return userManager.FindByNameAsync(username);
     }
 
-    public async Task<OneOf<User, DuplicateUsernameError>> CreateUser(
-        User user,
-        string password,
-        CancellationToken cancellationToken
-    )
+    public async Task<OneOf<User, DuplicateUsernameError>> CreateUser(User user, string password)
     {
-        var createdUser = new UserEntity
-        {
-            Id = user.Id,
-            UserName = user.Name
-        };
-
-        var creationResult = await userManager.CreateAsync(createdUser, password);
+        var creationResult = await userManager.CreateAsync(user, password);
 
         if (!creationResult.Succeeded)
         {
-            return new DuplicateUsernameError(user.Name);
+            return new DuplicateUsernameError(user.UserName ?? "");
         }
 
-        var roles = user.Roles.Select(r => r.Name).ToList();
+        return user;
+    }
 
-        await userManager.AddToRolesAsync(createdUser, roles);
+    public async Task AssignRole(User user, string role)
+    {
+        await userManager.AddToRoleAsync(user, role);
+    }
 
-        return new User
-        {
-            Id = createdUser.Id,
-            Name = createdUser.UserName,
-            Roles = roles.Select(r => new Role { Name = r }).ToList()
-        };
+    public Task<IList<string>> GetRoles(User user)
+    {
+        return userManager.GetRolesAsync(user);
+    }
+
+    public Task<bool> ValidatePassword(User user, string password)
+    {
+        return userManager.CheckPasswordAsync(user, password);
     }
 }
