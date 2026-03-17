@@ -876,7 +876,7 @@
           "OpenTelemetry.Instrumentation.AspNetCore": "[1.15.1, )",
           "OpenTelemetry.Instrumentation.Http": "[1.15.0, )",
           "RestApi.Controllers": "[1.0.0, )",
-          "Scalar.AspNetCore": "[2.13.8, )",
+          "Scalar.AspNetCore": "[2.13.9, )",
           "Users.Application": "[1.0.0, )",
           "Users.Infrastructure": "[1.0.0, )"
         }
@@ -1079,9 +1079,9 @@
       },
       "Scalar.AspNetCore": {
         "type": "CentralTransitive",
-        "requested": "[2.13.8, )",
-        "resolved": "2.13.8",
-        "contentHash": "Sp75IcOIZFMVawlpSiiHiyeWYJJVvbXKt1PcB9CcmjzJumofETWzOCMwfhKumbfBPLg/89sOBQUEfzKpXhAw6g=="
+        "requested": "[2.13.9, )",
+        "resolved": "2.13.9",
+        "contentHash": "BeQpbWJbvnrM8mUCmMgB6ApbSQ4C+4PmiNvE2bfSsxfgmbfAUX4zIe2xFKlGwpOG5dCgqx/8RQwh53VJZRSypQ=="
       },
       "System.IdentityModel.Tokens.Jwt": {
         "type": "CentralTransitive",
