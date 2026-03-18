@@ -2,7 +2,7 @@ using Users.Contracts.Commands;
 
 namespace Users.Application.Tests.Usecases.Register;
 
-public static class RegisterCommandTestCases
+internal static class RegisterCommandTestCases
 {
     public static IEnumerable<RegisterCommand> InvalidRegisterCommands =>
     [

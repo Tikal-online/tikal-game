@@ -2,7 +2,7 @@ using RestApi.Controllers.Users.Dtos;
 
 namespace Identity.IntegrationTests.Users.Register;
 
-public static class RegisterDtoTestCases
+internal static class RegisterDtoTestCases
 {
     public static IEnumerable<RegisterDto> InvalidRegisterDtos =>
     [

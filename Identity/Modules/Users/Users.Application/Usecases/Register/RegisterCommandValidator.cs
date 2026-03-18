@@ -3,7 +3,7 @@ using Users.Contracts.Commands;
 
 namespace Users.Application.Usecases.Register;
 
-public class RegisterCommandValidator : AbstractValidator<RegisterCommand>
+public sealed class RegisterCommandValidator : AbstractValidator<RegisterCommand>
 {
     public RegisterCommandValidator()
     {

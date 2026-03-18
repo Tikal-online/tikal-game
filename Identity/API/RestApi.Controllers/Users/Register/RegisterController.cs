@@ -9,7 +9,7 @@ namespace RestApi.Controllers.Users.Register;
 
 [ApiController]
 [Route("[controller]")]
-public partial class RegisterController : ControllerBase
+public sealed partial class RegisterController : ControllerBase
 {
     private readonly ISender sender;
 

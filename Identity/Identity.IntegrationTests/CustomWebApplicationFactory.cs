@@ -7,7 +7,7 @@ using Users.Infrastructure.Database;
 
 namespace Identity.IntegrationTests;
 
-public class CustomWebApplicationFactory : WebApplicationFactory<Program>
+internal sealed class CustomWebApplicationFactory : WebApplicationFactory<Program>
 {
     private readonly string databaseConnectionString;
 

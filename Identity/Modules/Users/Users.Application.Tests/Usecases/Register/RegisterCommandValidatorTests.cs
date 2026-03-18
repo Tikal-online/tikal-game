@@ -4,7 +4,7 @@ using Users.Contracts.Commands;
 
 namespace Users.Application.Tests.Usecases.Register;
 
-public class RegisterCommandValidatorTests
+internal sealed class RegisterCommandValidatorTests
 {
     // under test
     private RegisterCommandValidator validator;

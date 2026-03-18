@@ -7,7 +7,7 @@ using Users.Domain.Entities;
 
 namespace Users.Application.Usecases.Register;
 
-public class RegisterCommandHandler : CommandHandler<RegisterCommand, OneOf<Success, DuplicateUsernameError>>
+internal sealed class RegisterCommandHandler : CommandHandler<RegisterCommand, OneOf<Success, DuplicateUsernameError>>
 {
     private readonly UserRepository userRepository;
 

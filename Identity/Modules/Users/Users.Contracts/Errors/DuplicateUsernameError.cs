@@ -1,3 +1,3 @@
 namespace Users.Contracts.Errors;
 
-public record DuplicateUsernameError(string Username);
+public sealed record DuplicateUsernameError(string Username);

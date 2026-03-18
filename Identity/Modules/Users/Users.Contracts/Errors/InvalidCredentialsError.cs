@@ -1,3 +1,3 @@
 namespace Users.Contracts.Errors;
 
-public record InvalidCredentialsError();
+public sealed record InvalidCredentialsError;

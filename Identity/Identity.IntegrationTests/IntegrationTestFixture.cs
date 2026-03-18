@@ -3,7 +3,7 @@ using NUnit.Framework;
 
 namespace Identity.IntegrationTests;
 
-public abstract class IntegrationTestFixture : TestContainerFixture
+internal abstract class IntegrationTestFixture : TestContainerFixture
 {
     private CustomWebApplicationFactory factory;
 

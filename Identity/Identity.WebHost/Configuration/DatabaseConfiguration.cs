@@ -1,6 +1,6 @@
 namespace Identity.WebHost.Configuration;
 
-public class DatabaseConfiguration
+internal sealed class DatabaseConfiguration
 {
     public const string Section = "Database";
 

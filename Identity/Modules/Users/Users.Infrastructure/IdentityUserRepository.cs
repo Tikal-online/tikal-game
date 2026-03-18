@@ -6,7 +6,7 @@ using Users.Domain.Entities;
 
 namespace Users.Infrastructure;
 
-public class IdentityUserRepository : UserRepository
+internal sealed class IdentityUserRepository : UserRepository
 {
     private readonly UserManager<User> userManager;
 

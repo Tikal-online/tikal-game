@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace RestApi.Controllers.Users.Dtos;
 
-public record RegisterDto
+public sealed record RegisterDto
 {
     [Required]
     [MinLength(6)]

@@ -2,7 +2,7 @@ using Azure.Identity;
 
 namespace Identity.WebHost.Extensions;
 
-public static class ConfigurationManagerExtensions
+internal static class ConfigurationManagerExtensions
 {
     extension(ConfigurationManager configurationManager)
     {
