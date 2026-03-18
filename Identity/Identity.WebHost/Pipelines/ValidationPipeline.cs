@@ -5,7 +5,7 @@ using Shared.Contracts.Errors;
 
 namespace Identity.WebHost.Pipelines;
 
-internal sealed class ValidationException : Exception
+public sealed class ValidationException : Exception
 {
     public IReadOnlyList<ValidationError> Errors { get; }
 
