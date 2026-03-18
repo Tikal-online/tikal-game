@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace RestApi.Controllers.Users.Register;
 
-public partial class RegisterController
+public sealed partial class RegisterController
 {
     private ObjectResult UsernameExists(string username)
     {

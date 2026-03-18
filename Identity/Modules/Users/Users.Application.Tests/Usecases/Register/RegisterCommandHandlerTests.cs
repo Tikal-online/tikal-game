@@ -7,7 +7,7 @@ using Users.Domain.Entities;
 
 namespace Users.Application.Tests.Usecases.Register;
 
-public class RegisterCommandHandlerTests
+internal sealed class RegisterCommandHandlerTests
 {
     // dependencies
     private Mock<UserRepository> userRepository;

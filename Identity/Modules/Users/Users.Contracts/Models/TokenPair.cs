@@ -1,3 +1,3 @@
 namespace Users.Contracts.Models;
 
-public record TokenPair(string AccessToken, string RefreshToken);
+public sealed record TokenPair(string AccessToken, string RefreshToken);

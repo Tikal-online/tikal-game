@@ -2,7 +2,7 @@ using Testcontainers.PostgreSql;
 
 namespace Identity.IntegrationTests.Utils;
 
-public static class PostgresDatabase
+internal static class PostgresDatabase
 {
     private const string imageTag = "postgres:17.5";
 

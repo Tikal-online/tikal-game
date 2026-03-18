@@ -5,7 +5,7 @@ using Users.Domain.Entities;
 
 namespace Users.Infrastructure.Database;
 
-public class UsersDbContext : IdentityDbContext<User, IdentityRole<int>, int>
+public sealed class UsersDbContext : IdentityDbContext<User, IdentityRole<int>, int>
 {
     public const string Schema = "users";
 

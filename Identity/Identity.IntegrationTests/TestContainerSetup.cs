@@ -5,7 +5,7 @@ using Testcontainers.PostgreSql;
 namespace Identity.IntegrationTests;
 
 [SetUpFixture]
-public class TestContainerSetup
+internal sealed class TestContainerSetup
 {
     private PostgreSqlContainer databaseContainer;
 

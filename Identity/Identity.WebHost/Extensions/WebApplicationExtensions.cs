@@ -3,7 +3,7 @@ using Users.Infrastructure.Database;
 
 namespace Identity.WebHost.Extensions;
 
-public static class WebApplicationExtensions
+internal static class WebApplicationExtensions
 {
     extension(WebApplication app)
     {

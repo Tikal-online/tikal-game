@@ -5,7 +5,7 @@ using RestApi.Controllers.Users.Dtos;
 
 namespace Identity.IntegrationTests.Users.Register;
 
-public class RegisterTests : IntegrationTestFixture
+internal sealed class RegisterTests : IntegrationTestFixture
 {
     private const string url = "register";
 

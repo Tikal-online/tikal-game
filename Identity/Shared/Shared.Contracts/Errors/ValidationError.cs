@@ -1,3 +1,3 @@
 namespace Shared.Contracts.Errors;
 
-public record ValidationError(string PropertyName, IReadOnlyList<string> ErrorMessages);
+public sealed record ValidationError(string PropertyName, IReadOnlyList<string> ErrorMessages);
