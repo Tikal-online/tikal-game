@@ -2,7 +2,7 @@ using RestApi.Controllers.Users.Dtos;
 
 namespace Identity.IntegrationTests.Users.Login;
 
-internal sealed class LoginDtoTestCases
+internal static class LoginDtoTestCases
 {
     public static IEnumerable<LoginDto> InvalidLoginDtos =>
     [
