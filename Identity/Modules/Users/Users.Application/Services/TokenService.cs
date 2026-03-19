@@ -13,6 +13,10 @@ public interface TokenService
     string GenerateAccessToken(User user, IEnumerable<string> roles);
 
     string GenerateRefreshToken(User user, IEnumerable<string> roles);
+
+    Task<bool> ValidateToken(string token);
+
+    Task<T?> ExtractClaim<T>(string token, string claimName);
 }
 
 internal sealed class JwtTokenService : TokenService
@@ -23,6 +27,8 @@ internal sealed class JwtTokenService : TokenService
 
     private readonly SymmetricSecurityKey securityKey;
 
+    private readonly TokenValidationParameters tokenValidationParameters;
+
     public JwtTokenService(
         SecurityTokenHandler securityTokenHandler,
         IOptions<TokenConfiguration> tokenConfigurationOptions
@@ -32,6 +38,17 @@ internal sealed class JwtTokenService : TokenService
         tokenConfiguration = tokenConfigurationOptions.Value;
 
         securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenConfiguration.SigningKey));
+
+        tokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidIssuer = tokenConfiguration.Issuer,
+            ValidateAudience = true,
+            ValidAudience = tokenConfiguration.Audience,
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = securityKey,
+            ValidateLifetime = true
+        };
     }
 
     public string GenerateAccessToken(User user, IEnumerable<string> roles)
@@ -42,6 +59,25 @@ internal sealed class JwtTokenService : TokenService
     public string GenerateRefreshToken(User user, IEnumerable<string> roles)
     {
         return GenerateToken(user, roles, tokenConfiguration.RefreshTokenExpiration);
+    }
+
+    public async Task<bool> ValidateToken(string token)
+    {
+        var result = await securityTokenHandler.ValidateTokenAsync(token, tokenValidationParameters);
+
+        return result.IsValid;
+    }
+
+    public async Task<T?> ExtractClaim<T>(string token, string claimName)
+    {
+        var result = await securityTokenHandler.ValidateTokenAsync(token, tokenValidationParameters);
+
+        if (result.Claims.TryGetValue(claimName, out var claim))
+        {
+            return (T)claim;
+        }
+
+        return default;
     }
 
     private string GenerateToken(User user, IEnumerable<string> roles, int secondsValid)
