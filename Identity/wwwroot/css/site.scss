@@ -2,6 +2,11 @@
   .logo {
     width: 64px;
   }
+
+  li {
+    list-style: none;
+    padding: 4px;
+  }
 }
 
 .icon-banner {
@@ -11,13 +16,6 @@
 .body-container {
   margin-top: 60px;
   padding-bottom: 40px;
-}
-
-.welcome-page {
-  li {
-    list-style: none;
-    padding: 4px;
-  }
 }
 
 .logged-out-page {
