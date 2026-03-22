@@ -25,8 +25,7 @@ public class Index : PageModel
 
     public ViewModel View { get; set; } = default!;
 
-    [BindProperty]
-    public InputModel Input { get; set; } = default!;
+    [BindProperty] public InputModel Input { get; set; } = default!;
 
     public Index(
         IIdentityServerInteractionService interaction,
@@ -65,31 +64,29 @@ public class Index : PageModel
         // the user clicked the "cancel" button
         if (Input.Button != "login")
         {
-            if (context != null)
-            {
-                // This "can't happen", because if the ReturnUrl was null, then the context would be null
-                ArgumentNullException.ThrowIfNull(Input.ReturnUrl, nameof(Input.ReturnUrl));
-
-                // if the user cancels, send a result back into IdentityServer as if they 
-                // denied the consent (even if this client does not require consent).
-                // this will send back an access denied OIDC error response to the client.
-                await _interaction.DenyAuthorizationAsync(context, AuthorizationError.AccessDenied);
-
-                // we can trust model.ReturnUrl since GetAuthorizationContextAsync returned non-null
-                if (context.IsNativeClient())
-                {
-                    // The client is native, so this change in how to
-                    // return the response is for better UX for the end user.
-                    return this.LoadingPage(Input.ReturnUrl);
-                }
-
-                return Redirect(Input.ReturnUrl ?? "~/");
-            }
-            else
+            if (context == null)
             {
                 // since we don't have a valid context, then we just go back to the home page
                 return Redirect("~/");
             }
+
+            // This "can't happen", because if the ReturnUrl was null, then the context would be null
+            ArgumentNullException.ThrowIfNull(Input.ReturnUrl, nameof(Input.ReturnUrl));
+
+            // if the user cancels, send a result back into IdentityServer as if they 
+            // denied the consent (even if this client does not require consent).
+            // this will send back  access denied OIDC error response to the client.
+            await _interaction.DenyAuthorizationAsync(context, AuthorizationError.AccessDenied);
+
+            // we can trust model.ReturnUrl since GetAuthorizationContextAsync returned non-null
+            if (context.IsNativeClient())
+            {
+                // The client is native, so this change in how to
+                // return the response is for better UX for the end user.
+                return this.LoadingPage(Input.ReturnUrl);
+            }
+
+            return Redirect(Input.ReturnUrl ?? "~/");
         }
 
         if (ModelState.IsValid)
@@ -97,11 +94,16 @@ public class Index : PageModel
             // Only remember login if allowed
             var rememberLogin = LoginOptions.AllowRememberLogin && Input.RememberLogin;
 
-            var result = await _signInManager.PasswordSignInAsync(Input.Username!, Input.Password!, isPersistent: rememberLogin, lockoutOnFailure: true);
+            var result =
+                await _signInManager.PasswordSignInAsync(Input.Username!, Input.Password!, rememberLogin, true);
+
             if (result.Succeeded)
             {
                 var user = await _userManager.FindByNameAsync(Input.Username!);
-                await _events.RaiseAsync(new UserLoginSuccessEvent(user!.UserName, user.Id, user.UserName, clientId: context?.Client.ClientId));
+                await _events.RaiseAsync(new UserLoginSuccessEvent(user!.UserName,
+                    user.Id,
+                    user.UserName,
+                    clientId: context?.Client.ClientId));
                 Telemetry.Metrics.UserLogin(context?.Client.ClientId, IdentityServerConstants.LocalIdentityProvider);
 
                 if (context != null)
@@ -125,20 +127,29 @@ public class Index : PageModel
                 {
                     return Redirect(Input.ReturnUrl);
                 }
-                else if (string.IsNullOrEmpty(Input.ReturnUrl))
+
+                if (string.IsNullOrEmpty(Input.ReturnUrl))
                 {
                     return Redirect("~/");
                 }
-                else
-                {
-                    // user might have clicked on a malicious link - should be logged
-                    throw new ArgumentException("invalid return URL");
-                }
+
+                // user might have clicked on a malicious link - should be logged
+                throw new ArgumentException("invalid return URL");
             }
 
             const string error = "invalid credentials";
-            await _events.RaiseAsync(new UserLoginFailureEvent(Input.Username, error, clientId: context?.Client.ClientId));
-            Telemetry.Metrics.UserLoginFailure(context?.Client.ClientId, IdentityServerConstants.LocalIdentityProvider, error);
+            await _events.RaiseAsync(new UserLoginFailureEvent(
+                    Input.Username,
+                    error,
+                    clientId: context?.Client.ClientId
+                )
+            );
+
+            Telemetry.Metrics.UserLoginFailure(
+                context?.Client.ClientId,
+                IdentityServerConstants.LocalIdentityProvider,
+                error
+            );
             ModelState.AddModelError(string.Empty, LoginOptions.InvalidCredentialsErrorMessage);
         }
 
@@ -160,19 +171,19 @@ public class Index : PageModel
             var scheme = await _schemeProvider.GetSchemeAsync(context.IdP);
             if (scheme != null)
             {
-                var local = context.IdP == Duende.IdentityServer.IdentityServerConstants.LocalIdentityProvider;
+                var local = context.IdP == IdentityServerConstants.LocalIdentityProvider;
 
                 // this is meant to short circuit the UI and only trigger the one external IdP
                 View = new ViewModel
                 {
-                    EnableLocalLogin = local,
+                    EnableLocalLogin = local
                 };
 
                 Input.Username = context.LoginHint;
 
                 if (!local)
                 {
-                    View.ExternalProviders = [new ViewModel.ExternalProvider(authenticationScheme: context.IdP, displayName: scheme.DisplayName)];
+                    View.ExternalProviders = [new ViewModel.ExternalProvider(context.IdP, scheme.DisplayName)];
                 }
             }
 
@@ -183,18 +194,16 @@ public class Index : PageModel
 
         var providers = schemes
             .Where(x => x.DisplayName != null)
-            .Select(x => new ViewModel.ExternalProvider
-            (
-                authenticationScheme: x.Name,
-                displayName: x.DisplayName ?? x.Name
+            .Select(x => new ViewModel.ExternalProvider(
+                x.Name,
+                x.DisplayName ?? x.Name
             )).ToList();
 
         var dynamicSchemes = (await _identityProviderStore.GetAllSchemeNamesAsync())
             .Where(x => x.Enabled)
-            .Select(x => new ViewModel.ExternalProvider
-            (
-                authenticationScheme: x.Scheme,
-                displayName: x.DisplayName ?? x.Scheme
+            .Select(x => new ViewModel.ExternalProvider(
+                x.Scheme,
+                x.DisplayName ?? x.Scheme
             ));
         providers.AddRange(dynamicSchemes);
 
@@ -204,9 +213,10 @@ public class Index : PageModel
         if (client != null)
         {
             allowLocal = client.EnableLocalLogin;
-            if (client.IdentityProviderRestrictions != null && client.IdentityProviderRestrictions.Count != 0)
+            if (client.IdentityProviderRestrictions.Count != 0)
             {
-                providers = providers.Where(provider => client.IdentityProviderRestrictions.Contains(provider.AuthenticationScheme)).ToList();
+                providers = providers.Where(provider =>
+                    client.IdentityProviderRestrictions.Contains(provider.AuthenticationScheme)).ToList();
             }
         }
 
