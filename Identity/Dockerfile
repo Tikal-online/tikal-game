@@ -13,11 +13,11 @@ COPY ["Identity/Identity.csproj", "Identity/"]
 RUN dotnet restore "Identity/Identity.csproj"
 COPY . .
 WORKDIR "/src/Identity/"
-RUN dotnet build "./Identity.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build "./Identity.csproj" -c "$BUILD_CONFIGURATION" -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./Identity.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./Identity.csproj" -c "$BUILD_CONFIGURATION" -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
