@@ -7,6 +7,7 @@ using Identity.Configuration;
 using Identity.Data;
 using Identity.Models;
 using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
@@ -199,6 +200,12 @@ internal static class HostingExtensions
                     logging
                         .AddOtlpExporter();
                 });
+
+            builder.Services.Configure<ForwardedHeadersOptions>(options =>
+            {
+                options.ForwardedHeaders = ForwardedHeaders.XForwardedHost |
+                                           ForwardedHeaders.XForwardedProto;
+            });
 
             builder.Services.AddAuthentication();
 
