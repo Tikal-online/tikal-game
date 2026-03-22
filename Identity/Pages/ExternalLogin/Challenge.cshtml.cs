@@ -12,7 +12,10 @@ public class Challenge : PageModel
 {
     private readonly IIdentityServerInteractionService _interactionService;
 
-    public Challenge(IIdentityServerInteractionService interactionService) => _interactionService = interactionService;
+    public Challenge(IIdentityServerInteractionService interactionService)
+    {
+        _interactionService = interactionService;
+    }
 
     public IActionResult OnGet(string scheme, string? returnUrl)
     {
@@ -22,7 +25,7 @@ public class Challenge : PageModel
         }
 
         // Abort on incorrect returnUrl - it is neither a local url nor a valid OIDC url.
-        if (Url.IsLocalUrl(returnUrl) == false && _interactionService.IsValidReturnUrl(returnUrl) == false)
+        if (!Url.IsLocalUrl(returnUrl) && !_interactionService.IsValidReturnUrl(returnUrl))
         {
             // user might have clicked on a malicious link - should be logged
             throw new ArgumentException("invalid return URL");
@@ -36,7 +39,7 @@ public class Challenge : PageModel
             Items =
             {
                 { "returnUrl", returnUrl },
-                { "scheme", scheme },
+                { "scheme", scheme }
             }
         };
 

@@ -1,5 +1,6 @@
 using System.Reflection;
 using Duende.IdentityServer;
+using Duende.IdentityServer.Hosting;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -8,11 +9,15 @@ namespace Identity.Pages;
 [AllowAnonymous]
 public class Index : PageModel
 {
-    public Index(IdentityServerLicense? license = null) => License = license;
+    public string Version => typeof(IdentityServerMiddleware).Assembly
+                                 .GetCustomAttribute<AssemblyInformationalVersionAttribute>()
+                                 ?.InformationalVersion.Split('+')[0]
+                             ?? "unavailable";
 
-    public string Version => typeof(Duende.IdentityServer.Hosting.IdentityServerMiddleware).Assembly
-            .GetCustomAttribute<AssemblyInformationalVersionAttribute>()
-            ?.InformationalVersion.Split('+').First()
-            ?? "unavailable";
     public IdentityServerLicense? License { get; }
+
+    public Index(IdentityServerLicense? license = null)
+    {
+        License = license;
+    }
 }
