@@ -49,7 +49,7 @@ internal static class HostingExtensions
             app.UseDeveloperExceptionPage();
         }
 
-        InitializeDatabase(app);
+        app.InitializeDatabase();
 
         app.UseForwardedHeaders();
 
@@ -64,7 +64,7 @@ internal static class HostingExtensions
         return app;
     }
 
-    private static void InitializeDatabase(IApplicationBuilder app)
+    private static void InitializeDatabase(this IApplicationBuilder app)
     {
         using var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>()!.CreateScope();
         serviceScope.ServiceProvider.GetRequiredService<PersistedGrantDbContext>().Database.Migrate();
