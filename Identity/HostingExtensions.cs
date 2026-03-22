@@ -1,4 +1,5 @@
 using System.Reflection;
+using Azure.Identity;
 using Duende.IdentityServer;
 using Duende.IdentityServer.EntityFramework.DbContexts;
 using Duende.IdentityServer.EntityFramework.Mappers;
@@ -103,6 +104,18 @@ internal static class HostingExtensions
         }
 
         context.SaveChanges();
+    }
+
+    extension(ConfigurationManager configurationManager)
+    {
+        public void ConfigureKeyVault()
+        {
+            var keyVaultName = configurationManager.GetValue<string>("KeyVaultName") ?? string.Empty;
+
+            var keyVaultUri = new Uri($"https://{keyVaultName}.vault.azure.net/");
+
+            configurationManager.AddAzureKeyVault(keyVaultUri, new DefaultAzureCredential());
+        }
     }
 
     extension(WebApplicationBuilder builder)
