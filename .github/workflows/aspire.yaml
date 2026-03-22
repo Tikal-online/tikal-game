@@ -10,6 +10,6 @@ on:
 jobs:
   format:
     name: Format
-    uses: ./.github/workflows/backend-format.yaml
+    uses: ./.github/workflows/dotnet/format.yaml
     with:
       project-directory: Aspire

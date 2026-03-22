@@ -12,7 +12,6 @@ using Microsoft.EntityFrameworkCore;
 using Npgsql;
 using OpenTelemetry.Logs;
 using OpenTelemetry.Metrics;
-using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 
 namespace Identity;
@@ -171,7 +170,6 @@ internal static class HostingExtensions
 
             builder.Logging.ClearProviders();
             builder.Services.AddOpenTelemetry()
-                .ConfigureResource(resourceBuilder => resourceBuilder.AddService(builder.Environment.ApplicationName))
                 .WithTracing(tracing =>
                 {
                     tracing
