@@ -6,6 +6,7 @@ using Duende.IdentityServer.EntityFramework.Mappers;
 using Identity.Configuration;
 using Identity.Data;
 using Identity.Models;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
@@ -133,6 +134,10 @@ internal static class HostingExtensions
 
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(connectionString));
+
+            builder.Services.AddDataProtection()
+                .PersistKeysToDbContext<ApplicationDbContext>()
+                .SetApplicationName("Identity");
 
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()

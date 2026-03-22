@@ -43,6 +43,15 @@
           "Duende.IdentityServer.EntityFramework.Storage": "7.4.7"
         }
       },
+      "Microsoft.AspNetCore.DataProtection.EntityFrameworkCore": {
+        "type": "Direct",
+        "requested": "[10.0.5, )",
+        "resolved": "10.0.5",
+        "contentHash": "gYY7b9GQ7QO6JmdqTcuZIF7uECe3c5OO7YKYPmZZU71L6GS8HnGetkaM1GnFlXFz5Fz6LdXs55lJ22g710+qTA==",
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore": "10.0.5"
+        }
+      },
       "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": {
         "type": "Direct",
         "requested": "[10.0.5, )",
