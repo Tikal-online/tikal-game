@@ -19,10 +19,10 @@
     </ItemGroup>
 
     <ItemGroup>
-        <_ContentIncludedByDefault Remove="Shared\Shared.Application\obj\project.assets.json"/>
-        <_ContentIncludedByDefault Remove="Shared\Shared.Application\obj\project.packagespec.json"/>
-        <_ContentIncludedByDefault Remove="Shared\Shared.Application\obj\Shared.Application.csproj.nuget.dgspec.json"/>
-        <_ContentIncludedByDefault Remove="Pages\ServerSideSessions\Index.cshtml"/>
+        <Content Include="..\.dockerignore">
+            <Link>.dockerignore</Link>
+        </Content>
+        <Content Include="packages.lock.json"/>
     </ItemGroup>
 
 </Project>
