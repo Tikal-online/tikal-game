@@ -23,9 +23,9 @@ public class Index : PageModel
     private readonly IAuthenticationSchemeProvider _schemeProvider;
     private readonly IIdentityProviderStore _identityProviderStore;
 
-    public ViewModel View { get; set; } = default!;
+    public ViewModel View { get; set; } = null!;
 
-    [BindProperty] public InputModel Input { get; set; } = default!;
+    [BindProperty] public InputModel Input { get; set; } = null!;
 
     public Index(
         IIdentityServerInteractionService interaction,
@@ -71,7 +71,7 @@ public class Index : PageModel
             }
 
             // This "can't happen", because if the ReturnUrl was null, then the context would be null
-            ArgumentNullException.ThrowIfNull(Input.ReturnUrl, nameof(Input.ReturnUrl));
+            ArgumentNullException.ThrowIfNull(Input.ReturnUrl);
 
             // if the user cancels, send a result back into IdentityServer as if they 
             // denied the consent (even if this client does not require consent).
@@ -109,7 +109,7 @@ public class Index : PageModel
                 if (context != null)
                 {
                     // This "can't happen", because if the ReturnUrl was null, then the context would be null
-                    ArgumentNullException.ThrowIfNull(Input.ReturnUrl, nameof(Input.ReturnUrl));
+                    ArgumentNullException.ThrowIfNull(Input.ReturnUrl);
 
                     if (context.IsNativeClient())
                     {
