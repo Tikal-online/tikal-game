@@ -51,6 +51,8 @@ internal static class HostingExtensions
 
         InitializeDatabase(app);
 
+        app.UseForwardedHeaders();
+
         app.UseStaticFiles();
         app.UseRouting();
         app.UseIdentityServer();
@@ -205,6 +207,9 @@ internal static class HostingExtensions
             {
                 options.ForwardedHeaders = ForwardedHeaders.XForwardedHost |
                                            ForwardedHeaders.XForwardedProto;
+
+                options.KnownIPNetworks.Clear();
+                options.KnownProxies.Clear();
             });
 
             builder.Services.AddAuthentication();
