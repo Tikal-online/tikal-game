@@ -16,7 +16,7 @@ on:
 jobs:
   format:
     name: Format
-    uses: ./.github/workflows/dotnet/format.yaml
+    uses: ./.github/workflows/dotnet-format.yaml
     with:
       project-directory: Identity
 
