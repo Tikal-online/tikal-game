@@ -9,6 +9,7 @@
     </Folder>
     <Folder Name="/Tikal-Backend/Modules/" />
     <Folder Name="/Tikal-Backend/Modules/Accounts/">
+        <Project Path="Tikal-Backend/Modules/Accounts/Accounts.Application/Accounts.Application.csproj" />
         <Project Path="Tikal-Backend/Modules/Accounts/Accounts.Contracts/Accounts.Contracts.csproj" />
         <Project Path="Tikal-Backend/Modules/Accounts/Accounts.Domain/Accounts.Domain.csproj" />
     </Folder>
