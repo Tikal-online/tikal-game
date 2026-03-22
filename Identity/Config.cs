@@ -1,8 +1,9 @@
 using Duende.IdentityServer.Models;
+using Identity.Configuration;
 
 namespace Identity;
 
-public static class Config
+internal static class Config
 {
     public static IEnumerable<IdentityResource> IdentityResources =>
     [
@@ -15,22 +16,25 @@ public static class Config
         new("tikal-backend")
     ];
 
-    public static IEnumerable<Client> Clients =>
-    [
-        // interactive client using code flow + pkce
-        new()
-        {
-            ClientId = "interactive",
-            ClientSecrets = { new Secret("secret".Sha256()) },
+    public static IEnumerable<Client> GetClients(ClientConfiguration config)
+    {
+        return
+        [
+            // interactive client using code flow + pkce
+            new Client
+            {
+                ClientId = "interactive",
+                ClientSecrets = { new Secret(config.Secret.Sha256()) },
 
-            AllowedGrantTypes = GrantTypes.Code,
+                AllowedGrantTypes = GrantTypes.Code,
 
-            RedirectUris = { "https://localhost:44300/signin-oidc" },
-            FrontChannelLogoutUri = "https://localhost:44300/signout-oidc",
-            PostLogoutRedirectUris = { "https://localhost:44300/signout-callback-oidc" },
+                RedirectUris = { $"https://{config.Uri}/signin-oidc" },
+                FrontChannelLogoutUri = $"https://{config.Uri}/signout-oidc",
+                PostLogoutRedirectUris = { $"https://{config.Uri}/signout-callback-oidc" },
 
-            AllowOfflineAccess = true,
-            AllowedScopes = { "openid", "profile", "tikal-backend" }
-        }
-    ];
+                AllowOfflineAccess = true,
+                AllowedScopes = { "openid", "profile", "tikal-backend" }
+            }
+        ];
+    }
 }

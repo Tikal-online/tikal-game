@@ -2,6 +2,7 @@ using System.Reflection;
 using Duende.IdentityServer;
 using Duende.IdentityServer.EntityFramework.DbContexts;
 using Duende.IdentityServer.EntityFramework.Mappers;
+using Identity.Configuration;
 using Identity.Data;
 using Identity.Models;
 using Microsoft.AspNetCore.Identity;
@@ -44,35 +45,42 @@ internal static class HostingExtensions
         var context = serviceScope.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
         context.Database.Migrate();
 
-        if (!context.Clients.Any())
+        var configuration = app.ApplicationServices.GetRequiredService<IConfiguration>();
+
+        var clientConfig = new ClientConfiguration();
+        configuration.Bind(ClientConfiguration.Position, clientConfig);
+
+        foreach (var client in Config.GetClients(clientConfig))
         {
-            foreach (var client in Config.Clients)
+            if (context.Clients.Any(c => c.ClientId == client.ClientId))
             {
-                context.Clients.Add(client.ToEntity());
+                continue;
             }
 
-            context.SaveChanges();
+            context.Clients.Add(client.ToEntity());
         }
 
-        if (!context.IdentityResources.Any())
+        foreach (var resource in Config.IdentityResources)
         {
-            foreach (var resource in Config.IdentityResources)
+            if (context.IdentityResources.Any(r => r.Name == resource.Name))
             {
-                context.IdentityResources.Add(resource.ToEntity());
+                continue;
             }
 
-            context.SaveChanges();
+            context.IdentityResources.Add(resource.ToEntity());
         }
 
-        if (!context.ApiScopes.Any())
+        foreach (var resource in Config.ApiScopes)
         {
-            foreach (var resource in Config.ApiScopes)
+            if (context.ApiScopes.Any(r => r.Name == resource.Name))
             {
-                context.ApiScopes.Add(resource.ToEntity());
+                continue;
             }
 
-            context.SaveChanges();
+            context.ApiScopes.Add(resource.ToEntity());
         }
+
+        context.SaveChanges();
     }
 
     extension(WebApplicationBuilder builder)
@@ -84,6 +92,9 @@ internal static class HostingExtensions
             var connectionString = builder.Configuration.GetConnectionString("identityDb");
 
             var migrationsAssembly = typeof(Program).GetTypeInfo().Assembly.GetName().Name;
+
+            var clientConfig = new ClientConfiguration();
+            builder.Configuration.Bind(ClientConfiguration.Position, clientConfig);
 
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(connectionString));
@@ -115,7 +126,7 @@ internal static class HostingExtensions
                 })
                 .AddInMemoryIdentityResources(Config.IdentityResources)
                 .AddInMemoryApiScopes(Config.ApiScopes)
-                .AddInMemoryClients(Config.Clients)
+                .AddInMemoryClients(Config.GetClients(clientConfig))
                 .AddAspNetIdentity<ApplicationUser>();
 
             builder.Logging.ClearProviders();
