@@ -1,7 +1,6 @@
 using Accounts.Application.DataAccess;
 using Accounts.Contracts.Models;
 using Accounts.Contracts.Queries;
-using Microsoft.EntityFrameworkCore;
 using Shared.Contracts.Messaging;
 
 namespace Accounts.Application.UseCases.GetAccount;
@@ -17,8 +16,7 @@ internal sealed class GetAccountQueryHandler : QueryHandler<GetAccountQuery, Acc
 
     public async Task<AccountModel?> Handle(GetAccountQuery request, CancellationToken cancellationToken)
     {
-        var account = await accountQueryContext.Accounts
-            .FirstOrDefaultAsync(account => account.UserId == request.UserId, cancellationToken);
+        var account = await accountQueryContext.GetByUserIdAsync(request.UserId);
 
         return account is null ? null : new AccountModel { UserId = account.UserId, Name = account.Name };
     }

@@ -4,5 +4,5 @@ namespace Accounts.Application.DataAccess;
 
 public interface AccountQueryContext
 {
-    IQueryable<Account> Accounts { get; }
+    Task<Account?> GetByUserIdAsync(string userId);
 }
