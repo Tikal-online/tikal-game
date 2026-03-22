@@ -28,7 +28,7 @@ public static class SeedData
             var result = userMgr.CreateAsync(alice, "Pass123$").Result;
             if (!result.Succeeded)
             {
-                throw new Exception(result.Errors.First().Description);
+                throw new ApplicationException(result.Errors.First().Description);
             }
 
             result = userMgr.AddClaimsAsync(alice,
@@ -39,7 +39,7 @@ public static class SeedData
             ]).Result;
             if (!result.Succeeded)
             {
-                throw new Exception(result.Errors.First().Description);
+                throw new ApplicationException(result.Errors.First().Description);
             }
 
             Log.Debug("alice created");
@@ -60,7 +60,7 @@ public static class SeedData
             var result = userMgr.CreateAsync(bob, "Pass123$").Result;
             if (!result.Succeeded)
             {
-                throw new Exception(result.Errors.First().Description);
+                throw new ApplicationException(result.Errors.First().Description);
             }
 
             result = userMgr.AddClaimsAsync(bob,
@@ -71,7 +71,7 @@ public static class SeedData
             ]).Result;
             if (!result.Succeeded)
             {
-                throw new Exception(result.Errors.First().Description);
+                throw new ApplicationException(result.Errors.First().Description);
             }
 
             Log.Debug("bob created");
