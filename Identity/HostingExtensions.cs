@@ -17,6 +17,28 @@ namespace Identity;
 
 internal static class HostingExtensions
 {
+    private static string GetConnectionString(IConfiguration configuration)
+    {
+        var connectionString = configuration.GetConnectionString("identityDb");
+
+        if (!string.IsNullOrEmpty(connectionString))
+        {
+            return connectionString;
+        }
+
+        var options = new DatabaseConfiguration();
+        configuration.GetSection(DatabaseConfiguration.Section).Bind(options);
+
+        connectionString = $"Server={options.Host};" +
+                           $"Port={options.Port};" +
+                           $"Database={options.DatabaseName};" +
+                           $"User ID={options.Username};" +
+                           $"Password={options.Password};" +
+                           "Ssl Mode=Require;";
+
+        return connectionString;
+    }
+
     public static WebApplication ConfigurePipeline(this WebApplication app)
     {
         if (app.Environment.IsDevelopment())
@@ -89,7 +111,7 @@ internal static class HostingExtensions
         {
             builder.Services.AddRazorPages();
 
-            var connectionString = builder.Configuration.GetConnectionString("identityDb");
+            var connectionString = GetConnectionString(builder.Configuration);
 
             var migrationsAssembly = typeof(Program).GetTypeInfo().Assembly.GetName().Name;
 
