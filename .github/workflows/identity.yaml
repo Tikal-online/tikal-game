@@ -22,7 +22,7 @@ jobs:
 
   sonar-scan:
     name: Sonarqube Scan
-    needs: Format 
+    needs: Format
     uses: ./.github/workflows/backend-sonar-scan.yaml
     with:
       project-directory: Identity
