@@ -1,13 +1,16 @@
-using System.Globalization;
 using System.Reflection;
+using Duende.IdentityServer;
 using Duende.IdentityServer.EntityFramework.DbContexts;
 using Duende.IdentityServer.EntityFramework.Mappers;
 using Identity.Data;
 using Identity.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Serilog;
-using Serilog.Filters;
+using Npgsql;
+using OpenTelemetry.Logs;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 
 namespace Identity;
 
@@ -15,8 +18,6 @@ internal static class HostingExtensions
 {
     public static WebApplication ConfigurePipeline(this WebApplication app)
     {
-        app.UseSerilogRequestLogging();
-
         if (app.Environment.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
@@ -76,28 +77,6 @@ internal static class HostingExtensions
 
     extension(WebApplicationBuilder builder)
     {
-        public WebApplicationBuilder ConfigureLogging()
-        {
-            // Write most logs to the console but diagnostic data to a file.
-            // See https://docs.duendesoftware.com/identityserver/diagnostics/data
-            builder.Services.AddSerilog(lc =>
-            {
-                lc.WriteTo.Logger(consoleLogger =>
-                {
-                    consoleLogger.WriteTo.Console(
-                        outputTemplate:
-                        "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}",
-                        formatProvider: CultureInfo.InvariantCulture);
-                    if (builder.Environment.IsDevelopment())
-                    {
-                        consoleLogger.Filter.ByExcluding(
-                            Matching.FromSource("Duende.IdentityServer.Diagnostics.Summary"));
-                    }
-                });
-            });
-            return builder;
-        }
-
         public WebApplication ConfigureServices()
         {
             builder.Services.AddRazorPages();
@@ -138,6 +117,37 @@ internal static class HostingExtensions
                 .AddInMemoryApiScopes(Config.ApiScopes)
                 .AddInMemoryClients(Config.Clients)
                 .AddAspNetIdentity<ApplicationUser>();
+
+            builder.Logging.ClearProviders();
+            builder.Services.AddOpenTelemetry()
+                .ConfigureResource(resourceBuilder => resourceBuilder.AddService(builder.Environment.ApplicationName))
+                .WithTracing(tracing =>
+                {
+                    tracing
+                        .AddSource(IdentityServerConstants.Tracing.Basic)
+                        .AddSource(IdentityServerConstants.Tracing.Cache)
+                        .AddSource(IdentityServerConstants.Tracing.Services)
+                        .AddSource(IdentityServerConstants.Tracing.Stores)
+                        .AddSource(IdentityServerConstants.Tracing.Validation)
+                        .AddAspNetCoreInstrumentation()
+                        .AddNpgsql()
+                        .AddOtlpExporter();
+                })
+                .WithMetrics(metrics =>
+                    {
+                        metrics
+                            .AddMeter(Telemetry.ServiceName)
+                            .AddMeter(Pages.Telemetry.ServiceName)
+                            .AddAspNetCoreInstrumentation()
+                            .AddNpgsqlInstrumentation()
+                            .AddOtlpExporter();
+                    }
+                )
+                .WithLogging(logging =>
+                {
+                    logging
+                        .AddOtlpExporter();
+                });
 
             builder.Services.AddAuthentication();
 
