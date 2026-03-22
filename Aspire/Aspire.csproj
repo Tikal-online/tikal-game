@@ -11,7 +11,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Identity\Identity.WebHost\Identity.WebHost.csproj"/>
+        <ProjectReference Include="..\Identity\Identity.csproj"/>
     </ItemGroup>
 
 </Project>

@@ -3,12 +3,16 @@ using Projects;
 var builder = DistributedApplication.CreateBuilder(args);
 
 var postgres = builder.AddPostgres("postgres")
-    .WithDataVolume(isReadOnly: false);
+    .WithDataVolume(isReadOnly: false)
+    .WithPgAdmin(pgAdmin => pgAdmin
+        .WithImageTag("latest")
+        .WithHostPort(5050)
+    );
 
 // identity
 var identityDb = postgres.AddDatabase("identityDb");
 
-builder.AddProject<Identity_WebHost>("identity")
+builder.AddProject<Identity>("identity")
     .WithReference(identityDb)
     .WaitFor(identityDb);
 

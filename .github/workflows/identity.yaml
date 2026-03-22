@@ -16,27 +16,13 @@ on:
 jobs:
   format:
     name: Format
-    uses: ./.github/workflows/backend-format.yaml
-    with:
-      project-directory: Identity
-
-  unit-tests:
-    name: Unit Tests
-    needs: Format
-    uses: ./.github/workflows/backend-unit-test.yaml
-    with:
-      project-directory: Identity
-
-  integration-tests:
-    name: Integration Tests
-    needs: Format
-    uses: ./.github/workflows/backend-integration-test.yaml
+    uses: ./.github/workflows/dotnet-format.yaml
     with:
       project-directory: Identity
 
   sonar-scan:
     name: Sonarqube Scan
-    needs: [Unit-Tests, Integration-Tests]
+    needs: Format
     uses: ./.github/workflows/backend-sonar-scan.yaml
     with:
       project-directory: Identity
@@ -54,23 +40,13 @@ jobs:
       project-directory: Identity
       project-name: identity
 
-  migrate:
-    name: Migrate
-    needs: Release
-    if: github.ref == 'refs/heads/main'
-    uses: ./.github/workflows/migrate-db.yaml
-    secrets: inherit
-    with:
-      project-directory: Identity
-      keyvault-name: tikal-identity-keyvault
-
   deploy:
     name: Deploy
-    needs: [Migrate, Release]
+    needs: Release
     if: github.ref == 'refs/heads/main'
     uses: ./.github/workflows/deploy-release.yaml
     secrets: inherit
     with:
-      dockerfile: ./Identity/Identity.WebHost/Dockerfile
+      dockerfile: ./Identity/Dockerfile
       project-name: identity
       version: ${{ needs.release.outputs.version }}

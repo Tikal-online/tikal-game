@@ -1,8 +1,0 @@
-{
-  "solution": {
-    "path": "../../Tikal.slnx",
-    "projects": [
-      "Identity/Modules/Users/Users.Application.Tests/Users.Application.Tests.csproj"
-    ]
-  }
-}

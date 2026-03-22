@@ -1,30 +1,10 @@
 <Solution>
-    <Folder Name="/Identity/">
-        <File Path="Identity/Filter.slnf" />
-        <File Path="Identity/GitVersion.yaml" />
-        <Project Path="Identity/Identity.IntegrationTests/Identity.IntegrationTests.csproj" />
-        <Project Path="Identity/Identity.WebHost/Identity.WebHost.csproj" />
-    </Folder>
-    <Folder Name="/Identity/API/">
-        <Project Path="Identity/API/RestApi.Controllers/RestApi.Controllers.csproj" />
-    </Folder>
-    <Folder Name="/Identity/BuildConfig/">
+    <Folder Name="/BuildConfig/">
         <File Path="Directory.Build.props" />
         <File Path="Directory.Packages.props" />
-    </Folder>
-    <Folder Name="/Identity/Modules/">
-        <File Path="Identity/Modules/Tests.slnf" />
-    </Folder>
-    <Folder Name="/Identity/Modules/Users/">
-        <Project Path="Identity/Modules/Users/Users.Application.Tests/Users.Application.Tests.csproj" />
-        <Project Path="Identity/Modules/Users/Users.Application/Users.Application.csproj" />
-        <Project Path="Identity/Modules/Users/Users.Contracts/Users.Contracts.csproj" />
-        <Project Path="Identity/Modules/Users/Users.Domain/Users.Domain.csproj" />
-        <Project Path="Identity/Modules/Users/Users.Infrastructure/Users.Infrastructure.csproj" />
-    </Folder>
-    <Folder Name="/Identity/Shared/">
-        <Project Path="Identity/Shared/Shared.Contracts/Shared.Contracts.csproj" />
+        <File Path="global.json" />
     </Folder>
     <Project Path="Aspire/Aspire.csproj" />
     <Project Path="Backend/Backend.csproj" />
+    <Project Path="Identity/Identity.csproj" />
 </Solution>
