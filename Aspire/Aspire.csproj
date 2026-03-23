@@ -12,6 +12,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Identity\Identity.csproj"/>
+        <ProjectReference Include="..\Tikal-Backend\TikalBackend.WebHost\TikalBackend.WebHost.csproj"/>
     </ItemGroup>
 
 </Project>

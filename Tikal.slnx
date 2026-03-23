@@ -6,6 +6,7 @@
     </Folder>
     <Folder Name="/Tikal-Backend/">
         <File Path="Tikal-Backend\GitVersion.yaml" />
+        <Project Path="Tikal-Backend/TikalBackend.WebHost/TikalBackend.WebHost.csproj" />
     </Folder>
     <Folder Name="/Tikal-Backend/API/">
         <Project Path="Tikal-Backend/API/RestApi.Controllers/RestApi.Controllers.csproj" />
