@@ -12,6 +12,7 @@
         <Project Path="Tikal-Backend/Modules/Accounts/Accounts.Application/Accounts.Application.csproj" />
         <Project Path="Tikal-Backend/Modules/Accounts/Accounts.Contracts/Accounts.Contracts.csproj" />
         <Project Path="Tikal-Backend/Modules/Accounts/Accounts.Domain/Accounts.Domain.csproj" />
+        <Project Path="Tikal-Backend/Modules/Accounts/Accounts.Infrastructure/Accounts.Infrastructure.csproj" />
     </Folder>
     <Folder Name="/Tikal-Backend/Shared/">
         <Project Path="Tikal-Backend/Shared/Shared.Contracts/Shared.Contracts.csproj" />
