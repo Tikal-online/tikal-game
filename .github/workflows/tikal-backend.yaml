@@ -5,14 +5,14 @@ name: Backend CI/CD
 on:
   push:
     paths:
-      - Backend/**
+      - Tikal-Backend/**
 
 jobs:
   format:
     name: Format
     uses: ./.github/workflows/dotnet-format.yaml
     with:
-      project-directory: Backend
+      project-directory: Tikal-Backend
 
   release:
     name: Release
@@ -22,5 +22,5 @@ jobs:
     if: github.ref == 'refs/heads/main'
     uses: ./.github/workflows/create-release.yaml
     with:
-      project-directory: Backend
+      project-directory: Tikal-Backend
       project-name: tikal-backend

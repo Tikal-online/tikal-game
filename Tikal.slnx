@@ -5,6 +5,7 @@
         <File Path="global.json" />
     </Folder>
     <Folder Name="/Tikal-Backend/">
+        <File Path="Tikal-Backend\Filter.slnf" />
         <File Path="Tikal-Backend\GitVersion.yaml" />
         <Project Path="Tikal-Backend/TikalBackend.WebHost/TikalBackend.WebHost.csproj" />
     </Folder>
