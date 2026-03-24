@@ -9,7 +9,7 @@ public sealed partial class AccountsController
     {
         return Problem(
             title: "Account not found",
-            detail: $"Account with userId {userId} was not found",
+            detail: $"Account with userId '{userId}' was not found",
             statusCode: StatusCodes.Status404NotFound
         );
     }
