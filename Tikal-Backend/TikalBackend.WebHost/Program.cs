@@ -1,6 +1,7 @@
 using RestApi.Controllers;
 using Scalar.AspNetCore;
 using TikalBackend.WebHost.Extensions;
+using TikalBackend.WebHost.SchemaTransformers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,21 +23,37 @@ builder.Services.AddInfrastructure(builder.Configuration);
 
 builder.Services.AddExceptionHandlers();
 
-builder.Services.AddOpenApi();
+builder.Services.AddOpenApi(options => { options.AddDocumentTransformer<SecuritySchemeTransformer>(); });
 
 builder.Services.AddHealthChecks();
+
+builder.Services.ConfigureAuthentication(builder.Configuration);
 
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
     app.ApplyMigrations();
-    app.MapScalarApiReference();
+    app.MapScalarApiReference(options =>
+    {
+        options.AddPreferredSecuritySchemes("OAuth2")
+            .AddAuthorizationCodeFlow("OAuth2",
+                flow =>
+                {
+                    flow.ClientId = "interactive";
+                    flow.Pkce = Pkce.Sha256;
+                    flow.SelectedScopes = ["openid", "profile", "tikal-backend"];
+                });
+    }).AllowAnonymous();
 }
 
-app.MapOpenApi();
+app.MapOpenApi().AllowAnonymous();
 
 app.UseExceptionHandler();
+
+app.UseAuthentication();
+
+app.UseAuthorization();
 
 app.MapHealthChecks("/healthcheck");
 

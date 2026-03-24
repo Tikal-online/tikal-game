@@ -92,5 +92,20 @@ internal static class ServiceCollectionExtensions
 
             services.AddProblemDetails();
         }
+
+        public void ConfigureAuthentication(IConfiguration configuration)
+        {
+            var identityConfiguration = configuration
+                .GetRequiredSection(IdentityConfiguration.Position);
+
+            services.Configure<IdentityConfiguration>(identityConfiguration);
+
+            services.AddAuthentication()
+                .AddJwtBearer(options =>
+                {
+                    options.Authority = identityConfiguration.GetValue<string>("Authority");
+                    options.TokenValidationParameters.ValidateAudience = false;
+                });
+        }
     }
 }
