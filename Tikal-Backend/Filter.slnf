@@ -1,0 +1,13 @@
+{
+  "solution": {
+    "path": "../Tikal.slnx",
+    "projects": [
+      "Tikal-Backend/API/RestApi.Controllers/RestApi.Controllers.csproj",
+      "Tikal-Backend/TikalBackend.WebHost/TikalBackend.WebHost.csproj",
+      "Tikal-Backend/Modules/Accounts/Accounts.Application/Accounts.Application.csproj",
+      "Tikal-Backend/Modules/Accounts/Accounts.Contracts/Accounts.Contracts.csproj",
+      "Tikal-Backend/Modules/Accounts/Accounts.Domain/Accounts.Domain.csproj",
+      "Tikal-Backend/Modules/Accounts/Accounts.Infrastructure/Accounts.Infrastructure.csproj"
+    ]
+  }
+}

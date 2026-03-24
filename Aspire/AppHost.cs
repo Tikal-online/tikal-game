@@ -16,4 +16,11 @@ builder.AddProject<Identity>("identity")
     .WithReference(identityDb)
     .WaitFor(identityDb);
 
+// tikal backend
+var backendDb = postgres.AddDatabase("backendDb");
+
+builder.AddProject<TikalBackend_WebHost>("tikal-backend")
+    .WithReference(backendDb)
+    .WaitFor(backendDb);
+
 builder.Build().Run();

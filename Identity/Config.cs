@@ -26,11 +26,14 @@ internal static class Config
                 ClientId = "interactive",
                 ClientSecrets = { new Secret(config.Secret.Sha256()) },
 
+                RequireClientSecret = false,
+                RequirePkce = true,
+
                 AllowedGrantTypes = GrantTypes.Code,
 
-                RedirectUris = { $"https://{config.Uri}/signin-oidc" },
-                FrontChannelLogoutUri = $"https://{config.Uri}/signout-oidc",
-                PostLogoutRedirectUris = { $"https://{config.Uri}/signout-callback-oidc" },
+                RedirectUris = config.RedirectUris,
+                PostLogoutRedirectUris = config.PostLogoutRedirectUris,
+                FrontChannelLogoutUri = config.FrontendChannelLogoutUri,
 
                 AllowOfflineAccess = true,
                 AllowedScopes = { "openid", "profile", "tikal-backend" }
