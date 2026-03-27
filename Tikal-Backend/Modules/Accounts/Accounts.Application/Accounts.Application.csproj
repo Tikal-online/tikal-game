@@ -13,4 +13,8 @@
         <ProjectReference Include="..\Accounts.Domain\Accounts.Domain.csproj"/>
     </ItemGroup>
 
+    <ItemGroup>
+        <InternalsVisibleTo Include="Accounts.Application.Tests"/>
+    </ItemGroup>
+
 </Project>
