@@ -28,7 +28,6 @@ internal sealed class SecuritySchemeTransformer : IOpenApiDocumentTransformer
                 {
                     AuthorizationCode = new OpenApiOAuthFlow
                     {
-                        // ✅ Absolute URLs pointing to identity server
                         AuthorizationUrl = new Uri($"{configuration.Authority}/connect/authorize"),
                         TokenUrl = new Uri($"{configuration.Authority}/connect/token"),
                         Scopes = new Dictionary<string, string>
