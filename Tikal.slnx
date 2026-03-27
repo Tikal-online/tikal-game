@@ -12,7 +12,9 @@
     <Folder Name="/Tikal-Backend/API/">
         <Project Path="Tikal-Backend/API/RestApi.Controllers/RestApi.Controllers.csproj" />
     </Folder>
-    <Folder Name="/Tikal-Backend/Modules/" />
+    <Folder Name="/Tikal-Backend/Modules/">
+        <File Path="Tikal-Backend\Modules\Tests.slnf" />
+    </Folder>
     <Folder Name="/Tikal-Backend/Modules/Accounts/">
         <Project Path="Tikal-Backend/Modules/Accounts/Accounts.Application.Tests/Accounts.Application.Tests.csproj" />
         <Project Path="Tikal-Backend/Modules/Accounts/Accounts.Application/Accounts.Application.csproj" />
