@@ -14,9 +14,18 @@ jobs:
     with:
       project-directory: Tikal-Backend
 
+  sonar-scan:
+    name: Sonarqube Scan
+    needs: Format
+    uses: ./.github/workflows/dotnet-sonar-scan.yaml
+    with:
+      project-directory: Tikal-Backend
+    secrets:
+      SONAR_TOKEN: ${{ secrets.TIKAL_BACKEND_SONAR_TOKEN }}
+
   release:
     name: Release
-    needs: Format
+    needs: Sonar-Scan
     permissions:
       contents: write
     if: github.ref == 'refs/heads/main'
