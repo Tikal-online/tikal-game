@@ -1,5 +1,4 @@
 using RestApi.Controllers;
-using Scalar.AspNetCore;
 using TikalBackend.WebHost.Extensions;
 using TikalBackend.WebHost.SchemaTransformers;
 
@@ -34,17 +33,7 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.ApplyMigrations();
-    app.MapScalarApiReference(options =>
-    {
-        options.AddPreferredSecuritySchemes("OAuth2")
-            .AddAuthorizationCodeFlow("OAuth2",
-                flow =>
-                {
-                    flow.ClientId = "interactive";
-                    flow.Pkce = Pkce.Sha256;
-                    flow.SelectedScopes = ["openid", "profile", "tikal-backend"];
-                });
-    }).AllowAnonymous();
+    app.UseScalarUi();
 }
 
 app.MapOpenApi().AllowAnonymous();
