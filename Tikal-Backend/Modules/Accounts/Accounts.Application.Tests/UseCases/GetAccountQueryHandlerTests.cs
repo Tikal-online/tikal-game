@@ -55,7 +55,7 @@ internal sealed class GetAccountQueryHandlerTests
         using (Assert.EnterMultipleScope())
         {
             Assert.That(result, Is.Not.Null);
-            Assert.That(result.Name, Is.EqualTo(account.Name));
+            Assert.That(result!.Name, Is.EqualTo(account.Name));
             Assert.That(result.UserId, Is.EqualTo(account.UserId));
         }
     }
