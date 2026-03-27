@@ -10,6 +10,7 @@ if (builder.Environment.IsProduction())
 }
 
 builder.Logging.ClearProviders();
+
 builder.Services.ConfigureOpenTelemetry();
 
 builder.Services.AddControllers().AddApplicationPart(AssemblyReference.Assembly);
