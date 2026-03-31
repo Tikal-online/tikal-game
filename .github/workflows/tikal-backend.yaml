@@ -12,28 +12,28 @@ jobs:
     name: Format
     uses: ./.github/workflows/dotnet-format.yaml
     with:
-      project-directory: Tikal-Backend
+      project-directory: TikalBackend
 
   unit-tests:
     name: Unit Tests
     needs: Format
     uses: ./.github/workflows/dotnet-unit-test.yaml
     with:
-      project-directory: Tikal-Backend
+      project-directory: TikalBackend
 
   integration-tests:
     name: Integration Tests
     needs: Format
     uses: ./.github/workflows/dotnet-integration-test.yaml
     with:
-      project-directory: Tikal-Backend
+      project-directory: TikalBackend
 
   sonar-scan:
     name: Sonarqube Scan
     needs: [Unit-Tests, Integration-Tests]
     uses: ./.github/workflows/dotnet-sonar-scan.yaml
     with:
-      project-directory: Tikal-Backend
+      project-directory: TikalBackend
     secrets:
       SONAR_TOKEN: ${{ secrets.TIKAL_BACKEND_SONAR_TOKEN }}
 
@@ -45,5 +45,5 @@ jobs:
     if: github.ref == 'refs/heads/main'
     uses: ./.github/workflows/create-release.yaml
     with:
-      project-directory: Tikal-Backend
+      project-directory: TikalBackend
       project-name: tikal-backend
