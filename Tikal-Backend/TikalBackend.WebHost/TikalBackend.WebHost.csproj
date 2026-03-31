@@ -36,4 +36,8 @@
         <ProjectReference Include="..\Modules\Accounts\Accounts.Infrastructure\Accounts.Infrastructure.csproj"/>
     </ItemGroup>
 
+    <ItemGroup>
+        <InternalsVisibleTo Include="TikalBackend.IntegrationTests"/>
+    </ItemGroup>
+
 </Project>

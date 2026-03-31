@@ -1,4 +1,3 @@
-using System.Security.Claims;
 using Accounts.Contracts.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -23,12 +22,7 @@ public sealed partial class AccountsController : ApiController
     [EndpointDescription("Gets the account for the currently authenticated user")]
     public async Task<IActionResult> GetMe(CancellationToken cancellationToken)
     {
-        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-        if (userId is null)
-        {
-            return MissingRequiredClaim(ClaimTypes.NameIdentifier);
-        }
+        var userId = GetCurrentUserId();
 
         var query = new GetAccountQuery(userId);
 

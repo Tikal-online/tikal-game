@@ -1,5 +1,5 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace RestApi.Controllers.Shared;
@@ -9,13 +9,8 @@ namespace RestApi.Controllers.Shared;
 [Route("[controller]")]
 public abstract class ApiController : ControllerBase
 {
-    protected ObjectResult MissingRequiredClaim(string claimName)
+    protected string GetCurrentUserId()
     {
-        return Problem(
-            title: "Missing required token claim",
-            detail:
-            $"The token is missing the required claim '{claimName}'. This indicates a misconfiguration in the identity server",
-            statusCode: StatusCodes.Status500InternalServerError
-        );
+        return User.FindFirstValue(ClaimTypes.NameIdentifier)!;
     }
 }
