@@ -5,7 +5,7 @@ name: Backend CI/CD
 on:
   push:
     paths:
-      - Tikal-Backend/**
+      - TikalBackend/**
 
 jobs:
   format:

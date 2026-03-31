@@ -2,7 +2,7 @@
   "solution": {
     "path": "../../Tikal.slnx",
     "projects": [
-      "Tikal-Backend/Modules/Accounts/Accounts.Application.Tests/Accounts.Application.Tests.csproj"
+      "TikalBackend/Modules/Accounts/Accounts.Application.Tests/Accounts.Application.Tests.csproj"
     ]
   }
 }
