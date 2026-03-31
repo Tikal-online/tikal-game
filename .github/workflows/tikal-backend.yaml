@@ -21,9 +21,16 @@ jobs:
     with:
       project-directory: Tikal-Backend
 
+  integration-tests:
+    name: Integration Tests
+    needs: Format
+    uses: ./.github/workflows/dotnet-integration-test.yaml
+    with:
+      project-directory: Tikal-Backend
+
   sonar-scan:
     name: Sonarqube Scan
-    needs: Unit-Tests
+    needs: [Unit-Tests, Integration-Tests]
     uses: ./.github/workflows/dotnet-sonar-scan.yaml
     with:
       project-directory: Tikal-Backend
