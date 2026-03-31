@@ -1,0 +1,8 @@
+{
+  "solution": {
+    "path": "../../Tikal.slnx",
+    "projects": [
+      "TikalBackend/Modules/Accounts/Accounts.Application.Tests/Accounts.Application.Tests.csproj"
+    ]
+  }
+}
