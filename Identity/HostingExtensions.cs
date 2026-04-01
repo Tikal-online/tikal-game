@@ -62,6 +62,8 @@ internal static class HostingExtensions
         app.MapRazorPages()
             .RequireAuthorization();
 
+        app.MapHealthChecks("/healthcheck");
+
         return app;
     }
 
@@ -128,6 +130,8 @@ internal static class HostingExtensions
         public WebApplication ConfigureServices()
         {
             builder.Services.AddRazorPages();
+
+            builder.Services.AddHealthChecks();
 
             var connectionString = GetConnectionString(builder.Configuration);
 
