@@ -9,7 +9,7 @@ on:
     paths:
       - Identity/**
   pull_request:
-    types: [opened, synchronize, reopened]
+    types: [ opened, synchronize, reopened ]
     paths:
       - Identity/**
 
@@ -21,8 +21,8 @@ jobs:
       project-directory: Identity
 
   sonar-scan:
-    name: Sonarqube Scan
-    needs: Format
+    name: SonarQube Scan
+    needs: format
     uses: ./.github/workflows/dotnet-sonar-scan.yaml
     with:
       project-directory: Identity
@@ -31,7 +31,7 @@ jobs:
 
   release:
     name: Release
-    needs: Sonar-Scan
+    needs: sonar-scan
     permissions:
       contents: write
     if: github.ref == 'refs/heads/main'
@@ -42,7 +42,7 @@ jobs:
 
   deploy:
     name: Deploy
-    needs: Release
+    needs: release
     if: github.ref == 'refs/heads/main'
     uses: ./.github/workflows/deploy-release.yaml
     secrets: inherit

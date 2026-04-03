@@ -16,21 +16,21 @@ jobs:
 
   unit-tests:
     name: Unit Tests
-    needs: Format
+    needs: format
     uses: ./.github/workflows/dotnet-unit-test.yaml
     with:
       project-directory: TikalBackend
 
   integration-tests:
     name: Integration Tests
-    needs: Format
+    needs: format
     uses: ./.github/workflows/dotnet-integration-test.yaml
     with:
       project-directory: TikalBackend
 
   sonar-scan:
-    name: Sonarqube Scan
-    needs: [Unit-Tests, Integration-Tests]
+    name: SonarQube Scan
+    needs: [ unit-tests, integration-tests ]
     uses: ./.github/workflows/dotnet-sonar-scan.yaml
     with:
       project-directory: TikalBackend
@@ -39,7 +39,7 @@ jobs:
 
   release:
     name: Release
-    needs: Sonar-Scan
+    needs: sonar-scan
     permissions:
       contents: write
     if: github.ref == 'refs/heads/main'
@@ -47,3 +47,24 @@ jobs:
     with:
       project-directory: TikalBackend
       project-name: tikal-backend
+
+  migrate:
+    name: Migrate
+    needs: release
+    if: github.ref == 'refs/heads/main'
+    uses: ./.github/workflows/migrate-db.yaml
+    secrets: inherit
+    with:
+      project-directory: TikalBackend
+      keyvault-name: tikal-tikalapi-keyvault
+
+  deploy:
+    name: Deploy
+    needs: migrate
+    if: github.ref == 'refs/heads/main'
+    uses: ./.github/workflows/deploy-release.yaml
+    secrets: inherit
+    with:
+      dockerfile: ./TikalBackend/TikalBackend.WebHost/Dockerfile
+      project-name: tikal-backend
+      version: ${{ needs.release.outputs.version }}
