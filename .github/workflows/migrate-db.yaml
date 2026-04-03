@@ -55,6 +55,9 @@ jobs:
               --output "${name}-efbundle"
           done
 
+      - name: Copy appsettings to working directory
+        run: cp ${{ inputs.project-directory }}/${{ inputs.project-directory }}.WebHost/appsettings.json .
+
       - name: Setup Azure CLI
         uses: azure/login@532459ea530d8321f2fb9bb10d1e0bcf23869a43 # v3.0.0
         with:
