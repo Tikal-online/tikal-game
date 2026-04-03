@@ -9,10 +9,10 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["Directory.Packages.props", "."]
 COPY ["Directory.Build.props", "."]
-COPY ["Tikal-Backend/TikalBackend.WebHost/TikalBackend.WebHost.csproj", "Tikal-Backend/TikalBackend.WebHost/"]
-RUN dotnet restore "Tikal-Backend/TikalBackend.WebHost/TikalBackend.WebHost.csproj"
+COPY ["TikalBackend/TikalBackend.WebHost/TikalBackend.WebHost.csproj", "TikalBackend/TikalBackend.WebHost/"]
+RUN dotnet restore "TikalBackend/TikalBackend.WebHost/TikalBackend.WebHost.csproj"
 COPY . .
-WORKDIR "/src/Tikal-Backend/TikalBackend.WebHost"
+WORKDIR "/src/TikalBackend/TikalBackend.WebHost"
 RUN dotnet build "./TikalBackend.WebHost.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
