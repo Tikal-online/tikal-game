@@ -1,3 +1,5 @@
+using System.Net.Http.Json;
+
 namespace TikalBackend.IntegrationTests.Extensions;
 
 internal static class HttpClientExtensions
@@ -7,6 +9,17 @@ internal static class HttpClientExtensions
         public Task<HttpResponseMessage> GetAsyncWithUser(string url, TestUser user)
         {
             var request = new HttpRequestMessage(HttpMethod.Get, url).WithUser(user);
+
+            return client.SendAsync(request);
+        }
+
+        public Task<HttpResponseMessage> PostAsyncWithUser(string url, TestUser user, object body)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Post, url)
+                {
+                    Content = JsonContent.Create(body)
+                }
+                .WithUser(user);
 
             return client.SendAsync(request);
         }

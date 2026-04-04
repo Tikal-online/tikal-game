@@ -1,3 +1,4 @@
+using Accounts.Contracts.Commands;
 using Accounts.Contracts.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -36,5 +37,26 @@ public sealed partial class AccountsController : ApiController
         var dto = new AccountDto { Name = result.Name, UserId = result.UserId };
 
         return Ok(dto);
+    }
+
+    [HttpPost]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    [EndpointDescription("Creates a new account for the currently authenticated user")]
+    public async Task<IActionResult> CreateAccount(
+        CreateAccountDto createAccountDto,
+        CancellationToken cancellationToken
+    )
+    {
+        var userId = GetCurrentUserId();
+
+        var command = new CreateAccountCommand(userId, createAccountDto.Name);
+
+        var result = await sender.Send(command, cancellationToken);
+
+        return result.Match<IActionResult>(
+            _ => CreatedAtAction(nameof(GetMe), null),
+            duplicateUserId => AccountAlreadyExists(duplicateUserId.UserId)
+        );
     }
 }
