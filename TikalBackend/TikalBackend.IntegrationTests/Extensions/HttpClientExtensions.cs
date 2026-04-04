@@ -16,10 +16,9 @@ internal static class HttpClientExtensions
         public Task<HttpResponseMessage> PostAsyncWithUser(string url, TestUser user, object body)
         {
             var request = new HttpRequestMessage(HttpMethod.Post, url)
-                {
-                    Content = JsonContent.Create(body)
-                }
-                .WithUser(user);
+            {
+                Content = JsonContent.Create(body)
+            }.WithUser(user);
 
             return client.SendAsync(request);
         }
