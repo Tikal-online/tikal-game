@@ -52,7 +52,7 @@ internal sealed class GetAccountTests : IntegrationTestFixture
             Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
 
             Assert.That(account, Is.Not.Null);
-            Assert.That(account.UserId, Is.EqualTo(TestUser.Default.UserId));
+            Assert.That(account!.UserId, Is.EqualTo(TestUser.Default.UserId));
             Assert.That(account.Name, Is.EqualTo(createAccountDto.Name));
         }
     }
