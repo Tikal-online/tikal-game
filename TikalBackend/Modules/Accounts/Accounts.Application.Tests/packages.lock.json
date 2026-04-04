@@ -225,8 +225,7 @@
         "type": "Project",
         "dependencies": {
           "Accounts.Contracts": "[1.0.0, )",
-          "Accounts.Domain": "[1.0.0, )",
-          "FluentValidation": "[12.1.1, )"
+          "Accounts.Domain": "[1.0.0, )"
         }
       },
       "accounts.contracts": {
@@ -236,7 +235,10 @@
         }
       },
       "accounts.domain": {
-        "type": "Project"
+        "type": "Project",
+        "dependencies": {
+          "FluentValidation": "[12.1.1, )"
+        }
       },
       "shared.contracts": {
         "type": "Project",
