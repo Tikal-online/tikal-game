@@ -12,9 +12,9 @@ area/identity:
   - changed-files:
       - any-glob-to-any-file: "Identity/**"
 
-area/backend:
+area/tikal-backend:
   - changed-files:
-      - any-glob-to-any-file: "Backend/**"
+      - any-glob-to-any-file: "TikalBackend/**"
 
 area/docs:
   - changed-files:

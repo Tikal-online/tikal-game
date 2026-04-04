@@ -5,7 +5,7 @@ using Accounts.Contracts.Queries;
 using Accounts.Domain.Entities;
 using Moq;
 
-namespace Accounts.Application.Tests.UseCases;
+namespace Accounts.Application.Tests.UseCases.GetAccount;
 
 internal sealed class GetAccountQueryHandlerTests
 {

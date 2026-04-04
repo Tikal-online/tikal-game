@@ -2,7 +2,7 @@ using Accounts.Application.UseCases.GetAccount;
 using Accounts.Contracts.Queries;
 using FluentValidation.TestHelper;
 
-namespace Accounts.Application.Tests.UseCases;
+namespace Accounts.Application.Tests.UseCases.GetAccount;
 
 internal sealed class GetAccountQueryValidatorTests
 {

@@ -1,6 +1,6 @@
 using Accounts.Contracts.Queries;
 
-namespace Accounts.Application.Tests.UseCases;
+namespace Accounts.Application.Tests.UseCases.GetAccount;
 
 internal static class GetAccountQueryTestCases
 {

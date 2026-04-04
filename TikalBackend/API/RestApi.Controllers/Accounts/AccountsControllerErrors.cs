@@ -13,4 +13,13 @@ public sealed partial class AccountsController
             statusCode: StatusCodes.Status404NotFound
         );
     }
+
+    private ObjectResult AccountAlreadyExists(string userId)
+    {
+        return Problem(
+            title: "Account already exists",
+            detail: $"Account with userId '{userId}' already exists",
+            statusCode: StatusCodes.Status409Conflict
+        );
+    }
 }
