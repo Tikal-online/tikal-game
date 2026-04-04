@@ -13,8 +13,4 @@
         <InternalsVisibleTo Include="Accounts.Application.Tests"/>
     </ItemGroup>
 
-    <ItemGroup>
-        <Folder Include="UseCases\CreateAccount\"/>
-    </ItemGroup>
-
 </Project>
