@@ -2,13 +2,13 @@ FROM node:24-alpine AS build
 
 WORKDIR /app
 
-COPY package*.json ./
+COPY TikalFrontend/package*.json ./
 
 RUN npm ci
 
 RUN npm install -g @angular/cli
 
-COPY . .
+COPY TikalFrontend/ .
 
 ARG ENV=production
 
@@ -16,7 +16,7 @@ RUN ng build --configuration=${ENV}
 
 FROM nginx:1.29.0-alpine
 
-COPY .nginx/nginx.conf /etc/nginx/conf.d/default.conf
+COPY TikalFrontend/.nginx/nginx.conf /etc/nginx/conf.d/default.conf
 
 COPY --from=build app/dist/TikalFrontend/browser /var/www
 
