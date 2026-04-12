@@ -1,5 +1,6 @@
 using BFF;
 using BFF.Configuration;
+using BFF.Extensions;
 using Duende.Bff;
 using Duende.Bff.Endpoints;
 using Duende.Bff.Yarp;
@@ -7,6 +8,11 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.DataProtection;
 
 var builder = WebApplication.CreateBuilder(args);
+
+if (builder.Environment.IsProduction())
+{
+    builder.Configuration.ConfigureKeyVault();
+}
 
 builder.Services.AddControllers();
 
