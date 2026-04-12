@@ -1,0 +1,43 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: BFF CI/CD
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - BFFJ/**
+  pull_request:
+    types: [ opened, synchronize, reopened ]
+    paths:
+      - BFF/**
+
+jobs:
+  format:
+    name: Format
+    uses: ./.github/workflows/dotnet-format.yaml
+    with:
+      project-directory: BFF
+
+  release:
+    name: Release
+    needs: format
+    permissions:
+      contents: write
+    if: github.ref == 'refs/heads/main'
+    uses: ./.github/workflows/create-release.yaml
+    with:
+      project-directory: BFF
+      project-name: bff
+
+  deploy:
+    name: Deploy
+    needs: release
+    if: github.ref == 'refs/heads/main'
+    uses: ./.github/workflows/deploy-release.yaml
+    secrets: inherit
+    with:
+      dockerfile: ./BFF/Dockerfile
+      project-name: bff
+      version: ${{ needs.release.outputs.version }}
