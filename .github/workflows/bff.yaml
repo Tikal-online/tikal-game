@@ -7,7 +7,7 @@ on:
     branches:
       - main
     paths:
-      - BFFJ/**
+      - BFF/**
   pull_request:
     types: [ opened, synchronize, reopened ]
     paths:
