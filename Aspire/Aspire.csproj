@@ -1,4 +1,4 @@
-<Project Sdk="Aspire.AppHost.Sdk/13.1.3">
+<Project Sdk="Aspire.AppHost.Sdk/13.2.2">
 
     <PropertyGroup>
         <TargetFramework>net10.0</TargetFramework>
@@ -7,10 +7,12 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Aspire.Hosting.JavaScript"/>
         <PackageReference Include="Aspire.Hosting.PostgreSQL"/>
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\BFF\BFF.csproj"/>
         <ProjectReference Include="..\Identity\Identity.csproj"/>
         <ProjectReference Include="..\TikalBackend\TikalBackend.WebHost\TikalBackend.WebHost.csproj"/>
     </ItemGroup>
