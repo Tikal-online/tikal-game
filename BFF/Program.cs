@@ -70,6 +70,8 @@ builder.Services.AddBff()
 builder.Services.AddDataProtection()
     .SetApplicationName("BFF");
 
+builder.Services.AddHealthChecks();
+
 builder.Services.AddSingleton<IReturnUrlValidator, FrontendHostReturnUrlValidator>();
 
 var app = builder.Build();
@@ -80,5 +82,7 @@ app.UseCors();
 app.UseAuthentication();
 app.UseBff();
 app.UseAuthorization();
+
+app.MapHealthChecks("/healthcheck");
 
 await app.RunAsync();
