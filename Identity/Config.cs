@@ -13,7 +13,7 @@ internal static class Config
 
     public static IEnumerable<ApiScope> ApiScopes =>
     [
-        new("tikal-backend")
+        new("tikal-api")
     ];
 
     public static IEnumerable<Client> GetClients(ClientConfiguration config)
@@ -23,10 +23,10 @@ internal static class Config
             // interactive client using code flow + pkce
             new Client
             {
-                ClientId = "interactive",
+                ClientId = "interactive.confidential",
                 ClientSecrets = { new Secret(config.Secret.Sha256()) },
 
-                RequireClientSecret = false,
+                RequireClientSecret = true,
                 RequirePkce = true,
 
                 AllowedGrantTypes = GrantTypes.Code,
@@ -36,7 +36,7 @@ internal static class Config
                 FrontChannelLogoutUri = config.FrontendChannelLogoutUri,
 
                 AllowOfflineAccess = true,
-                AllowedScopes = { "openid", "profile", "tikal-backend" }
+                AllowedScopes = { "openid", "profile", "tikal-api" }
             }
         ];
     }

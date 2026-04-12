@@ -1,31 +1,32 @@
 <Solution>
     <Folder Name="/BuildConfig/">
-        <File Path="Directory.Build.props"/>
-        <File Path="Directory.Packages.props"/>
-        <File Path="global.json"/>
+        <File Path="Directory.Build.props" />
+        <File Path="Directory.Packages.props" />
+        <File Path="global.json" />
     </Folder>
     <Folder Name="/TikalBackend/">
-        <File Path="TikalBackend\Filter.slnf"/>
-        <File Path="TikalBackend\GitVersion.yaml"/>
-        <Project Path="TikalBackend/TikalBackend.IntegrationTests/TikalBackend.IntegrationTests.csproj"/>
-        <Project Path="TikalBackend/TikalBackend.WebHost/TikalBackend.WebHost.csproj"/>
+        <File Path="TikalBackend\Filter.slnf" />
+        <File Path="TikalBackend\GitVersion.yaml" />
+        <Project Path="TikalBackend/TikalBackend.IntegrationTests/TikalBackend.IntegrationTests.csproj" />
+        <Project Path="TikalBackend/TikalBackend.WebHost/TikalBackend.WebHost.csproj" />
     </Folder>
     <Folder Name="/TikalBackend/API/">
-        <Project Path="TikalBackend/API/RestApi.Controllers/RestApi.Controllers.csproj"/>
+        <Project Path="TikalBackend/API/RestApi.Controllers/RestApi.Controllers.csproj" />
     </Folder>
     <Folder Name="/TikalBackend/Modules/">
-        <File Path="TikalBackend\Modules\Tests.slnf"/>
+        <File Path="TikalBackend\Modules\Tests.slnf" />
     </Folder>
     <Folder Name="/TikalBackend/Modules/Accounts/">
-        <Project Path="TikalBackend/Modules/Accounts/Accounts.Application.Tests/Accounts.Application.Tests.csproj"/>
-        <Project Path="TikalBackend/Modules/Accounts/Accounts.Application/Accounts.Application.csproj"/>
-        <Project Path="TikalBackend/Modules/Accounts/Accounts.Contracts/Accounts.Contracts.csproj"/>
-        <Project Path="TikalBackend/Modules/Accounts/Accounts.Domain/Accounts.Domain.csproj"/>
-        <Project Path="TikalBackend/Modules/Accounts/Accounts.Infrastructure/Accounts.Infrastructure.csproj"/>
+        <Project Path="TikalBackend/Modules/Accounts/Accounts.Application.Tests/Accounts.Application.Tests.csproj" />
+        <Project Path="TikalBackend/Modules/Accounts/Accounts.Application/Accounts.Application.csproj" />
+        <Project Path="TikalBackend/Modules/Accounts/Accounts.Contracts/Accounts.Contracts.csproj" />
+        <Project Path="TikalBackend/Modules/Accounts/Accounts.Domain/Accounts.Domain.csproj" />
+        <Project Path="TikalBackend/Modules/Accounts/Accounts.Infrastructure/Accounts.Infrastructure.csproj" />
     </Folder>
     <Folder Name="/TikalBackend/Shared/">
-        <Project Path="TikalBackend/Shared/Shared.Contracts/Shared.Contracts.csproj"/>
+        <Project Path="TikalBackend/Shared/Shared.Contracts/Shared.Contracts.csproj" />
     </Folder>
-    <Project Path="Aspire/Aspire.csproj"/>
-    <Project Path="Identity/Identity.csproj"/>
+    <Project Path="Aspire/Aspire.csproj" />
+    <Project Path="BFF/BFF.csproj" />
+    <Project Path="Identity/Identity.csproj" />
 </Solution>
