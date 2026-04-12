@@ -1,0 +1,36 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: Frontend CI/CD
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - TikalFrontend/**
+  pull_request:
+    types: [ opened, synchronize, reopened ]
+    paths:
+      - TikalFrontend/**
+
+jobs:
+  release:
+    name: Release
+    permissions:
+      contents: write
+    if: github.ref == 'refs/heads/main'
+    uses: ./.github/workflows/create-release.yaml
+    with:
+      project-directory: TikalFrontend
+      project-name: tikal-frontend
+
+  deploy:
+    name: Deploy
+    needs: release
+    if: github.ref == 'refs/heads/main'
+    uses: ./.github/workflows/deploy-release.yaml
+    secrets: inherit
+    with:
+      dockerfile: ./TikalFrontend/Dockerfile
+      project-name: tikal-frontend
+      version: ${{ needs.release.outputs.version }}
