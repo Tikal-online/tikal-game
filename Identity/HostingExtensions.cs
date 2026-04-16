@@ -3,7 +3,6 @@ using Azure.Identity;
 using Duende.IdentityServer;
 using Duende.IdentityServer.EntityFramework.DbContexts;
 using Duende.IdentityServer.EntityFramework.Mappers;
-using Duende.IdentityServer.Services;
 using Identity.Configuration;
 using Identity.Data;
 using Identity.Models;
@@ -215,19 +214,6 @@ internal static class HostingExtensions
 
                 options.KnownIPNetworks.Clear();
                 options.KnownProxies.Clear();
-            });
-
-            builder.Services.AddSingleton<ICorsPolicyService>(container =>
-            {
-                var logger = container.GetRequiredService<ILogger<DefaultCorsPolicyService>>();
-
-                var corsConfig = new CorsConfiguration();
-                builder.Configuration.Bind(CorsConfiguration.Position, corsConfig);
-
-                return new DefaultCorsPolicyService(logger)
-                {
-                    AllowedOrigins = corsConfig.AllowedOrigins
-                };
             });
 
             builder.Services.AddAuthentication();
