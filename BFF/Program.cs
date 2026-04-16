@@ -6,6 +6,7 @@ using Duende.Bff.Endpoints;
 using Duende.Bff.Yarp;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.HttpOverrides;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +24,15 @@ var frontendConfiguration =
 var authConfiguration =
     builder.Configuration.GetSection(AuthConfiguration.Position).Get<AuthConfiguration>()
     ?? throw new InvalidOperationException("Authentication configuration is required");
+
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders = ForwardedHeaders.XForwardedHost |
+                               ForwardedHeaders.XForwardedProto;
+
+    options.KnownIPNetworks.Clear();
+    options.KnownProxies.Clear();
+});
 
 builder.Services.AddCors(opt =>
 {
@@ -81,6 +91,8 @@ builder.Services.AddHealthChecks();
 builder.Services.AddSingleton<IReturnUrlValidator, FrontendHostReturnUrlValidator>();
 
 var app = builder.Build();
+
+app.UseForwardedHeaders();
 
 app.UseRouting();
 app.UseCors();
