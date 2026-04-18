@@ -58,6 +58,16 @@ internal static class HostingExtensions
         app.UseIdentityServer();
         app.UseAuthorization();
 
+        app.Use(async (context, next) =>
+        {
+            context.Response.Headers.Append("Content-Security-Policy",
+                "default-src 'self'; " +
+                "style-src 'self' https://cdn.jsdelivr.net; " +
+                "script-src 'self' https://cdn.jsdelivr.net https://code.jquery.com; "
+            );
+            await next();
+        });
+
         app.MapRazorPages()
             .RequireAuthorization();
 
