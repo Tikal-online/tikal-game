@@ -27,61 +27,9 @@ public static class Telemetry
         /// </summary>
         private static readonly Meter Meter = new(ServiceName, ServiceVersion);
 
-        private static readonly Counter<long> ConsentCounter = Meter.CreateCounter<long>(Counters.Consent);
-
-        private static readonly Counter<long> GrantsRevokedCounter = Meter.CreateCounter<long>(Counters.RevokedGrants);
-
         private static readonly Counter<long> UserLoginCounter = Meter.CreateCounter<long>(Counters.LoggedInUsers);
 
         private static readonly Counter<long> UserLogoutCounter = Meter.CreateCounter<long>(Counters.LoggedOutUsers);
-
-        /// <summary>
-        ///     Helper method to increase <see cref="Counters.Consent" /> counter. The scopes
-        ///     are expanded and called one by one to not cause a combinatory explosion of scopes.
-        /// </summary>
-        /// <param name="clientId">Client id</param>
-        /// <param name="scopes">Scope names. Each element is added on its own to the counter</param>
-        /// <param name="remember">Remember consent granted</param>
-        public static void ConsentGranted(string clientId, IEnumerable<string> scopes, bool remember)
-        {
-            ArgumentNullException.ThrowIfNull(scopes);
-
-            foreach (var scope in scopes)
-            {
-                ConsentCounter.Add(1,
-                    new KeyValuePair<string, object?>(Tags.Client, clientId),
-                    new KeyValuePair<string, object?>(Tags.Scope, scope),
-                    new KeyValuePair<string, object?>(Tags.Remember, remember),
-                    new KeyValuePair<string, object?>(Tags.Consent, TagValues.Granted));
-            }
-        }
-
-        /// <summary>
-        ///     Helper method to increase <see cref="Counters.Consent" /> counter. The scopes
-        ///     are expanded and called one by one to not cause a combinatory explosion of scopes.
-        /// </summary>
-        /// <param name="clientId">Client id</param>
-        /// <param name="scopes">Scope names. Each element is added on its own to the counter</param>
-        public static void ConsentDenied(string clientId, IEnumerable<string> scopes)
-        {
-            ArgumentNullException.ThrowIfNull(scopes);
-            foreach (var scope in scopes)
-            {
-                ConsentCounter.Add(1,
-                    new KeyValuePair<string, object?>(Tags.Client, clientId),
-                    new KeyValuePair<string, object?>(Tags.Scope, scope),
-                    new KeyValuePair<string, object?>(Tags.Consent, TagValues.Denied));
-            }
-        }
-
-        /// <summary>
-        ///     Helper method to increase the <see cref="Counters.RevokedGrants" /> counter.
-        /// </summary>
-        /// <param name="clientId">Client id to revoke for, or null for all.</param>
-        public static void GrantsRevoked(string? clientId)
-        {
-            GrantsRevokedCounter.Add(1, new KeyValuePair<string, object?>(Tags.Client, clientId));
-        }
 
         /// <summary>
         ///     Helper method to increase <see cref="Counters.LoggedInUsers" /> counter.
@@ -117,15 +65,12 @@ public static class Telemetry
         {
             UserLogoutCounter.Add(1, new KeyValuePair<string, object?>(Tags.Idp, idp));
         }
-#pragma warning disable 1591
 
         /// <summary>
         ///     Name of Counters
         /// </summary>
         private static class Counters
         {
-            public const string Consent = "tokenservice.consent";
-            public const string RevokedGrants = "tokenservice.grants_revoked";
             public const string LoggedInUsers = "tokenservice.user_login";
             public const string LoggedOutUsers = "tokenservice.user_logout";
         }
@@ -138,20 +83,6 @@ public static class Telemetry
             public const string Client = "client";
             public const string Error = "error";
             public const string Idp = "idp";
-            public const string Remember = "remember";
-            public const string Scope = "scope";
-            public const string Consent = "consent";
         }
-
-        /// <summary>
-        ///     Values of tags
-        /// </summary>
-        private static class TagValues
-        {
-            public const string Granted = "granted";
-            public const string Denied = "denied";
-        }
-
-#pragma warning restore 1591
     }
 }
