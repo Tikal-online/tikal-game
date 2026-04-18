@@ -65,7 +65,7 @@ jobs:
             /o:"fmahdi09" \
             /d:sonar.token="$SONAR_TOKEN" \
             /d:sonar.scanner.scanAll=false \
-            /d:sonar.cs.opencover.reportsPaths=./TestResults/**/coverage.opencover.xml
+            /d:sonar.cs.opencover.reportsPaths=./TestResults/**/coverage.opencover.*.xml
 
       - name: Restore projects
         run: dotnet restore ${{ inputs.project-directory }} --locked-mode
