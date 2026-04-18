@@ -8,23 +8,26 @@ namespace Identity.Pages;
 public static class Extensions
 {
     /// <summary>
-    /// Determines if the authentication scheme support signout.
+    ///     Determines if the authentication scheme support signout.
     /// </summary>
     internal static async Task<bool> GetSchemeSupportsSignOutAsync(this HttpContext context, string scheme)
     {
         var provider = context.RequestServices.GetRequiredService<IAuthenticationHandlerProvider>();
         var handler = await provider.GetHandlerAsync(context, scheme);
-        return (handler is IAuthenticationSignOutHandler);
+        return handler is IAuthenticationSignOutHandler;
     }
 
     /// <summary>
-    /// Checks if the redirect URI is for a native client.
+    ///     Checks if the redirect URI is for a native client.
     /// </summary>
-    internal static bool IsNativeClient(this AuthorizationRequest context) => !context.RedirectUri.StartsWith("https", StringComparison.Ordinal)
+    internal static bool IsNativeClient(this AuthorizationRequest context)
+    {
+        return !context.RedirectUri.StartsWith("https", StringComparison.Ordinal)
                && !context.RedirectUri.StartsWith("http", StringComparison.Ordinal);
+    }
 
     /// <summary>
-    /// Renders a loading page that is used to redirect back to the redirectUri.
+    ///     Renders a loading page that is used to redirect back to the redirectUri.
     /// </summary>
     internal static IActionResult LoadingPage(this PageModel page, string? redirectUri)
     {
@@ -35,7 +38,7 @@ public static class Extensions
     }
 
     /// <summary>
-    /// Check for a remote connection (non-localhost)
+    ///     Check for a remote connection (non-localhost)
     /// </summary>
     internal static bool IsRemote(this ConnectionInfo connection)
     {
@@ -45,11 +48,6 @@ public static class Extensions
             localAddresses.Add(connection.LocalIpAddress.ToString());
         }
 
-        if (!localAddresses.Contains(connection.RemoteIpAddress?.ToString()))
-        {
-            return true;
-        }
-
-        return false;
+        return !localAddresses.Contains(connection.RemoteIpAddress?.ToString());
     }
 }
