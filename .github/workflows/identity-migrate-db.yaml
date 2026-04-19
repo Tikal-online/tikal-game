@@ -1,0 +1,113 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: Migrate Identity Database
+
+on:
+  workflow_call:
+    secrets:
+      AZURE_CREDENTIALS:
+        required: true
+    inputs:
+      project-directory:
+        required: true
+        type: string
+      keyvault-name:
+        required: true
+        type: string
+
+env:
+  NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages
+
+jobs:
+  migrate:
+    name: Migrate Database
+    runs-on: tikal-azure-runner
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          lfs: true
+
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@c2fa09f4bde5ebb9d1777cf28262a3eb3db3ced7 # v5.2.0
+        with:
+          global-json-file: global.json
+          cache: true
+          cache-dependency-path: "${{ inputs.project-directory }}/**/packages.lock.json"
+
+      - name: Install dotnet-ef
+        run: dotnet tool install --global dotnet-ef
+
+      - name: Restore projects
+        run: dotnet restore ${{ inputs.project-directory }} --locked-mode
+
+      - name: Build projects
+        run: dotnet build ${{ inputs.project-directory }} --no-restore
+
+      - name: Create configuration migration bundle
+        run: |
+          dotnet ef migrations bundle \
+            --context "ConfigurationDbContext" \
+            --startup-project "${{ inputs.project-directory }}" \
+            --project ""${{ inputs.project-directory }}"" \
+            --output "configuration-efbundle"
+
+      - name: Create persistant grant migration bundle
+        run: |
+          dotnet ef migrations bundle \
+            --context "PersistedGrantDbContext" \
+            --startup-project "${{ inputs.project-directory }}" \
+            --project ""${{ inputs.project-directory }}"" \
+            --output "persisted-grant-efbundle"
+
+      - name: Create application migration bundle
+        run: |
+          dotnet ef migrations bundle \
+            --context "ApplicationDbContext" \
+            --startup-project "${{ inputs.project-directory }}" \
+            --project ""${{ inputs.project-directory }}"" \
+            --output "application-efbundle"
+
+      - name: Copy appsettings to working directory
+        run: cp ${{ inputs.project-directory }}/${{ inputs.project-directory }}.WebHost/appsettings.json .
+
+      - name: Setup Azure CLI
+        uses: azure/login@532459ea530d8321f2fb9bb10d1e0bcf23869a43 # v3.0.0
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Retrieve database connection string from Key Vault
+        id: keyvault
+        uses: azure/cli@9eb25b8360668fb0ecbafa808d40e2197b2f5f52 # v3.0.0
+        with:
+          inlineScript: |
+            DB_NAME=$(az keyvault secret show --name Database--DatabaseName --vault-name ${{ inputs.keyvault-name }} --query value -o tsv)
+            echo "::add-mask::$DB_NAME"
+            echo "DB_NAME=$DB_NAME" >> $GITHUB_ENV
+            DB_HOST=$(az keyvault secret show --name Database--Host --vault-name ${{ inputs.keyvault-name }} --query value -o tsv)
+            echo "::add-mask::$DB_HOST"
+            echo "DB_HOST=$DB_HOST" >> $GITHUB_ENV
+            DB_PASSWORD=$(az keyvault secret show --name Database--Password --vault-name ${{ inputs.keyvault-name }} --query value -o tsv)
+            echo "::add-mask::$DB_PASSWORD"
+            echo "DB_PASSWORD=$DB_PASSWORD" >> $GITHUB_ENV
+            DB_PORT=$(az keyvault secret show --name Database--Port --vault-name ${{ inputs.keyvault-name }} --query value -o tsv)
+            echo "::add-mask::$DB_PORT"
+            echo "DB_PORT=$DB_PORT" >> $GITHUB_ENV
+            DB_USERNAME=$(az keyvault secret show --name Database--Username --vault-name ${{ inputs.keyvault-name }} --query value -o tsv)
+            echo "::add-mask::$DB_USERNAME"
+            echo "DB_USERNAME=$DB_USERNAME" >> $GITHUB_ENV
+
+      - name: Apply configuration migrations
+        run: |
+          ./configuration-efbundle \
+            --connection "Server=${{ env.DB_HOST }};Database=${{ env.DB_NAME }};Port=${{ env.DB_PORT }};User Id=${{ env.DB_USERNAME }};Password=${{ env.DB_PASSWORD }};Ssl Mode=Require;"
+
+      - name: Apply persisted-grant migrations
+        run: |
+          ./persisted-grant-efbundle \
+            --connection "Server=${{ env.DB_HOST }};Database=${{ env.DB_NAME }};Port=${{ env.DB_PORT }};User Id=${{ env.DB_USERNAME }};Password=${{ env.DB_PASSWORD }};Ssl Mode=Require;"
+
+      - name: Apply application migrations
+        run: |
+          ./application-efbundle \
+            --connection "Server=${{ env.DB_HOST }};Database=${{ env.DB_NAME }};Port=${{ env.DB_PORT }};User Id=${{ env.DB_USERNAME }};Password=${{ env.DB_PASSWORD }};Ssl Mode=Require;"
