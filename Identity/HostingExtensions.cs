@@ -151,6 +151,11 @@ internal static class HostingExtensions
     {
         public WebApplication ConfigureServices()
         {
+            if (builder.Environment.IsProduction())
+            {
+                builder.Configuration.ConfigureKeyVault();
+            }
+
             builder.Services.AddRazorPages();
 
             builder.Services.AddHealthChecks();

@@ -44,7 +44,7 @@ jobs:
     name: Migrate
     needs: release
     if: github.ref == 'refs/heads/main'
-    uses: ./.github/workflows/migrate-db.yaml
+    uses: ./.github/workflows/identity-migrate-db.yaml
     secrets: inherit
     with:
       project-directory: Identity
