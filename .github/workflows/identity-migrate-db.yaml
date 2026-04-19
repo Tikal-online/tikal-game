@@ -49,7 +49,7 @@ jobs:
           dotnet ef migrations bundle \
             --context "ConfigurationDbContext" \
             --startup-project "${{ inputs.project-directory }}" \
-            --project ""${{ inputs.project-directory }}"" \
+            --project "${{ inputs.project-directory }}" \
             --output "configuration-efbundle"
 
       - name: Create persistant grant migration bundle
@@ -57,7 +57,7 @@ jobs:
           dotnet ef migrations bundle \
             --context "PersistedGrantDbContext" \
             --startup-project "${{ inputs.project-directory }}" \
-            --project ""${{ inputs.project-directory }}"" \
+            --project "${{ inputs.project-directory }}" \
             --output "persisted-grant-efbundle"
 
       - name: Create application migration bundle
@@ -65,7 +65,7 @@ jobs:
           dotnet ef migrations bundle \
             --context "ApplicationDbContext" \
             --startup-project "${{ inputs.project-directory }}" \
-            --project ""${{ inputs.project-directory }}"" \
+            --project "${{ inputs.project-directory }}" \
             --output "application-efbundle"
 
       - name: Copy appsettings to working directory
