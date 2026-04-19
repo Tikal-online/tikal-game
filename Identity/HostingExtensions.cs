@@ -42,40 +42,6 @@ internal static class HostingExtensions
         return connectionString;
     }
 
-    public static WebApplication ConfigurePipeline(this WebApplication app)
-    {
-        if (app.Environment.IsDevelopment())
-        {
-            app.UseDeveloperExceptionPage();
-        }
-
-        app.InitializeDatabase();
-
-        app.UseForwardedHeaders();
-
-        app.UseStaticFiles();
-        app.UseRouting();
-        app.UseIdentityServer();
-        app.UseAuthorization();
-
-        app.Use(async (context, next) =>
-        {
-            context.Response.Headers.Append("Content-Security-Policy",
-                "default-src 'self'; " +
-                "style-src 'self' https://cdn.jsdelivr.net; " +
-                "script-src 'self' https://cdn.jsdelivr.net https://code.jquery.com; "
-            );
-            await next();
-        });
-
-        app.MapRazorPages()
-            .RequireAuthorization();
-
-        app.MapHealthChecks("/healthcheck");
-
-        return app;
-    }
-
     private static void InitializeDatabase(this IApplicationBuilder app)
     {
         using var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>()!.CreateScope();
@@ -120,6 +86,53 @@ internal static class HostingExtensions
         }
 
         context.SaveChanges();
+    }
+
+    extension(WebApplication app)
+    {
+        public WebApplication ConfigurePipeline()
+        {
+            if (app.Environment.IsDevelopment())
+            {
+                app.MigrateDatabase();
+                app.UseDeveloperExceptionPage();
+            }
+
+            app.InitializeDatabase();
+
+            app.UseForwardedHeaders();
+
+            app.UseStaticFiles();
+            app.UseRouting();
+            app.UseIdentityServer();
+            app.UseAuthorization();
+
+            app.Use(async (context, next) =>
+            {
+                context.Response.Headers.Append("Content-Security-Policy",
+                    "default-src 'self'; " +
+                    "style-src 'self' https://cdn.jsdelivr.net; " +
+                    "script-src 'self' https://cdn.jsdelivr.net https://code.jquery.com; "
+                );
+                await next();
+            });
+
+            app.MapRazorPages()
+                .RequireAuthorization();
+
+            app.MapHealthChecks("/healthcheck");
+
+            return app;
+        }
+
+        private void MigrateDatabase()
+        {
+            using var serviceScope = app.Services.CreateScope();
+
+            serviceScope.ServiceProvider.GetRequiredService<PersistedGrantDbContext>().Database.Migrate();
+            serviceScope.ServiceProvider.GetRequiredService<ConfigurationDbContext>().Database.Migrate();
+            serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>().Database.Migrate();
+        }
     }
 
     extension(ConfigurationManager configurationManager)
