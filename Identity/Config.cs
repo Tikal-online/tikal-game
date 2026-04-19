@@ -20,7 +20,6 @@ internal static class Config
     {
         return
         [
-            // interactive client using code flow + pkce
             new Client
             {
                 ClientId = "interactive.confidential",
