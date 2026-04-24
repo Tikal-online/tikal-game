@@ -420,3 +420,6 @@ FodyWeavers.xsd
 
 # Rider generated files
 **/.idea/*
+
+# Zensical generated files
+site/**
