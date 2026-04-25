@@ -167,6 +167,9 @@ internal static class HostingExtensions
             var clientConfig = new ClientConfiguration();
             builder.Configuration.Bind(ClientConfiguration.Position, clientConfig);
 
+            var duendeConfig = builder.Configuration.GetSection(DuendeConfiguration.Position).Get<DuendeConfiguration>()
+                               ?? throw new InvalidOperationException("Duende Configuration is required");
+
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(connectionString));
 
@@ -181,6 +184,8 @@ internal static class HostingExtensions
             builder.Services
                 .AddIdentityServer(options =>
                 {
+                    options.LicenseKey = duendeConfig.LicenseKey;
+
                     options.Events.RaiseErrorEvents = true;
                     options.Events.RaiseInformationEvents = true;
                     options.Events.RaiseFailureEvents = true;
