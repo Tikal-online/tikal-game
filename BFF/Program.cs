@@ -3,10 +3,15 @@ using BFF.Configuration;
 using BFF.Extensions;
 using Duende.Bff;
 using Duende.Bff.Endpoints;
+using Duende.Bff.Otel;
 using Duende.Bff.Yarp;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.HttpOverrides;
+using OpenTelemetry.Logs;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -81,6 +86,31 @@ builder.Services.AddBff()
     {
         options.Cookie.Name = "__Host-bff";
         options.Cookie.SameSite = SameSiteMode.Strict;
+    });
+
+builder.Logging.ClearProviders();
+builder.Services.AddOpenTelemetry()
+    .ConfigureResource(resourceBuilder => resourceBuilder.AddService(builder.Environment.ApplicationName))
+    .WithTracing(tracing =>
+    {
+        tracing
+            .AddSource(builder.Environment.ApplicationName)
+            .AddAspNetCoreInstrumentation()
+            .AddHttpClientInstrumentation()
+            .AddOtlpExporter();
+    })
+    .WithMetrics(metrics =>
+    {
+        metrics
+            .AddAspNetCoreInstrumentation()
+            .AddHttpClientInstrumentation()
+            .AddMeter(BffMetrics.MeterName)
+            .AddOtlpExporter();
+    })
+    .WithLogging(logging =>
+    {
+        logging
+            .AddOtlpExporter();
     });
 
 builder.Services.AddDataProtection()
