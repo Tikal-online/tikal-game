@@ -1,6 +1,7 @@
 using System.Reflection;
 using BFF;
 using BFF.Configuration;
+using BFF.Data;
 using BFF.Extensions;
 using Duende.Bff;
 using Duende.Bff.Endpoints;
@@ -59,13 +60,22 @@ builder.Services.AddCors(opt =>
     });
 });
 
+var connectionString = builder.Configuration.GetConnectionString();
+
+var migrationsAssembly = typeof(Program).GetTypeInfo().Assembly.GetName().Name;
+
+builder.Services.AddDbContext<DataProtectionDbContext>(options =>
+{
+    options.UseNpgsql(connectionString, sql => sql.MigrationsAssembly(migrationsAssembly));
+});
+
+builder.Services.AddDataProtection()
+    .PersistKeysToDbContext<DataProtectionDbContext>()
+    .SetApplicationName("BFF");
+
 builder.Services.AddBff(options => { options.LicenseKey = duendeConfiguration.LicenseKey; })
     .AddEntityFrameworkServerSideSessions(options =>
     {
-        var connectionString = builder.Configuration.GetConnectionString();
-
-        var migrationsAssembly = typeof(Program).GetTypeInfo().Assembly.GetName().Name;
-
         options.UseNpgsql(connectionString, sql => sql.MigrationsAssembly(migrationsAssembly));
     })
     .AddSessionCleanupBackgroundProcess()
@@ -131,9 +141,6 @@ builder.Services.AddOpenTelemetry()
         logging
             .AddOtlpExporter();
     });
-
-builder.Services.AddDataProtection()
-    .SetApplicationName("BFF");
 
 builder.Services.AddHealthChecks();
 

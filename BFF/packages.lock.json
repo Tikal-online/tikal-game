@@ -52,6 +52,15 @@
           "Yarp.ReverseProxy": "2.1.0"
         }
       },
+      "Microsoft.AspNetCore.DataProtection.EntityFrameworkCore": {
+        "type": "Direct",
+        "requested": "[10.0.7, )",
+        "resolved": "10.0.7",
+        "contentHash": "chFGlgGqA0/CuB3a9yEosU13C29U4u7etvKtn92U3sXjjECrwy5PsDUU4SIuExE9Y1s+v0sOBb+6k7x26JJp+g==",
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore": "10.0.7"
+        }
+      },
       "Microsoft.EntityFrameworkCore.Design": {
         "type": "Direct",
         "requested": "[10.0.7, )",

@@ -1,3 +1,4 @@
+using BFF.Data;
 using Duende.Bff.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,6 +13,7 @@ internal static class WebApplictionExtensions
             using var scope = app.Services.CreateScope();
 
             scope.ServiceProvider.GetRequiredService<SessionDbContext>().Database.Migrate();
+            scope.ServiceProvider.GetRequiredService<DataProtectionDbContext>().Database.Migrate();
         }
     }
 }
