@@ -29,8 +29,9 @@ internal static class HostingExtensions
             return connectionString;
         }
 
-        var options = new DatabaseConfiguration();
-        configuration.GetSection(DatabaseConfiguration.Section).Bind(options);
+        var options =
+            configuration.GetSection(DatabaseConfiguration.Position).Get<DatabaseConfiguration>()
+            ?? throw new InvalidOperationException("Database Configuration is required");
 
         connectionString = $"Server={options.Host};" +
                            $"Port={options.Port};" +
@@ -52,8 +53,9 @@ internal static class HostingExtensions
 
         var configuration = app.ApplicationServices.GetRequiredService<IConfiguration>();
 
-        var clientConfig = new ClientConfiguration();
-        configuration.Bind(ClientConfiguration.Position, clientConfig);
+        var clientConfig =
+            configuration.GetSection(ClientConfiguration.Position).Get<ClientConfiguration>()
+            ?? throw new InvalidOperationException("Client Configuration is required");
 
         foreach (var client in Config.GetClients(clientConfig))
         {
@@ -164,11 +166,13 @@ internal static class HostingExtensions
 
             var migrationsAssembly = typeof(Program).GetTypeInfo().Assembly.GetName().Name;
 
-            var clientConfig = new ClientConfiguration();
-            builder.Configuration.Bind(ClientConfiguration.Position, clientConfig);
+            var clientConfig =
+                builder.Configuration.GetSection(ClientConfiguration.Position).Get<ClientConfiguration>()
+                ?? throw new InvalidOperationException("Client Configuration is required");
 
-            var duendeConfig = builder.Configuration.GetSection(DuendeConfiguration.Position).Get<DuendeConfiguration>()
-                               ?? throw new InvalidOperationException("Duende Configuration is required");
+            var duendeConfig =
+                builder.Configuration.GetSection(DuendeConfiguration.Position).Get<DuendeConfiguration>()
+                ?? throw new InvalidOperationException("Duende Configuration is required");
 
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(connectionString));
