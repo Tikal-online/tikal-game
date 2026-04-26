@@ -31,9 +31,19 @@ jobs:
       project-directory: BFF
       project-name: bff
 
+  migrate:
+    name: Migrate
+    needs: release
+    if: github.ref == 'refs/heads/main'
+    uses: ./.github/workflows/bff-migrate-db.yaml
+    secrets: inherit
+    with:
+      project-directory: BFF
+      keyvault-name: tikal-tikalbff-keyvault
+
   deploy:
     name: Deploy
-    needs: release
+    needs: [ migrate, release ]
     if: github.ref == 'refs/heads/main'
     uses: ./.github/workflows/deploy-release.yaml
     secrets: inherit
