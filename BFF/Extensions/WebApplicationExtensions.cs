@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BFF.Extensions;
 
-internal static class WebApplictionExtensions
+internal static class WebApplicationExtensions
 {
     extension(WebApplication app)
     {
