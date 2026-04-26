@@ -1,13 +1,18 @@
+using System.Reflection;
 using BFF;
 using BFF.Configuration;
+using BFF.Data;
 using BFF.Extensions;
 using Duende.Bff;
 using Duende.Bff.Endpoints;
+using Duende.Bff.EntityFramework;
 using Duende.Bff.Otel;
 using Duende.Bff.Yarp;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.EntityFrameworkCore;
+using Npgsql;
 using OpenTelemetry.Logs;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
@@ -55,7 +60,25 @@ builder.Services.AddCors(opt =>
     });
 });
 
+var connectionString = builder.Configuration.GetConnectionString();
+
+var migrationsAssembly = typeof(Program).GetTypeInfo().Assembly.GetName().Name;
+
+builder.Services.AddDbContext<DataProtectionDbContext>(options =>
+{
+    options.UseNpgsql(connectionString, sql => sql.MigrationsAssembly(migrationsAssembly));
+});
+
+builder.Services.AddDataProtection()
+    .PersistKeysToDbContext<DataProtectionDbContext>()
+    .SetApplicationName("BFF");
+
 builder.Services.AddBff(options => { options.LicenseKey = duendeConfiguration.LicenseKey; })
+    .AddEntityFrameworkServerSideSessions(options =>
+    {
+        options.UseNpgsql(connectionString, sql => sql.MigrationsAssembly(migrationsAssembly));
+    })
+    .AddSessionCleanupBackgroundProcess()
     .AddRemoteApis()
     .ConfigureOpenIdConnect(options =>
     {
@@ -101,6 +124,7 @@ builder.Services.AddOpenTelemetry()
             .AddSource(builder.Environment.ApplicationName)
             .AddAspNetCoreInstrumentation()
             .AddHttpClientInstrumentation()
+            .AddNpgsql()
             .AddOtlpExporter();
     })
     .WithMetrics(metrics =>
@@ -108,6 +132,7 @@ builder.Services.AddOpenTelemetry()
         metrics
             .AddAspNetCoreInstrumentation()
             .AddHttpClientInstrumentation()
+            .AddNpgsqlInstrumentation()
             .AddMeter(BffMetrics.MeterName)
             .AddOtlpExporter();
     })
@@ -117,14 +142,16 @@ builder.Services.AddOpenTelemetry()
             .AddOtlpExporter();
     });
 
-builder.Services.AddDataProtection()
-    .SetApplicationName("BFF");
-
 builder.Services.AddHealthChecks();
 
 builder.Services.AddSingleton<IReturnUrlValidator, FrontendHostReturnUrlValidator>();
 
 var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    app.ApplyMigrations();
+}
 
 app.UseForwardedHeaders();
 
