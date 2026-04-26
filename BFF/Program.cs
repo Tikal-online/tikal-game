@@ -30,6 +30,10 @@ var authConfiguration =
     builder.Configuration.GetSection(AuthConfiguration.Position).Get<AuthConfiguration>()
     ?? throw new InvalidOperationException("Authentication configuration is required");
 
+var duendeConfiguration =
+    builder.Configuration.GetSection(DuendeConfiguration.Position).Get<DuendeConfiguration>()
+    ?? throw new InvalidOperationException("Duende configuration is required");
+
 builder.Services.Configure<ForwardedHeadersOptions>(options =>
 {
     options.ForwardedHeaders = ForwardedHeaders.XForwardedHost |
@@ -51,7 +55,7 @@ builder.Services.AddCors(opt =>
     });
 });
 
-builder.Services.AddBff()
+builder.Services.AddBff(options => { options.LicenseKey = duendeConfiguration.LicenseKey; })
     .AddRemoteApis()
     .ConfigureOpenIdConnect(options =>
     {
