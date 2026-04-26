@@ -19,11 +19,21 @@
         <PackageReference Include="Duende.BFF"/>
         <PackageReference Include="Duende.BFF.EntityFramework"/>
         <PackageReference Include="Duende.BFF.Yarp"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL"/>
+        <PackageReference Include="Npgsql.OpenTelemetry"/>
         <PackageReference Include="OpenTelemetry"/>
         <PackageReference Include="OpenTelemetry.Exporter.OpenTelemetryProtocol"/>
         <PackageReference Include="OpenTelemetry.Extensions.Hosting"/>
         <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore"/>
         <PackageReference Include="OpenTelemetry.Instrumentation.Http"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Folder Include="Data\Migrations\"/>
     </ItemGroup>
 
 </Project>
