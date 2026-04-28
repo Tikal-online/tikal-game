@@ -52,6 +52,12 @@ nav = [
       { "Level 2" = "building-block-view/level2.md" }
     ] 
   },
+  { "Runtime View" = [
+      "runtime-view/index.md",
+      { "Authentication and Session Management" = "runtime-view/authentication&sessionmanagement.md" },
+      { "Backend Internals" = "runtime-view/backend-internals.md" }
+    ] 
+  }
 ]
 
 # With the "extra_css" option you can add your own CSS styling to customize
