@@ -52,29 +52,7 @@ public class Index : PageModel
         // the user clicked the "cancel" button
         if (Input.Button != "register")
         {
-            if (context == null)
-            {
-                // since we don't have a valid context, then we just go back to the home page
-                return Redirect("~/");
-            }
-
-            // This "can't happen", because if the ReturnUrl was null, then the context would be null
-            ArgumentNullException.ThrowIfNull(Input.ReturnUrl);
-
-            // if the user cancels, send a result back into IdentityServer as if they 
-            // denied the consent (even if this client does not require consent).
-            // this will send back  access denied OIDC error response to the client.
-            await _interaction.DenyAuthorizationAsync(context, AuthorizationError.AccessDenied);
-
-            // we can trust model.ReturnUrl since GetAuthorizationContextAsync returned non-null
-            if (context.IsNativeClient())
-            {
-                // The client is native, so this change in how to
-                // return the response is for better UX for the end user.
-                return this.LoadingPage(Input.ReturnUrl);
-            }
-
-            return Redirect(Input.ReturnUrl ?? "~/");
+            return await CancelAuthentication(context);
         }
 
         if (ModelState.IsValid)
@@ -88,43 +66,7 @@ public class Index : PageModel
 
             if (result.Succeeded)
             {
-                await _signInManager.PasswordSignInAsync(Input.Username!, Input.Password!, Input.RememberLogin, true);
-
-                await _events.RaiseAsync(new UserLoginSuccessEvent(user.UserName,
-                    user.Id,
-                    user.UserName,
-                    clientId: context?.Client.ClientId));
-                Telemetry.Metrics.UserLogin(context?.Client.ClientId, IdentityServerConstants.LocalIdentityProvider);
-
-                if (context != null)
-                {
-                    // This "can't happen", because if the ReturnUrl was null, then the context would be null
-                    ArgumentNullException.ThrowIfNull(Input.ReturnUrl);
-
-                    if (context.IsNativeClient())
-                    {
-                        // The client is native, so this change in how to
-                        // return the response is for better UX for the end user.
-                        return this.LoadingPage(Input.ReturnUrl);
-                    }
-
-                    // we can trust model.ReturnUrl since GetAuthorizationContextAsync returned non-null
-                    return Redirect(Input.ReturnUrl ?? "~/");
-                }
-
-                // request for a local page
-                if (Url.IsLocalUrl(Input.ReturnUrl))
-                {
-                    return Redirect(Input.ReturnUrl);
-                }
-
-                if (string.IsNullOrEmpty(Input.ReturnUrl))
-                {
-                    return Redirect("~/");
-                }
-
-                // user might have clicked on a malicious link - should be logged
-                throw new ArgumentException("invalid return URL");
+                return await LoginUser(context, user);
             }
 
             foreach (var error in result.Errors)
@@ -135,6 +77,74 @@ public class Index : PageModel
 
         BuildModelAsync(Input.ReturnUrl);
         return Page();
+    }
+
+    private async Task<IActionResult> CancelAuthentication(AuthorizationRequest? context)
+    {
+        if (context == null)
+        {
+            // since we don't have a valid context, then we just go back to the home page
+            return Redirect("~/");
+        }
+
+        // This "can't happen", because if the ReturnUrl was null, then the context would be null
+        ArgumentNullException.ThrowIfNull(Input.ReturnUrl);
+
+        // if the user cancels, send a result back into IdentityServer as if they 
+        // denied the consent (even if this client does not require consent).
+        // this will send back  access denied OIDC error response to the client.
+        await _interaction.DenyAuthorizationAsync(context, AuthorizationError.AccessDenied);
+
+        // we can trust model.ReturnUrl since GetAuthorizationContextAsync returned non-null
+        if (context.IsNativeClient())
+        {
+            // The client is native, so this change in how to
+            // return the response is for better UX for the end user.
+            return this.LoadingPage(Input.ReturnUrl);
+        }
+
+        return Redirect(Input.ReturnUrl ?? "~/");
+    }
+
+    private async Task<IActionResult> LoginUser(AuthorizationRequest? context, ApplicationUser user)
+    {
+        await _signInManager.PasswordSignInAsync(Input.Username!, Input.Password!, Input.RememberLogin, true);
+
+        await _events.RaiseAsync(new UserLoginSuccessEvent(user.UserName,
+            user.Id,
+            user.UserName,
+            clientId: context?.Client.ClientId));
+        Telemetry.Metrics.UserLogin(context?.Client.ClientId, IdentityServerConstants.LocalIdentityProvider);
+
+        if (context != null)
+        {
+            // This "can't happen", because if the ReturnUrl was null, then the context would be null
+            ArgumentNullException.ThrowIfNull(Input.ReturnUrl);
+
+            if (context.IsNativeClient())
+            {
+                // The client is native, so this change in how to
+                // return the response is for better UX for the end user.
+                return this.LoadingPage(Input.ReturnUrl);
+            }
+
+            // we can trust model.ReturnUrl since GetAuthorizationContextAsync returned non-null
+            return Redirect(Input.ReturnUrl ?? "~/");
+        }
+
+        // request for a local page
+        if (Url.IsLocalUrl(Input.ReturnUrl))
+        {
+            return Redirect(Input.ReturnUrl);
+        }
+
+        if (string.IsNullOrEmpty(Input.ReturnUrl))
+        {
+            return Redirect("~/");
+        }
+
+        // user might have clicked on a malicious link - should be logged
+        throw new ArgumentException("invalid return URL");
     }
 
     private void BuildModelAsync(string? returnUrl)
