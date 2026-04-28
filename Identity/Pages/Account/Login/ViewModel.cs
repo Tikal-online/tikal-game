@@ -10,20 +10,20 @@ public class ViewModel
     public IEnumerable<ExternalProvider> VisibleExternalProviders =>
         ExternalProviders.Where(x => !string.IsNullOrWhiteSpace(x.DisplayName));
 
-    public bool IsExternalLoginOnly => !EnableLocalLogin && ExternalProviders?.Count() == 1;
+    public bool IsExternalLoginOnly => !EnableLocalLogin && ExternalProviders.Count() == 1;
 
     public string? ExternalLoginScheme =>
-        IsExternalLoginOnly ? ExternalProviders?.SingleOrDefault()?.AuthenticationScheme : null;
+        IsExternalLoginOnly ? ExternalProviders.SingleOrDefault()?.AuthenticationScheme : null;
 
     public class ExternalProvider
     {
-        public string? DisplayName { get; set; }
-        public string AuthenticationScheme { get; set; }
-
         public ExternalProvider(string authenticationScheme, string? displayName = null)
         {
             AuthenticationScheme = authenticationScheme;
             DisplayName = displayName;
         }
+
+        public string? DisplayName { get; set; }
+        public string AuthenticationScheme { get; set; }
     }
 }

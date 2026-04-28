@@ -1,0 +1,159 @@
+using Duende.IdentityServer;
+using Duende.IdentityServer.Events;
+using Duende.IdentityServer.Models;
+using Duende.IdentityServer.Services;
+using Identity.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+
+namespace Identity.Pages.Account.Register;
+
+[SecurityHeaders]
+[AllowAnonymous]
+public class Index : PageModel
+{
+    private readonly IIdentityServerInteractionService _interaction;
+    private readonly UserManager<ApplicationUser> _userManager;
+    private readonly SignInManager<ApplicationUser> _signInManager;
+    private readonly IEventService _events;
+
+    public Index(
+        IIdentityServerInteractionService interaction,
+        UserManager<ApplicationUser> userManager,
+        IEventService events,
+        SignInManager<ApplicationUser> signInManager
+    )
+    {
+        _interaction = interaction;
+        _userManager = userManager;
+        _events = events;
+        _signInManager = signInManager;
+    }
+
+    public ViewModel View { get; set; } = null!;
+
+    [BindProperty]
+    public InputModel Input { get; set; } = null!;
+
+    public IActionResult OnGet(string? returnUrl)
+    {
+        BuildModelAsync(returnUrl);
+
+        return Page();
+    }
+
+    public async Task<IActionResult> OnPost()
+    {
+        // check if we are in the context of an authorization request
+        var context = await _interaction.GetAuthorizationContextAsync(Input.ReturnUrl);
+
+        // the user clicked the "cancel" button
+        if (Input.Button != "register")
+        {
+            return await CancelAuthentication(context);
+        }
+
+        if (ModelState.IsValid)
+        {
+            var user = new ApplicationUser
+            {
+                UserName = Input.Username
+            };
+
+            var result = await _userManager.CreateAsync(user, Input.Password ?? string.Empty);
+
+            if (result.Succeeded)
+            {
+                return await LoginUser(context, user);
+            }
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+        }
+
+        BuildModelAsync(Input.ReturnUrl);
+        return Page();
+    }
+
+    private async Task<IActionResult> CancelAuthentication(AuthorizationRequest? context)
+    {
+        if (context == null)
+        {
+            // since we don't have a valid context, then we just go back to the home page
+            return Redirect("~/");
+        }
+
+        // This "can't happen", because if the ReturnUrl was null, then the context would be null
+        ArgumentNullException.ThrowIfNull(Input.ReturnUrl);
+
+        // if the user cancels, send a result back into IdentityServer as if they 
+        // denied the consent (even if this client does not require consent).
+        // this will send back  access denied OIDC error response to the client.
+        await _interaction.DenyAuthorizationAsync(context, AuthorizationError.AccessDenied);
+
+        // we can trust model.ReturnUrl since GetAuthorizationContextAsync returned non-null
+        if (context.IsNativeClient())
+        {
+            // The client is native, so this change in how to
+            // return the response is for better UX for the end user.
+            return this.LoadingPage(Input.ReturnUrl);
+        }
+
+        return Redirect(Input.ReturnUrl ?? "~/");
+    }
+
+    private async Task<IActionResult> LoginUser(AuthorizationRequest? context, ApplicationUser user)
+    {
+        await _signInManager.PasswordSignInAsync(Input.Username!, Input.Password!, Input.RememberLogin, true);
+
+        await _events.RaiseAsync(new UserLoginSuccessEvent(user.UserName,
+            user.Id,
+            user.UserName,
+            clientId: context?.Client.ClientId));
+        Telemetry.Metrics.UserLogin(context?.Client.ClientId, IdentityServerConstants.LocalIdentityProvider);
+
+        if (context != null)
+        {
+            // This "can't happen", because if the ReturnUrl was null, then the context would be null
+            ArgumentNullException.ThrowIfNull(Input.ReturnUrl);
+
+            if (context.IsNativeClient())
+            {
+                // The client is native, so this change in how to
+                // return the response is for better UX for the end user.
+                return this.LoadingPage(Input.ReturnUrl);
+            }
+
+            // we can trust model.ReturnUrl since GetAuthorizationContextAsync returned non-null
+            return Redirect(Input.ReturnUrl ?? "~/");
+        }
+
+        // request for a local page
+        if (Url.IsLocalUrl(Input.ReturnUrl))
+        {
+            return Redirect(Input.ReturnUrl);
+        }
+
+        if (string.IsNullOrEmpty(Input.ReturnUrl))
+        {
+            return Redirect("~/");
+        }
+
+        // user might have clicked on a malicious link - should be logged
+        throw new ArgumentException("invalid return URL");
+    }
+
+    private void BuildModelAsync(string? returnUrl)
+    {
+        Input = new InputModel
+        {
+            ReturnUrl = returnUrl
+        };
+
+        View = new ViewModel();
+    }
+}
