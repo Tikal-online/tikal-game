@@ -6,9 +6,5 @@ internal sealed record ClientConfiguration
 
     public required string Secret { get; set; }
 
-    public ICollection<string> RedirectUris { get; set; } = [];
-
-    public ICollection<string> PostLogoutRedirectUris { get; set; } = [];
-
-    public required string FrontendChannelLogoutUri { get; set; }
+    public required string BffUrl { get; set; }
 }

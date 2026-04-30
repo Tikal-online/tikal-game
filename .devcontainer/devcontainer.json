@@ -1,16 +1,23 @@
 {
-  "name": "ASP.NET Core",
-  "image": "mcr.microsoft.com/devcontainers/dotnet:10.0",
+  "name": "Tikal",
+  "image": "mcr.microsoft.com/devcontainers/dotnet:dev-10.0-noble",
   "features": {
     "ghcr.io/devcontainers/features/git:1": {},
-    "ghcr.io/devcontainers-extra/features/mise:1": {}
+    "ghcr.io/devcontainers/features/git-lfs:1": {},
+    "ghcr.io/microsoft/aspire-devcontainer-feature/aspire:2": {},
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {},
+    "ghcr.io/devcontainers/features/node:2.0.0": {
+      "version": "24"
+    },
+    "ghcr.io/devcontainers-extra/features/mise:1": {},
+    "ghcr.io/riccardobravin/devcontainer-features/zensical:0": {}
   },
-  "remoteEnv": {
-    "ASPNETCORE_Kestrel__Certificates__Default__Password": "secret",
-    "ASPNETCORE_Kestrel__Certificates__Default__Path": "/home/vscode/.aspnet/https/aspnetapp.pfx"
-  },
-  "mounts": [
-    "source=${env:HOME}${env:USERPROFILE}/.aspnet/https,target=/home/vscode/.aspnet/https,type=bind"
+  "runArgs": [
+    "--network=host"
   ],
+  "mounts": [
+    "source=usersecrets,target=/home/vscode/.microsoft/usersecrets,type=volume"
+  ],
+  "postStartCommand": "dotnet dev-certs https --trust && sudo chown -R vscode:vscode /home/vscode/.microsoft/usersecrets",
   "remoteUser": "vscode"
 }
