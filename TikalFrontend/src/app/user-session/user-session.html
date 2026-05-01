@@ -5,12 +5,12 @@
 }
 
 @if (isAuthenticated()) {
-  <table class='table table-striped' aria-labelledby="tableLabel">
+  <table aria-labelledby="tableLabel" class="table table-striped">
     <thead>
-    <tr>
-      <th>Type</th>
-      <th>Value(C)</th>
-    </tr>
+      <tr>
+        <th>Type</th>
+        <th>Value(C)</th>
+      </tr>
     </thead>
     <tbody>
       @for (claim of claims() || []; track $index) {
@@ -18,9 +18,10 @@
           <td>{{ claim.type }}</td>
           <td>{{ claim.value }}</td>
         </tr>
-      }
-      @empty {
-        <tr><td colspan="2">No claims available.</td></tr>
+      } @empty {
+        <tr>
+          <td colspan="2">No claims available.</td>
+        </tr>
       }
     </tbody>
   </table>
