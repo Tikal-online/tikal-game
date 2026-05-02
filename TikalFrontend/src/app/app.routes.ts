@@ -1,4 +1,9 @@
 import { Routes } from '@angular/router';
-import { UserSessionComponent } from './user-session/user-session';
+import { Background } from './core/components/background/background';
 
-export const routes: Routes = [{ path: 'user-session', component: UserSessionComponent }];
+export const routes: Routes = [
+  {
+    path: '',
+    component: Background,
+  },
+];
