@@ -16,21 +16,19 @@ on:
 jobs:
   format:
     name: Format
-    runs-on: ubuntu-24.04
+    uses: ./.github/workflows/node-format.yaml
+    with:
+      project-directory: TikalFrontend
 
-    steps:
-      - name: Checkout Actions
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-
-      - name: Enforce Formatting
-        uses: ./.github/actions/node/format
-        with:
-          node-version: 24
-          project-directory: "TikalFrontend"
+  lint:
+    name: Lint
+    uses: ./.github/workflows/node-lint.yaml
+    with:
+      project-directory: TikalFrontend
 
   release:
     name: Release
-    needs: format
+    needs: [ format, lint ]
     permissions:
       contents: write
     if: github.ref == 'refs/heads/main'
