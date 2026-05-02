@@ -35,7 +35,7 @@ jobs:
     permissions:
       contents: write
     if: github.ref == 'refs/heads/main'
-    uses: ./.github/workflows/create-release.yaml
+    uses: ./.github/workflows/shared-create-release.yaml
     with:
       project-directory: Identity
       project-name: identity
@@ -54,7 +54,7 @@ jobs:
     name: Deploy
     needs: [ migrate, release ]
     if: github.ref == 'refs/heads/main'
-    uses: ./.github/workflows/deploy-release.yaml
+    uses: ./.github/workflows/shared-deploy-release.yaml
     secrets: inherit
     with:
       dockerfile: ./Identity/Dockerfile

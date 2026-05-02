@@ -34,7 +34,7 @@ jobs:
     permissions:
       contents: write
     if: github.ref == 'refs/heads/main'
-    uses: ./.github/workflows/create-release.yaml
+    uses: ./.github/workflows/shared-create-release.yaml
     with:
       project-directory: TikalFrontend
       project-name: tikal-frontend
@@ -43,7 +43,7 @@ jobs:
     name: Deploy
     needs: release
     if: github.ref == 'refs/heads/main'
-    uses: ./.github/workflows/deploy-release.yaml
+    uses: ./.github/workflows/shared-deploy-release.yaml
     secrets: inherit
     with:
       dockerfile: ./TikalFrontend/Dockerfile

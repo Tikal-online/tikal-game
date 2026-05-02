@@ -49,7 +49,7 @@ jobs:
     permissions:
       contents: write
     if: github.ref == 'refs/heads/main'
-    uses: ./.github/workflows/create-release.yaml
+    uses: ./.github/workflows/shared-create-release.yaml
     with:
       project-directory: TikalBackend
       project-name: tikal-backend
@@ -68,7 +68,7 @@ jobs:
     name: Deploy
     needs: [ migrate, release ]
     if: github.ref == 'refs/heads/main'
-    uses: ./.github/workflows/deploy-release.yaml
+    uses: ./.github/workflows/shared-deploy-release.yaml
     secrets: inherit
     with:
       dockerfile: ./TikalBackend/TikalBackend.WebHost/Dockerfile
