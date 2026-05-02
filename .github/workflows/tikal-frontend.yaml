@@ -20,7 +20,7 @@ jobs:
     
     steps:
       - name: Enforce Formatting
-        uses: ./.github/actions/node/format
+        uses: ./actions/node/format/action.yaml
         with:
           node-version: 24
           project-directory: "TikalFrontend"
