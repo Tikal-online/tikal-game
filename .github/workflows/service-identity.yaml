@@ -1,0 +1,62 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: Identity CI/CD
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - Identity/**
+  pull_request:
+    types: [ opened, synchronize, reopened ]
+    paths:
+      - Identity/**
+
+jobs:
+  format:
+    name: Format
+    uses: ./.github/workflows/dotnet-format.yaml
+    with:
+      project-directory: Identity
+
+  sonar-scan:
+    name: SonarQube Scan
+    needs: format
+    uses: ./.github/workflows/dotnet-sonar-scan.yaml
+    with:
+      project-directory: Identity
+    secrets:
+      SONAR_TOKEN: ${{ secrets.IDENTITY_SONAR_TOKEN }}
+
+  release:
+    name: Release
+    needs: sonar-scan
+    permissions:
+      contents: write
+    if: github.ref == 'refs/heads/main'
+    uses: ./.github/workflows/shared-create-release.yaml
+    with:
+      project-directory: Identity
+      project-name: identity
+
+  migrate:
+    name: Migrate
+    needs: release
+    if: github.ref == 'refs/heads/main'
+    uses: ./.github/workflows/dotnet-identity-migrate-db.yaml
+    secrets: inherit
+    with:
+      project-directory: Identity
+      keyvault-name: tikal-identity-keyvault
+
+  deploy:
+    name: Deploy
+    needs: [ migrate, release ]
+    if: github.ref == 'refs/heads/main'
+    uses: ./.github/workflows/shared-deploy-release.yaml
+    secrets: inherit
+    with:
+      dockerfile: ./Identity/Dockerfile
+      project-name: identity
+      version: ${{ needs.release.outputs.version }}
