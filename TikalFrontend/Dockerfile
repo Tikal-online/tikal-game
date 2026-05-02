@@ -14,7 +14,7 @@ ARG ENV=production
 
 RUN ng build --configuration=${ENV}
 
-FROM nginx:1.29.0-alpine
+FROM nginx:1.30.0-alpine3.23-slim
 
 COPY TikalFrontend/.nginx/nginx.conf /etc/nginx/conf.d/default.conf
 
