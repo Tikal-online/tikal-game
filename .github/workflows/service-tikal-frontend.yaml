@@ -14,8 +14,23 @@ on:
       - TikalFrontend/**
 
 jobs:
+  format:
+    name: Format
+    uses: ./.github/workflows/node-format.yaml
+    with:
+      project-directory: TikalFrontend
+      node-version: 24
+
+  lint:
+    name: Lint
+    uses: ./.github/workflows/node-lint.yaml
+    with:
+      project-directory: TikalFrontend
+      node-version: 24
+
   release:
     name: Release
+    needs: [ format, lint ]
     permissions:
       contents: write
     if: github.ref == 'refs/heads/main'
