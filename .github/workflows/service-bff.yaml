@@ -35,7 +35,7 @@ jobs:
     name: Migrate
     needs: release
     if: github.ref == 'refs/heads/main'
-    uses: ./.github/workflows/bff-migrate-db.yaml
+    uses: ./.github/workflows/dotnet-bff-migrate-db.yaml
     secrets: inherit
     with:
       project-directory: BFF
