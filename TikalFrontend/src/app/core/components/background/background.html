@@ -1,0 +1,35 @@
+<div #backgroundContainer class="background">
+  <img
+    #background
+    alt="background"
+    class="background-img"
+    fill
+    ngSrc="/images/temple.webp"
+    priority
+  />
+  <div #torchBottomLeft class="big-torch">
+    <div class="big-flame"></div>
+    @for (item of [].constructor(12); track $index) {
+      <div class="spark"></div>
+    }
+  </div>
+  <div #torchBottomRight class="big-torch">
+    <div class="big-flame"></div>
+    @for (item of [].constructor(12); track $index) {
+      <div class="spark"></div>
+    }
+  </div>
+  <div #torchTopLeft class="small-torch">
+    <div class="small-flame"></div>
+    @for (item of [].constructor(12); track $index) {
+      <div class="spark"></div>
+    }
+  </div>
+  <div #torchTopRight class="small-torch">
+    <div class="small-flame"></div>
+    @for (item of [].constructor(12); track $index) {
+      <div class="spark"></div>
+    }
+  </div>
+</div>
+<router-outlet />
