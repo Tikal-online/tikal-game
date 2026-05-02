@@ -14,8 +14,20 @@ on:
       - TikalFrontend/**
 
 jobs:
+  format:
+    name: Format
+    runs-on: ubuntu-24.04
+    
+    steps:
+      - name: Enforce Formatting
+        uses: ./.github/actions/node/format
+        with:
+          node-version: 24
+          project-directory: "TikalFrontend"
+  
   release:
     name: Release
+    needs: format
     permissions:
       contents: write
     if: github.ref == 'refs/heads/main'
