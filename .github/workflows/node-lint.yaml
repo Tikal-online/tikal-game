@@ -8,6 +8,9 @@ on:
       project-directory:
         required: true
         type: string
+      node-version:
+        required: true
+        type: string
 
 jobs:
   format:
@@ -30,6 +33,6 @@ jobs:
         run: npm ci
         working-directory: ${{ inputs.project-directory }}
 
-      - name: Enforce formatting
+      - name: Enforce linting
         run: npm run lint-verify
         working-directory: ${{ inputs.project-directory }}

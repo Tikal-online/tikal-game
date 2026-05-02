@@ -19,12 +19,14 @@ jobs:
     uses: ./.github/workflows/node-format.yaml
     with:
       project-directory: TikalFrontend
+      node-version: 24
 
   lint:
     name: Lint
     uses: ./.github/workflows/node-lint.yaml
     with:
       project-directory: TikalFrontend
+      node-version: 24
 
   release:
     name: Release

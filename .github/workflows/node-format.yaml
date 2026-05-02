@@ -8,6 +8,9 @@ on:
       project-directory:
         required: true
         type: string
+      node-version:
+        required: true
+        type: string
 
 jobs:
   format:
