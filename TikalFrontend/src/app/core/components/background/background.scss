@@ -1,6 +1,7 @@
 @use 'sass:color';
 
 .background {
+  z-index: -9999;
   position: absolute;
   height: 100%;
   width: 100%;
