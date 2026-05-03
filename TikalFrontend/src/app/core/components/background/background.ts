@@ -18,7 +18,7 @@ import { RouterOutlet } from '@angular/router';
 export class Background implements AfterViewInit {
   // coordinates of the torches
   private readonly bottomLeftCoordinates = {
-    x: 0.282,
+    x: 0.284,
     y: 0.65,
   };
 
