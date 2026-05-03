@@ -1,0 +1,13 @@
+<span class="button-wrapper">
+  <button
+    class="button"
+    [attr.form]="form()"
+    [class.error]="style() === ButtonStyle.Error"
+    [class.primary]="style() === ButtonStyle.Primary"
+    [disabled]="disabled()"
+    [type]="type()"
+    (click)="onClicked()"
+  >
+    <ng-content />
+  </button>
+</span>

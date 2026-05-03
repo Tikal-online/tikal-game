@@ -1,0 +1,93 @@
+@use 'colors';
+
+.button {
+  position: relative;
+
+  padding-top: 3px;
+
+  width: 100%;
+  min-height: 40px;
+
+  border: 2px solid;
+  border-image: linear-gradient(
+      45deg,
+      transparent 8%,
+      colors.$button-outline 20%,
+      colors.$button-outline 80%,
+      transparent 92%
+    )
+    1;
+
+  font: unset;
+  color: colors.$button-text;
+
+  clip-path: polygon(0 0, calc(100% - 5px) 0, 100% 5px, 100% 100%, 5px 100%, 0 calc(100% - 5px));
+}
+
+.button::after {
+  content: '';
+
+  position: absolute;
+
+  inset: 3px;
+
+  background: linear-gradient(
+    160deg,
+    transparent 10%,
+    colors.$button-outline 20%,
+    colors.$button-outline 80%,
+    transparent 90%
+  );
+  clip-path: polygon(
+    calc(100% - 1.5px) 5px,
+    calc(100% - 1.5px) 100%,
+    100% 100%,
+    100% 5px,
+    calc(100% - 5px) 0,
+    0% 0%,
+    0% calc(100% - 5px),
+    5px 100%,
+    100% 100%,
+    100% calc(100% - 1.5px),
+    5px calc(100% - 1.5px),
+    1.5px calc(100% - 5px),
+    1.5px 1.5px,
+    calc(100% - 5px) 1.5px
+  );
+}
+
+.button-wrapper {
+  filter: drop-shadow(-1px 6px 3px rgba(0, 0, 0, 0.5));
+}
+
+.button-wrapper:active {
+  filter: drop-shadow(-1px 4px 3px rgba(0, 0, 0, 0.5));
+}
+
+.error {
+  background-color: colors.$button-error-main;
+}
+
+.error:hover {
+  background-color: colors.$button-error-hover;
+}
+
+.error:active {
+  background-color: colors.$button-error-pressed;
+}
+
+.primary {
+  background-color: colors.$button-primary-main;
+}
+
+.primary:hover {
+  background-color: colors.$button-primary-hover;
+}
+
+.primary:active {
+  background-color: colors.$button-primary-pressed;
+}
+
+.primary:disabled {
+  background-color: colors.$button-primary-disabled;
+}
