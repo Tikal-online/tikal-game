@@ -1,8 +1,8 @@
 import { patchState, signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
-import { AuthService, Session } from '../../services/auth-service/auth-service';
+import { AuthService, Session, Unauthorized } from '../../services/auth-service/auth-service';
 import { computed, inject } from '@angular/core';
-import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { exhaustMap, pipe, tap } from 'rxjs';
+import { Observable, tap } from 'rxjs';
+import { Result } from 'neverthrow';
 
 type AuthState = {
   session: Session | null;
@@ -13,21 +13,18 @@ const initalState: AuthState = {
 };
 
 export const AuthStore = signalStore(
+  { providedIn: 'root' },
   withState(initalState),
   withComputed(({ session }) => ({
     isAuthenticated: computed(() => session() !== null),
   })),
   withMethods((store, authService = inject(AuthService)) => ({
-    loadSession: rxMethod<void>(
-      pipe(
-        exhaustMap(() => {
-          return authService.GetSession().pipe(
-            tap((result) => {
-              patchState(store, { session: result.isOk() ? result.value : null });
-            }),
-          );
+    loadSession(): Observable<Result<Session, Unauthorized>> {
+      return authService.GetSession().pipe(
+        tap((result) => {
+          patchState(store, { session: result.isOk() ? result.value : null });
         }),
-      ),
-    ),
+      );
+    },
   })),
 );
