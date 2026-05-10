@@ -10,8 +10,6 @@ export const isAuthenticated: CanActivateFn = (state) => {
     return true;
   }
 
-  window.location.replace(
-    `${environment.backend_url}/bff/login?returnUrl=${window.location.origin}/${state.url}`,
-  );
+  window.location.href = `${environment.backend_url}/bff/login?returnUrl=${window.location.origin}/${state.url}`;
   return false;
 };
