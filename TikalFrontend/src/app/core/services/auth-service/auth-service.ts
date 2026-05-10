@@ -21,7 +21,7 @@ export type Unauthorized = {
 export class AuthService {
   private readonly http = inject(HttpClient);
 
-  GetSession(): Observable<Result<Session, Unauthorized>> {
+  getSession(): Observable<Result<Session, Unauthorized>> {
     return this.http.get<Session>(`${environment.backend_url}/bff/user`).pipe(
       map((session: Session) => ok(session)),
       catchError((error: HttpErrorResponse) => {
