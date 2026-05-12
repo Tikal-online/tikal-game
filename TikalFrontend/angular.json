@@ -75,6 +75,11 @@
               "buildTarget": "TikalFrontend:build:development"
             }
           },
+          "options": {
+            "ssl": true,
+            "sslKey": "/.aspnet/dev-certs/trust/key.key",
+            "sslCert": "/.aspnet/dev-certs/trust/cert.crt"
+          },
           "defaultConfiguration": "development"
         },
         "test": {

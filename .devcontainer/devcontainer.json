@@ -16,8 +16,12 @@
     "--network=host"
   ],
   "mounts": [
-    "source=usersecrets,target=/home/vscode/.microsoft/usersecrets,type=volume"
+    "source=usersecrets,target=/home/vscode/.microsoft/usersecrets,type=volume",
+    "source=${localEnv:HOME}/.aspnet/dev-certs,target=/.aspnet/dev-certs/trust,type=bind,consistency=cached"
   ],
-  "postStartCommand": "dotnet dev-certs https --trust && sudo chown -R vscode:vscode /home/vscode/.microsoft/usersecrets",
+  "remoteEnv": {
+    "SSL_CERT_DIR": "/usr/lib/ssl/certs:/home/vscode/.aspnet/dev-certs/trust"
+  },
+  "postStartCommand": "./.devcontainer/init_devcontainer.sh",
   "remoteUser": "vscode"
 }

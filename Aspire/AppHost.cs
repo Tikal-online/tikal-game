@@ -49,10 +49,11 @@ identity.WithEnvironment("Client__BffUrl", bff.GetEndpoint("https"));
 
 // tikal frontend
 var frontend = builder.AddJavaScriptApp("tikal-frontend", "../TikalFrontend")
-    .WithHttpEndpoint(4200, isProxied: false)
+    .WithNpm(installCommand: "ci")
+    .WithHttpsEndpoint(4200, isProxied: false)
     .WithReference(bff)
     .WaitFor(bff);
 
-bff.WithEnvironment("Frontend__Url", frontend.GetEndpoint("http"));
+bff.WithEnvironment("Frontend__Url", frontend.GetEndpoint("https"));
 
 builder.Build().Run();
