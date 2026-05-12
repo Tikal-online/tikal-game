@@ -16,8 +16,20 @@
     "--network=host"
   ],
   "mounts": [
-    "source=usersecrets,target=/home/vscode/.microsoft/usersecrets,type=volume"
+    "source=usersecrets,target=/home/vscode/.microsoft/usersecrets,type=volume",
+    "source=${localEnv:HOME}/.aspnet/dev-certs,target=/dev-certs,type=bind,consistency=cached"
   ],
-  "postStartCommand": "dotnet dev-certs https --trust && sudo chown -R vscode:vscode /home/vscode/.microsoft/usersecrets",
+  "remoteEnv": {
+    "ASPNETCORE_Kestrel__Certificates__Default__Password": "secret",
+    "ASPNETCORE_Kestrel__Certificates__Default__Path": "/dev-certs/dotnet-dev-cert.pfx"
+  },
+  "customizations": {
+    "jetbrains": {
+      "plugins": [
+        "me.rafaelldi.aspire"
+      ]
+    }
+  },
+  "postStartCommand": "./.devcontainer/init_devcontainer.sh",
   "remoteUser": "vscode"
 }
