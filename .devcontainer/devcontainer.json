@@ -17,18 +17,10 @@
   ],
   "mounts": [
     "source=usersecrets,target=/home/vscode/.microsoft/usersecrets,type=volume",
-    "source=${localEnv:HOME}/.aspnet/dev-certs,target=/dev-certs,type=bind,consistency=cached"
+    "source=${localEnv:HOME}/.aspnet/dev-certs,target=/.aspnet/dev-certs/trust,type=bind,consistency=cached"
   ],
   "remoteEnv": {
-    "ASPNETCORE_Kestrel__Certificates__Default__Password": "secret",
-    "ASPNETCORE_Kestrel__Certificates__Default__Path": "/dev-certs/dotnet-dev-cert.pfx"
-  },
-  "customizations": {
-    "jetbrains": {
-      "plugins": [
-        "me.rafaelldi.aspire"
-      ]
-    }
+    "SSL_CERT_DIR": "/usr/lib/ssl/certs:/home/vscode/.aspnet/dev-certs/trust"
   },
   "postStartCommand": "./.devcontainer/init_devcontainer.sh",
   "remoteUser": "vscode"
