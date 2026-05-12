@@ -30,9 +30,18 @@ internal static class Config
 
                 AllowedGrantTypes = GrantTypes.Code,
 
-                RedirectUris = [$"{config.BffUrl}/signin-oidc"],
+                RedirectUris =
+                [
+                    $"{config.BffUrl}/signin-oidc",
+                    $"{config.BackendUrl}/scalar/v1"
+                ],
                 PostLogoutRedirectUris = [$"{config.BffUrl}/signout-callback-oidc"],
                 FrontChannelLogoutUri = $"{config.BffUrl}/signout-oidc",
+
+                AllowedCorsOrigins =
+                [
+                    config.BackendUrl
+                ],
 
                 AllowOfflineAccess = true,
                 AllowedScopes = { "openid", "profile", "tikal-api" }

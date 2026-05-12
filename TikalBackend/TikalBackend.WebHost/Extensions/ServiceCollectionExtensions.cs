@@ -23,8 +23,9 @@ internal static class ServiceCollectionExtensions
             return connectionString;
         }
 
-        var options = new DatabaseConfiguration();
-        configuration.GetSection(DatabaseConfiguration.Section).Bind(options);
+        var options =
+            configuration.GetSection(DatabaseConfiguration.Section).Get<DatabaseConfiguration>()
+            ?? throw new InvalidOperationException("Database Configuration is required");
 
         connectionString = $"Server={options.Host};" +
                            $"Port={options.Port};" +

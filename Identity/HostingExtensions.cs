@@ -139,7 +139,7 @@ internal static class HostingExtensions
 
     extension(ConfigurationManager configurationManager)
     {
-        public void ConfigureKeyVault()
+        private void ConfigureKeyVault()
         {
             var keyVaultName = configurationManager.GetValue<string>("KeyVaultName") ?? string.Empty;
 
@@ -165,10 +165,6 @@ internal static class HostingExtensions
             var connectionString = GetConnectionString(builder.Configuration);
 
             var migrationsAssembly = typeof(Program).GetTypeInfo().Assembly.GetName().Name;
-
-            var clientConfig =
-                builder.Configuration.GetSection(ClientConfiguration.Position).Get<ClientConfiguration>()
-                ?? throw new InvalidOperationException("Client Configuration is required");
 
             var duendeConfig =
                 builder.Configuration.GetSection(DuendeConfiguration.Position).Get<DuendeConfiguration>()
@@ -208,9 +204,6 @@ internal static class HostingExtensions
 
                     options.EnableTokenCleanup = true;
                 })
-                .AddInMemoryIdentityResources(Config.IdentityResources)
-                .AddInMemoryApiScopes(Config.ApiScopes)
-                .AddInMemoryClients(Config.GetClients(clientConfig))
                 .AddAspNetIdentity<ApplicationUser>();
 
             builder.Logging.ClearProviders();

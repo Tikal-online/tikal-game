@@ -30,17 +30,22 @@ var identity = builder.AddProject<Identity>("identity")
 // tikal backend
 var backendDb = postgres.AddDatabase("backendDb");
 
-builder.AddProject<TikalBackend_WebHost>("tikal-backend")
+var backend = builder.AddProject<TikalBackend_WebHost>("tikal-backend")
+    .WithEnvironment("Identity__Secret", clientSecret)
+    .WithEnvironment("Identity__Authority", identity.GetEndpoint("https"))
+    .WithUrl("/scalar/v1", "Scalar")
     .WithReference(backendDb)
     .WaitFor(backendDb);
+
+identity.WithEnvironment("Client__BackendUrl", backend.GetEndpoint("https"));
 
 // bff
 var bffDb = postgres.AddDatabase("bffDb");
 
 var bff = builder.AddProject<BFF>("tikal-bff")
     .WithEnvironment("Auth__Secret", clientSecret)
-    .WithEnvironment("Duende__LicenseKey", duendeLicense)
     .WithEnvironment("Auth__Authority", identity.GetEndpoint("https"))
+    .WithEnvironment("Duende__LicenseKey", duendeLicense)
     .WithReference(bffDb)
     .WaitFor(bffDb)
     .WaitFor(identity);
