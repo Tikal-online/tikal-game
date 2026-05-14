@@ -31,9 +31,9 @@ var frontendConfiguration =
     builder.Configuration.GetSection(FrontendConfiguration.Position).Get<FrontendConfiguration>()
     ?? throw new InvalidOperationException("Frontend configuration is required");
 
-var authConfiguration =
-    builder.Configuration.GetSection(AuthConfiguration.Position).Get<AuthConfiguration>()
-    ?? throw new InvalidOperationException("Authentication configuration is required");
+var identityConfiguration =
+    builder.Configuration.GetSection(IdentityConfiguration.Position).Get<IdentityConfiguration>()
+    ?? throw new InvalidOperationException("Identity configuration is required");
 
 var duendeConfiguration =
     builder.Configuration.GetSection(DuendeConfiguration.Position).Get<DuendeConfiguration>()
@@ -82,9 +82,9 @@ builder.Services.AddBff(options => { options.LicenseKey = duendeConfiguration.Li
     .AddRemoteApis()
     .ConfigureOpenIdConnect(options =>
     {
-        options.Authority = authConfiguration.Authority;
+        options.Authority = identityConfiguration.Authority;
         options.ClientId = "interactive.confidential";
-        options.ClientSecret = authConfiguration.Secret;
+        options.ClientSecret = identityConfiguration.Secret;
         options.ResponseType = "code";
         options.ResponseMode = "query";
 

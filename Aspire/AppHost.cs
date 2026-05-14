@@ -68,8 +68,8 @@ backend.WithEnvironment("Identity__Secret", clientSecret);
 backend.WithEnvironment("Identity__Authority", identity.GetEndpoint("https"));
 
 // bff
-bff.WithEnvironment("Auth__Secret", clientSecret);
-bff.WithEnvironment("Auth__Authority", identity.GetEndpoint("https"));
+bff.WithEnvironment("Identity__Secret", clientSecret);
+bff.WithEnvironment("Identity__Authority", identity.GetEndpoint("https"));
 bff.WithEnvironment("Frontend__Url", frontend.GetEndpoint("https"));
 bff.WithEnvironment("Duende__LicenseKey", duendeLicense);
 
