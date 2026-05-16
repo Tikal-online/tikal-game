@@ -71,6 +71,7 @@ backend.WithEnvironment("Identity__Authority", identity.GetEndpoint("https"));
 bff.WithEnvironment("Identity__Secret", clientSecret);
 bff.WithEnvironment("Identity__Authority", identity.GetEndpoint("https"));
 bff.WithEnvironment("Frontend__Url", frontend.GetEndpoint("https"));
+bff.WithEnvironment("Backend__Url", backend.GetEndpoint("https"));
 bff.WithEnvironment("Duende__LicenseKey", duendeLicense);
 
 await builder.Build().RunAsync();
