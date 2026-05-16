@@ -34,3 +34,117 @@ body {
   font-weight: normal;
   font-style: normal;
 }
+
+// Viewtransitions
+
+// Slide left side
+.slide-left-animation {
+  view-transition-class: slide-left;
+}
+
+@keyframes slide-from-left {
+  from {
+    transform: translateX(-200px);
+  }
+}
+
+@keyframes slide-to-left {
+  to {
+    transform: translateX(-200px);
+  }
+}
+
+::view-transition-new(.slide-left) {
+  animation:
+    slide-from-left 0.6s ease forwards,
+    fade-in 0.4s ease forwards;
+}
+
+::view-transition-old(.slide-left) {
+  animation:
+    slide-to-left 0.6s ease forwards,
+    fade-out 0.6s ease forwards;
+}
+
+// Slide right side
+.slide-right-animation {
+  view-transition-class: slide-right;
+}
+
+@keyframes slide-from-right {
+  from {
+    transform: translateX(200px);
+  }
+}
+
+@keyframes slide-to-right {
+  to {
+    transform: translateX(200px);
+  }
+}
+
+::view-transition-new(.slide-right) {
+  animation:
+    slide-from-right 0.6s ease forwards,
+    fade-in 0.4s ease forwards;
+}
+
+::view-transition-old(.slide-right) {
+  animation:
+    slide-to-right 0.6s ease forwards,
+    fade-out 0.6s ease forwards;
+}
+
+// Slide down
+.slide-down-animation {
+  view-transition-class: slide-down;
+}
+
+@keyframes slide-down {
+  from {
+    transform: translateY(-300px);
+  }
+}
+
+@keyframes slide-up {
+  to {
+    transform: translateY(-300px);
+  }
+}
+
+::view-transition-new(.slide-down) {
+  animation:
+    slide-down 0.6s ease forwards,
+    fade-in 0.4s ease forwards;
+}
+
+::view-transition-old(.slide-down) {
+  animation:
+    slide-up 0.6s ease forwards,
+    fade-out 0.6s ease forwards;
+}
+
+// fade
+.fade-animation {
+  view-transition-class: fade;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+::view-transition-new(.fade) {
+  animation: fade-in 0.4s ease forwards;
+}
+
+::view-transition-old(.fade) {
+  animation: fade-out 0.6s ease forwards;
+}
