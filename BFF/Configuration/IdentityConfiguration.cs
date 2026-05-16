@@ -1,8 +1,8 @@
 namespace BFF.Configuration;
 
-internal sealed record AuthConfiguration
+internal sealed record IdentityConfiguration
 {
-    public const string Position = "Auth";
+    public const string Position = "Identity";
 
     public required string Authority { get; set; }
 

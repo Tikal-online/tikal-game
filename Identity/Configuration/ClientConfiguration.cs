@@ -7,4 +7,6 @@ internal sealed record ClientConfiguration
     public required string Secret { get; set; }
 
     public required string BffUrl { get; set; }
+
+    public required string BackendUrl { get; set; }
 }

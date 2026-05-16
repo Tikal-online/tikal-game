@@ -6,7 +6,7 @@ internal sealed class DatabaseConfiguration
 
     public required string Host { get; set; }
 
-    public int Port { get; set; }
+    public required int Port { get; set; }
 
     public required string DatabaseName { get; set; }
 

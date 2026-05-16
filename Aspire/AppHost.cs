@@ -2,12 +2,18 @@ using Projects;
 
 var builder = DistributedApplication.CreateBuilder(args);
 
-// parameters
+// ================================================
+// Global parameters
+// ================================================
 var clientSecret = builder.AddParameter("ClientSecret", true);
 
 var databasePassword = builder.AddParameter("DatabasePassword", true);
 
 var duendeLicense = builder.AddParameter("DuendeLicense", true);
+
+// ================================================
+// Services
+// ================================================
 
 // database server
 var postgres = builder.AddPostgres("postgres")
@@ -22,15 +28,14 @@ var postgres = builder.AddPostgres("postgres")
 var identityDb = postgres.AddDatabase("identityDb");
 
 var identity = builder.AddProject<Identity>("identity")
-    .WithEnvironment("Client__Secret", clientSecret)
-    .WithEnvironment("Duende__LicenseKey", duendeLicense)
     .WithReference(identityDb)
     .WaitFor(identityDb);
 
 // tikal backend
 var backendDb = postgres.AddDatabase("backendDb");
 
-builder.AddProject<TikalBackend_WebHost>("tikal-backend")
+var backend = builder.AddProject<TikalBackend_WebHost>("tikal-backend")
+    .WithUrl("/scalar/v1", "Scalar")
     .WithReference(backendDb)
     .WaitFor(backendDb);
 
@@ -38,14 +43,8 @@ builder.AddProject<TikalBackend_WebHost>("tikal-backend")
 var bffDb = postgres.AddDatabase("bffDb");
 
 var bff = builder.AddProject<BFF>("tikal-bff")
-    .WithEnvironment("Auth__Secret", clientSecret)
-    .WithEnvironment("Duende__LicenseKey", duendeLicense)
-    .WithEnvironment("Auth__Authority", identity.GetEndpoint("https"))
     .WithReference(bffDb)
-    .WaitFor(bffDb)
-    .WaitFor(identity);
-
-identity.WithEnvironment("Client__BffUrl", bff.GetEndpoint("https"));
+    .WaitFor(bffDb);
 
 // tikal frontend
 var frontend = builder.AddJavaScriptApp("tikal-frontend", "../TikalFrontend")
@@ -54,6 +53,25 @@ var frontend = builder.AddJavaScriptApp("tikal-frontend", "../TikalFrontend")
     .WithReference(bff)
     .WaitFor(bff);
 
-bff.WithEnvironment("Frontend__Url", frontend.GetEndpoint("https"));
+// ================================================
+// Configuration
+// ================================================
 
-builder.Build().Run();
+// identity
+identity.WithEnvironment("Client__Secret", clientSecret);
+identity.WithEnvironment("Client__BffUrl", bff.GetEndpoint("https"));
+identity.WithEnvironment("Client__BackendUrl", backend.GetEndpoint("https"));
+identity.WithEnvironment("Duende__LicenseKey", duendeLicense);
+
+// tikal backend
+backend.WithEnvironment("Identity__Secret", clientSecret);
+backend.WithEnvironment("Identity__Authority", identity.GetEndpoint("https"));
+
+// bff
+bff.WithEnvironment("Identity__Secret", clientSecret);
+bff.WithEnvironment("Identity__Authority", identity.GetEndpoint("https"));
+bff.WithEnvironment("Frontend__Url", frontend.GetEndpoint("https"));
+bff.WithEnvironment("Backend__Url", backend.GetEndpoint("https"));
+bff.WithEnvironment("Duende__LicenseKey", duendeLicense);
+
+await builder.Build().RunAsync();

@@ -34,7 +34,7 @@ internal sealed class SecuritySchemeTransformer : IOpenApiDocumentTransformer
                         {
                             { "openid", "OpenID" },
                             { "profile", "Profile" },
-                            { "tikal-backend", "Access the API" }
+                            { "tikal-api", "Access the API" }
                         }
                     }
                 }
