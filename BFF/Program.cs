@@ -39,6 +39,10 @@ var duendeConfiguration =
     builder.Configuration.GetSection(DuendeConfiguration.Position).Get<DuendeConfiguration>()
     ?? throw new InvalidOperationException("Duende configuration is required");
 
+var backendConfiguration =
+    builder.Configuration.GetSection(BackendConfiguration.Position).Get<BackendConfiguration>()
+    ?? throw new InvalidOperationException("Backend configuration is required");
+
 builder.Services.Configure<ForwardedHeadersOptions>(options =>
 {
     options.ForwardedHeaders = ForwardedHeaders.XForwardedHost |
@@ -161,6 +165,8 @@ app.UseCors();
 app.UseAuthentication();
 app.UseBff();
 app.UseAuthorization();
+
+app.MapRemoteBffApiEndpoint("/Api", new Uri(backendConfiguration.Url)).WithAccessToken();
 
 app.MapHealthChecks("/healthcheck");
 
