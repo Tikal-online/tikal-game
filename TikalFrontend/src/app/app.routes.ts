@@ -18,7 +18,7 @@ export const routes: Routes = [
       {
         path: 'lobbies',
         component: LobbiesPage,
-        canActivate: [hasAccount],
+        canActivate: [isAuthenticated, hasAccount],
       },
       {
         path: 'createAccount',
