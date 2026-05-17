@@ -1,5 +1,15 @@
 <app-menu>
   <h1 class="menu-header">CHOOSE A NAME</h1>
   <hr class="menu-header-line" />
-  <app-button class="cancel-button" [style]="ButtonStyle.Error">CANCEL</app-button>
+  <form id="accountForm" novalidate [formRoot]="accountForm">
+    <div class="input-group">
+      <label for="name" hidden>Name</label>
+      <input class="input" id="name" type="text" [formField]="accountForm.name" />
+    </div>
+    <div class="form-error"></div>
+    <app-button class="form-button" type="submit" [style]="ButtonStyle.Primary">
+      SUBMIT
+    </app-button>
+    <app-button class="form-button" [style]="ButtonStyle.Error">CANCEL</app-button>
+  </form>
 </app-menu>
