@@ -9,6 +9,7 @@ import { csrfHeaderInterceptor } from './core/interceptors/csrf-header.intercept
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { routes } from './app.routes';
 import { AccountStore } from './core/stores/account-store/account-store';
+import { AuthStore } from './core/stores/auth-store/auth-store';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -17,8 +18,10 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withFetch(), withInterceptors([csrfHeaderInterceptor])),
     provideAppInitializer(() => {
       const accountStore = inject(AccountStore);
+      const authStore = inject(AuthStore);
 
       accountStore.loadAccount();
+      authStore.loadSession();
     }),
   ],
 };

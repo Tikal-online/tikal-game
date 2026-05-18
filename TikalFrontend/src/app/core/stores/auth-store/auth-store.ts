@@ -1,21 +1,39 @@
-import { patchState, signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
+import {
+  patchState,
+  signalStore,
+  withComputed,
+  withMethods,
+  withProps,
+  withState,
+} from '@ngrx/signals';
 import { AuthService, Session, Unauthorized } from '../../services/auth-service/auth-service';
 import { computed, inject } from '@angular/core';
-import { Observable, tap } from 'rxjs';
+import { catchError, pipe, switchMap, tap, throwError } from 'rxjs';
 import { Result } from 'neverthrow';
 import { environment } from '../../../../environments/environment';
+import { rxMethod } from '@ngrx/signals/rxjs-interop';
 
-type AuthState = {
+export type AuthStatus = 'idle' | 'loading' | 'fulfilled' | 'unauthorized' | 'serverError';
+
+export type AuthState = {
+  status: AuthStatus;
   session: Session | null;
 };
 
 const initalState: AuthState = {
+  status: 'idle',
   session: null,
 };
 
 export const AuthStore = signalStore(
   { providedIn: 'root' },
+
   withState(initalState),
+
+  withProps(() => ({
+    _authService: inject(AuthService),
+  })),
+
   withComputed(({ session }) => ({
     isAuthenticated: computed(() => session() !== null),
     logoutUrl: computed(
@@ -25,13 +43,28 @@ export const AuthStore = signalStore(
         `&returnUrl=${window.location.origin}`,
     ),
   })),
-  withMethods((store, authService = inject(AuthService)) => ({
-    loadSession(): Observable<Result<Session, Unauthorized>> {
-      return authService.getSession().pipe(
-        tap((result) => {
-          patchState(store, { session: result.isOk() ? result.value : null });
+
+  withMethods((store) => ({
+    loadSession: rxMethod<void>(
+      pipe(
+        tap(() => patchState(store, { status: 'loading' })),
+        switchMap(() => {
+          return store._authService.getSession().pipe(
+            tap((result: Result<Session, Unauthorized>) => {
+              if (result.isOk()) {
+                patchState(store, { session: result.value, status: 'fulfilled' });
+              } else {
+                patchState(store, { session: null, status: 'unauthorized' });
+              }
+            }),
+            catchError((error) => {
+              patchState(store, { session: null, status: 'serverError' });
+
+              return throwError(() => error);
+            }),
+          );
         }),
-      );
-    },
+      ),
+    ),
   })),
 );
