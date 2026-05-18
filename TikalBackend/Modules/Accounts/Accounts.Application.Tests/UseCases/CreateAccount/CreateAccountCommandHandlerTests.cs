@@ -12,10 +12,10 @@ internal sealed class CreateAccountCommandHandlerTests
 {
     // dependencies
     private Mock<AccountRepository> accountRepository;
+    private Mock<UnitOfWork> unitOfWork;
 
     // under test
     private CreateAccountCommandHandler handler;
-    private Mock<UnitOfWork> unitOfWork;
 
     [SetUp]
     public void Setup()
