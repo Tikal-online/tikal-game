@@ -1,1 +1,7 @@
-<router-outlet />
+@if (initializing()) {
+  <p>Initializing...</p>
+} @else if (initializationFailed()) {
+  <p>Initialization Failed</p>
+} @else {
+  <router-outlet />
+}
