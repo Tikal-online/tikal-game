@@ -34,13 +34,13 @@ public sealed partial class AccountsController : ApiController
             return AccountNotFound(userId);
         }
 
-        var dto = new AccountDto { Name = result.Name, UserId = result.UserId };
+        var dto = AccountDto.FromModel(result);
 
         return Ok(dto);
     }
 
     [HttpPost]
-    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType<AccountDto>(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     [EndpointDescription("Creates a new account for the currently authenticated user")]
     public async Task<IActionResult> CreateAccount(
@@ -55,7 +55,7 @@ public sealed partial class AccountsController : ApiController
         var result = await sender.Send(command, cancellationToken);
 
         return result.Match<IActionResult>(
-            _ => CreatedAtAction(nameof(GetMe), null),
+            accountModel => CreatedAtAction(nameof(GetMe), AccountDto.FromModel(accountModel)),
             duplicateUserId => AccountAlreadyExists(duplicateUserId.UserId)
         );
     }
