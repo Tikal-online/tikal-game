@@ -56,11 +56,5 @@ export class CreateAccount {
 
   private readonly route = inject(ActivatedRoute);
 
-  private returnUrl = '/';
-
-  constructor() {
-    this.route.queryParams.subscribe((params) => {
-      this.returnUrl = params['returnUrl'] || '/';
-    });
-  }
+  private readonly returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') ?? '/';
 }
