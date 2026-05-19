@@ -14,10 +14,6 @@ export class App {
 
   private readonly authStore = inject(AuthStore);
 
-  readonly initializing = computed(
-    () => this.accountStore.loadingStatus() === 'loading' || this.authStore.status() === 'loading',
-  );
-
   readonly initializationFailed = computed(
     () =>
       this.accountStore.loadingStatus() === 'serverError' ||
