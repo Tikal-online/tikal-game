@@ -2,9 +2,9 @@ using Accounts.Application.DataAccess;
 using Accounts.Application.UseCases.CreateAccount;
 using Accounts.Contracts.Commands;
 using Accounts.Contracts.Errors;
+using Accounts.Contracts.Models;
 using Accounts.Domain.Entities;
 using Moq;
-using OneOf.Types;
 
 namespace Accounts.Application.Tests.UseCases.CreateAccount;
 
@@ -60,7 +60,7 @@ internal sealed class CreateAccountCommandHandlerTests
         typeof(CreateAccountCommandTestCases),
         nameof(CreateAccountCommandTestCases.ValidCreateAccountCommands)
     )]
-    public async Task GivenNoAccountForUserId_WhenHandle_ThenReturnsSuccessAndPersistsAccount(
+    public async Task GivenNoAccountForUserId_WhenHandle_ThenReturnsCreatedAccountAndPersistsAccount(
         CreateAccountCommand command
     )
     {
@@ -73,7 +73,12 @@ internal sealed class CreateAccountCommandHandlerTests
         var result = await handler.Handle(command, CancellationToken.None);
 
         // then
-        Assert.That(result.Value, Is.InstanceOf<Success>());
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(result.Value, Is.InstanceOf<AccountModel>());
+            Assert.That(result.AsT0.Name, Is.EqualTo(command.Name));
+            Assert.That(result.AsT0.UserId, Is.EqualTo(command.UserId));
+        }
 
         accountRepository.Verify(r => r.Create(It.IsAny<Account>()), Times.Once);
         unitOfWork.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);

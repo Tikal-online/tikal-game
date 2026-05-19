@@ -1,0 +1,24 @@
+<app-menu>
+  <h1 class="menu-header">CHOOSE A NAME</h1>
+  <hr class="menu-header-line" />
+  <form [formRoot]="accountForm">
+    <label for="name" hidden>Name</label>
+    <input class="input" id="name" type="text" [formField]="accountForm.name" />
+    <div class="form-error">
+      @if (accountForm.name().touched() && accountForm.name().invalid()) {
+        @for (error of accountForm.name().errors(); track error.message) {
+          <p>{{ error.message }}</p>
+        }
+      }
+    </div>
+    <app-button
+      class="form-button"
+      type="submit"
+      [disabled]="accountForm().invalid()"
+      [style]="ButtonStyle.Primary"
+    >
+      SUBMIT
+    </app-button>
+    <app-button class="form-button" [style]="ButtonStyle.Error">CANCEL</app-button>
+  </form>
+</app-menu>

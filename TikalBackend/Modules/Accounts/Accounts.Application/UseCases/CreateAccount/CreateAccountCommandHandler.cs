@@ -1,15 +1,15 @@
 using Accounts.Application.DataAccess;
 using Accounts.Contracts.Commands;
 using Accounts.Contracts.Errors;
+using Accounts.Contracts.Models;
 using Accounts.Domain.Entities;
 using OneOf;
-using OneOf.Types;
 using Shared.Contracts.Messaging;
 
 namespace Accounts.Application.UseCases.CreateAccount;
 
 internal sealed class CreateAccountCommandHandler
-    : CommandHandler<CreateAccountCommand, OneOf<Success, DuplicateUserId>>
+    : CommandHandler<CreateAccountCommand, OneOf<AccountModel, DuplicateUserId>>
 {
     private readonly AccountRepository accountRepository;
 
@@ -21,7 +21,7 @@ internal sealed class CreateAccountCommandHandler
         this.unitOfWork = unitOfWork;
     }
 
-    public async Task<OneOf<Success, DuplicateUserId>> Handle(
+    public async Task<OneOf<AccountModel, DuplicateUserId>> Handle(
         CreateAccountCommand request,
         CancellationToken cancellationToken
     )
@@ -43,6 +43,6 @@ internal sealed class CreateAccountCommandHandler
 
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return new Success();
+        return new AccountModel { UserId = newAccount.UserId, Name = newAccount.Name };
     }
 }

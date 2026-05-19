@@ -1,30 +1,64 @@
-import { patchState, signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
-import { Account, AccountService, NotFound } from '../../services/account-service/account-service';
+import { patchState, signalStore, withMethods, withProps, withState } from '@ngrx/signals';
+import {
+  Account,
+  AccountService,
+  Conflict,
+  NotFound,
+} from '../../services/account-service/account-service';
 import { computed, inject } from '@angular/core';
-import { Observable, tap } from 'rxjs';
+import { catchError, firstValueFrom, Observable, tap, throwError } from 'rxjs';
 import { Result } from 'neverthrow';
 
-type AccountState = {
+export type AccountState = {
+  initializationFailed: boolean;
   account: Account | null;
 };
 
-const initalState: AccountState = {
+const initialState: AccountState = {
+  initializationFailed: false,
   account: null,
 };
 
 export const AccountStore = signalStore(
   { providedIn: 'root' },
-  withState(initalState),
-  withComputed(({ account }) => ({
-    hasAccount: computed(() => account() !== null),
+
+  withState(initialState),
+
+  withProps(() => ({
+    _accountService: inject(AccountService),
   })),
-  withMethods((store, accountService = inject(AccountService)) => ({
+
+  withProps((store) => ({
+    hasAccount: computed(() => store.account() !== null),
+  })),
+
+  withMethods((store) => ({
+    // this method returns an observable because it needs to run during app initialization
     loadAccount(): Observable<Result<Account, NotFound>> {
-      return accountService.getAccount().pipe(
-        tap((result) => {
-          patchState(store, { account: result.isOk() ? result.value : null });
+      return store._accountService.getAccount().pipe(
+        tap((result: Result<Account, NotFound>) => {
+          if (result.isOk()) {
+            patchState(store, { account: result.value });
+          }
+        }),
+        catchError((error) => {
+          patchState(store, { initializationFailed: true });
+
+          return throwError(() => error);
         }),
       );
+    },
+
+    createAccount(name: string): Promise<Result<Account, Conflict>> {
+      const request = store._accountService.createAccount(name).pipe(
+        tap((result: Result<Account, Conflict>) => {
+          if (result.isOk()) {
+            patchState(store, { account: result.value });
+          }
+        }),
+      );
+
+      return firstValueFrom(request);
     },
   })),
 );

@@ -1,21 +1,36 @@
-import { patchState, signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
+import {
+  patchState,
+  signalStore,
+  withComputed,
+  withMethods,
+  withProps,
+  withState,
+} from '@ngrx/signals';
 import { AuthService, Session, Unauthorized } from '../../services/auth-service/auth-service';
 import { computed, inject } from '@angular/core';
-import { Observable, tap } from 'rxjs';
+import { catchError, Observable, tap, throwError } from 'rxjs';
 import { Result } from 'neverthrow';
 import { environment } from '../../../../environments/environment';
 
-type AuthState = {
+export type AuthState = {
+  initializationFailed: boolean;
   session: Session | null;
 };
 
 const initalState: AuthState = {
+  initializationFailed: false,
   session: null,
 };
 
 export const AuthStore = signalStore(
   { providedIn: 'root' },
+
   withState(initalState),
+
+  withProps(() => ({
+    _authService: inject(AuthService),
+  })),
+
   withComputed(({ session }) => ({
     isAuthenticated: computed(() => session() !== null),
     logoutUrl: computed(
@@ -25,11 +40,20 @@ export const AuthStore = signalStore(
         `&returnUrl=${window.location.origin}`,
     ),
   })),
-  withMethods((store, authService = inject(AuthService)) => ({
+
+  withMethods((store) => ({
+    // this method returns an observable because it needs to run during app initialization
     loadSession(): Observable<Result<Session, Unauthorized>> {
-      return authService.getSession().pipe(
-        tap((result) => {
-          patchState(store, { session: result.isOk() ? result.value : null });
+      return store._authService.getSession().pipe(
+        tap((result: Result<Session, Unauthorized>) => {
+          if (result.isOk()) {
+            patchState(store, { session: result.value });
+          }
+        }),
+        catchError((error) => {
+          patchState(store, { initializationFailed: true });
+
+          return throwError(() => error);
         }),
       );
     },

@@ -1,5 +1,6 @@
 using System.Net;
 using System.Net.Http.Json;
+using Accounts.Contracts.Models;
 using RestApi.Controllers.Accounts.Dtos;
 using TikalBackend.IntegrationTests.Extensions;
 using TikalBackend.IntegrationTests.Modules.Accounts.Dtos;
@@ -50,14 +51,23 @@ internal sealed class CreateAccountTests : IntegrationTestFixture
     }
 
     [TestCaseSource(typeof(CreateAccountDtoTestCases), nameof(CreateAccountDtoTestCases.ValidCreateAccountDtos))]
-    public async Task GivenNoAccountForUser_WhenCreateAccount_ThenReturnsCreated(
+    public async Task GivenNoAccountForUser_WhenCreateAccount_ThenReturnsCreatedAccount(
         CreateAccountDto createAccountDto
     )
     {
         // when
         var response = await Client.PostAsyncWithUser(createAccountUrl, TestUser.Default, createAccountDto);
 
+        var account = await response.Content.ReadFromJsonAsync<AccountModel>();
+
         // then
-        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Created));
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Created));
+
+            Assert.That(account, Is.Not.Null);
+            Assert.That(account!.UserId, Is.EqualTo(TestUser.Default.UserId));
+            Assert.That(account.Name, Is.EqualTo(createAccountDto.Name));
+        }
     }
 }

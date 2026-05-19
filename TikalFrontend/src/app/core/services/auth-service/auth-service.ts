@@ -22,7 +22,9 @@ export class AuthService {
   private readonly http = inject(HttpClient);
 
   getSession(): Observable<Result<Session, Unauthorized>> {
-    return this.http.get<Session>(`${environment.backend_url}/bff/user`).pipe(
+    const url = `${environment.backend_url}/bff/user`;
+
+    return this.http.get<Session>(url).pipe(
       map((session: Session) => ok(session)),
       catchError((error: HttpErrorResponse) => {
         if (error.status == 401) {
