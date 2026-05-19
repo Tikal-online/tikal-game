@@ -2,13 +2,11 @@
   <h1 class="menu-header">CHOOSE A NAME</h1>
   <hr class="menu-header-line" />
   <form [formRoot]="accountForm">
-    <div class="input-group">
-      <label for="name" hidden>Name</label>
-      <input class="input" id="name" type="text" [formField]="accountForm.name" />
-    </div>
+    <label for="name" hidden>Name</label>
+    <input class="input" id="name" type="text" [formField]="accountForm.name" />
     <div class="form-error">
       @if (accountForm.name().touched() && accountForm.name().invalid()) {
-        @for (error of accountForm.name().errors(); track error) {
+        @for (error of accountForm.name().errors(); track error.message) {
           <p>{{ error.message }}</p>
         }
       }

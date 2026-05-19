@@ -37,6 +37,8 @@ body {
 
 // Menu
 .menu-header {
+  align-self: center;
+
   color: colors.$header-text;
 
   font-size: 2rem;
@@ -65,13 +67,8 @@ form {
   align-items: center;
 }
 
-.input-group {
-  display: flex;
-  justify-content: center;
-}
-
 .input {
-  width: 80%;
+  width: 50%;
 
   margin: 3% 0 3% 0;
   padding: 8px;
@@ -95,6 +92,10 @@ form {
   min-height: 1.8rem;
 
   color: colors.$primary-error;
+}
+
+.form-error > p {
+  text-align: center;
 }
 
 // Viewtransitions
