@@ -6,23 +6,16 @@ import {
   NotFound,
 } from '../../services/account-service/account-service';
 import { computed, inject } from '@angular/core';
-import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { catchError, Observable, pipe, switchMap, tap, throwError } from 'rxjs';
+import { catchError, firstValueFrom, Observable, tap, throwError } from 'rxjs';
 import { Result } from 'neverthrow';
 
-export type AccountLoadingStatus = 'idle' | 'loading' | 'fulfilled' | 'notFound' | 'serverError';
-
-export type AccountCreationStatus = 'idle' | 'creating' | 'fulfilled' | 'conflict' | 'serverError';
-
 export type AccountState = {
-  loadingStatus: AccountLoadingStatus;
-  creationStatus: AccountCreationStatus;
+  initializationFailed: boolean;
   account: Account | null;
 };
 
 const initialState: AccountState = {
-  loadingStatus: 'idle',
-  creationStatus: 'idle',
+  initializationFailed: false,
   account: null,
 };
 
@@ -40,46 +33,32 @@ export const AccountStore = signalStore(
   })),
 
   withMethods((store) => ({
-    // this method returns an observable instead of being an rxMethod so it can run during app initialization
+    // this method returns an observable because it needs to run during app initialization
     loadAccount(): Observable<Result<Account, NotFound>> {
-      patchState(store, { loadingStatus: 'loading' });
-
       return store._accountService.getAccount().pipe(
         tap((result: Result<Account, NotFound>) => {
           if (result.isOk()) {
-            patchState(store, { account: result.value, loadingStatus: 'fulfilled' });
-          } else {
-            patchState(store, { loadingStatus: 'notFound' });
+            patchState(store, { account: result.value });
           }
         }),
         catchError((error) => {
-          patchState(store, { loadingStatus: 'serverError' });
+          patchState(store, { initializationFailed: true });
 
           return throwError(() => error);
         }),
       );
     },
 
-    createAccount: rxMethod<string>(
-      pipe(
-        tap(() => patchState(store, { creationStatus: 'creating' })),
-        switchMap((name: string) => {
-          return store._accountService.createAccount(name).pipe(
-            tap((result: Result<Account, Conflict>) => {
-              if (result.isOk()) {
-                patchState(store, { account: result.value, creationStatus: 'fulfilled' });
-              } else {
-                patchState(store, { creationStatus: 'conflict' });
-              }
-            }),
-            catchError((error) => {
-              patchState(store, { creationStatus: 'serverError' });
-
-              return throwError(() => error);
-            }),
-          );
+    createAccount(name: string): Promise<Result<Account, Conflict>> {
+      const request = store._accountService.createAccount(name).pipe(
+        tap((result: Result<Account, Conflict>) => {
+          if (result.isOk()) {
+            patchState(store, { account: result.value });
+          }
         }),
-      ),
-    ),
+      );
+
+      return firstValueFrom(request);
+    },
   })),
 );

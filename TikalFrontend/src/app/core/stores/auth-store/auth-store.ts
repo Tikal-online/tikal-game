@@ -12,15 +12,13 @@ import { catchError, Observable, tap, throwError } from 'rxjs';
 import { Result } from 'neverthrow';
 import { environment } from '../../../../environments/environment';
 
-export type AuthStatus = 'idle' | 'loading' | 'fulfilled' | 'unauthorized' | 'serverError';
-
 export type AuthState = {
-  status: AuthStatus;
+  initializationFailed: boolean;
   session: Session | null;
 };
 
 const initalState: AuthState = {
-  status: 'idle',
+  initializationFailed: false,
   session: null,
 };
 
@@ -44,20 +42,16 @@ export const AuthStore = signalStore(
   })),
 
   withMethods((store) => ({
-    // this method returns an observable instead of being an rxMethod so it can run during app initialization
+    // this method returns an observable because it needs to run during app initialization
     loadSession(): Observable<Result<Session, Unauthorized>> {
-      patchState(store, { status: 'loading' });
-
       return store._authService.getSession().pipe(
         tap((result: Result<Session, Unauthorized>) => {
           if (result.isOk()) {
-            patchState(store, { session: result.value, status: 'fulfilled' });
-          } else {
-            patchState(store, { status: 'unauthorized' });
+            patchState(store, { session: result.value });
           }
         }),
         catchError((error) => {
-          patchState(store, { status: 'serverError' });
+          patchState(store, { initializationFailed: true });
 
           return throwError(() => error);
         }),
