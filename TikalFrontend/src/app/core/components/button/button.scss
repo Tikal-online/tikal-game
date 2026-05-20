@@ -72,6 +72,10 @@
   background-color: colors.$button-error-hover;
 }
 
+.error:focus {
+  background-color: colors.$button-error-hover;
+}
+
 .error:active {
   background-color: colors.$button-error-pressed;
 }
@@ -81,6 +85,10 @@
 }
 
 .primary:hover {
+  background-color: colors.$button-primary-hover;
+}
+
+.primary:focus {
   background-color: colors.$button-primary-hover;
 }
 
