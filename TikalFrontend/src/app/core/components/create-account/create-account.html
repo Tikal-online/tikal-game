@@ -11,14 +11,9 @@
         }
       }
     </div>
-    <app-button
-      class="form-button"
-      type="submit"
-      [disabled]="accountForm().invalid()"
-      [style]="ButtonStyle.Primary"
-    >
+    <app-button class="form-button" type="submit" [disabled]="accountForm().invalid()">
       SUBMIT
     </app-button>
-    <app-button class="form-button" [style]="ButtonStyle.Error">CANCEL</app-button>
+    <app-button class="form-button" variant="error">CANCEL</app-button>
   </form>
 </app-menu>

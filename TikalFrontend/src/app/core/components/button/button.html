@@ -1,8 +1,7 @@
 <span class="button-wrapper">
   <button
     class="button"
-    [class.error]="style() === ButtonStyle.Error"
-    [class.primary]="style() === ButtonStyle.Primary"
+    [class]="variant()"
     [disabled]="disabled()"
     [type]="type()"
     (click)="onClicked()"

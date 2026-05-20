@@ -1,5 +1,6 @@
 import { Component, input, output } from '@angular/core';
-import { ButtonStyle } from './button-type';
+
+export type ButtonVariant = 'primary' | 'error';
 
 @Component({
   selector: 'app-button',
@@ -8,9 +9,7 @@ import { ButtonStyle } from './button-type';
   styleUrl: './button.scss',
 })
 export class Button {
-  readonly ButtonStyle = ButtonStyle;
-
-  readonly style = input<ButtonStyle>(ButtonStyle.Primary);
+  readonly variant = input<ButtonVariant>('primary');
 
   readonly disabled = input<boolean>(false);
 
