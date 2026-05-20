@@ -1,7 +1,8 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { AuthStore } from '../../../../core/stores/auth-store/auth-store';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-lobbies-page',
   imports: [],
   templateUrl: './lobbies.html',

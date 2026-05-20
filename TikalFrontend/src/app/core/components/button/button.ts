@@ -1,9 +1,10 @@
-import { Component, input, output } from '@angular/core';
+import { Component, input, output, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 export type ButtonVariant = 'primary' | 'error';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-button',
   imports: [RouterLink],
   templateUrl: './button.html',
