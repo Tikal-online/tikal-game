@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { Menu } from '../menu/menu';
 import { Button } from '../button/button';
-import { ButtonStyle } from '../button/button-type';
 import { form, maxLength, required, FormRoot, FormField } from '@angular/forms/signals';
 import { AccountStore } from '../../stores/account-store/account-store';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -18,8 +17,6 @@ type AccountData = {
   styleUrl: './create-account.scss',
 })
 export class CreateAccount {
-  readonly ButtonStyle = ButtonStyle;
-
   readonly accountData = signal<AccountData>({ name: '' });
 
   readonly accountForm = form(
@@ -36,7 +33,9 @@ export class CreateAccount {
           const result = await this.accountStore.createAccount(name);
 
           if (result.isOk()) {
-            this.router.navigate([this.returnUrl]);
+            const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') ?? '/';
+
+            this.router.navigate([returnUrl]);
             return;
           }
 
@@ -55,6 +54,4 @@ export class CreateAccount {
   private readonly router = inject(Router);
 
   private readonly route = inject(ActivatedRoute);
-
-  private readonly returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') ?? '/';
 }
