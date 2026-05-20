@@ -4,6 +4,7 @@ import { Button } from '../button/button';
 import { form, maxLength, required, FormRoot, FormField } from '@angular/forms/signals';
 import { AccountStore } from '../../stores/account-store/account-store';
 import { ActivatedRoute, Router } from '@angular/router';
+import { LoadingOverlay } from '../loading-overlay/loading-overlay';
 
 type AccountData = {
   name: string;
@@ -12,7 +13,7 @@ type AccountData = {
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-create-account',
-  imports: [Menu, Button, FormRoot, FormField],
+  imports: [Menu, Button, FormRoot, FormField, LoadingOverlay],
   templateUrl: './create-account.html',
   styleUrl: './create-account.scss',
 })

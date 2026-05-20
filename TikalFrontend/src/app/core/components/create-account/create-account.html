@@ -17,3 +17,7 @@
     <app-button class="form-button" routerLink="/" variant="error">CANCEL</app-button>
   </form>
 </app-menu>
+
+@if (accountForm().submitting()) {
+  <app-loading-overlay />
+}
