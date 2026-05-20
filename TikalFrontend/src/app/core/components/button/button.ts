@@ -16,8 +16,6 @@ export class Button {
 
   readonly type = input<string>('button');
 
-  readonly form = input<string>('');
-
   readonly clicked = output();
 
   onClicked(): void {
