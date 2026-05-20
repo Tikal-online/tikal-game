@@ -25,4 +25,3 @@ updates:
     directory: "TikalFrontend"
     schedule:
       interval: "daily"
- 
