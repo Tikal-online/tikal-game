@@ -35,7 +35,7 @@ export class CreateAccount {
           if (result.isOk()) {
             const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') ?? '/';
 
-            this.router.navigate([returnUrl]);
+            this.router.navigate([returnUrl], { replaceUrl: true });
             return;
           }
 
