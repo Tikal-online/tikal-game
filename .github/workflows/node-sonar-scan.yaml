@@ -29,8 +29,8 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: >
-            -Dsonar.sources="{{ inputs.project-directory }}"
-            -Dsonar.projectKey="{{ inputs.project-directory }}"
+            -Dsonar.sources="${{ inputs.project-directory }}"
+            -Dsonar.projectKey="${{ inputs.project-directory }}"
             -Dsonar.organization="fmahdi09"
 
       - name: Create SonarQube Summary
