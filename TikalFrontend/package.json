@@ -30,7 +30,7 @@
     "@angular/cli": "~21.2.6",
     "@angular/compiler-cli": "~21.2.0",
     "angular-eslint": "~21.3.1",
-    "eslint": "~10.2.1",
+    "eslint": "~10.4.0",
     "eslint-config-prettier": "~10.1.8",
     "eslint-plugin-prettier": "~5.5.5",
     "eslint-plugin-unused-imports": "~4.4.1",
