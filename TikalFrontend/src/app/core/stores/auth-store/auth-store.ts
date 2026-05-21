@@ -37,7 +37,7 @@ export const AuthStore = signalStore(
       () =>
         `${environment.backend_url}` +
         session()?.find((claim) => claim.type === 'bff:logout_url')?.value +
-        `&returnUrl=${window.location.origin}`,
+        `&returnUrl=${globalThis.location.origin}`,
     ),
   })),
 
