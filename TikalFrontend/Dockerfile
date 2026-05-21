@@ -1,7 +1,10 @@
+ARG NODE_VERSION=24.12.0-alpine
+ARG NGINX_VERSION=alpine3.22
+
 # =========================================
 # Stage 1: Builder
 # =========================================
-FROM dhi.io/node:24-alpine3.22-dev AS builder
+FROM node:${NODE_VERSION} AS builder
 
 WORKDIR /app
 
@@ -18,7 +21,7 @@ RUN npm run build --configuration="${ENV}"
 # =========================================
 # Stage 2: Prepare Nginx
 # =========================================
-FROM dhi.io/nginx:1.28.0-alpine3.21-dev AS runner
+FROM nginxinc/nginx-unprivileged:${NGINX_VERSION} AS runner
 
 COPY TikalFrontend/.nginx/nginx.conf /etc/nginx/conf.d/default.conf
 
