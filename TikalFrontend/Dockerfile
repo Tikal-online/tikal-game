@@ -1,5 +1,5 @@
 ARG NODE_VERSION=24.12.0-alpine
-ARG NGINX_VERSION=alpine3.22
+ARG NGINX_VERSION=stable-alpine3.23-slim
 
 # =========================================
 # Stage 1: Builder
