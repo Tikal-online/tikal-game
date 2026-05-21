@@ -28,9 +28,18 @@ jobs:
       project-directory: TikalFrontend
       node-version: 24
 
+  sonar-scan:
+    name: SonarQube Scan
+    needs: [ format, lint ]
+    uses: ./.github/workflows/node-sonar-scan.yaml
+    with:
+      project-directory: TikalFrontend
+    secrets:
+      SONAR_TOKEN: ${{ secrets.TIKAL_FRONTEND_SONAR_TOKEN }}
+
   release:
     name: Release
-    needs: [ format, lint ]
+    needs: sonar-scan
     permissions:
       contents: write
     if: github.ref == 'refs/heads/main'
