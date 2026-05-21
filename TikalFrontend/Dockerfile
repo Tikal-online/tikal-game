@@ -22,7 +22,7 @@ FROM dhi.io/nginx:1.28.0-alpine3.21-dev AS runner
 
 COPY TikalFrontend/.nginx/nginx.conf /etc/nginx/conf.d/default.conf
 
-COPY --chown=nginx:nginx --from=builder app/dist/TikalFrontend/browser /var/www
+COPY --chown=root:nginx --chmod=750 --from=builder app/dist/TikalFrontend/browser /var/www
 
 USER nginx
 
