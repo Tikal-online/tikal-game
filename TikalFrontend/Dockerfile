@@ -13,7 +13,7 @@ COPY TikalFrontend/ .
 
 ARG ENV=production
 
-RUN npm run build --configuration=${ENV}
+RUN npm run build --configuration="${ENV}"
 
 # =========================================
 # Stage 2: Prepare Nginx
