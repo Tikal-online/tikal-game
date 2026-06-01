@@ -5,6 +5,7 @@ import { form, maxLength, required, FormRoot, FormField } from '@angular/forms/s
 import { AccountStore } from '../../stores/account-store/account-store';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoadingOverlay } from '../loading-overlay/loading-overlay';
+import { translateSignal, TranslocoDirective } from '@jsverse/transloco';
 
 type AccountData = {
   name: string;
@@ -13,7 +14,7 @@ type AccountData = {
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-create-account',
-  imports: [Menu, Button, FormRoot, FormField, LoadingOverlay],
+  imports: [Menu, Button, FormRoot, FormField, LoadingOverlay, TranslocoDirective],
   templateUrl: './create-account.html',
   styleUrl: './create-account.scss',
 })
@@ -23,8 +24,8 @@ export class CreateAccount {
   readonly accountForm = form(
     this.accountData,
     (schemaPath) => {
-      required(schemaPath.name, { message: 'Name is required' });
-      maxLength(schemaPath.name, 30, { message: 'Name cannot exceed 30 characters' });
+      required(schemaPath.name, { message: () => this.nameRequired() });
+      maxLength(schemaPath.name, 30, { message: () => this.nameLength() });
     },
     {
       submission: {
@@ -42,7 +43,7 @@ export class CreateAccount {
 
           return {
             kind: 'serverError',
-            message: 'You already have an account. Please refresh this page',
+            message: this.accountExists(),
             fieldTree: field.name,
           };
         },
@@ -55,4 +56,11 @@ export class CreateAccount {
   private readonly router = inject(Router);
 
   private readonly route = inject(ActivatedRoute);
+
+  // errors
+  private readonly nameRequired = translateSignal('createAccount.errors.nameRequired');
+  private readonly nameLength = translateSignal('createAccount.errors.nameLength', {
+    maxLength: '30',
+  });
+  private readonly accountExists = translateSignal('createAccount.errors.accountExists');
 }

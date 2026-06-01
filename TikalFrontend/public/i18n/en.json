@@ -2,5 +2,15 @@
   "home": {
     "online": "PLAY ONLINE",
     "solo": "PLAY SOLO (WIP)"
+  },
+  "createAccount": {
+    "header": "CHOOSE A NAME",
+    "submit": "SUBMIT",
+    "cancel": "CANCEL",
+    "errors": {
+      "nameRequired": "Name is required",
+      "nameLength": "Name cannot exceed {{ maxLength }} characters",
+      "accountExists": "You already have an account. Please refresh this page"
+    }
   }
 }
