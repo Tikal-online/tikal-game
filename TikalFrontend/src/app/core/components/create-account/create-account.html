@@ -1,22 +1,24 @@
-<app-menu>
-  <h1 class="menu-header">CHOOSE A NAME</h1>
-  <hr class="menu-header-line" />
-  <form [formRoot]="accountForm">
-    <label for="name" hidden>Name</label>
-    <input class="input" id="name" type="text" [formField]="accountForm.name" />
-    <div class="form-error">
-      @if (accountForm.name().touched() && accountForm.name().invalid()) {
-        @for (error of accountForm.name().errors(); track error.message) {
-          <p>{{ error.message }}</p>
+<ng-container *transloco="let t; prefix: 'createAccount'">
+  <app-menu>
+    <h1 class="menu-header">{{ t('header') }}</h1>
+    <hr class="menu-header-line" />
+    <form [formRoot]="accountForm">
+      <label for="name" hidden>Name</label>
+      <input class="input" id="name" type="text" [formField]="accountForm.name" />
+      <div class="form-error">
+        @if (accountForm.name().touched() && accountForm.name().invalid()) {
+          @for (error of accountForm.name().errors(); track error.message) {
+            <p>{{ error.message }}</p>
+          }
         }
-      }
-    </div>
-    <app-button class="form-button" type="submit" [disabled]="accountForm().invalid()">
-      SUBMIT
-    </app-button>
-    <app-button class="form-button" routerLink="/" variant="error">CANCEL</app-button>
-  </form>
-</app-menu>
+      </div>
+      <app-button class="form-button" type="submit" [disabled]="accountForm().invalid()">
+        {{ t('submit') }}
+      </app-button>
+      <app-button class="form-button" routerLink="/" variant="error">{{ t('cancel') }}</app-button>
+    </form>
+  </app-menu>
+</ng-container>
 
 @if (accountForm().submitting()) {
   <app-loading-overlay />

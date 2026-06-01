@@ -9,8 +9,12 @@
       width="1024"
     />
     <div class="button-container">
-      <app-button class="home-screen-button" [disabled]="true"> PLAY SOLO (WIP) </app-button>
-      <app-button class="home-screen-button" routerLink="/lobbies"> PLAY ONLINE </app-button>
+      <ng-container *transloco="let t; prefix: 'home'">
+        <app-button class="home-screen-button" [disabled]="true"> {{ t('solo') }} </app-button>
+        <app-button class="home-screen-button" routerLink="/lobbies">
+          {{ t('online') }}
+        </app-button>
+      </ng-container>
     </div>
   </div>
 </div>
