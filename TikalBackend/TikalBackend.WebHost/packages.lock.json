@@ -435,6 +435,27 @@
           "Npgsql.EntityFrameworkCore.PostgreSQL": "[10.0.2, )"
         }
       },
+      "lobbies.application": {
+        "type": "Project",
+        "dependencies": {
+          "Lobbies.Domain": "[1.0.0, )"
+        }
+      },
+      "lobbies.domain": {
+        "type": "Project",
+        "dependencies": {
+          "FluentValidation": "[12.1.1, )"
+        }
+      },
+      "lobbies.infrastructure": {
+        "type": "Project",
+        "dependencies": {
+          "Lobbies.Application": "[1.0.0, )",
+          "Microsoft.EntityFrameworkCore": "[10.0.8, )",
+          "Microsoft.EntityFrameworkCore.Relational": "[10.0.8, )",
+          "Npgsql.EntityFrameworkCore.PostgreSQL": "[10.0.2, )"
+        }
+      },
       "restapi.controllers": {
         "type": "Project",
         "dependencies": {

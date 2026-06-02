@@ -1,6 +1,7 @@
 using Accounts.Application;
 using Accounts.Infrastructure;
 using FluentValidation;
+using Lobbies.Infrastructure;
 using MediatR;
 using Npgsql;
 using OpenTelemetry.Logs;
@@ -85,6 +86,8 @@ internal static class ServiceCollectionExtensions
             var connectionString = GetConnectionString(configuration);
 
             services.AddAccountsInfrastructure(connectionString);
+
+            services.AddLobbiesInfrastructure(connectionString);
         }
 
         public void AddExceptionHandlers()

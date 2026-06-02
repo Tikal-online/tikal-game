@@ -15,18 +15,18 @@ public static class AccountValidationRules
 {
     extension<T>(IRuleBuilder<T, string> ruleBuilder)
     {
-        public IRuleBuilderOptions<T, string> ValidAccountUserId()
+        public void ValidAccountUserId()
         {
-            return ruleBuilder
+            ruleBuilder
                 .NotEmpty()
                 .WithMessage("UserId cannot be empty")
                 .MaximumLength(100)
                 .WithMessage("UserId cannot exceed 100 characters");
         }
 
-        public IRuleBuilderOptions<T, string> ValidAccountName()
+        public void ValidAccountName()
         {
-            return ruleBuilder
+            ruleBuilder
                 .NotEmpty()
                 .WithMessage("Name cannot be empty")
                 .MaximumLength(30)
