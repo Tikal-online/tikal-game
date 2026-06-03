@@ -12,4 +12,8 @@
         <ProjectReference Include="..\Lobbies.Domain\Lobbies.Domain.csproj"/>
     </ItemGroup>
 
+    <ItemGroup>
+        <InternalsVisibleTo Include="Lobbies.Application.Tests"/>
+    </ItemGroup>
+
 </Project>
