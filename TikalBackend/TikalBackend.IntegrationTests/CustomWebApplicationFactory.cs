@@ -1,4 +1,5 @@
 using Accounts.Infrastructure.Database;
+using Lobbies.Infrastructure.Database;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -34,15 +35,34 @@ internal sealed class CustomWebApplicationFactory : WebApplicationFactory<Progra
                 .AddScheme<AuthenticationSchemeOptions, TestAuthHandler>(TestAuthHandler.SchemeName, _ => { });
 
             // configure test db contexts
-            var contextOptionsDescriptor =
+            var accountContextOptionsDescriptor =
                 services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<AccountsDbContext>));
 
-            if (contextOptionsDescriptor != null)
+            if (accountContextOptionsDescriptor != null)
             {
-                services.Remove(contextOptionsDescriptor);
+                services.Remove(accountContextOptionsDescriptor);
             }
 
             services.AddDbContext<AccountsDbContext>(options =>
+            {
+                options.UseNpgsql(
+                    databaseConnectionString,
+                    npgOptions => npgOptions.MigrationsHistoryTable(
+                        HistoryRepository.DefaultTableName,
+                        AccountsDbContext.Schema
+                    )
+                );
+            });
+
+            var lobbiesContextOptionsDescriptor =
+                services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<LobbiesDbContext>));
+
+            if (lobbiesContextOptionsDescriptor != null)
+            {
+                services.Remove(lobbiesContextOptionsDescriptor);
+            }
+
+            services.AddDbContext<LobbiesDbContext>(options =>
             {
                 options.UseNpgsql(
                     databaseConnectionString,

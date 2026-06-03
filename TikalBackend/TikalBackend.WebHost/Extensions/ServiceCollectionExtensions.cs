@@ -1,6 +1,7 @@
 using Accounts.Application;
 using Accounts.Infrastructure;
 using FluentValidation;
+using Lobbies.Infrastructure;
 using MediatR;
 using Npgsql;
 using OpenTelemetry.Logs;
@@ -69,7 +70,10 @@ internal static class ServiceCollectionExtensions
         {
             services.AddMediatR(c =>
             {
-                c.RegisterServicesFromAssemblies(AssemblyReference.Assembly);
+                c.RegisterServicesFromAssemblies(
+                        AssemblyReference.Assembly,
+                        Lobbies.Application.AssemblyReference.Assembly)
+                    ;
 
                 c.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationPipeline<,>));
             });
@@ -77,7 +81,9 @@ internal static class ServiceCollectionExtensions
 
         public void AddValidators()
         {
-            services.AddValidatorsFromAssemblies([AssemblyReference.Assembly]);
+            services.AddValidatorsFromAssemblies([
+                AssemblyReference.Assembly, Lobbies.Application.AssemblyReference.Assembly
+            ]);
         }
 
         public void AddInfrastructure(IConfiguration configuration)
@@ -85,6 +91,8 @@ internal static class ServiceCollectionExtensions
             var connectionString = GetConnectionString(configuration);
 
             services.AddAccountsInfrastructure(connectionString);
+
+            services.AddLobbiesInfrastructure(connectionString);
         }
 
         public void AddExceptionHandlers()

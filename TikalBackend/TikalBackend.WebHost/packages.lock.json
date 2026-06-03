@@ -113,9 +113,9 @@
       },
       "Scalar.AspNetCore": {
         "type": "Direct",
-        "requested": "[2.14.14, )",
-        "resolved": "2.14.14",
-        "contentHash": "xNa3MadDudKk7y+0gQPBQihVL+JxGP3KNZHB4Zl2W42ATFIffHHHBjsuyKJ4YPUnnA7NUiHR/diqV/FTZC9dkg=="
+        "requested": "[2.14.10, )",
+        "resolved": "2.14.10",
+        "contentHash": "b9UyDRZ3Tmzl+x1uG5WSjphgBk8Zb2BjSWjrKx/q4m7FXaTKjPWKnmk5t8QTzPWHshpEo3kYt9TUE+fZRSmGbQ=="
       },
       "Azure.Core": {
         "type": "Transitive",
@@ -435,10 +435,42 @@
           "Npgsql.EntityFrameworkCore.PostgreSQL": "[10.0.2, )"
         }
       },
+      "lobbies.application": {
+        "type": "Project",
+        "dependencies": {
+          "Accounts.Contracts": "[1.0.0, )",
+          "Lobbies.Contracts": "[1.0.0, )",
+          "Lobbies.Domain": "[1.0.0, )"
+        }
+      },
+      "lobbies.contracts": {
+        "type": "Project",
+        "dependencies": {
+          "Shared.Contracts": "[1.0.0, )"
+        }
+      },
+      "lobbies.domain": {
+        "type": "Project",
+        "dependencies": {
+          "FluentValidation": "[12.1.1, )",
+          "Riok.Mapperly": "[4.3.1, )"
+        }
+      },
+      "lobbies.infrastructure": {
+        "type": "Project",
+        "dependencies": {
+          "Lobbies.Application": "[1.0.0, )",
+          "Microsoft.EntityFrameworkCore": "[10.0.8, )",
+          "Microsoft.EntityFrameworkCore.Relational": "[10.0.8, )",
+          "Npgsql.EntityFrameworkCore.PostgreSQL": "[10.0.2, )"
+        }
+      },
       "restapi.controllers": {
         "type": "Project",
         "dependencies": {
-          "Accounts.Contracts": "[1.0.0, )"
+          "Accounts.Contracts": "[1.0.0, )",
+          "Lobbies.Contracts": "[1.0.0, )",
+          "Riok.Mapperly": "[4.3.1, )"
         }
       },
       "shared.contracts": {
@@ -508,6 +540,12 @@
         "dependencies": {
           "OpenTelemetry.Api.ProviderBuilderExtensions": "1.15.3"
         }
+      },
+      "Riok.Mapperly": {
+        "type": "CentralTransitive",
+        "requested": "[4.3.1, )",
+        "resolved": "4.3.1",
+        "contentHash": "oSE+OVLHyiojrws0QVbQaAT2YKsYbyHqJXPdV7EhGseR/dYgeWS2x1T5qY5I4E+RJkJqMSG+FyZOq4SljWgJWQ=="
       },
       "System.IdentityModel.Tokens.Jwt": {
         "type": "CentralTransitive",

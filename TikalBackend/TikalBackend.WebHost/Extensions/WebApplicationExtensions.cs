@@ -1,4 +1,5 @@
 using Accounts.Infrastructure.Database;
+using Lobbies.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 using TikalBackend.WebHost.Configuration;
@@ -14,8 +15,10 @@ internal static class WebApplicationExtensions
             using var scope = app.Services.CreateScope();
 
             var accountsDbContext = scope.ServiceProvider.GetRequiredService<AccountsDbContext>();
-
             accountsDbContext.Database.Migrate();
+
+            var lobbiesDbContext = scope.ServiceProvider.GetRequiredService<LobbiesDbContext>();
+            lobbiesDbContext.Database.Migrate();
         }
 
         public void UseScalarUi()
