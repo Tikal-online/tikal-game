@@ -59,7 +59,7 @@ internal sealed class CreateLobbyTests : IntegrationTestFixture
             Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Created));
 
             Assert.That(lobby, Is.Not.Null);
-            Assert.That(lobby.Name, Is.EqualTo(createLobbyDto.Name));
+            Assert.That(lobby!.Name, Is.EqualTo(createLobbyDto.Name));
             Assert.That(lobby.MaxPlayers, Is.EqualTo(createLobbyDto.MaxPlayers));
 
 
