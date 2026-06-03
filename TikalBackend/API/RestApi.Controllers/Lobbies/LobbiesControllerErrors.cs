@@ -19,7 +19,7 @@ public sealed partial class LobbiesController
         return Problem(
             title: "Player is already in a lobby",
             detail: "A player may only be in one lobby at a time",
-            statusCode: StatusCodes.Status400BadRequest
+            statusCode: StatusCodes.Status409Conflict
         );
     }
 }
