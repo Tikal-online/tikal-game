@@ -1,4 +1,5 @@
 using Accounts.Contracts.Models;
+using Lobbies.Contracts.Enums;
 using Lobbies.Contracts.Models;
 using Lobbies.Domain.Entities;
 
@@ -12,6 +13,7 @@ internal static class PlayerMapper
         {
             UserId = player.UserId,
             Name = account.Name,
+            SelectedColour = (ColourModel)player.SelectedColour,
             IsReady = player.IsReady,
             IsOwner = player.IsOwner
         };

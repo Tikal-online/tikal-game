@@ -19,7 +19,7 @@ public sealed partial class LobbiesController : ApiController
 
     [HttpPost]
     [ProducesResponseType<LobbyDto>(StatusCodes.Status201Created)]
-    [EndpointDescription("Creates a new lobby with the currently authenticated user.")]
+    [EndpointDescription("Creates a new lobby containing the currently authenticated user.")]
     public async Task<IActionResult> CreateLobby(
         CreateLobbyDto createLobbyDto,
         CancellationToken cancellationToken
