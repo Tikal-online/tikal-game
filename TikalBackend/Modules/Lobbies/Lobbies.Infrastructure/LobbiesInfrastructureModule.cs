@@ -1,5 +1,7 @@
 using Lobbies.Application.DataAccess;
 using Lobbies.Infrastructure.Database;
+using Lobbies.Infrastructure.QueryContexts;
+using Lobbies.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,6 +24,10 @@ public static class LobbiesInfrastructureModule
                     )
                 );
             });
+
+            services.AddScoped<LobbyRepository, DbLobbyRepository>();
+
+            services.AddScoped<PlayerQueryContext, DbPlayerQueryContext>();
 
             services.AddScoped<UnitOfWork>(sp => sp.GetRequiredService<LobbiesDbContext>());
         }

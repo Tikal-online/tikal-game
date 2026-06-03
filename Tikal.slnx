@@ -25,6 +25,7 @@
     </Folder>
     <Folder Name="/TikalBackend/Modules/Lobbies/">
         <Project Path="TikalBackend/Modules/Lobbies/Lobbies.Application/Lobbies.Application.csproj" />
+        <Project Path="TikalBackend/Modules/Lobbies/Lobbies.Contracts/Lobbies.Contracts.csproj" />
         <Project Path="TikalBackend/Modules/Lobbies/Lobbies.Domain/Lobbies.Domain.csproj" />
         <Project Path="TikalBackend/Modules/Lobbies/Lobbies.Infrastructure/Lobbies.Infrastructure.csproj" />
     </Folder>
