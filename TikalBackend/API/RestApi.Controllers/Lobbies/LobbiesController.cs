@@ -1,4 +1,5 @@
 using Lobbies.Contracts.Commands;
+using Lobbies.Contracts.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -36,5 +37,25 @@ public sealed partial class LobbiesController : ApiController
             _ => MissingUserAccount(),
             _ => PlayerAlreadyInALobby()
         );
+    }
+
+    [HttpGet("{Id:long}")]
+    [ProducesResponseType<List<LobbyDto>>(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [EndpointDescription("Gets the lobby with the provided Id")]
+    public async Task<IActionResult> GetLobby(long Id, CancellationToken cancellationToken)
+    {
+        var query = new GetLobbyQuery(Id);
+
+        var result = await sender.Send(query, cancellationToken);
+
+        if (result is null)
+        {
+            return LobbyNotFound(Id);
+        }
+
+        var lobbyDto = LobbyModelMapper.LobbyModelToLobbyDto(result);
+
+        return Ok(lobbyDto);
     }
 }

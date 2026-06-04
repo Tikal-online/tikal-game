@@ -13,4 +13,8 @@
         <InternalsVisibleTo Include="Accounts.Application.Tests"/>
     </ItemGroup>
 
+    <ItemGroup>
+        <PackageReference Include="Riok.Mapperly"/>
+    </ItemGroup>
+
 </Project>

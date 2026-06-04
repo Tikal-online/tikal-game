@@ -27,6 +27,7 @@ public static class LobbiesInfrastructureModule
 
             services.AddScoped<LobbyRepository, DbLobbyRepository>();
 
+            services.AddScoped<LobbyQueryContext, DbLobbyQueryContext>();
             services.AddScoped<PlayerQueryContext, DbPlayerQueryContext>();
 
             services.AddScoped<UnitOfWork>(sp => sp.GetRequiredService<LobbiesDbContext>());
