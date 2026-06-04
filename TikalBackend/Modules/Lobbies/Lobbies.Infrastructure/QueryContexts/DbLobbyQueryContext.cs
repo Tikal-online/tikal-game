@@ -20,4 +20,21 @@ internal sealed class DbLobbyQueryContext : LobbyQueryContext
             .Include(l => l.Players)
             .FirstOrDefaultAsync(l => l.Id == Id);
     }
+
+    public Task<List<Lobby>> GetPaginatedAsync(int pageSize, int pageNumber, string? searchText)
+    {
+        IQueryable<Lobby> query = lobbiesDbContext.Lobbies.AsNoTracking()
+            .Include(l => l.Players);
+
+        if (searchText is not null)
+        {
+            query = query.Where(l => l.Name.ToLower().Contains(searchText.ToLower()));
+        }
+
+        return query
+            .OrderBy(l => l.Id)
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+    }
 }
