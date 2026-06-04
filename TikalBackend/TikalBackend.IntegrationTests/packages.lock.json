@@ -725,7 +725,8 @@
         "type": "Project",
         "dependencies": {
           "Accounts.Contracts": "[1.0.0, )",
-          "Accounts.Domain": "[1.0.0, )"
+          "Accounts.Domain": "[1.0.0, )",
+          "Riok.Mapperly": "[4.3.1, )"
         }
       },
       "accounts.contracts": {

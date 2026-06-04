@@ -22,4 +22,13 @@ public sealed partial class LobbiesController
             statusCode: StatusCodes.Status409Conflict
         );
     }
+
+    private ObjectResult LobbyNotFound(long id)
+    {
+        return Problem(
+            title: "Lobby not found",
+            detail: $"Lobby with ID {id} was not found",
+            statusCode: StatusCodes.Status404NotFound
+        );
+    }
 }

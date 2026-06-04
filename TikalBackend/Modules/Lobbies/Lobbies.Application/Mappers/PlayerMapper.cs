@@ -18,4 +18,14 @@ internal static class PlayerMapper
             IsOwner = player.IsOwner
         };
     }
+
+    public static List<LobbyPlayerModel> PlayersToLobbyPlayerModels(
+        IEnumerable<Player> players,
+        IEnumerable<AccountModel> accounts
+    )
+    {
+        var accountDictionary = accounts.ToDictionary(a => a.UserId);
+
+        return players.Select(p => PlayerToLobbyPlayerModel(p, accountDictionary[p.UserId])).ToList();
+    }
 }
