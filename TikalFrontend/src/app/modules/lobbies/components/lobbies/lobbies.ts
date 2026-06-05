@@ -1,15 +1,11 @@
-import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
-import { AuthStore } from '../../../../core/stores/auth-store/auth-store';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { TranslocoDirective } from '@jsverse/transloco';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-lobbies-page',
-  imports: [],
+  imports: [TranslocoDirective],
   templateUrl: './lobbies.html',
   styleUrl: './lobbies.scss',
 })
-export class LobbiesPage {
-  private readonly authStore = inject(AuthStore);
-
-  logoutUrl = this.authStore.logoutUrl;
-}
+export class LobbiesPage {}
