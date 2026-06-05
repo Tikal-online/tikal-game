@@ -23,6 +23,9 @@ internal sealed class CreateLobbyTests : IntegrationTestFixture
     [TestCaseSource(typeof(CreateLobbyDtoTestCases), nameof(CreateLobbyDtoTestCases.InvalidCreateLobbyDtos))]
     public async Task GivenInvalidCreateLobbyDto_WhenCreateLobby_ThenReturnsBadRequest(CreateLobbyDto createLobbyDto)
     {
+        // given
+        await CreateUserAccount(TestUser.Default);
+
         // when
         var response = await Client.PostAsyncWithUser(createLobbyUrl, TestUser.Default, createLobbyDto);
 
@@ -31,13 +34,13 @@ internal sealed class CreateLobbyTests : IntegrationTestFixture
     }
 
     [TestCaseSource(typeof(CreateLobbyDtoTestCases), nameof(CreateLobbyDtoTestCases.ValidCreateLobbyDtos))]
-    public async Task GivenUserWithoutAccount_WhenCreateLobby_ThenReturnsBadRequest(CreateLobbyDto createLobbyDto)
+    public async Task GivenUserWithoutAccount_WhenCreateLobby_ThenReturnsUnauthorized(CreateLobbyDto createLobbyDto)
     {
         // when
         var response = await Client.PostAsyncWithUser(createLobbyUrl, TestUser.Default, createLobbyDto);
 
         // then
-        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
     }
 
     [TestCaseSource(typeof(CreateLobbyDtoTestCases), nameof(CreateLobbyDtoTestCases.ValidCreateLobbyDtos))]
