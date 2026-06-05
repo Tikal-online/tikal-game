@@ -7,6 +7,7 @@ using Npgsql;
 using OpenTelemetry.Logs;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;
+using Shared.Application;
 using TikalBackend.WebHost.Configuration;
 using TikalBackend.WebHost.ExceptionHandlers;
 using TikalBackend.WebHost.Pipelines;
@@ -66,7 +67,7 @@ internal static class ServiceCollectionExtensions
                 });
         }
 
-        public void AddMediatR()
+        private void AddMediatR()
         {
             services.AddMediatR(c =>
             {
@@ -79,11 +80,20 @@ internal static class ServiceCollectionExtensions
             });
         }
 
-        public void AddValidators()
+        private void AddValidators()
         {
             services.AddValidatorsFromAssemblies([
                 AssemblyReference.Assembly, Lobbies.Application.AssemblyReference.Assembly
             ]);
+        }
+
+        public void AddApplication()
+        {
+            services.AddValidators();
+
+            services.AddMediatR();
+
+            services.AddSharedApplication();
         }
 
         public void AddInfrastructure(IConfiguration configuration)
