@@ -25,6 +25,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\..\..\Shared\Shared.Application.Tests\Shared.Application.Tests.csproj"/>
         <ProjectReference Include="..\Lobbies.Application\Lobbies.Application.csproj"/>
     </ItemGroup>
 

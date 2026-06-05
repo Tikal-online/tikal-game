@@ -1,54 +1,47 @@
-using Accounts.Contracts.Queries;
 using Lobbies.Application.DataAccess;
 using Lobbies.Application.Mappers;
 using Lobbies.Contracts.Commands;
+using Lobbies.Contracts.Enums;
 using Lobbies.Contracts.Errors;
 using Lobbies.Contracts.Models;
 using Lobbies.Domain.Entities;
 using Lobbies.Domain.Enums;
-using MediatR;
 using OneOf;
+using Shared.Application.Contexts;
 using Shared.Contracts.Messaging;
 
 namespace Lobbies.Application.UseCases.CreateLobby;
 
 internal sealed class CreateLobbyCommandHandler
-    : CommandHandler<CreateLobbyCommand, OneOf<LobbyModel, MissingUserAccount, PlayerAlreadyInALobby>>
+    : CommandHandler<CreateLobbyCommand, OneOf<LobbyModel, PlayerAlreadyInALobby>>
 {
     private readonly LobbyRepository lobbyRepository;
 
     private readonly PlayerQueryContext playerQueryContext;
 
-    private readonly ISender sender;
-
     private readonly UnitOfWork unitOfWork;
+
+    private readonly AccountContext accountContext;
 
     public CreateLobbyCommandHandler(
         LobbyRepository lobbyRepository,
         PlayerQueryContext playerQueryContext,
-        ISender sender,
-        UnitOfWork unitOfWork
+        UnitOfWork unitOfWork,
+        AccountContext accountContext
     )
     {
         this.lobbyRepository = lobbyRepository;
         this.playerQueryContext = playerQueryContext;
-        this.sender = sender;
         this.unitOfWork = unitOfWork;
+        this.accountContext = accountContext;
     }
 
-    public async Task<OneOf<LobbyModel, MissingUserAccount, PlayerAlreadyInALobby>> Handle(
+    public async Task<OneOf<LobbyModel, PlayerAlreadyInALobby>> Handle(
         CreateLobbyCommand request,
         CancellationToken cancellationToken
     )
     {
-        var account = await sender.Send(new GetAccountQuery(request.UserId), cancellationToken);
-
-        if (account is null)
-        {
-            return new MissingUserAccount();
-        }
-
-        var playerAlreadyInALobby = await playerQueryContext.PlayerExists(account.UserId);
+        var playerAlreadyInALobby = await playerQueryContext.PlayerExists(accountContext.Account.UserId);
 
         if (playerAlreadyInALobby)
         {
@@ -57,7 +50,7 @@ internal sealed class CreateLobbyCommandHandler
 
         var player = new Player
         {
-            UserId = account.UserId,
+            UserId = accountContext.Account.UserId,
             SelectedColour = Colour.Red,
             IsOwner = true,
             IsReady = false
@@ -74,11 +67,19 @@ internal sealed class CreateLobbyCommandHandler
 
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
-        var playerModel = PlayerMapper.PlayerToLobbyPlayerModel(player, account);
-
         var lobbyModel = LobbyMapper.LobbyToLobbyModel(lobby);
 
-        lobbyModel.Players = [playerModel];
+        lobbyModel.Players =
+        [
+            new LobbyPlayerModel
+            {
+                Name = accountContext.Account.Name,
+                UserId = player.UserId,
+                SelectedColour = (ColourModel)player.SelectedColour,
+                IsOwner = player.IsOwner,
+                IsReady = player.IsReady
+            }
+        ];
 
         return lobbyModel;
     }

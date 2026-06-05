@@ -8,9 +8,6 @@ public sealed class CreateLobbyCommandValidator : AbstractValidator<CreateLobbyC
 {
     public CreateLobbyCommandValidator()
     {
-        RuleFor(x => x.UserId)
-            .ValidPlayerUserId();
-
         RuleFor(x => x.Name)
             .ValidLobbyName();
 

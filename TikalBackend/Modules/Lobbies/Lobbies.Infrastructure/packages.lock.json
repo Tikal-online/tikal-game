@@ -174,7 +174,8 @@
         "dependencies": {
           "Accounts.Contracts": "[1.0.0, )",
           "Lobbies.Contracts": "[1.0.0, )",
-          "Lobbies.Domain": "[1.0.0, )"
+          "Lobbies.Domain": "[1.0.0, )",
+          "Shared.Application": "[1.0.0, )"
         }
       },
       "lobbies.contracts": {
@@ -189,6 +190,9 @@
           "FluentValidation": "[12.1.1, )",
           "Riok.Mapperly": "[4.3.1, )"
         }
+      },
+      "shared.application": {
+        "type": "Project"
       },
       "shared.contracts": {
         "type": "Project",

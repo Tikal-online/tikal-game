@@ -28,15 +28,12 @@ public sealed partial class LobbiesController : ApiController
         CancellationToken cancellationToken
     )
     {
-        var userId = GetCurrentUserId();
-
-        var command = new CreateLobbyCommand(userId, createLobbyDto.Name, createLobbyDto.MaxPlayers);
+        var command = new CreateLobbyCommand(createLobbyDto.Name, createLobbyDto.MaxPlayers);
 
         var result = await sender.Send(command, cancellationToken);
 
         return result.Match<IActionResult>(
             lobbyModel => CreatedAtAction(nameof(CreateLobby), LobbyModelMapper.LobbyModelToLobbyDto(lobbyModel)),
-            _ => MissingUserAccount(),
             _ => PlayerAlreadyInALobby()
         );
     }

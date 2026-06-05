@@ -441,7 +441,8 @@
         "dependencies": {
           "Accounts.Contracts": "[1.0.0, )",
           "Lobbies.Contracts": "[1.0.0, )",
-          "Lobbies.Domain": "[1.0.0, )"
+          "Lobbies.Domain": "[1.0.0, )",
+          "Shared.Application": "[1.0.0, )"
         }
       },
       "lobbies.contracts": {

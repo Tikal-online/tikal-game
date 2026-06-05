@@ -69,6 +69,9 @@
           "Riok.Mapperly": "[4.3.1, )"
         }
       },
+      "shared.application": {
+        "type": "Project"
+      },
       "shared.contracts": {
         "type": "Project",
         "dependencies": {
