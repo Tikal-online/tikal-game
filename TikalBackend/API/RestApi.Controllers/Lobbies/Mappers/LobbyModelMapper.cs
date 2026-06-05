@@ -8,4 +8,8 @@ namespace RestApi.Controllers.Lobbies.Mappers;
 internal static partial class LobbyModelMapper
 {
     public static partial LobbyDto LobbyModelToLobbyDto(LobbyModel lobbyModel);
+
+    public static partial List<LobbySummaryDto> LobbySummaryModelsToLobbySummaryDtos(
+        List<LobbySummaryModel> lobbySummaryModels
+    );
 }

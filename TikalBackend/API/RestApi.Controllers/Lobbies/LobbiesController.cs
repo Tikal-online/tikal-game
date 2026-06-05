@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Lobbies.Contracts.Commands;
 using Lobbies.Contracts.Queries;
 using MediatR;
@@ -20,7 +21,7 @@ public sealed partial class LobbiesController : ApiController
 
     [HttpPost]
     [ProducesResponseType<LobbyDto>(StatusCodes.Status201Created)]
-    [EndpointDescription("Creates a new lobby containing the currently authenticated user.")]
+    [EndpointDescription("Creates a new lobby containing the currently authenticated user")]
     public async Task<IActionResult> CreateLobby(
         CreateLobbyDto createLobbyDto,
         CancellationToken cancellationToken
@@ -57,5 +58,24 @@ public sealed partial class LobbiesController : ApiController
         var lobbyDto = LobbyModelMapper.LobbyModelToLobbyDto(result);
 
         return Ok(lobbyDto);
+    }
+
+    [HttpGet]
+    [ProducesResponseType<List<LobbySummaryDto>>(StatusCodes.Status200OK)]
+    [EndpointDescription("Gets a paginated summary of the currently active lobbies. Can be filtered by lobby name")]
+    public async Task<IActionResult> GetPaginatedLobbies(
+        [FromQuery][Required] int pageSize,
+        [FromQuery][Required] int pageNumber,
+        [FromQuery] string? searchText,
+        CancellationToken cancellationToken
+    )
+    {
+        var query = new GetPaginatedLobbiesQuery(pageSize, pageNumber, searchText);
+
+        var result = await sender.Send(query, cancellationToken);
+
+        var lobbySummaryDtos = LobbyModelMapper.LobbySummaryModelsToLobbySummaryDtos(result);
+
+        return Ok(lobbySummaryDtos);
     }
 }
