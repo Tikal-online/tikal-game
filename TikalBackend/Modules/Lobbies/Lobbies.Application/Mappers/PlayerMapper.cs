@@ -7,7 +7,7 @@ namespace Lobbies.Application.Mappers;
 
 internal static class PlayerMapper
 {
-    public static LobbyPlayerModel PlayerToLobbyPlayerModel(Player player, AccountModel account)
+    private static LobbyPlayerModel PlayerToLobbyPlayerModel(Player player, AccountModel account)
     {
         return new LobbyPlayerModel
         {

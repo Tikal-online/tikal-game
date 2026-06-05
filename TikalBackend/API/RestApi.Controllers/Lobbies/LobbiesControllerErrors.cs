@@ -5,15 +5,6 @@ namespace RestApi.Controllers.Lobbies;
 
 public sealed partial class LobbiesController
 {
-    private ObjectResult MissingUserAccount()
-    {
-        return Problem(
-            title: "Missing user account",
-            detail: "It is required to create an account to access this functionality",
-            statusCode: StatusCodes.Status400BadRequest
-        );
-    }
-
     private ObjectResult PlayerAlreadyInALobby()
     {
         return Problem(

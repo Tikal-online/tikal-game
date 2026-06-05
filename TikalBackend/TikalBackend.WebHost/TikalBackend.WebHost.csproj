@@ -36,6 +36,7 @@
         <ProjectReference Include="..\Modules\Accounts\Accounts.Infrastructure\Accounts.Infrastructure.csproj"/>
         <ProjectReference Include="..\Modules\Lobbies\Lobbies.Application\Lobbies.Application.csproj"/>
         <ProjectReference Include="..\Modules\Lobbies\Lobbies.Infrastructure\Lobbies.Infrastructure.csproj"/>
+        <ProjectReference Include="..\Shared\Shared.Application\Shared.Application.csproj"/>
     </ItemGroup>
 
     <ItemGroup>

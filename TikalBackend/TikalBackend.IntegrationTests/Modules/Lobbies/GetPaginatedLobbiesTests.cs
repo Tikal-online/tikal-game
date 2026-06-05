@@ -30,6 +30,25 @@ internal sealed class GetPaginatedLobbiesTests : IntegrationTestFixture
     }
 
     [Test]
+    public async Task GivenUserWithoutAccount_WhenGetPaginatedLobbies_ThenReturnsUnauthorized()
+    {
+        var queryParams = new Dictionary<string, string?>
+        {
+            ["pageSize"] = "10",
+            ["pageNumber"] = "1",
+            ["searchText"] = ""
+        };
+
+        var url = QueryHelpers.AddQueryString(lobbyUrl, queryParams);
+
+        // when
+        var response = await Client.GetAsyncWithUser(url, TestUser.Default);
+
+        // then
+        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
+    }
+
+    [Test]
     public async Task GivenLobbiesAndSearchString_WhenGetPaginatedLobbies_ThenReturnsLobbiesWithMatchingNames()
     {
         // given

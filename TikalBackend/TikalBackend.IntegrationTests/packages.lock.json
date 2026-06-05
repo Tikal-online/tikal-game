@@ -332,11 +332,6 @@
           "Microsoft.Extensions.DependencyInjection.Abstractions": "10.0.8"
         }
       },
-      "Microsoft.Extensions.DependencyInjection.Abstractions": {
-        "type": "Transitive",
-        "resolved": "10.0.8",
-        "contentHash": "21nbDV60SRPWGIivsyl6lqBeEJNG1sginhhfWgRrr3Ais7aQ12To25OAHQxgoiJkjqy1aQ6RxpZBGYuTi7Ge6A=="
-      },
       "Microsoft.Extensions.DependencyModel": {
         "type": "Transitive",
         "resolved": "10.0.8",
@@ -755,7 +750,8 @@
         "dependencies": {
           "Accounts.Contracts": "[1.0.0, )",
           "Lobbies.Contracts": "[1.0.0, )",
-          "Lobbies.Domain": "[1.0.0, )"
+          "Lobbies.Domain": "[1.0.0, )",
+          "Shared.Application": "[1.0.0, )"
         }
       },
       "lobbies.contracts": {
@@ -788,6 +784,12 @@
           "Riok.Mapperly": "[4.3.1, )"
         }
       },
+      "shared.application": {
+        "type": "Project",
+        "dependencies": {
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "[10.0.8, )"
+        }
+      },
       "shared.contracts": {
         "type": "Project",
         "dependencies": {
@@ -813,7 +815,8 @@
           "OpenTelemetry.Instrumentation.AspNetCore": "[1.15.2, )",
           "OpenTelemetry.Instrumentation.Http": "[1.15.1, )",
           "RestApi.Controllers": "[1.0.0, )",
-          "Scalar.AspNetCore": "[2.14.10, )"
+          "Scalar.AspNetCore": "[2.14.10, )",
+          "Shared.Application": "[1.0.0, )"
         }
       },
       "Azure.Extensions.AspNetCore.Configuration.Secrets": {
@@ -893,6 +896,12 @@
           "Microsoft.Extensions.Configuration.Abstractions": "10.0.8",
           "Microsoft.Extensions.Logging": "10.0.8"
         }
+      },
+      "Microsoft.Extensions.DependencyInjection.Abstractions": {
+        "type": "CentralTransitive",
+        "requested": "[10.0.8, )",
+        "resolved": "10.0.8",
+        "contentHash": "21nbDV60SRPWGIivsyl6lqBeEJNG1sginhhfWgRrr3Ais7aQ12To25OAHQxgoiJkjqy1aQ6RxpZBGYuTi7Ge6A=="
       },
       "Npgsql.OpenTelemetry": {
         "type": "CentralTransitive",

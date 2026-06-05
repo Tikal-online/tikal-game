@@ -5,5 +5,5 @@ using Shared.Contracts.Messaging;
 
 namespace Lobbies.Contracts.Commands;
 
-public sealed record CreateLobbyCommand(string UserId, string Name, int MaxPlayers)
-    : Command<OneOf<LobbyModel, MissingUserAccount, PlayerAlreadyInALobby>>;
+public sealed record CreateLobbyCommand(string Name, int MaxPlayers)
+    : Command<OneOf<LobbyModel, PlayerAlreadyInALobby>>;

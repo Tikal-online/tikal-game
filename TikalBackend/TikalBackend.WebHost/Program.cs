@@ -1,5 +1,6 @@
 using RestApi.Controllers;
 using TikalBackend.WebHost.Extensions;
+using TikalBackend.WebHost.Middleware;
 using TikalBackend.WebHost.SchemaTransformers;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,9 +16,7 @@ builder.Services.ConfigureOpenTelemetry();
 
 builder.Services.AddControllers().AddApplicationPart(AssemblyReference.Assembly);
 
-builder.Services.AddMediatR();
-
-builder.Services.AddValidators();
+builder.Services.AddApplication();
 
 builder.Services.AddInfrastructure(builder.Configuration);
 
@@ -44,6 +43,8 @@ app.UseExceptionHandler();
 app.UseAuthentication();
 
 app.UseAuthorization();
+
+app.UseMiddleware<AccountMiddleware>();
 
 app.MapHealthChecks("/healthcheck");
 

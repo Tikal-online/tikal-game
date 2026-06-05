@@ -30,8 +30,21 @@ internal sealed class GetLobbyTests : IntegrationTestFixture
     }
 
     [TestCaseSource(nameof(LobbyIdTestCases))]
+    public async Task GivenUserWithoutAccount_WhenGetLobby_ThenReturnsUnauthorized(long lobbyId)
+    {
+        // when
+        var response = await Client.GetAsyncWithUser($"{lobbyUrl}/{lobbyId}", TestUser.Default);
+
+        // then
+        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
+    }
+
+    [TestCaseSource(nameof(LobbyIdTestCases))]
     public async Task GivenNoLobbyWithId_WhenGetLobby_ThenReturnsNotFound(long lobbyId)
     {
+        // given
+        await CreateUserAccount(TestUser.Default);
+
         // when
         var response = await Client.GetAsyncWithUser($"{lobbyUrl}/{lobbyId}", TestUser.Default);
 
