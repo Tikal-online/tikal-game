@@ -11,12 +11,12 @@ internal sealed class SendGlobalChatMessageCommandHandler : CommandHandler<SendG
 {
     private readonly AccountContext accountContext;
 
-    private readonly ISender sender;
+    private readonly IPublisher publisher;
 
-    public SendGlobalChatMessageCommandHandler(AccountContext accountContext, ISender sender)
+    public SendGlobalChatMessageCommandHandler(AccountContext accountContext, IPublisher publisher)
     {
         this.accountContext = accountContext;
-        this.sender = sender;
+        this.publisher = publisher;
     }
 
     public async Task<Success> Handle(SendGlobalChatMessageCommand request, CancellationToken cancellationToken)
@@ -25,7 +25,7 @@ internal sealed class SendGlobalChatMessageCommandHandler : CommandHandler<SendG
 
         var notification = new GlobalChatMessageSentNotification(message);
 
-        await sender.Send(notification, cancellationToken);
+        await publisher.Publish(notification, cancellationToken);
 
         return new Success();
     }

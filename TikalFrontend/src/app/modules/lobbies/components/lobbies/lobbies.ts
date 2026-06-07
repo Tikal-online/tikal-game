@@ -1,5 +1,6 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { TranslocoDirective } from '@jsverse/transloco';
+import { GlobalChatService } from '../../services/global-chat-service/global-chat-service';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -8,4 +9,14 @@ import { TranslocoDirective } from '@jsverse/transloco';
   templateUrl: './lobbies.html',
   styleUrl: './lobbies.scss',
 })
-export class LobbiesPage {}
+export class LobbiesPage {
+  private readonly globalChatService = inject(GlobalChatService);
+
+  async connect(): Promise<void> {
+    await this.globalChatService.connect();
+  }
+
+  async sendMessage(): Promise<void> {
+    await this.globalChatService.sendMessage('Testing');
+  }
+}

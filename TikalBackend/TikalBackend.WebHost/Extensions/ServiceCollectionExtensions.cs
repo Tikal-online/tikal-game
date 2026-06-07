@@ -8,7 +8,6 @@ using OpenTelemetry.Logs;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;
 using Shared.Application;
-using SignalRApi.Hubs;
 using TikalBackend.WebHost.Configuration;
 using TikalBackend.WebHost.ExceptionHandlers;
 using TikalBackend.WebHost.Pipelines;
@@ -74,7 +73,8 @@ internal static class ServiceCollectionExtensions
             {
                 c.RegisterServicesFromAssemblies(
                     AssemblyReference.Assembly,
-                    Lobbies.Application.AssemblyReference.Assembly
+                    Lobbies.Application.AssemblyReference.Assembly,
+                    SignalRApi.Hubs.AssemblyReference.Assembly
                 );
 
                 c.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationPipeline<,>));
@@ -93,8 +93,6 @@ internal static class ServiceCollectionExtensions
             services.AddValidators();
 
             services.AddMediatR();
-
-            services.AddSignalRModule();
 
             services.AddSharedApplication();
         }
