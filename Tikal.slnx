@@ -12,6 +12,7 @@
     </Folder>
     <Folder Name="/TikalBackend/API/">
         <Project Path="TikalBackend/API/RestApi.Controllers/RestApi.Controllers.csproj" />
+        <Project Path="TikalBackend/API/SignalRApi.Hubs/SignalRApi.Hubs.csproj" />
     </Folder>
     <Folder Name="/TikalBackend/Modules/">
         <File Path="TikalBackend\Modules\Tests.slnf" />
@@ -31,6 +32,7 @@
         <Project Path="TikalBackend/Modules/Lobbies/Lobbies.Infrastructure/Lobbies.Infrastructure.csproj" />
     </Folder>
     <Folder Name="/TikalBackend/Shared/">
+        <Project Path="TikalBackend/Shared/Shared.Api/Shared.Api.csproj" />
         <Project Path="TikalBackend/Shared/Shared.Application.Tests/Shared.Application.Tests.csproj" />
         <Project Path="TikalBackend/Shared/Shared.Application/Shared.Application.csproj" />
         <Project Path="TikalBackend/Shared/Shared.Contracts/Shared.Contracts.csproj" />

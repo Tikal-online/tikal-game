@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RestApi.Controllers.Lobbies.Dtos;
 using RestApi.Controllers.Lobbies.Mappers;
-using RestApi.Controllers.Shared;
+using Shared.Api;
 
 namespace RestApi.Controllers.Lobbies;
 
@@ -62,8 +62,8 @@ public sealed partial class LobbiesController : ApiController
     [ProducesResponseType<List<LobbySummaryDto>>(StatusCodes.Status200OK)]
     [EndpointDescription("Gets a paginated summary of the currently active lobbies. Can be filtered by lobby name")]
     public async Task<IActionResult> GetPaginatedLobbies(
-        [FromQuery][Required] int pageSize,
-        [FromQuery][Required] int pageNumber,
+        [FromQuery] [Required] int pageSize,
+        [FromQuery] [Required] int pageNumber,
         [FromQuery] string? searchText,
         CancellationToken cancellationToken
     )

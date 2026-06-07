@@ -2,7 +2,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace RestApi.Controllers.Shared;
+namespace RestApi.Controllers;
 
 [Authorize]
 [ApiController]

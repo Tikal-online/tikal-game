@@ -1,4 +1,5 @@
 using RestApi.Controllers;
+using SignalRApi.Hubs.Lobbies.GlobalChat;
 using TikalBackend.WebHost.Extensions;
 using TikalBackend.WebHost.Middleware;
 using TikalBackend.WebHost.SchemaTransformers;
@@ -49,5 +50,7 @@ app.UseMiddleware<AccountMiddleware>();
 app.MapHealthChecks("/healthcheck");
 
 app.MapControllers();
+
+app.MapHub<GlobalChatHub>("/globalChat");
 
 await app.RunAsync();
