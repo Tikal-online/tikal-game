@@ -82,7 +82,8 @@ builder.Services.AddBff(options =>
         options.LicenseKey = duendeConfiguration.LicenseKey;
         // TODO: find a way how to properly guard websocket upgrade requests against csrf attacks
         // The current mechanism requires a custom header which is not possible for websockets
-        options.DisableAntiForgeryCheck = context => context.Request.Method == "CONNECT";
+        options.DisableAntiForgeryCheck = context =>
+            context.Request.Method == "CONNECT" || context.Request.Headers["Upgrade"] == "websocket";
     })
     .AddEntityFrameworkServerSideSessions(options =>
     {
