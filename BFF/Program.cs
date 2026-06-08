@@ -80,7 +80,9 @@ builder.Services.AddDataProtection()
 builder.Services.AddBff(options =>
     {
         options.LicenseKey = duendeConfiguration.LicenseKey;
-        options.DisableAntiForgeryCheck = _ => true;
+        // TODO: find a way how to properly guard websocket upgrade requests against csrf attacks
+        // The current mechanism requires a custom header which is not possible for websockets
+        options.DisableAntiForgeryCheck = context => context.Request.Method == "CONNECT";
     })
     .AddEntityFrameworkServerSideSessions(options =>
     {
