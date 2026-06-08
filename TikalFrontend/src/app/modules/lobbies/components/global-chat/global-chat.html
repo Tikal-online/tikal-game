@@ -1,0 +1,19 @@
+<div class="content">
+  @switch (globalChatStore.status()) {
+    @case ('Disconnected') {
+      <p>Disconnected</p>
+      <button type="button" (click)="globalChatStore.connect()">Reconnect</button>
+    }
+    @case ('Connecting') {
+      <p>Connecting...</p>
+    }
+    @case ('Connected') {
+      <div>
+        @for (message of globalChatStore.messages(); track $index) {
+          <p>{{ message }}</p>
+        }
+      </div>
+      <input #input (keydown.enter)="globalChatStore.sendMessage(input.value)" />
+    }
+  }
+</div>

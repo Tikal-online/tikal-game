@@ -59,6 +59,28 @@ body {
   opacity: 0.75;
 }
 
+// Page
+.page-header {
+  color: colors.$header-text;
+
+  border-bottom: 1px solid;
+  border-image: linear-gradient(to right, colors.$header-text, transparent 50%);
+  border-image-slice: 1;
+
+  background: linear-gradient(
+    to right,
+    colors.$header-gradient-start,
+    colors.$header-gradient-end 30%,
+    transparent 50%
+  );
+
+  font-size: 2rem;
+  font-family: 'Page-Heading', sans-serif;
+
+  margin: 0;
+  padding: 1.5rem 0 1.5rem 2rem;
+}
+
 // Form
 form {
   display: flex;

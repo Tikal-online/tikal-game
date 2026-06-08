@@ -58,7 +58,7 @@ builder.Services.AddCors(opt =>
     {
         policy
             .WithOrigins(frontendConfiguration.Url)
-            .WithHeaders("x-csrf", "content-type")
+            .WithHeaders("x-csrf", "content-type", "x-requested-with", "x-signalr-user-agent")
             .AllowAnyMethod()
             .AllowCredentials();
     });
@@ -77,7 +77,13 @@ builder.Services.AddDataProtection()
     .PersistKeysToDbContext<DataProtectionDbContext>()
     .SetApplicationName("BFF");
 
-builder.Services.AddBff(options => { options.LicenseKey = duendeConfiguration.LicenseKey; })
+builder.Services.AddBff(options =>
+    {
+        options.LicenseKey = duendeConfiguration.LicenseKey;
+        // TODO: find a way how to properly guard websocket upgrade requests against csrf attacks
+        // The current mechanism requires a custom header which is not possible for websockets
+        options.DisableAntiForgeryCheck = context => context.Request.Method == "CONNECT";
+    })
     .AddEntityFrameworkServerSideSessions(options =>
     {
         options.UseNpgsql(connectionString, sql => sql.MigrationsAssembly(migrationsAssembly));
@@ -166,7 +172,8 @@ app.UseAuthentication();
 app.UseBff();
 app.UseAuthorization();
 
-app.MapRemoteBffApiEndpoint("/Api", new Uri(backendConfiguration.Url)).WithAccessToken();
+app.MapRemoteBffApiEndpoint("/Api", new Uri(backendConfiguration.Url))
+    .WithAccessToken();
 
 app.MapHealthChecks("/healthcheck");
 

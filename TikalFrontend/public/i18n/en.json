@@ -12,5 +12,8 @@
       "nameLength": "Name cannot exceed {{ maxLength }} characters",
       "accountExists": "You already have an account. Please refresh this page"
     }
+  },
+  "lobbies": {
+    "header": "LOBBIES"
   }
 }

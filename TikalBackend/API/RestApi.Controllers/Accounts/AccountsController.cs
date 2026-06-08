@@ -4,7 +4,6 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RestApi.Controllers.Accounts.Dtos;
-using RestApi.Controllers.Shared;
 
 namespace RestApi.Controllers.Accounts;
 

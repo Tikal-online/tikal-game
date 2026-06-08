@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.SignalR;
 using RestApi.Controllers;
+using SignalRApi.Hubs.Lobbies.GlobalChat;
 using TikalBackend.WebHost.Extensions;
 using TikalBackend.WebHost.Middleware;
 using TikalBackend.WebHost.SchemaTransformers;
@@ -15,6 +17,8 @@ builder.Logging.ClearProviders();
 builder.Services.ConfigureOpenTelemetry();
 
 builder.Services.AddControllers().AddApplicationPart(AssemblyReference.Assembly);
+
+builder.Services.AddSignalR(options => { options.AddFilter<AccountHubFilter>(); });
 
 builder.Services.AddApplication();
 
@@ -49,5 +53,7 @@ app.UseMiddleware<AccountMiddleware>();
 app.MapHealthChecks("/healthcheck");
 
 app.MapControllers();
+
+app.MapHub<GlobalChatHub>("/hub/globalChat");
 
 await app.RunAsync();

@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RestApi.Controllers.Lobbies.Dtos;
 using RestApi.Controllers.Lobbies.Mappers;
-using RestApi.Controllers.Shared;
+using Shared.Api;
 
 namespace RestApi.Controllers.Lobbies;
 

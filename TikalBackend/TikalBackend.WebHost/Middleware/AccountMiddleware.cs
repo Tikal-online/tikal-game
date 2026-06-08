@@ -3,7 +3,7 @@ using System.Security.Claims;
 using Accounts.Contracts.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using RestApi.Controllers.Shared;
+using Shared.Api;
 using Shared.Application.Contexts;
 
 namespace TikalBackend.WebHost.Middleware;

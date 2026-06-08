@@ -72,9 +72,10 @@ internal static class ServiceCollectionExtensions
             services.AddMediatR(c =>
             {
                 c.RegisterServicesFromAssemblies(
-                        AssemblyReference.Assembly,
-                        Lobbies.Application.AssemblyReference.Assembly)
-                    ;
+                    AssemblyReference.Assembly,
+                    Lobbies.Application.AssemblyReference.Assembly,
+                    SignalRApi.Hubs.AssemblyReference.Assembly
+                );
 
                 c.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationPipeline<,>));
             });
