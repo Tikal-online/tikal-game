@@ -1,5 +1,5 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { inject, Service } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { catchError, map, Observable, throwError } from 'rxjs';
 import { err, ok, Result } from 'neverthrow';
@@ -17,9 +17,7 @@ export type Conflict = {
   type: 'Conflict';
 };
 
-@Injectable({
-  providedIn: 'root',
-})
+@Service()
 export class AccountService {
   private readonly http = inject(HttpClient);
 
