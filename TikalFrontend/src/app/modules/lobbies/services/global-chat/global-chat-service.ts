@@ -1,13 +1,11 @@
-import { Injectable } from '@angular/core';
+import { Service } from '@angular/core';
 import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
 import { environment } from '../../../../../environments/environment';
 import { Subject } from 'rxjs';
 
 export type ConnectionStatus = 'Connected' | 'Connecting' | 'Disconnected';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Service()
 export class GlobalChatService {
   readonly message$ = new Subject<string>();
 
