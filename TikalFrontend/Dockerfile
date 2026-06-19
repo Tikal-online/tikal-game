@@ -1,4 +1,4 @@
-ARG NODE_VERSION=24.12.0-alpine
+ARG NODE_VERSION=24.16.0-alpine
 ARG NGINX_VERSION=stable-alpine3.23-slim
 
 # =========================================
