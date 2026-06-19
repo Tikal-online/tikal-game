@@ -1,0 +1,40 @@
+<svg
+  aria-hidden="true"
+  preserveAspectRatio="xMidYMid slice"
+  viewBox="0 0 1440 900"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <defs>
+    <radialGradient cx="50%" cy="0%" id="skyGrad" r="80%">
+      <stop offset="0%" stop-color="#1a2e0a" />
+      <stop offset="100%" stop-color="#0a0f05" />
+    </radialGradient>
+    <radialGradient cx="50%" cy="50%" id="glowAmber" r="50%">
+      <stop offset="0%" stop-color="#c8922a" stop-opacity="0.18" />
+      <stop offset="100%" stop-color="#c8922a" stop-opacity="0" />
+    </radialGradient>
+    <filter id="blur6">
+      <feGaussianBlur stdDeviation="6" />
+    </filter>
+    <linearGradient id="bottomFade" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#0e1208" stop-opacity="0" />
+      <stop offset="100%" stop-color="#0e1208" stop-opacity="1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Sky -->
+  <rect fill="url(#skyGrad)" height="900" width="1440" />
+
+  <!-- Distant mist layers -->
+  <ellipse cx="720" cy="500" fill="#1f3510" filter="url(#blur6)" opacity="0.4" rx="900" ry="300" />
+  <ellipse cx="720" cy="650" fill="#162a0c" filter="url(#blur6)" opacity="0.5" rx="800" ry="250" />
+
+  <!-- Amber glow -->
+  <ellipse cx="720" cy="420" fill="url(#glowAmber)" rx="320" ry="200" />
+
+  <!-- Bottom fog -->
+  <rect fill="#0a0f05" filter="url(#blur6)" height="120" opacity="0.6" width="1440" x="0" y="780" />
+
+  <!-- Bottom gradient overlay -->
+  <rect fill="url(#bottomFade)" height="300" width="1440" x="0" y="600" />
+</svg>
