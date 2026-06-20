@@ -1,0 +1,69 @@
+@use 'colors';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+nav {
+  display: flex;
+  flex-direction: row;
+
+  justify-content: space-between;
+
+  padding: 1.25rem 2rem;
+}
+
+.logo {
+  font-family: 'Cinzel', serif;
+  font-size: 1rem;
+  letter-spacing: 0.3rem;
+
+  color: colors.$text-header-prefix;
+}
+
+.hero {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+
+  justify-content: center;
+  align-items: center;
+}
+
+.hero > h1 {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+
+  font-family: 'Cinzel', serif;
+  font-size: clamp(3rem, 8vw, 7rem);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 0.12em;
+  color: colors.$text-header;
+  text-shadow:
+    0 0 60px rgba(0, 0, 0, 0.3),
+    0 4px 24px rgba(0, 0, 0, 0.8);
+}
+
+.header-prefix {
+  font-family: 'Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.1rem;
+
+  color: colors.$text-header-prefix;
+
+  margin-bottom: 1rem;
+}
+
+.description {
+  max-width: 36rem;
+
+  font-family: 'Crimson', serif;
+  font-size: 1.25rem;
+  line-height: 1.7;
+  text-align: center;
+
+  color: colors.$text-muted;
+}

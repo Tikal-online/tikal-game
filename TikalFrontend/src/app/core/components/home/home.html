@@ -1,0 +1,15 @@
+<nav>
+  <span class="logo">TIKAL</span>
+</nav>
+<ng-container *transloco="let t; prefix: 'home'">
+  <section class="hero">
+    <p class="header-prefix">{{ t('header-prefix') }}</p>
+    <h1>TIKAL</h1>
+    <p class="description">{{ t('description') }}</p>
+    <div>
+      <button class="button-primary" type="button">
+        {{ t('play-button') }}
+      </button>
+    </div>
+  </section>
+</ng-container>
