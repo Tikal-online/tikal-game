@@ -37,21 +37,22 @@ body {
 
 // Buttons
 .button-primary {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   padding: 1rem 2rem;
 
   font-family: 'Cinzel', serif;
   font-size: 0.85rem;
   letter-spacing: 0.2em;
 
-  background-color: colors.$text-header-prefix;
-
-  box-shadow:
-    0 10px 15px -3px rgb(0 0 0 / 0.1),
-    0 4px 6px -4px rgb(0 0 0 / 0.1);
+  background-color: colors.$button-primary;
 
   border: none;
+
+  cursor: pointer;
 }
 
 .button-primary:hover {
-  background-color: color-mix(in srgb, colors.$text-header-prefix 80%, transparent);
+  background-color: color-mix(in srgb, colors.$button-primary 80%, transparent);
 }
