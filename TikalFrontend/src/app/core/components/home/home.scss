@@ -67,3 +67,10 @@ nav {
 
   color: colors.$text-muted;
 }
+
+.button-container {
+  display: flex;
+  flex-direction: row;
+
+  gap: 1rem;
+}

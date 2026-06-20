@@ -56,3 +56,25 @@ body {
 .button-primary:hover {
   background-color: color-mix(in srgb, colors.$button-primary 80%, transparent);
 }
+
+.button-secondary {
+  padding: 1rem 2rem;
+
+  font-family: 'Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  color: colors.$text-muted;
+
+  background-color: transparent;
+
+  border-style: solid;
+  border-width: 1px;
+  border-color: colors.$border;
+
+  cursor: pointer;
+}
+
+.button-secondary:hover {
+  color: colors.$text-header;
+  border-color: colors.$text-header;
+}
