@@ -1,0 +1,19 @@
+<ng-container *transloco="let t; prefix: 'home'">
+  <nav>
+    <span class="logo">TIKAL</span>
+  </nav>
+  <section class="hero">
+    <p class="header-prefix">{{ t('header-prefix') }}</p>
+    <h1>TIKAL</h1>
+    <p class="description">{{ t('description') }}</p>
+    <div class="button-container">
+      <button class="button-primary" type="button">
+        {{ t('play-button') }}
+        <svg lucideShovel [size]="20" [strokeWidth]="1.5"></svg>
+      </button>
+      <button class="button-secondary" type="button">
+        {{ t('tutorial-button') }}
+      </button>
+    </div>
+  </section>
+</ng-container>

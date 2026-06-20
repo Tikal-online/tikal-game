@@ -1,19 +1,8 @@
 {
   "home": {
-    "online": "PLAY ONLINE",
-    "solo": "PLAY SOLO (WIP)"
-  },
-  "createAccount": {
-    "header": "CHOOSE A NAME",
-    "submit": "SUBMIT",
-    "cancel": "CANCEL",
-    "errors": {
-      "nameRequired": "Name is required",
-      "nameLength": "Name cannot exceed {{ maxLength }} characters",
-      "accountExists": "You already have an account. Please refresh this page"
-    }
-  },
-  "lobbies": {
-    "header": "LOBBIES"
+    "header-prefix": "— AN EXPEDITION INTO THE UNKNOWN —",
+    "description": "A multiplayer strategy game of rival archaeologists racing through the depths of the Central American jungle. Unearth relics, claim ruins, and outwitt your rivals.",
+    "play-button": "BEGIN EXPEDITION",
+    "tutorial-button": "HOW TO PLAY"
   }
 }
