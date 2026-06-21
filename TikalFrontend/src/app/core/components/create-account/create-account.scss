@@ -1,0 +1,95 @@
+@use 'colors';
+
+:host {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 2;
+
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+}
+
+.create-account-card {
+  display: flex;
+  flex-direction: column;
+
+  padding: 2rem;
+
+  width: 100%;
+  max-width: 28rem;
+
+  background-color: colors.$card-background;
+
+  border: 1px solid colors.$border;
+}
+
+h1 {
+  margin: 0 0 1.5rem 0;
+
+  font-family: 'Cinzel', serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: colors.$text-header;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+input {
+  width: 100%;
+
+  padding: 0.75rem 1rem;
+
+  font-family: 'Crimson', serif;
+  font-size: 1.05rem;
+  color: colors.$text-header;
+
+  background-color: colors.$card-background-secondary;
+
+  border: 1px solid colors.$border;
+
+  outline: none;
+}
+
+input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+input:focus {
+  border-color: colors.$text-header-prefix;
+}
+
+button {
+  flex: 1;
+
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+}
+
+.header-prefix {
+  font-family: 'Mono', monospace;
+  font-size: 0.65rem;
+
+  color: colors.$text-header-prefix;
+}
+
+.description {
+  margin: 0 0 1.5rem 0;
+
+  font-family: 'Crimson', serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: colors.$text-muted;
+}
+
+.button-container {
+  display: flex;
+  gap: 0.75rem;
+}

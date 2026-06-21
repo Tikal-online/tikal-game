@@ -1,5 +1,9 @@
 @use 'colors';
 
+* {
+  box-sizing: border-box;
+}
+
 body {
   height: 100vh;
   margin: 0;
@@ -15,7 +19,7 @@ body {
 @font-face {
   font-family: 'Cinzel';
   src: url('/fonts/Cinzel.ttf') format('truetype');
-  font-weight: normal, 900;
+  font-weight: normal, 700, 900;
   font-style: normal;
 }
 
@@ -39,12 +43,14 @@ body {
 .button-primary {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
   padding: 1rem 2rem;
 
   font-family: 'Cinzel', serif;
   font-size: 0.85rem;
   letter-spacing: 0.2em;
+  color: colors.$button-primary-text;
 
   background-color: colors.$button-primary;
 
@@ -55,6 +61,11 @@ body {
 
 .button-primary:hover {
   background-color: color-mix(in srgb, colors.$button-primary 80%, transparent);
+}
+
+.button-primary:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 
 .button-secondary {
@@ -77,4 +88,20 @@ body {
 .button-secondary:hover {
   color: colors.$text-header;
   border-color: colors.$text-header;
+}
+
+.button-secondary:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+// Animations
+.spin-animation {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
