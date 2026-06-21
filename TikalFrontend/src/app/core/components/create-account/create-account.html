@@ -3,14 +3,14 @@
     <p class="header-prefix">{{ t('header-prefix') }}</p>
     <h1>{{ t('header') }}</h1>
     <p class="description">{{ t('description') }}</p>
-    <form>
+    <form [formRoot]="accountForm">
       <label for="name" hidden>{{ t('name-input-label') }}</label>
-      <input autofocus id="name" type="text" />
+      <input autofocus id="name" type="text" [formField]="accountForm.name" />
       <div class="button-container">
         <button class="button-secondary" routerLink="/" type="button">
           {{ t('cancel-button') }}
         </button>
-        <button class="button-primary" type="submit">
+        <button class="button-primary" type="submit" [disabled]="accountForm().invalid()">
           {{ t('submit-button') }}
         </button>
       </div>

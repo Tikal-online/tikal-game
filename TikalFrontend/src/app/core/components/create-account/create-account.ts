@@ -1,11 +1,55 @@
-import { Component } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { TranslocoDirective } from '@jsverse/transloco';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { form, maxLength, required, FormRoot, FormField } from '@angular/forms/signals';
+import { AccountStore } from '../../stores/account-store/account-store';
+
+type AccountData = {
+  name: string;
+};
 
 @Component({
   selector: 'app-create-account',
-  imports: [TranslocoDirective, RouterLink],
+  imports: [TranslocoDirective, RouterLink, FormRoot, FormField],
   templateUrl: './create-account.html',
   styleUrl: './create-account.scss',
 })
-export class CreateAccount {}
+export class CreateAccount {
+  private readonly accountData = signal<AccountData>({ name: '' });
+
+  readonly accountForm = form(
+    this.accountData,
+    (schemaPath) => {
+      required(schemaPath.name);
+      maxLength(schemaPath.name, 30);
+    },
+    {
+      submission: {
+        action: async (field) => {
+          const name = field().value().name;
+
+          const result = await this.accountStore.createAccount(name);
+
+          if (result.isOk()) {
+            const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') ?? '/';
+
+            this.router.navigate([returnUrl], { replaceUrl: true });
+            return;
+          }
+
+          return {
+            kind: 'serverError',
+            message: 'this is an error test',
+            fieldTree: field.name,
+          };
+        },
+      },
+    },
+  );
+
+  private readonly accountStore = inject(AccountStore);
+
+  private readonly router = inject(Router);
+
+  private readonly route = inject(ActivatedRoute);
+}
