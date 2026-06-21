@@ -30,8 +30,6 @@ export class CreateAccount {
         action: async (field) => {
           const name = field().value().name;
 
-          await new Promise((resolve) => setTimeout(resolve, 10000));
-
           const result = await this.accountStore.createAccount(name);
 
           if (result.isOk()) {
