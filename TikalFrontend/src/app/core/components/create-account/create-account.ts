@@ -1,8 +1,9 @@
 import { Component, inject, signal } from '@angular/core';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { form, maxLength, required, FormRoot, FormField } from '@angular/forms/signals';
+import { form, maxLength, required, FormRoot, FormField, disabled } from '@angular/forms/signals';
 import { AccountStore } from '../../stores/account-store/account-store';
+import { LucideLoaderCircle } from '@lucide/angular';
 
 type AccountData = {
   name: string;
@@ -10,7 +11,7 @@ type AccountData = {
 
 @Component({
   selector: 'app-create-account',
-  imports: [TranslocoDirective, RouterLink, FormRoot, FormField],
+  imports: [TranslocoDirective, RouterLink, FormRoot, FormField, LucideLoaderCircle],
   templateUrl: './create-account.html',
   styleUrl: './create-account.scss',
 })
@@ -22,11 +23,14 @@ export class CreateAccount {
     (schemaPath) => {
       required(schemaPath.name);
       maxLength(schemaPath.name, 30);
+      disabled(schemaPath, { when: () => this.accountForm().submitting() });
     },
     {
       submission: {
         action: async (field) => {
           const name = field().value().name;
+
+          await new Promise((resolve) => setTimeout(resolve, 10000));
 
           const result = await this.accountStore.createAccount(name);
 

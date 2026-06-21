@@ -50,6 +50,7 @@ body {
   font-family: 'Cinzel', serif;
   font-size: 0.85rem;
   letter-spacing: 0.2em;
+  color: colors.$button-primary-text;
 
   background-color: colors.$button-primary;
 
@@ -87,4 +88,20 @@ body {
 .button-secondary:hover {
   color: colors.$text-header;
   border-color: colors.$text-header;
+}
+
+.button-secondary:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+// Animations
+.spin-animation {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }

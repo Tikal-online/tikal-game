@@ -7,11 +7,25 @@
       <label for="name" hidden>{{ t('name-input-label') }}</label>
       <input autofocus id="name" type="text" [formField]="accountForm.name" />
       <div class="button-container">
-        <button class="button-secondary" routerLink="/" type="button">
+        <button
+          class="button-secondary"
+          routerLink="/"
+          type="button"
+          [disabled]="accountForm().submitting()"
+        >
           {{ t('cancel-button') }}
         </button>
-        <button class="button-primary" type="submit" [disabled]="accountForm().invalid()">
-          {{ t('submit-button') }}
+        <button
+          class="button-primary"
+          type="submit"
+          [disabled]="accountForm().invalid() || accountForm().submitting()"
+        >
+          @if (accountForm().submitting()) {
+            <svg class="spin-animation" lucideLoaderCircle [size]="14"></svg>
+            {{ t('submitting-button') }}
+          } @else {
+            {{ t('submit-button') }}
+          }
         </button>
       </div>
     </form>

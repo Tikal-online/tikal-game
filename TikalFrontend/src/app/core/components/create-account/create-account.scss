@@ -57,12 +57,20 @@ input {
   outline: none;
 }
 
+input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 input:focus {
   border-color: colors.$text-header-prefix;
 }
 
 button {
   flex: 1;
+
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
 }
 
 .header-prefix {

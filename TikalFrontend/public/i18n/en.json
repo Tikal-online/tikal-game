@@ -11,6 +11,7 @@
     "description": "This name will be displayed to other players. It can be changed later.",
     "name-input-label": "Name",
     "cancel-button": "CANCEL",
-    "submit-button": "SUBMIT"
+    "submit-button": "SUBMIT",
+    "submitting-button": "SUBMITTING"
   }
 }
