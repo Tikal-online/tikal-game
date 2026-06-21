@@ -1,0 +1,26 @@
+@use 'colors';
+
+nav {
+  position: relative;
+}
+
+nav::after {
+  content: '';
+  left: 0;
+  bottom: 0;
+  position: absolute;
+  height: 1px;
+  width: 100%;
+  background: colors.$border;
+  transform-origin: center;
+  animation: expand 1.5s ease-out forwards;
+}
+
+@keyframes expand {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}

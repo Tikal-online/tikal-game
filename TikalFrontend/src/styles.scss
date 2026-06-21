@@ -57,6 +57,22 @@ nav {
   color: colors.$text-header-prefix;
 }
 
+// Links
+a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+
+  font-family: 'Mono', monospace;
+  color: colors.$text-muted;
+
+  text-decoration: none;
+}
+
+a:hover {
+  color: colors.$text-header;
+}
+
 // Buttons
 .button-primary {
   display: flex;
