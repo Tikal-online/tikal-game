@@ -1,0 +1,19 @@
+<ng-container *transloco="let t; prefix: 'createAccount'">
+  <dialog class="create-account-card">
+    <p class="header-prefix">{{ t('header-prefix') }}</p>
+    <h1>{{ t('header') }}</h1>
+    <p class="description">{{ t('description') }}</p>
+    <form>
+      <label for="name" hidden>{{ t('name-input-label') }}</label>
+      <input autofocus id="name" type="text" />
+      <div class="button-container">
+        <button class="button-secondary" routerLink="/" type="button">
+          {{ t('cancel-button') }}
+        </button>
+        <button class="button-primary" type="submit">
+          {{ t('submit-button') }}
+        </button>
+      </div>
+    </form>
+  </dialog>
+</ng-container>

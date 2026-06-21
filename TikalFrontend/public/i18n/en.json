@@ -4,5 +4,13 @@
     "description": "A multiplayer strategy game of rival archaeologists racing through the depths of the Central American jungle. Unearth relics, claim ruins, and outwitt your rivals.",
     "play-button": "BEGIN EXPEDITION",
     "tutorial-button": "HOW TO PLAY"
+  },
+  "createAccount": {
+    "header-prefix": "— NEW ADVENTURER —",
+    "header": "Choose Your Name",
+    "description": "This name will be displayed to other players. It can be changed later.",
+    "name-input-label": "Name",
+    "cancel-button": "CANCEL",
+    "submit-button": "SUBMIT"
   }
 }
