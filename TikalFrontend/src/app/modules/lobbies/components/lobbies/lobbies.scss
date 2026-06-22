@@ -1,5 +1,11 @@
 @use 'colors';
 
+:host {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
 nav {
   position: relative;
 }
@@ -9,7 +15,7 @@ nav::after {
   left: 0;
   bottom: 0;
   position: absolute;
-  height: 1px;
+  height: 2px;
   width: 100%;
   background: colors.$border;
   transform-origin: center;
@@ -23,4 +29,20 @@ nav::after {
   to {
     transform: scaleX(1);
   }
+}
+
+.content {
+  display: flex;
+  flex-direction: row;
+
+  flex: 1;
+}
+
+.lobbies {
+  flex: 8;
+}
+
+.global-chat {
+  min-width: 20rem;
+  flex: 2;
 }
