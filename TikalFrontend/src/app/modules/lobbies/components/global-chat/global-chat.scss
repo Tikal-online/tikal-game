@@ -1,3 +1,67 @@
+@use 'colors';
+
 :host {
-  background-color: red;
+  opacity: 90%;
+  background-color: colors.$card-background;
+
+  border-left: 1px solid colors.$border;
+}
+
+.expanded {
+  min-width: 20rem;
+}
+
+.collapsed {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  height: 100%;
+
+  min-width: 2rem;
+
+  color: colors.$text-muted;
+
+  cursor: pointer;
+}
+
+.collapsed:hover {
+  background-color: colors.$card-background-secondary;
+  color: colors.$text-header-prefix;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 1rem 1.25rem;
+
+  border-bottom: 1px solid colors.$border;
+}
+
+.header > p {
+  margin: 0;
+
+  font-family: 'Cinzel', serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.1rem;
+  color: colors.$text-header;
+}
+
+.header-icons {
+  display: inline-flex;
+  align-items: center;
+}
+
+.clickable-icon {
+  color: colors.$text-muted;
+
+  cursor: pointer;
+}
+
+.clickable-icon:hover {
+  color: colors.$text-header;
 }
