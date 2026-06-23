@@ -9,7 +9,7 @@
   flex-direction: column;
 
   height: 100%;
-  min-width: 20rem;
+  width: 20rem;
 
   background-color: colors.$card-background;
   border-left: 1px solid colors.$border;
@@ -73,7 +73,15 @@
 }
 
 .messages {
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
   flex: 1;
+
+  padding: 1rem 1.25rem;
+  gap: 1rem;
+
+  overflow-y: auto;
 }
 
 form {

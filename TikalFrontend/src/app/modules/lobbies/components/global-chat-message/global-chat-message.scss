@@ -1,0 +1,21 @@
+@use 'colors';
+
+p {
+  margin: 0;
+  padding: 0.5rem 0.75rem;
+
+  font-family: 'Crimson', serif;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: colors.$text-header;
+
+  background-color: colors.$card-background-secondary;
+
+  border: 1px solid colors.$border;
+}
+
+.author {
+  font-family: 'Cinzel', serif;
+  font-size: 0.8rem;
+  color: colors.$text-header-prefix;
+}

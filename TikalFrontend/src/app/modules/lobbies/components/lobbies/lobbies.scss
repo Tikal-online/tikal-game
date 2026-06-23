@@ -3,7 +3,8 @@
 :host {
   display: flex;
   flex-direction: column;
-  flex: 1;
+
+  height: 100vh;
 }
 
 nav {
@@ -16,6 +17,8 @@ nav {
   display: flex;
   flex-direction: row;
   flex: 1;
+
+  min-height: 0;
 }
 
 .lobbies {
