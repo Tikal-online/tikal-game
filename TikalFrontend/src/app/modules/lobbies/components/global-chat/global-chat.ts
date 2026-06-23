@@ -1,9 +1,9 @@
 import { Component, signal } from '@angular/core';
-import { LucideMessageSquare, LucideX } from '@lucide/angular';
+import { LucideMessageSquare, LucideSendHorizontal, LucideX } from '@lucide/angular';
 
 @Component({
   selector: 'app-global-chat',
-  imports: [LucideX, LucideMessageSquare],
+  imports: [LucideX, LucideMessageSquare, LucideSendHorizontal],
   templateUrl: './global-chat.html',
   styleUrl: './global-chat.scss',
 })

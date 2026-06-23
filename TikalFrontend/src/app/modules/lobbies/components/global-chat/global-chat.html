@@ -1,5 +1,5 @@
 @if (showChat()) {
-  <div animate.enter="expand-animation" animate.leave="collapse-animation" class="expanded">
+  <div class="expanded">
     <div class="header">
       <p>Global Chat</p>
       <div class="header-icons">
@@ -13,15 +13,17 @@
         ></svg>
       </div>
     </div>
+    <div class="messages"></div>
+    <form>
+      <label for="message" hidden>Message</label>
+      <input id="message" placeholder="Say something..." type="text" />
+      <button class="button-primary" type="submit">
+        <svg lucideSendHorizontal [size]="14"></svg>
+      </button>
+    </form>
   </div>
 } @else {
-  <div
-    animate.enter="appear-after-delay"
-    class="collapsed"
-    tabindex="0"
-    (click)="show()"
-    (keydown.enter)="show()"
-  >
+  <div class="collapsed" tabindex="0" (click)="show()" (keydown.enter)="show()">
     <svg lucideMessageSquare [size]="15"></svg>
   </div>
 }
