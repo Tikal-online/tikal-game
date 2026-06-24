@@ -16,9 +16,15 @@
       </div>
       <div class="messages">
         @for (message of globalChatStore.messages(); track $index) {
-          <app-global-chat-message [username]="message.username">
-            {{ message.content }}
-          </app-global-chat-message>
+          @if (isOwnMessage(message)) {
+            <app-enemy-chat-message class="my-message" username="Its you!">
+              {{ message.content }}
+            </app-enemy-chat-message>
+          } @else {
+            <app-enemy-chat-message class="enemy-message" [username]="message.username">
+              {{ message.content }}
+            </app-enemy-chat-message>
+          }
         }
       </div>
       <form [formRoot]="chatForm">
