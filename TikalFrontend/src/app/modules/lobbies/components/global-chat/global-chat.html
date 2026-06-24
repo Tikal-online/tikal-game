@@ -15,7 +15,9 @@
     </div>
     <div class="messages">
       @for (message of globalChatStore.messages(); track $index) {
-        <app-global-chat-message username="Testing">{{ message }}</app-global-chat-message>
+        <app-global-chat-message [username]="message.username">
+          {{ message.content }}
+        </app-global-chat-message>
       }
     </div>
     <form [formRoot]="chatForm">

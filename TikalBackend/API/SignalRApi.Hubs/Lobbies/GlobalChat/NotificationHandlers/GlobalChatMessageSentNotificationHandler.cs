@@ -1,6 +1,7 @@
 using Lobbies.Contracts.Notifications;
 using MediatR;
 using Microsoft.AspNetCore.SignalR;
+using SignalRApi.Hubs.Lobbies.Mappers;
 
 namespace SignalRApi.Hubs.Lobbies.GlobalChat.NotificationHandlers;
 
@@ -15,6 +16,8 @@ internal sealed class GlobalChatMessageSentNotificationHandler : INotificationHa
 
     public async Task Handle(GlobalChatMessageSentNotification notification, CancellationToken cancellationToken)
     {
-        await hubContext.Clients.All.ReceiveMessage(notification.message);
+        var messageDto = ChatMessageModelMapper.ChatMessageModelToChatMessageDto(notification.message);
+
+        await hubContext.Clients.All.ReceiveMessage(messageDto);
     }
 }

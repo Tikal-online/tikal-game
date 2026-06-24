@@ -5,9 +5,14 @@ import { Subject } from 'rxjs';
 
 export type ConnectionStatus = 'Connected' | 'Connecting' | 'Disconnected';
 
+export type ChatMessage = {
+  username: string;
+  content: string;
+};
+
 @Service()
 export class GlobalChatService {
-  readonly message$ = new Subject<string>();
+  readonly message$ = new Subject<ChatMessage>();
 
   readonly connectionStatus$ = new Subject<ConnectionStatus>();
 
@@ -24,7 +29,7 @@ export class GlobalChatService {
       })
       .build();
 
-    this.connection.on('ReceiveMessage', (message: string) => {
+    this.connection.on('ReceiveMessage', (message: ChatMessage) => {
       this.message$.next(message);
     });
 

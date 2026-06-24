@@ -14,4 +14,8 @@
         <ProjectReference Include="..\..\Shared\Shared.Api\Shared.Api.csproj"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Riok.Mapperly" />
+    </ItemGroup>
+
 </Project>
