@@ -1,18 +1,16 @@
-<ng-container *transloco="let t; prefix: 'lobbies.globalChat'">
-  @if (globalChatStore.isExpanded()) {
-    <div class="expanded">
-      <app-global-chat-header />
-      <app-global-chat-messages />
-      <app-global-chat-form />
-    </div>
-  } @else {
-    <div
-      class="collapsed"
-      tabindex="0"
-      (click)="globalChatStore.expand()"
-      (keydown.enter)="globalChatStore.expand()"
-    >
-      <svg lucideMessageSquare [size]="15"></svg>
-    </div>
-  }
-</ng-container>
+@if (globalChatStore.isExpanded()) {
+  <div class="expanded">
+    <app-global-chat-header />
+    <app-global-chat-messages />
+    <app-global-chat-form />
+  </div>
+} @else {
+  <div
+    class="collapsed"
+    tabindex="0"
+    (click)="globalChatStore.expand()"
+    (keydown.enter)="globalChatStore.expand()"
+  >
+    <svg lucideMessageSquare [size]="15"></svg>
+  </div>
+}
