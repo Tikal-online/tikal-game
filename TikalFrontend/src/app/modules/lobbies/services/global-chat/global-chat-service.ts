@@ -6,6 +6,7 @@ import { Subject } from 'rxjs';
 export type ConnectionStatus = 'Connected' | 'Connecting' | 'Disconnected';
 
 export type ChatMessage = {
+  userId: string;
   username: string;
   content: string;
 };

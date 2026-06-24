@@ -24,6 +24,7 @@ internal sealed class SendGlobalChatMessageCommandHandler : CommandHandler<SendG
     {
         var message = new ChatMessageModel
         {
+            UserId = accountContext.Account.UserId,
             Username = accountContext.Account.Name,
             Content = request.messageContent
         };

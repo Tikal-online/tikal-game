@@ -33,6 +33,9 @@ export const AuthStore = signalStore(
 
   withComputed(({ session }) => ({
     isAuthenticated: computed(() => session() !== null),
+
+    userId: computed(() => session()?.find((claim) => claim.type === 'sub')?.value),
+
     logoutUrl: computed(
       () =>
         `${environment.backend_url}` +

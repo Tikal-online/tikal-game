@@ -130,3 +130,14 @@ a:hover {
   opacity: 0.4;
   cursor: not-allowed;
 }
+
+// Icons
+.clickable-svg {
+  color: colors.$text-muted;
+
+  cursor: pointer;
+}
+
+.clickable-svg:hover {
+  color: colors.$text-header;
+}

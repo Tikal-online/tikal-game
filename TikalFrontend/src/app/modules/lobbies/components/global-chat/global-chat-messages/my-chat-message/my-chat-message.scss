@@ -1,0 +1,17 @@
+@use 'colors';
+
+p {
+  margin: 0;
+  padding: 0.5rem 0.75rem;
+
+  font-family: 'Crimson', serif;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: colors.$text-header;
+
+  background-color: color-mix(in srgb, colors.$text-header-prefix 20%, transparent);
+
+  border: 1px solid color-mix(in srgb, colors.$text-header-prefix 30%, transparent);
+
+  overflow-wrap: break-word;
+}
