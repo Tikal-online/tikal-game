@@ -1,8 +1,18 @@
 @if (globalChatStore.isExpanded()) {
   <div class="expanded">
     <app-global-chat-header />
-    <app-global-chat-messages />
-    <app-global-chat-form />
+    @switch (globalChatStore.status()) {
+      @case ('Connected') {
+        <app-global-chat-messages />
+        <app-global-chat-form />
+      }
+      @case ('Connecting') {
+        <p>CONNECTING</p>
+      }
+      @case ('Disconnected') {
+        <app-global-chat-disconnected />
+      }
+    }
   </div>
 } @else {
   <div
