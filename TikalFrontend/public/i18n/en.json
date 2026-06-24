@@ -13,5 +13,12 @@
     "cancel-button": "CANCEL",
     "submit-button": "SUBMIT",
     "submitting-button": "SUBMITTING"
+  },
+  "lobbies": {
+    "globalChat": {
+      "header": "GLOBAL CHAT",
+      "message-input-label": "Message",
+      "message-input-placeholder": "Say something..."
+    }
   }
 }

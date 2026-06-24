@@ -1,4 +1,5 @@
 using Lobbies.Contracts.Commands;
+using Lobbies.Contracts.Models;
 using Lobbies.Contracts.Notifications;
 using MediatR;
 using OneOf.Types;
@@ -21,7 +22,11 @@ internal sealed class SendGlobalChatMessageCommandHandler : CommandHandler<SendG
 
     public async Task<Success> Handle(SendGlobalChatMessageCommand request, CancellationToken cancellationToken)
     {
-        var message = $"[{accountContext.Account.Name}]: {request.messageContent}";
+        var message = new ChatMessageModel
+        {
+            Username = accountContext.Account.Name,
+            Content = request.messageContent
+        };
 
         var notification = new GlobalChatMessageSentNotification(message);
 

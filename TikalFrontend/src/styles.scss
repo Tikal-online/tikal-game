@@ -9,6 +9,8 @@ body {
   margin: 0;
   padding: 0;
 
+  overflow: hidden;
+
   background-color: #1a2e0a;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='none' viewBox='0 0 1600 800'%3E%3Cg fill-opacity='0.2'%3E%3Cg fill='%235C7'%3E%3Cpolygon points='1600 800 1400 800 1600 0'/%3E%3Cpolygon points='800 800 1600 600 1600 800'/%3E%3C/g%3E%3Cg fill='%230E1208'%3E%3Cpolygon points='0 0 200 0 0 800'/%3E%3Cpolygon points='800 0 0 200 0 0'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
   background-attachment: fixed;
@@ -38,6 +40,40 @@ body {
 }
 
 // Global Styles
+
+// Nav bar
+nav {
+  display: flex;
+  flex-direction: row;
+
+  justify-content: space-between;
+
+  padding: 1.25rem 2rem;
+}
+
+.logo {
+  font-family: 'Cinzel', serif;
+  font-size: 1rem;
+  letter-spacing: 0.3rem;
+
+  color: colors.$text-header-prefix;
+}
+
+// Links
+a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+
+  font-family: 'Mono', monospace;
+  color: colors.$text-muted;
+
+  text-decoration: none;
+}
+
+a:hover {
+  color: colors.$text-header;
+}
 
 // Buttons
 .button-primary {
@@ -93,15 +129,4 @@ body {
 .button-secondary:disabled {
   opacity: 0.4;
   cursor: not-allowed;
-}
-
-// Animations
-.spin-animation {
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
 }

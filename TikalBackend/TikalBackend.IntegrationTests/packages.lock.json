@@ -806,6 +806,7 @@
         "dependencies": {
           "Accounts.Contracts": "[1.0.0, )",
           "Lobbies.Contracts": "[1.0.0, )",
+          "Riok.Mapperly": "[4.3.1, )",
           "Shared.Api": "[1.0.0, )"
         }
       },

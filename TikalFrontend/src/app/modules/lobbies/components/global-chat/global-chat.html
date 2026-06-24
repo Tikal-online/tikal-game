@@ -1,0 +1,47 @@
+<ng-container *transloco="let t; prefix: 'lobbies.globalChat'">
+  @if (showChat()) {
+    <div class="expanded">
+      <div class="header">
+        <p>{{ t('header') }}</p>
+        <div class="header-icons">
+          <svg
+            class="clickable-icon"
+            lucideX
+            tabindex="0"
+            [size]="16"
+            (click)="hide()"
+            (keydown.enter)="hide()"
+          ></svg>
+        </div>
+      </div>
+      <div class="messages">
+        @for (message of globalChatStore.messages(); track $index) {
+          <app-global-chat-message [username]="message.username">
+            {{ message.content }}
+          </app-global-chat-message>
+        }
+      </div>
+      <form [formRoot]="chatForm">
+        <label for="message" hidden>{{ t('message-input-label') }}</label>
+        <input
+          autocomplete="off"
+          id="message"
+          type="text"
+          [formField]="chatForm.message"
+          [placeholder]="t('message-input-placeholder')"
+        />
+        <button
+          class="button-primary"
+          type="submit"
+          [disabled]="chatForm().invalid() || chatForm().submitting()"
+        >
+          <svg lucideSendHorizontal [size]="14"></svg>
+        </button>
+      </form>
+    </div>
+  } @else {
+    <div class="collapsed" tabindex="0" (click)="show()" (keydown.enter)="show()">
+      <svg lucideMessageSquare [size]="15"></svg>
+    </div>
+  }
+</ng-container>

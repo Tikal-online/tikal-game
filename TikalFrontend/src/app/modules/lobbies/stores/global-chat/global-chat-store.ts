@@ -8,6 +8,7 @@ import {
   withState,
 } from '@ngrx/signals';
 import {
+  ChatMessage,
   ConnectionStatus,
   GlobalChatService,
 } from '../../services/global-chat/global-chat-service';
@@ -16,7 +17,7 @@ import { pipe, switchMap, tap } from 'rxjs';
 
 export type GlobalChatState = {
   status: ConnectionStatus;
-  messages: string[];
+  messages: ChatMessage[];
 };
 
 const initialState: GlobalChatState = {
@@ -49,7 +50,7 @@ export const GlobalChatStore = signalStore(
     watchMessages: rxMethod<void>(
       pipe(
         switchMap(() => store._globalChatService.message$),
-        tap((message) => patchState(store, { messages: [...store.messages(), message] })),
+        tap((message) => patchState(store, { messages: [message, ...store.messages()] })),
       ),
     ),
 

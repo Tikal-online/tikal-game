@@ -1,0 +1,127 @@
+@use 'colors';
+
+:host {
+  opacity: 90%;
+}
+
+.expanded {
+  display: flex;
+  flex-direction: column;
+
+  height: 100%;
+  width: 20rem;
+
+  background-color: colors.$card-background;
+  border-left: 1px solid colors.$border;
+}
+
+.collapsed {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  height: 100%;
+  min-width: 2rem;
+
+  background-color: colors.$card-background;
+  border-left: 1px solid colors.$border;
+
+  color: colors.$text-muted;
+
+  cursor: pointer;
+}
+
+.collapsed:hover {
+  background-color: colors.$card-background-secondary;
+  color: colors.$text-header-prefix;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 1rem 1.25rem;
+
+  border-bottom: 1px solid colors.$border;
+}
+
+.header > p {
+  margin: 0;
+
+  font-family: 'Cinzel', serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.1rem;
+  color: colors.$text-header;
+}
+
+.header-icons {
+  display: inline-flex;
+  align-items: center;
+}
+
+.clickable-icon {
+  color: colors.$text-muted;
+
+  cursor: pointer;
+}
+
+.clickable-icon:hover {
+  color: colors.$text-header;
+}
+
+.messages {
+  display: flex;
+  flex-direction: column-reverse;
+  flex: 1;
+
+  padding: 1rem 1.25rem;
+  gap: 1rem;
+
+  overflow-y: auto;
+}
+
+form {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+
+  padding: 1rem;
+
+  border-top: 1px solid colors.$border;
+}
+
+input {
+  flex: 1;
+
+  padding: 0.5rem 0.75rem;
+
+  font-family: 'Crimson', serif;
+  font-size: 0.95rem;
+  color: colors.$text-header;
+
+  background-color: colors.$card-background-secondary;
+
+  border: 1px solid colors.$border;
+
+  outline: none;
+}
+
+input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+input:focus {
+  border-color: colors.$text-header-prefix;
+}
+
+input::placeholder {
+  color: colors.$text-muted;
+}
+
+button {
+  padding: 0.5rem 0.75rem;
+}
