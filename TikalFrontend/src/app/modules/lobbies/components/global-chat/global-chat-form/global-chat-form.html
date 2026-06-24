@@ -1,0 +1,19 @@
+<ng-container *transloco="let t; prefix: 'lobbies.globalChat'">
+  <form [formRoot]="chatForm">
+    <label for="message" hidden>{{ t('message-input-label') }}</label>
+    <input
+      autocomplete="off"
+      id="message"
+      type="text"
+      [formField]="chatForm.message"
+      [placeholder]="t('message-input-placeholder')"
+    />
+    <button
+      class="button-primary"
+      type="submit"
+      [disabled]="chatForm().invalid() || chatForm().submitting()"
+    >
+      <svg lucideSendHorizontal [size]="14"></svg>
+    </button>
+  </form>
+</ng-container>
