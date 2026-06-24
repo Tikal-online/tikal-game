@@ -3,6 +3,7 @@ import { LucideMessageSquare, LucideSendHorizontal, LucideX } from '@lucide/angu
 import { GlobalChatMessage } from '../global-chat-message/global-chat-message';
 import { disabled, form, FormField, FormRoot, maxLength, required } from '@angular/forms/signals';
 import { GlobalChatStore } from '../../stores/global-chat/global-chat-store';
+import { TranslocoDirective } from '@jsverse/transloco';
 
 type ChatFormData = {
   message: string;
@@ -17,6 +18,7 @@ type ChatFormData = {
     GlobalChatMessage,
     FormRoot,
     FormField,
+    TranslocoDirective,
   ],
   templateUrl: './global-chat.html',
   styleUrl: './global-chat.scss',
