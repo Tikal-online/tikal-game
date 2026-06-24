@@ -49,7 +49,7 @@ export const GlobalChatStore = signalStore(
     watchMessages: rxMethod<void>(
       pipe(
         switchMap(() => store._globalChatService.message$),
-        tap((message) => patchState(store, { messages: [...store.messages(), message] })),
+        tap((message) => patchState(store, { messages: [message, ...store.messages()] })),
       ),
     ),
 

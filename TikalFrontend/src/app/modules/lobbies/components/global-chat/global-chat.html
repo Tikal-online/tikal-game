@@ -13,11 +13,25 @@
         ></svg>
       </div>
     </div>
-    <div class="messages"></div>
-    <form>
+    <div class="messages">
+      @for (message of globalChatStore.messages(); track $index) {
+        <app-global-chat-message username="Testing">{{ message }}</app-global-chat-message>
+      }
+    </div>
+    <form [formRoot]="chatForm">
       <label for="message" hidden>Message</label>
-      <input id="message" placeholder="Say something..." type="text" />
-      <button class="button-primary" type="submit">
+      <input
+        autocomplete="off"
+        id="message"
+        placeholder="Say something..."
+        type="text"
+        [formField]="chatForm.message"
+      />
+      <button
+        class="button-primary"
+        type="submit"
+        [disabled]="chatForm().invalid() || chatForm().submitting()"
+      >
         <svg lucideSendHorizontal [size]="14"></svg>
       </button>
     </form>
