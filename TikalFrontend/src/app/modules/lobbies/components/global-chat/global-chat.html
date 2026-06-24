@@ -1,7 +1,7 @@
 <ng-container *transloco="let t; prefix: 'lobbies.globalChat'">
-  @if (showChat()) {
+  @if (globalChatStore.isExpanded()) {
     <div class="expanded">
-      <app-global-chat-header (closed)="hide()" />
+      <app-global-chat-header />
       <div class="messages">
         @for (message of globalChatStore.messages(); track $index) {
           @if (isOwnMessage(message)) {
@@ -34,7 +34,12 @@
       </form>
     </div>
   } @else {
-    <div class="collapsed" tabindex="0" (click)="show()" (keydown.enter)="show()">
+    <div
+      class="collapsed"
+      tabindex="0"
+      (click)="globalChatStore.expand()"
+      (keydown.enter)="globalChatStore.expand()"
+    >
       <svg lucideMessageSquare [size]="15"></svg>
     </div>
   }

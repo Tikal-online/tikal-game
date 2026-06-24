@@ -18,11 +18,13 @@ import { pipe, switchMap, tap } from 'rxjs';
 export type GlobalChatState = {
   status: ConnectionStatus;
   messages: ChatMessage[];
+  isExpanded: boolean;
 };
 
 const initialState: GlobalChatState = {
   status: 'Disconnected',
   messages: [],
+  isExpanded: true,
 };
 
 export const GlobalChatStore = signalStore(
@@ -35,6 +37,14 @@ export const GlobalChatStore = signalStore(
   })),
 
   withMethods((store) => ({
+    expand(): void {
+      patchState(store, { isExpanded: true });
+    },
+
+    collapse(): void {
+      patchState(store, { isExpanded: false });
+    },
+
     connect(): Promise<void> {
       return store._globalChatService.connect();
     },

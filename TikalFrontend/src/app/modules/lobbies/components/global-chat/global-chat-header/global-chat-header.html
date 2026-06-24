@@ -6,8 +6,8 @@
       lucideX
       tabindex="0"
       [size]="16"
-      (click)="closed.emit()"
-      (keydown.enter)="closed.emit()"
+      (click)="globalChatStore.collapse()"
+      (keydown.enter)="globalChatStore.collapse()"
     ></svg>
   </div>
 </ng-container>

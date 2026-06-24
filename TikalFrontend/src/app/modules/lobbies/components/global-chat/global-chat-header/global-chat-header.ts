@@ -1,6 +1,7 @@
-import { Component, output } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { LucideX } from '@lucide/angular';
+import { GlobalChatStore } from '../../../stores/global-chat/global-chat-store';
 
 @Component({
   selector: 'app-global-chat-header',
@@ -9,5 +10,5 @@ import { LucideX } from '@lucide/angular';
   styleUrl: './global-chat-header.scss',
 })
 export class GlobalChatHeader {
-  readonly closed = output();
+  readonly globalChatStore = inject(GlobalChatStore);
 }

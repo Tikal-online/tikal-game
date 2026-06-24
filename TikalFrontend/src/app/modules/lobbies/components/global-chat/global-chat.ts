@@ -60,19 +60,9 @@ export class GlobalChat {
     },
   );
 
-  readonly showChat = signal(true);
-
   constructor() {
     this.globalChatStore.connect();
     inject(DestroyRef).onDestroy(() => this.globalChatStore.disconnect());
-  }
-
-  hide(): void {
-    this.showChat.set(false);
-  }
-
-  show(): void {
-    this.showChat.set(true);
   }
 
   isOwnMessage(message: ChatMessage): boolean {
