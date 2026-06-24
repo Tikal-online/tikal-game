@@ -12,6 +12,8 @@ p {
   background-color: colors.$card-background-secondary;
 
   border: 1px solid colors.$border;
+
+  overflow-wrap: break-word;
 }
 
 .author {

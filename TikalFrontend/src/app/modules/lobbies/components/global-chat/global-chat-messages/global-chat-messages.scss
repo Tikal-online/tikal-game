@@ -1,0 +1,20 @@
+:host {
+  display: flex;
+  flex-direction: column-reverse;
+  flex: 1;
+
+  padding: 1rem;
+  gap: 1rem;
+
+  overflow-y: auto;
+}
+
+.enemy-message {
+  align-self: flex-start;
+  max-width: 90%;
+}
+
+.my-message {
+  align-self: flex-end;
+  max-width: 90%;
+}

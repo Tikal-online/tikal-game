@@ -1,13 +1,12 @@
 import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { LucideMessageSquare, LucideSendHorizontal } from '@lucide/angular';
-import { EnemyChatMessage } from './enemy-chat-message/enemy-chat-message';
 import { disabled, form, FormField, FormRoot, maxLength, required } from '@angular/forms/signals';
 import { GlobalChatStore } from '../../stores/global-chat/global-chat-store';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { AuthStore } from '../../../../core/stores/auth-store/auth-store';
 import { ChatMessage } from '../../services/global-chat/global-chat-service';
-import { MyChatMessage } from './my-chat-message/my-chat-message';
 import { GlobalChatHeader } from './global-chat-header/global-chat-header';
+import { GlobalChatMessages } from './global-chat-messages/global-chat-messages';
 
 type ChatFormData = {
   message: string;
@@ -18,12 +17,11 @@ type ChatFormData = {
   imports: [
     LucideMessageSquare,
     LucideSendHorizontal,
-    EnemyChatMessage,
     FormRoot,
     FormField,
     TranslocoDirective,
-    MyChatMessage,
     GlobalChatHeader,
+    GlobalChatMessages,
   ],
   templateUrl: './global-chat.html',
   styleUrl: './global-chat.scss',

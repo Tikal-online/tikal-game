@@ -2,19 +2,7 @@
   @if (globalChatStore.isExpanded()) {
     <div class="expanded">
       <app-global-chat-header />
-      <div class="messages">
-        @for (message of globalChatStore.messages(); track $index) {
-          @if (isOwnMessage(message)) {
-            <app-my-chat-message class="my-message">
-              {{ message.content }}
-            </app-my-chat-message>
-          } @else {
-            <app-enemy-chat-message class="enemy-message" [username]="message.username">
-              {{ message.content }}
-            </app-enemy-chat-message>
-          }
-        }
-      </div>
+      <app-global-chat-messages />
       <form [formRoot]="chatForm">
         <label for="message" hidden>{{ t('message-input-label') }}</label>
         <input

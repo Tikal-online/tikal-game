@@ -12,4 +12,6 @@ p {
   background-color: color-mix(in srgb, colors.$text-header-prefix 20%, transparent);
 
   border: 1px solid color-mix(in srgb, colors.$text-header-prefix 30%, transparent);
+
+  overflow-wrap: break-word;
 }
