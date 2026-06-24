@@ -1,0 +1,13 @@
+<ng-container *transloco="let t; prefix: 'lobbies.globalChat'">
+  <p>{{ t('header') }}</p>
+  <div class="header-icons">
+    <svg
+      class="clickable-svg"
+      lucideX
+      tabindex="0"
+      [size]="16"
+      (click)="closed.emit()"
+      (keydown.enter)="closed.emit()"
+    ></svg>
+  </div>
+</ng-container>

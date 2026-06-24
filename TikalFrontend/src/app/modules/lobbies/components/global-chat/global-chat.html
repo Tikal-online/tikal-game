@@ -1,19 +1,7 @@
 <ng-container *transloco="let t; prefix: 'lobbies.globalChat'">
   @if (showChat()) {
     <div class="expanded">
-      <div class="header">
-        <p>{{ t('header') }}</p>
-        <div class="header-icons">
-          <svg
-            class="clickable-icon"
-            lucideX
-            tabindex="0"
-            [size]="16"
-            (click)="hide()"
-            (keydown.enter)="hide()"
-          ></svg>
-        </div>
-      </div>
+      <app-global-chat-header (closed)="hide()" />
       <div class="messages">
         @for (message of globalChatStore.messages(); track $index) {
           @if (isOwnMessage(message)) {

@@ -1,5 +1,5 @@
 import { Component, DestroyRef, inject, signal } from '@angular/core';
-import { LucideMessageSquare, LucideSendHorizontal, LucideX } from '@lucide/angular';
+import { LucideMessageSquare, LucideSendHorizontal } from '@lucide/angular';
 import { EnemyChatMessage } from './enemy-chat-message/enemy-chat-message';
 import { disabled, form, FormField, FormRoot, maxLength, required } from '@angular/forms/signals';
 import { GlobalChatStore } from '../../stores/global-chat/global-chat-store';
@@ -7,6 +7,7 @@ import { TranslocoDirective } from '@jsverse/transloco';
 import { AuthStore } from '../../../../core/stores/auth-store/auth-store';
 import { ChatMessage } from '../../services/global-chat/global-chat-service';
 import { MyChatMessage } from './my-chat-message/my-chat-message';
+import { GlobalChatHeader } from './global-chat-header/global-chat-header';
 
 type ChatFormData = {
   message: string;
@@ -15,7 +16,6 @@ type ChatFormData = {
 @Component({
   selector: 'app-global-chat',
   imports: [
-    LucideX,
     LucideMessageSquare,
     LucideSendHorizontal,
     EnemyChatMessage,
@@ -23,6 +23,7 @@ type ChatFormData = {
     FormField,
     TranslocoDirective,
     MyChatMessage,
+    GlobalChatHeader,
   ],
   templateUrl: './global-chat.html',
   styleUrl: './global-chat.scss',
