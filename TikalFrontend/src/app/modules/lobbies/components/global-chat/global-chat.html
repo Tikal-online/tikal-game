@@ -17,9 +17,9 @@
       <div class="messages">
         @for (message of globalChatStore.messages(); track $index) {
           @if (isOwnMessage(message)) {
-            <app-enemy-chat-message class="my-message" username="Its you!">
+            <app-my-chat-message class="my-message">
               {{ message.content }}
-            </app-enemy-chat-message>
+            </app-my-chat-message>
           } @else {
             <app-enemy-chat-message class="enemy-message" [username]="message.username">
               {{ message.content }}

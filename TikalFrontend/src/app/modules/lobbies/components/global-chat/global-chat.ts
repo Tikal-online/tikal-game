@@ -6,6 +6,7 @@ import { GlobalChatStore } from '../../stores/global-chat/global-chat-store';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { AuthStore } from '../../../../core/stores/auth-store/auth-store';
 import { ChatMessage } from '../../services/global-chat/global-chat-service';
+import { MyChatMessage } from '../my-chat-message/my-chat-message';
 
 type ChatFormData = {
   message: string;
@@ -21,6 +22,7 @@ type ChatFormData = {
     FormRoot,
     FormField,
     TranslocoDirective,
+    MyChatMessage,
   ],
   templateUrl: './global-chat.html',
   styleUrl: './global-chat.scss',
