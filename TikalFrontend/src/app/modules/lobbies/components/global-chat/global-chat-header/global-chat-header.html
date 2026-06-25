@@ -1,6 +1,29 @@
 <ng-container *transloco="let t; prefix: 'lobbies.globalChat'">
   <p>{{ t('header') }}</p>
   <div class="header-icons">
+    @switch (globalChatStore.status()) {
+      @case ('Connected') {
+        <div class="live-status secondary-status">
+          <span class="status-dot on pulse-animation"></span>
+          <span>{{ t('header-status.connected') }}</span>
+        </div>
+        <svg lucideWifi [size]="16"></svg>
+      }
+      @case ('Connecting') {
+        <div class="live-status secondary-status">
+          <span class="status-dot on pulse-animation"></span>
+          <span>{{ t('header-status.connecting') }}</span>
+        </div>
+        <svg lucideWifiOff [size]="16"></svg>
+      }
+      @case ('Disconnected') {
+        <div class="live-status primary-status">
+          <span class="status-dot off"></span>
+          <span>{{ t('header-status.disconnected') }}</span>
+        </div>
+        <svg lucideWifiOff [size]="16"></svg>
+      }
+    }
     <svg
       class="clickable-svg"
       lucideX

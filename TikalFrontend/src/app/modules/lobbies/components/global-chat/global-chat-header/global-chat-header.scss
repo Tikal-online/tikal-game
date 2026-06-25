@@ -20,7 +20,46 @@ p {
   color: colors.$text-header;
 }
 
+svg {
+  color: colors.$text-muted;
+}
+
 .header-icons {
   display: inline-flex;
   align-items: center;
+
+  gap: 0.75rem;
+}
+
+.live-status {
+  display: flex;
+  align-items: center;
+
+  gap: 0.4rem;
+
+  font-family: 'Mono', monospace;
+  font-size: 0.6rem;
+}
+
+.secondary-status {
+  color: colors.$text-muted;
+}
+
+.primary-status {
+  color: colors.$text-header;
+}
+
+.status-dot {
+  width: 0.375rem;
+  height: 0.375rem;
+
+  border-radius: 50%;
+}
+
+.on {
+  background-color: colors.$text-header-prefix;
+}
+
+.off {
+  background-color: colors.$error;
 }
