@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, input } from '@angular/core';
 
 @Component({
   selector: 'app-my-chat-message',
@@ -6,4 +6,6 @@ import { Component } from '@angular/core';
   templateUrl: './my-chat-message.html',
   styleUrl: './my-chat-message.scss',
 })
-export class MyChatMessage {}
+export class MyChatMessage {
+  readonly time = input.required<Date>();
+}

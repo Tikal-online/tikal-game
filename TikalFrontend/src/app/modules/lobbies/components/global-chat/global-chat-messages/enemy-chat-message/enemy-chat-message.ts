@@ -7,5 +7,7 @@ import { Component, input } from '@angular/core';
   styleUrl: './enemy-chat-message.scss',
 })
 export class EnemyChatMessage {
-  readonly username = input<string>();
+  readonly username = input.required<string>();
+
+  readonly time = input.required<Date>();
 }

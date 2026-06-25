@@ -1,10 +1,14 @@
 @for (message of globalChatStore.messages(); track $index) {
   @if (isMyMessage(message)) {
-    <app-my-chat-message class="my-message">
+    <app-my-chat-message class="my-message" [time]="message.time">
       {{ message.content }}
     </app-my-chat-message>
   } @else {
-    <app-enemy-chat-message class="enemy-message" [username]="message.username">
+    <app-enemy-chat-message
+      class="enemy-message"
+      [time]="message.time"
+      [username]="message.username"
+    >
       {{ message.content }}
     </app-enemy-chat-message>
   }
