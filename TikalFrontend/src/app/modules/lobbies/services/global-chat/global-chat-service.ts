@@ -5,10 +5,17 @@ import { Subject } from 'rxjs';
 
 export type ConnectionStatus = 'Connected' | 'Connecting' | 'Disconnected';
 
+type ChatMessageDto = {
+  userId: string;
+  username: string;
+  content: string;
+};
+
 export type ChatMessage = {
   userId: string;
   username: string;
   content: string;
+  time: Date;
 };
 
 @Service()
@@ -30,8 +37,8 @@ export class GlobalChatService {
       })
       .build();
 
-    this.connection.on('ReceiveMessage', (message: ChatMessage) => {
-      this.message$.next(message);
+    this.connection.on('ReceiveMessage', (message: ChatMessageDto) => {
+      this.message$.next({ ...message, time: new Date() });
     });
 
     this.connection.onclose(() => {

@@ -1,4 +1,9 @@
-<span class="author">{{ username() }}</span>
+<div class="message-header">
+  <span class="author">{{ username() }}</span>
+  <span class="time">
+    {{ time().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }}
+  </span>
+</div>
 <p>
   <ng-content />
 </p>

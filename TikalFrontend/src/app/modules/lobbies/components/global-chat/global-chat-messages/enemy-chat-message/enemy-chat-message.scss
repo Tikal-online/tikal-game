@@ -16,8 +16,21 @@ p {
   overflow-wrap: break-word;
 }
 
+.message-header {
+  display: flex;
+  align-items: baseline;
+
+  gap: 0.5rem;
+}
+
 .author {
   font-family: 'Cinzel', serif;
   font-size: 0.8rem;
   color: colors.$text-header-prefix;
+}
+
+.time {
+  font-family: 'Mono', monospace;
+  font-size: 0.58rem;
+  color: colors.$text-muted;
 }
