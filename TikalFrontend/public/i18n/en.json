@@ -18,7 +18,16 @@
     "globalChat": {
       "header": "GLOBAL CHAT",
       "message-input-label": "Message",
-      "message-input-placeholder": "Say something..."
+      "message-input-placeholder": "Say something...",
+      "disconnected": {
+        "header": "CONNECTION LOST",
+        "description": "Unable to connect to the global chat.",
+        "reconnect-button-label": "RECONNECT"
+      },
+      "connecting": {
+        "header": "CONNECTING...",
+        "description": "Connecting to the global chat. Please wait."
+      }
     }
   }
 }

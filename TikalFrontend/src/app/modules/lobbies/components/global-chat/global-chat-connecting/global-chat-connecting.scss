@@ -1,0 +1,51 @@
+@use 'colors';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+
+  justify-content: center;
+  align-items: center;
+}
+
+.icon-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 3rem;
+  height: 3rem;
+}
+
+svg {
+  color: colors.$text-muted;
+}
+
+.loading-circle {
+  position: absolute;
+  color: colors.$text-header-prefix;
+}
+
+.loading-circle-overlay {
+  position: absolute;
+}
+
+.header {
+  margin-bottom: 0.25rem;
+
+  font-family: 'Cinzel', serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.08rem;
+  color: colors.$text-header;
+}
+
+.description {
+  margin-top: 0;
+
+  font-family: 'Crimson', serif;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: colors.$text-muted;
+}

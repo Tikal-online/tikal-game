@@ -1,0 +1,9 @@
+<ng-container *transloco="let t; prefix: 'lobbies.globalChat.disconnected'">
+  <svg class="wifi-symbol" lucideWifiOff [size]="20"></svg>
+  <p class="header">{{ t('header') }}</p>
+  <p class="description">{{ t('description') }}</p>
+  <button class="button-secondary" type="button" (click)="globalChatStore.connect()">
+    <svg lucideRotateCcw [size]="12"></svg>
+    {{ t('reconnect-button-label') }}
+  </button>
+</ng-container>

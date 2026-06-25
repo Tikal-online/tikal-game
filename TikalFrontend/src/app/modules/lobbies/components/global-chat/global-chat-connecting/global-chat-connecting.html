@@ -1,0 +1,14 @@
+<ng-container *transloco="let t; prefix: 'lobbies.globalChat.connecting'">
+  <div class="icon-container">
+    <svg class="loading-circle" lucideCircle [size]="40" [strokeWidth]="1"></svg>
+    <svg
+      class="loading-circle-overlay spin-animation"
+      lucideLoaderCircle
+      [size]="44"
+      [strokeWidth]="1"
+    ></svg>
+    <svg lucideWifiOff [size]="14"></svg>
+  </div>
+  <p class="header">{{ t('header') }}</p>
+  <p class="description">{{ t('description') }}</p>
+</ng-container>

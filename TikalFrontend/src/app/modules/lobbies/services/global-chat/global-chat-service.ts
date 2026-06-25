@@ -49,8 +49,12 @@ export class GlobalChatService {
 
   async connect(): Promise<void> {
     this.connectionStatus$.next('Connecting');
-    await this.connection.start();
-    this.connectionStatus$.next('Connected');
+    try {
+      await this.connection.start();
+      this.connectionStatus$.next('Connected');
+    } catch {
+      this.connectionStatus$.next('Disconnected');
+    }
   }
 
   disconnect(): Promise<void> {

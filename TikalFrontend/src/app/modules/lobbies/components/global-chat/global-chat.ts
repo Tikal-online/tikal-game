@@ -4,10 +4,19 @@ import { GlobalChatStore } from '../../stores/global-chat/global-chat-store';
 import { GlobalChatHeader } from './global-chat-header/global-chat-header';
 import { GlobalChatMessages } from './global-chat-messages/global-chat-messages';
 import { GlobalChatForm } from './global-chat-form/global-chat-form';
+import { GlobalChatDisconnected } from './global-chat-disconnected/global-chat-disconnected';
+import { GlobalChatConnecting } from './global-chat-connecting/global-chat-connecting';
 
 @Component({
   selector: 'app-global-chat',
-  imports: [LucideMessageSquare, GlobalChatHeader, GlobalChatMessages, GlobalChatForm],
+  imports: [
+    LucideMessageSquare,
+    GlobalChatHeader,
+    GlobalChatMessages,
+    GlobalChatForm,
+    GlobalChatDisconnected,
+    GlobalChatConnecting,
+  ],
   templateUrl: './global-chat.html',
   styleUrl: './global-chat.scss',
 })
