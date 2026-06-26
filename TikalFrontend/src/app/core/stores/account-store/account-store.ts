@@ -9,7 +9,7 @@ import { computed, inject } from '@angular/core';
 import { catchError, firstValueFrom, Observable, tap, throwError } from 'rxjs';
 import { Result } from 'neverthrow';
 
-export type AccountState = {
+type AccountState = {
   initializationFailed: boolean;
   account: Account | null;
 };
