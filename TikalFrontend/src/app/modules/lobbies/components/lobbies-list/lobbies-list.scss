@@ -1,3 +1,5 @@
+@use 'colors';
+
 :host {
   display: flex;
   flex-direction: column;
@@ -17,4 +19,51 @@ h1 {
   font-size: clamp(1.6rem, 3vw, 2.5rem);
   font-weight: 700;
   line-height: 1.1;
+}
+
+table {
+  margin-top: 1rem;
+
+  border-collapse: collapse;
+}
+
+tr {
+  border-bottom: 1px solid colors.$border;
+}
+
+tr:has(td) {
+  color: colors.$text-header;
+
+  cursor: pointer;
+}
+
+tr:has(td):hover {
+  color: colors.$text-header-prefix;
+
+  background-color: color-mix(in srgb, colors.$card-background-secondary 50%, transparent);
+}
+
+th {
+  padding: 0.5rem 1rem;
+
+  font-family: 'Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.15rem;
+  color: colors.$text-muted;
+  text-align: start;
+}
+
+td {
+  padding: 1rem;
+
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.lobby-name {
+  font-family: 'Cinzel', serif;
+}
+
+.players {
+  font-family: 'Mono', monospace;
 }
