@@ -1,0 +1,12 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+
+  padding: 2rem;
+}
+
+.header-prefix {
+  font-size: 0.7rem;
+  letter-spacing: 0.1rem;
+}

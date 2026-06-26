@@ -59,6 +59,14 @@ nav {
   color: colors.$text-header-prefix;
 }
 
+// Headings
+.header-prefix {
+  font-family: 'Mono', monospace;
+  font-size: 0.65rem;
+
+  color: colors.$text-header-prefix;
+}
+
 // Links
 a {
   display: inline-flex;
