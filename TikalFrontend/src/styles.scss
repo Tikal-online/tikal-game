@@ -67,6 +67,11 @@ nav {
   color: colors.$text-header-prefix;
 }
 
+h1 {
+  font-family: 'Cinzel', serif;
+  color: colors.$text-header;
+}
+
 // Links
 a {
   display: inline-flex;
