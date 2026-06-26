@@ -21,6 +21,12 @@ h1 {
   line-height: 1.1;
 }
 
+svg {
+  margin-right: 0.2rem;
+
+  color: colors.$text-muted;
+}
+
 table {
   margin-top: 1rem;
 
@@ -29,6 +35,19 @@ table {
 
 tr {
   border-bottom: 1px solid colors.$border;
+}
+
+th {
+  padding: 0.5rem 1rem;
+
+  font-size: 0.7rem;
+  letter-spacing: 0.15rem;
+  text-align: start;
+}
+
+tr:has(th) {
+  font-family: 'Mono', monospace;
+  color: colors.$text-muted;
 }
 
 tr:has(td) {
@@ -41,16 +60,6 @@ tr:has(td):hover {
   color: colors.$text-header-prefix;
 
   background-color: color-mix(in srgb, colors.$card-background-secondary 50%, transparent);
-}
-
-th {
-  padding: 0.5rem 1rem;
-
-  font-family: 'Mono', monospace;
-  font-size: 0.7rem;
-  letter-spacing: 0.15rem;
-  color: colors.$text-muted;
-  text-align: start;
 }
 
 td {
