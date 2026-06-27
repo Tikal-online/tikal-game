@@ -9,7 +9,7 @@ import {
 import { LobbyService, LobbySummary } from '../../services/lobby/lobby-service';
 import { computed, inject } from '@angular/core';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { debounceTime, distinctUntilChanged, pipe, switchMap, tap } from 'rxjs';
+import { debounceTime, delay, distinctUntilChanged, pipe, switchMap, tap } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
 
 type LobbySummaryState = {
@@ -43,12 +43,14 @@ export const LobbySummaryStore = signalStore(
     _lobbyService: inject(LobbyService),
   })),
 
-  withComputed(({ totalCount, filter }) => ({
+  withComputed(({ totalCount, status, filter }) => ({
     hasPrevious: computed(() => filter.pageNumber() > 1),
 
     hasNext: computed(() => totalCount() - filter.pageNumber() * filter.pageSize() > 0),
 
     maxPage: computed(() => Math.ceil(totalCount() / filter.pageSize())),
+
+    isLoading: computed(() => status() === 'loading'),
   })),
 
   withMethods((store) => ({
@@ -66,9 +68,10 @@ export const LobbySummaryStore = signalStore(
 
     loadLobbies: rxMethod<{ pageSize: number; pageNumber: number; searchText: string }>(
       pipe(
-        debounceTime(300),
+        debounceTime(200),
         distinctUntilChanged(),
         tap(() => patchState(store, { status: 'loading' })),
+        delay(3000),
         switchMap((query) => {
           return store._lobbyService
             .getLobbiesSummary(query.pageSize, query.pageNumber, query.searchText)

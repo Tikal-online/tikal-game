@@ -1,7 +1,7 @@
 <button
   class="button-secondary"
   type="button"
-  [disabled]="!lobbySummaryStore.hasPrevious()"
+  [disabled]="!lobbySummaryStore.hasPrevious() || lobbySummaryStore.isLoading()"
   (click)="decrementPageNumber()"
 >
   <svg lucideChevronLeft [size]="13"></svg>
@@ -10,7 +10,7 @@
 <button
   class="button-secondary"
   type="button"
-  [disabled]="!lobbySummaryStore.hasNext()"
+  [disabled]="!lobbySummaryStore.hasNext() || lobbySummaryStore.isLoading()"
   (click)="incrementPageNumber()"
 >
   <svg lucideChevronRight [size]="13"></svg>
