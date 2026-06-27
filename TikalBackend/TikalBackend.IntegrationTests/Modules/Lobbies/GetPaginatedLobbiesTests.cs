@@ -2,6 +2,7 @@ using System.Net;
 using System.Net.Http.Json;
 using Microsoft.AspNetCore.WebUtilities;
 using RestApi.Controllers.Lobbies.Dtos;
+using Shared.Contracts.Queries;
 using TikalBackend.IntegrationTests.Extensions;
 
 namespace TikalBackend.IntegrationTests.Modules.Lobbies;
@@ -98,7 +99,9 @@ internal sealed class GetPaginatedLobbiesTests : IntegrationTestFixture
         // when
         var response = await Client.GetAsyncWithUser(url, TestUser.Default);
 
-        var lobbies = await response.Content.ReadFromJsonAsync<List<LobbySummaryDto>>();
+        var paginatedResult = await response.Content.ReadFromJsonAsync<PaginatedResult<List<LobbySummaryDto>>>();
+
+        var lobbies = paginatedResult?.Data;
 
         // then
         Assert.That(lobbies, Is.Not.Null);
