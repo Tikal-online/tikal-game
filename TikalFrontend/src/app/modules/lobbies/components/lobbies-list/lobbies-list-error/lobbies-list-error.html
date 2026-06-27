@@ -1,3 +1,5 @@
-<svg lucideWifiOff [size]="20"></svg>
-<p class="header">FAILED TO LOAD LOBBIES</p>
-<p class="description">Unable to load lobbies. Please try again later.</p>
+<ng-container *transloco="let t; prefix: 'lobbies.list.error'">
+  <svg lucideWifiOff [size]="20"></svg>
+  <p class="header">{{ t('header') }}</p>
+  <p class="description">{{ t('description') }}</p>
+</ng-container>

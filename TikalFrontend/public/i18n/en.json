@@ -15,6 +15,25 @@
     "submitting-button": "SUBMITTING"
   },
   "lobbies": {
+    "list": {
+      "header-prefix": "ACTIVE EXPEDITIONS",
+      "header": "EXPEDITION LOBBIES",
+      "searchtext-input-label": "searchtext",
+      "searchtext-input-placeholder": "Search by name...",
+      "columns": {
+        "lobbyname": "LOBBY NAME",
+        "players": "PLAYER",
+        "gamemode": "GAME MODE"
+      },
+      "not-found": {
+        "header": "NO LOBBIES FOUND",
+        "description": "There are no active lobbies matching your search criteria."
+      },
+      "error": {
+        "header": "FAILED TO LOAD LOBBIES",
+        "description": "Unable to load lobbies. Please try again later."
+      }
+    },
     "globalChat": {
       "header": "GLOBAL CHAT",
       "header-status": {

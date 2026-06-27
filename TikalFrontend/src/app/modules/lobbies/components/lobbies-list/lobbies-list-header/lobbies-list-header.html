@@ -1,26 +1,28 @@
-<p class="header-prefix">ACTIVE EXPEDITIONS</p>
-<div class="header-row">
-  <h1>EXPEDITION LOBBIES</h1>
-  <div class="header-tools">
-    <label for="searchText" hidden>SearchText</label>
-    <input
-      class="primary-input"
-      id="searchText"
-      placeholder="Search by name..."
-      (input)="lobbySummaryStore.updateSearchText($event.target.value)"
-      (value)="lobbySummaryStore.filter.searchText()"
-    />
-    <button
-      class="button-secondary"
-      type="button"
-      [disabled]="lobbySummaryStore.isLoading()"
-      (click)="lobbySummaryStore.refresh()"
-    >
-      <svg
-        lucideRefreshCw
-        [class]="lobbySummaryStore.isLoading() ? 'spin-animation' : ''"
-        [size]="14"
-      ></svg>
-    </button>
+<ng-container *transloco="let t; prefix: 'lobbies.list'">
+  <p class="header-prefix">{{ t('header-prefix') }}</p>
+  <div class="header-row">
+    <h1>{{ t('header') }}</h1>
+    <div class="header-tools">
+      <label for="searchText" hidden>{{ t('searchtext-input-label') }}</label>
+      <input
+        class="primary-input"
+        id="searchText"
+        [placeholder]="t('searchtext-input-placeholder')"
+        (input)="lobbySummaryStore.updateSearchText($event.target.value)"
+        (value)="lobbySummaryStore.filter.searchText()"
+      />
+      <button
+        class="button-secondary"
+        type="button"
+        [disabled]="lobbySummaryStore.isLoading()"
+        (click)="lobbySummaryStore.refresh()"
+      >
+        <svg
+          lucideRefreshCw
+          [class]="lobbySummaryStore.isLoading() ? 'spin-animation' : ''"
+          [size]="14"
+        ></svg>
+      </button>
+    </div>
   </div>
-</div>
+</ng-container>
