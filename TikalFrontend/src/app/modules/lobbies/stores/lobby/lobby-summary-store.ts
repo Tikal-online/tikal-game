@@ -80,7 +80,6 @@ export const LobbySummaryStore = signalStore(
       pipe(
         distinctUntilChanged(),
         tap(() => patchState(store, { status: 'loading' })),
-        delay(3000),
         switchMap((query) => {
           return store._lobbyService
             .getLobbiesSummary(query.pageSize, query.pageNumber, query.searchText)
