@@ -33,6 +33,8 @@ table {
   margin-top: 1rem;
 
   border-collapse: collapse;
+  table-layout: fixed;
+  width: 100%;
 }
 
 tr {
