@@ -3,10 +3,21 @@
   letter-spacing: 0.1rem;
 }
 
+.header-row {
+  display: flex;
+  flex-direction: row;
+
+  justify-content: space-between;
+}
+
 h1 {
   margin: 0;
 
   font-size: clamp(1.6rem, 3vw, 2.5rem);
   font-weight: 700;
   line-height: 1.1;
+}
+
+button {
+  padding: 0.75rem;
 }

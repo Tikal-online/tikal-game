@@ -9,7 +9,7 @@ import {
 import { LobbyService, LobbySummary } from '../../services/lobby/lobby-service';
 import { computed, inject } from '@angular/core';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { debounceTime, delay, distinctUntilChanged, pipe, switchMap, tap } from 'rxjs';
+import { delay, distinctUntilChanged, pipe, switchMap, tap } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
 
 type LobbySummaryState = {
@@ -20,6 +20,8 @@ type LobbySummaryState = {
     pageSize: number;
     pageNumber: number;
     searchText: string;
+    // a helper to trigger a refresh without changing any filters
+    refreshTrigger: boolean;
   };
 };
 
@@ -31,6 +33,7 @@ const initialState: LobbySummaryState = {
     pageSize: 8,
     pageNumber: 1,
     searchText: '',
+    refreshTrigger: false,
   },
 };
 
@@ -54,10 +57,6 @@ export const LobbySummaryStore = signalStore(
   })),
 
   withMethods((store) => ({
-    updatePageSize(pageSize: number): void {
-      patchState(store, (state) => ({ filter: { ...state.filter, pageSize } }));
-    },
-
     updatePageNumber(pageNumber: number): void {
       patchState(store, (state) => ({ filter: { ...state.filter, pageNumber } }));
     },
@@ -66,9 +65,19 @@ export const LobbySummaryStore = signalStore(
       patchState(store, (state) => ({ filter: { ...state.filter, searchText } }));
     },
 
-    loadLobbies: rxMethod<{ pageSize: number; pageNumber: number; searchText: string }>(
+    refresh(): void {
+      patchState(store, (state) => ({
+        filter: { ...state.filter, refreshTrigger: !state.filter.refreshTrigger },
+      }));
+    },
+
+    loadLobbies: rxMethod<{
+      pageSize: number;
+      pageNumber: number;
+      searchText: string;
+      refreshTrigger: boolean;
+    }>(
       pipe(
-        debounceTime(200),
         distinctUntilChanged(),
         tap(() => patchState(store, { status: 'loading' })),
         delay(3000),
