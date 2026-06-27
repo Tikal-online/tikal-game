@@ -1,0 +1,38 @@
+<app-lobbies-list-header />
+<div class="table-container">
+  <table>
+    <tr>
+      <th>LOBBY NAME</th>
+      <th>PLAYERS</th>
+      <th>GAME MODE</th>
+    </tr>
+    @switch (lobbySummaryStore.status()) {
+      @case ('initial')
+      @case ('loading') {
+        @for (placeholder of [].constructor(lobbySummaryStore.filter.pageSize()); track $index) {
+          <tr>
+            <td><div class="skeleton-bar" [style.width]="55 + ($index % 3) * 15 + '%'"></div></td>
+            <td><div class="skeleton-bar" [style.width]="40 + ($index % 2) * 20 + '%'"></div></td>
+            <td>-</td>
+          </tr>
+        }
+      }
+      @case ('loaded') {
+        @for (lobby of lobbySummaryStore.lobbies(); track $index) {
+          <tr>
+            <td class="lobby-name">
+              <svg lucideGlobe [size]="12"></svg>
+              {{ lobby.name }}
+            </td>
+            <td class="players">
+              <svg lucideUsers [size]="12"></svg>
+              {{ lobby.currentPlayers }}/{{ lobby.maxPlayers }}
+            </td>
+            <td>-</td>
+          </tr>
+        }
+      }
+    }
+  </table>
+</div>
+<app-lobbies-list-pagination />

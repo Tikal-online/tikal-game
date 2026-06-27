@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RestApi.Controllers.Lobbies.Dtos;
 using RestApi.Controllers.Lobbies.Mappers;
+using RestApi.Controllers.Shared.Dtos;
 using Shared.Api;
 
 namespace RestApi.Controllers.Lobbies;
@@ -59,21 +60,27 @@ public sealed partial class LobbiesController : ApiController
     }
 
     [HttpGet]
-    [ProducesResponseType<List<LobbySummaryDto>>(StatusCodes.Status200OK)]
+    [ProducesResponseType<PaginatedDto<List<LobbySummaryDto>>>(StatusCodes.Status200OK)]
     [EndpointDescription("Gets a paginated summary of the currently active lobbies. Can be filtered by lobby name")]
     public async Task<IActionResult> GetPaginatedLobbies(
-        [FromQuery][Required] int pageSize,
-        [FromQuery][Required] int pageNumber,
+        [FromQuery][Required][Range(1, int.MaxValue)] int pageSize,
+        [FromQuery][Required][Range(1, int.MaxValue)] int pageNumber,
         [FromQuery] string? searchText,
         CancellationToken cancellationToken
     )
     {
         var query = new GetPaginatedLobbiesQuery(pageSize, pageNumber, searchText);
 
-        var result = await sender.Send(query, cancellationToken);
+        var paginatedResult = await sender.Send(query, cancellationToken);
 
-        var lobbySummaryDtos = LobbyModelMapper.LobbySummaryModelsToLobbySummaryDtos(result);
+        var lobbySummaryDtos = LobbyModelMapper.LobbySummaryModelsToLobbySummaryDtos(paginatedResult.Data);
 
-        return Ok(lobbySummaryDtos);
+        var paginatedDto = new PaginatedDto<List<LobbySummaryDto>>
+        {
+            Data = lobbySummaryDtos,
+            TotalCount = paginatedResult.TotalCount
+        };
+
+        return Ok(paginatedDto);
     }
 }

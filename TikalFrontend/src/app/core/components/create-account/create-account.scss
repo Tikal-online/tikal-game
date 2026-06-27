@@ -29,10 +29,8 @@
 h1 {
   margin: 0 0 1.5rem 0;
 
-  font-family: 'Cinzel', serif;
   font-size: 1.5rem;
   font-weight: 700;
-  color: colors.$text-header;
 }
 
 form {
@@ -71,13 +69,6 @@ button {
 
   font-size: 0.75rem;
   letter-spacing: 0.15em;
-}
-
-.header-prefix {
-  font-family: 'Mono', monospace;
-  font-size: 0.65rem;
-
-  color: colors.$text-header-prefix;
 }
 
 .description {

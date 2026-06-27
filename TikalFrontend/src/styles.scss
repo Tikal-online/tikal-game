@@ -59,6 +59,19 @@ nav {
   color: colors.$text-header-prefix;
 }
 
+// Headings
+.header-prefix {
+  font-family: 'Mono', monospace;
+  font-size: 0.65rem;
+
+  color: colors.$text-header-prefix;
+}
+
+h1 {
+  font-family: 'Cinzel', serif;
+  color: colors.$text-header;
+}
+
 // Links
 a {
   display: inline-flex;
@@ -85,6 +98,7 @@ a:hover {
 
   font-family: 'Cinzel', serif;
   font-size: 0.85rem;
+  font-weight: 500;
   letter-spacing: 0.2em;
   color: colors.$button-primary-text;
 
