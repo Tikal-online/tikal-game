@@ -8,5 +8,5 @@ public interface LobbyQueryContext
 
     Task<List<Lobby>> GetPaginatedAsync(int pageSize, int pageNumber, string? searchText);
 
-    Task<int> GetCountAsync();
+    Task<int> GetCountAsync(string? searchText);
 }

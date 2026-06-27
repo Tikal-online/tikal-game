@@ -30,7 +30,7 @@ internal sealed class GetPaginatedLobbiesQueryHandler
 
         var lobbySummaryModels = LobbyMapper.LobbiesToLobbySummaryModels(lobbies);
 
-        var lobbyCount = await lobbyQueryContext.GetCountAsync();
+        var lobbyCount = await lobbyQueryContext.GetCountAsync(request.SearchText);
 
         return new PaginatedResult<List<LobbySummaryModel>>
         {
