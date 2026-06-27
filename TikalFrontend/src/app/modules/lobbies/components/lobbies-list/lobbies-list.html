@@ -6,20 +6,17 @@
     <th>PLAYERS</th>
     <th>GAME MODE</th>
   </tr>
-  <tr>
-    <td class="lobby-name">
-      <svg lucideGlobe [size]="12"></svg>
-      TestName
-    </td>
-    <td class="players">
-      <svg lucideUsers [size]="12"></svg>
-      3/4
-    </td>
-    <td>-</td>
-  </tr>
-  <tr>
-    <td class="lobby-name">TestName123</td>
-    <td class="players">1/2</td>
-    <td>-</td>
-  </tr>
+  @for (lobby of lobbySummaryStore.lobbies(); track $index) {
+    <tr>
+      <td class="lobby-name">
+        <svg lucideGlobe [size]="12"></svg>
+        {{ lobby.name }}
+      </td>
+      <td class="players">
+        <svg lucideUsers [size]="12"></svg>
+        {{ lobby.currentPlayers }}/{{ lobby.maxPlayers }}
+      </td>
+      <td>-</td>
+    </tr>
+  }
 </table>
