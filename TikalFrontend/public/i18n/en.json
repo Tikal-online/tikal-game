@@ -24,6 +24,10 @@
         "lobbyname": "LOBBY NAME",
         "players": "PLAYER",
         "gamemode": "GAME MODE"
+      },
+      "not-found": {
+        "header": "NO LOBBIES FOUND",
+        "description": "There are no active lobbies matching your search criteria."
       }
     },
     "globalChat": {

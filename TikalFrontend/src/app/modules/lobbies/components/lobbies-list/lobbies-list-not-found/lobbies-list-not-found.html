@@ -1,3 +1,5 @@
-<svg lucideSearch [size]="20"></svg>
-<p class="header">No Lobbies found</p>
-<p class="description">There are no active lobbies matching your search criteria.</p>
+<ng-container *transloco="let t; prefix: 'lobbies.list.not-found'">
+  <svg lucideSearch [size]="20"></svg>
+  <p class="header">{{ t('header') }}</p>
+  <p class="description">{{ t('description') }}</p>
+</ng-container>
