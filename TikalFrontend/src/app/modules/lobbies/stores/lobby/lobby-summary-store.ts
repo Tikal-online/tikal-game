@@ -94,7 +94,7 @@ export const LobbySummaryStore = signalStore(
                     totalCount: paginatedResult.totalCount,
                     status: 'loaded',
                   }),
-                error: () => patchState(store, { status: 'error' }),
+                error: () => patchState(store, { lobbies: [], totalCount: 0, status: 'error' }),
               }),
             );
         }),

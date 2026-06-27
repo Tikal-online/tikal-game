@@ -4,6 +4,7 @@ import { LobbySummaryStore } from '../../stores/lobby/lobby-summary-store';
 import { LobbiesListPagination } from './lobbies-list-pagination/lobbies-list-pagination';
 import { LobbiesListHeader } from './lobbies-list-header/lobbies-list-header';
 import { LobbiesListNotFound } from './lobbies-list-not-found/lobbies-list-not-found';
+import { LobbiesListError } from './lobbies-list-error/lobbies-list.error';
 
 @Component({
   selector: 'app-lobbies-list',
@@ -13,6 +14,7 @@ import { LobbiesListNotFound } from './lobbies-list-not-found/lobbies-list-not-f
     LobbiesListPagination,
     LobbiesListHeader,
     LobbiesListNotFound,
+    LobbiesListError,
   ],
   templateUrl: './lobbies-list.html',
   styleUrl: './lobbies-list.scss',
