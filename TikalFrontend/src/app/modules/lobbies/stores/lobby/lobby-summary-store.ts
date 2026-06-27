@@ -46,7 +46,7 @@ export const LobbySummaryStore = signalStore(
     _lobbyService: inject(LobbyService),
   })),
 
-  withComputed(({ totalCount, status, filter }) => ({
+  withComputed(({ totalCount, status, filter, lobbies }) => ({
     hasPrevious: computed(() => filter.pageNumber() > 1),
 
     hasNext: computed(() => totalCount() - filter.pageNumber() * filter.pageSize() > 0),
@@ -54,6 +54,8 @@ export const LobbySummaryStore = signalStore(
     maxPage: computed(() => Math.ceil(totalCount() / filter.pageSize())),
 
     isLoading: computed(() => status() === 'loading'),
+
+    noLobbiesFound: computed(() => status() === 'loaded' && lobbies().length === 0),
   })),
 
   withMethods((store) => ({

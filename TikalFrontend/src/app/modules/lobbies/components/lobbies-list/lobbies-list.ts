@@ -3,10 +3,17 @@ import { LucideGlobe, LucideUsers } from '@lucide/angular';
 import { LobbySummaryStore } from '../../stores/lobby/lobby-summary-store';
 import { LobbiesListPagination } from './lobbies-list-pagination/lobbies-list-pagination';
 import { LobbiesListHeader } from './lobbies-list-header/lobbies-list-header';
+import { LobbiesListNotFound } from './lobbies-list-not-found/lobbies-list-not-found';
 
 @Component({
   selector: 'app-lobbies-list',
-  imports: [LucideGlobe, LucideUsers, LobbiesListPagination, LobbiesListHeader],
+  imports: [
+    LucideGlobe,
+    LucideUsers,
+    LobbiesListPagination,
+    LobbiesListHeader,
+    LobbiesListNotFound,
+  ],
   templateUrl: './lobbies-list.html',
   styleUrl: './lobbies-list.scss',
 })
