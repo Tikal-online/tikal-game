@@ -19,7 +19,7 @@ const initialState: LobbySummaryState = {
   lobbies: [],
   status: 'initial',
   filter: {
-    pageSize: 10,
+    pageSize: 8,
     pageNumber: 1,
     searchText: '',
   },

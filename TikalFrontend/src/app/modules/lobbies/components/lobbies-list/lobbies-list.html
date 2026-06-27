@@ -1,22 +1,24 @@
 <p class="header-prefix">ACTIVE EXPEDITIONS</p>
 <h1>EXPEDITION LOBBIES</h1>
-<table>
-  <tr>
-    <th>LOBBY NAME</th>
-    <th>PLAYERS</th>
-    <th>GAME MODE</th>
-  </tr>
-  @for (lobby of lobbySummaryStore.lobbies(); track $index) {
+<div class="table-container">
+  <table>
     <tr>
-      <td class="lobby-name">
-        <svg lucideGlobe [size]="12"></svg>
-        {{ lobby.name }}
-      </td>
-      <td class="players">
-        <svg lucideUsers [size]="12"></svg>
-        {{ lobby.currentPlayers }}/{{ lobby.maxPlayers }}
-      </td>
-      <td>-</td>
+      <th>LOBBY NAME</th>
+      <th>PLAYERS</th>
+      <th>GAME MODE</th>
     </tr>
-  }
-</table>
+    @for (lobby of lobbySummaryStore.lobbies(); track $index) {
+      <tr>
+        <td class="lobby-name">
+          <svg lucideGlobe [size]="12"></svg>
+          {{ lobby.name }}
+        </td>
+        <td class="players">
+          <svg lucideUsers [size]="12"></svg>
+          {{ lobby.currentPlayers }}/{{ lobby.maxPlayers }}
+        </td>
+        <td>-</td>
+      </tr>
+    }
+  </table>
+</div>
