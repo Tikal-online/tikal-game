@@ -9,7 +9,7 @@ import {
 import { LobbyService, LobbySummary } from '../../services/lobby/lobby-service';
 import { computed, inject } from '@angular/core';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { delay, distinctUntilChanged, pipe, switchMap, tap } from 'rxjs';
+import { distinctUntilChanged, pipe, switchMap, tap } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
 
 type LobbySummaryState = {
