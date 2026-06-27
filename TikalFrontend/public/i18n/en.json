@@ -28,6 +28,10 @@
       "not-found": {
         "header": "NO LOBBIES FOUND",
         "description": "There are no active lobbies matching your search criteria."
+      },
+      "error": {
+        "header": "FAILED TO LOAD LOBBIES",
+        "description": "Unable to load lobbies. Please try again later."
       }
     },
     "globalChat": {
