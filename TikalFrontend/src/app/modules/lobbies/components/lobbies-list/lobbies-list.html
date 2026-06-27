@@ -34,5 +34,10 @@
       }
     }
   </table>
+  @if (lobbySummaryStore.noLobbiesFound()) {
+    <app-lobbies-list-not-found />
+  } @else if (lobbySummaryStore.status() === 'error') {
+    <app-lobbies-list-error />
+  }
 </div>
 <app-lobbies-list-pagination />
