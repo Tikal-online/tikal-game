@@ -38,8 +38,15 @@ internal sealed class DbLobbyQueryContext : LobbyQueryContext
             .ToListAsync();
     }
 
-    public Task<int> GetCountAsync()
+    public Task<int> GetCountAsync(string? searchText)
     {
-        return lobbiesDbContext.Lobbies.AsNoTracking().CountAsync();
+        var query = lobbiesDbContext.Lobbies.AsNoTracking();
+
+        if (searchText is not null)
+        {
+            query = query.Where(l => l.Name.ToLower().Contains(searchText.ToLower()));
+        }
+
+        return query.CountAsync();
     }
 }

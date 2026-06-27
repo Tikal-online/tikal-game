@@ -9,7 +9,7 @@ import {
 import { LobbyService, LobbySummary } from '../../services/lobby/lobby-service';
 import { computed, inject } from '@angular/core';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { distinctUntilChanged, pipe, switchMap, tap } from 'rxjs';
+import { debounceTime, distinctUntilChanged, pipe, switchMap, tap } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
 
 type LobbySummaryState = {
@@ -62,7 +62,7 @@ export const LobbySummaryStore = signalStore(
     },
 
     updateSearchText(searchText: string): void {
-      patchState(store, (state) => ({ filter: { ...state.filter, searchText } }));
+      patchState(store, (state) => ({ filter: { ...state.filter, pageNumber: 1, searchText } }));
     },
 
     refresh(): void {
@@ -80,6 +80,7 @@ export const LobbySummaryStore = signalStore(
       pipe(
         distinctUntilChanged(),
         tap(() => patchState(store, { status: 'loading' })),
+        debounceTime(300),
         switchMap((query) => {
           return store._lobbyService
             .getLobbiesSummary(query.pageSize, query.pageNumber, query.searchText)

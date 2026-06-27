@@ -148,6 +148,36 @@ a:hover {
   cursor: not-allowed;
 }
 
+// Inputs
+.primary-input {
+  flex: 1;
+
+  padding: 0.5rem 0.75rem;
+
+  font-family: 'Crimson', serif;
+  font-size: 0.95rem;
+  color: colors.$text-header;
+
+  background-color: colors.$card-background-secondary;
+
+  border: 1px solid colors.$border;
+
+  outline: none;
+}
+
+.primary-input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.primary-input:focus {
+  border-color: colors.$text-header-prefix;
+}
+
+.primary-input::placeholder {
+  color: colors.$text-muted;
+}
+
 // Icons
 .clickable-svg {
   color: colors.$text-muted;

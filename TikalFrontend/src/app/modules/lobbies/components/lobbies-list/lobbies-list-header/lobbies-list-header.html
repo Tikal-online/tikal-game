@@ -1,7 +1,15 @@
 <p class="header-prefix">ACTIVE EXPEDITIONS</p>
 <div class="header-row">
   <h1>EXPEDITION LOBBIES</h1>
-  <div>
+  <div class="header-tools">
+    <label for="searchText" hidden>SearchText</label>
+    <input
+      class="primary-input"
+      id="searchText"
+      placeholder="Search by name..."
+      (input)="lobbySummaryStore.updateSearchText($event.target.value)"
+      (value)="lobbySummaryStore.filter.searchText()"
+    />
     <button
       class="button-secondary"
       type="button"
