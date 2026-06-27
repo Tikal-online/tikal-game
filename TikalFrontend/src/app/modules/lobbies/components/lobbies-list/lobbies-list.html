@@ -22,3 +22,22 @@
     }
   </table>
 </div>
+<div class="pagination">
+  <button
+    class="button-secondary"
+    type="button"
+    [disabled]="!lobbySummaryStore.hasPrevious()"
+    (click)="decrementPageNumber()"
+  >
+    <svg lucideChevronLeft [size]="13"></svg>
+  </button>
+  {{ lobbySummaryStore.filter.pageNumber() }} / {{ lobbySummaryStore.maxPage() }}
+  <button
+    class="button-secondary"
+    type="button"
+    [disabled]="!lobbySummaryStore.hasNext()"
+    (click)="incrementPageNumber()"
+  >
+    <svg lucideChevronRight [size]="13"></svg>
+  </button>
+</div>

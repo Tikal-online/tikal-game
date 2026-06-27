@@ -3,10 +3,12 @@ using Lobbies.Application.Mappers;
 using Lobbies.Contracts.Models;
 using Lobbies.Contracts.Queries;
 using Shared.Contracts.Messaging;
+using Shared.Contracts.Queries;
 
 namespace Lobbies.Application.UseCases.GetPaginatedLobbies;
 
-internal sealed class GetPaginatedLobbiesQueryHandler : QueryHandler<GetPaginatedLobbiesQuery, List<LobbySummaryModel>>
+internal sealed class GetPaginatedLobbiesQueryHandler
+    : QueryHandler<GetPaginatedLobbiesQuery, PaginatedResult<List<LobbySummaryModel>>>
 {
     private readonly LobbyQueryContext lobbyQueryContext;
 
@@ -15,7 +17,7 @@ internal sealed class GetPaginatedLobbiesQueryHandler : QueryHandler<GetPaginate
         this.lobbyQueryContext = lobbyQueryContext;
     }
 
-    public async Task<List<LobbySummaryModel>> Handle(
+    public async Task<PaginatedResult<List<LobbySummaryModel>>> Handle(
         GetPaginatedLobbiesQuery request,
         CancellationToken cancellationToken
     )
@@ -28,6 +30,12 @@ internal sealed class GetPaginatedLobbiesQueryHandler : QueryHandler<GetPaginate
 
         var lobbySummaryModels = LobbyMapper.LobbiesToLobbySummaryModels(lobbies);
 
-        return lobbySummaryModels;
+        var lobbyCount = await lobbyQueryContext.GetCountAsync();
+
+        return new PaginatedResult<List<LobbySummaryModel>>
+        {
+            Data = lobbySummaryModels,
+            TotalCount = lobbyCount
+        };
     }
 }

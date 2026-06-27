@@ -37,4 +37,9 @@ internal sealed class DbLobbyQueryContext : LobbyQueryContext
             .Take(pageSize)
             .ToListAsync();
     }
+
+    public Task<int> GetCountAsync()
+    {
+        return lobbiesDbContext.Lobbies.AsNoTracking().CountAsync();
+    }
 }

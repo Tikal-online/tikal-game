@@ -1,6 +1,13 @@
-import { patchState, signalStore, withMethods, withProps, withState } from '@ngrx/signals';
+import {
+  patchState,
+  signalStore,
+  withComputed,
+  withMethods,
+  withProps,
+  withState,
+} from '@ngrx/signals';
 import { LobbyService, LobbySummary } from '../../services/lobby/lobby-service';
-import { inject } from '@angular/core';
+import { computed, inject } from '@angular/core';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { debounceTime, distinctUntilChanged, pipe, switchMap, tap } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
@@ -8,6 +15,7 @@ import { tapResponse } from '@ngrx/operators';
 type LobbySummaryState = {
   lobbies: LobbySummary[];
   status: 'initial' | 'loading' | 'loaded' | 'error';
+  totalCount: number;
   filter: {
     pageSize: number;
     pageNumber: number;
@@ -18,6 +26,7 @@ type LobbySummaryState = {
 const initialState: LobbySummaryState = {
   lobbies: [],
   status: 'initial',
+  totalCount: 0,
   filter: {
     pageSize: 8,
     pageNumber: 1,
@@ -32,6 +41,14 @@ export const LobbySummaryStore = signalStore(
 
   withProps(() => ({
     _lobbyService: inject(LobbyService),
+  })),
+
+  withComputed(({ totalCount, filter }) => ({
+    hasPrevious: computed(() => filter.pageNumber() > 1),
+
+    hasNext: computed(() => totalCount() - filter.pageNumber() * filter.pageSize() > 0),
+
+    maxPage: computed(() => Math.ceil(totalCount() / filter.pageSize())),
   })),
 
   withMethods((store) => ({
@@ -57,7 +74,12 @@ export const LobbySummaryStore = signalStore(
             .getLobbiesSummary(query.pageSize, query.pageNumber, query.searchText)
             .pipe(
               tapResponse({
-                next: (lobbies) => patchState(store, { lobbies, status: 'loaded' }),
+                next: (paginatedResult) =>
+                  patchState(store, {
+                    lobbies: paginatedResult.data,
+                    totalCount: paginatedResult.totalCount,
+                    status: 'loaded',
+                  }),
                 error: () => patchState(store, { status: 'error' }),
               }),
             );
