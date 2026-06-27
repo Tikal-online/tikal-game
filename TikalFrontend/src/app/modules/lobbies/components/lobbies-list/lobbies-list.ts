@@ -1,10 +1,11 @@
 import { Component, inject } from '@angular/core';
-import { LucideChevronLeft, LucideChevronRight, LucideGlobe, LucideUsers } from '@lucide/angular';
+import { LucideGlobe, LucideUsers } from '@lucide/angular';
 import { LobbySummaryStore } from '../../stores/lobby/lobby-summary-store';
+import { LobbiesListPagination } from './lobbies-list-pagination/lobbies-list-pagination';
 
 @Component({
   selector: 'app-lobbies-list',
-  imports: [LucideGlobe, LucideUsers, LucideChevronLeft, LucideChevronRight],
+  imports: [LucideGlobe, LucideUsers, LobbiesListPagination],
   templateUrl: './lobbies-list.html',
   styleUrl: './lobbies-list.scss',
 })
@@ -15,13 +16,5 @@ export class LobbiesList {
     const filter = this.lobbySummaryStore.filter;
 
     this.lobbySummaryStore.loadLobbies(filter);
-  }
-
-  incrementPageNumber(): void {
-    this.lobbySummaryStore.updatePageNumber(this.lobbySummaryStore.filter.pageNumber() + 1);
-  }
-
-  decrementPageNumber(): void {
-    this.lobbySummaryStore.updatePageNumber(this.lobbySummaryStore.filter.pageNumber() - 1);
   }
 }
