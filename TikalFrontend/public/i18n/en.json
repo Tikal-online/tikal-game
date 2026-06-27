@@ -15,6 +15,12 @@
     "submitting-button": "SUBMITTING"
   },
   "lobbies": {
+    "list": {
+      "header-prefix": "ACTIVE EXPEDITIONS",
+      "header": "EXPEDITION LOBBIES",
+      "searchtext-input-label": "searchtext",
+      "searchtext-input-placeholder": "Search by name..."
+    },
     "globalChat": {
       "header": "GLOBAL CHAT",
       "header-status": {
