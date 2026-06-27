@@ -10,35 +10,6 @@ form {
   border-top: 1px solid colors.$border;
 }
 
-input {
-  flex: 1;
-
-  padding: 0.5rem 0.75rem;
-
-  font-family: 'Crimson', serif;
-  font-size: 0.95rem;
-  color: colors.$text-header;
-
-  background-color: colors.$card-background-secondary;
-
-  border: 1px solid colors.$border;
-
-  outline: none;
-}
-
-input:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-input:focus {
-  border-color: colors.$text-header-prefix;
-}
-
-input::placeholder {
-  color: colors.$text-muted;
-}
-
 button {
   padding: 0.5rem 0.75rem;
 }

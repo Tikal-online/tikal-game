@@ -10,6 +10,12 @@
   justify-content: space-between;
 }
 
+.header-tools {
+  display: flex;
+  flex-direction: row;
+  gap: 0.75rem;
+}
+
 h1 {
   margin: 0;
 
