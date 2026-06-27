@@ -5,6 +5,7 @@ import { LobbiesListPagination } from './lobbies-list-pagination/lobbies-list-pa
 import { LobbiesListHeader } from './lobbies-list-header/lobbies-list-header';
 import { LobbiesListNotFound } from './lobbies-list-not-found/lobbies-list-not-found';
 import { LobbiesListError } from './lobbies-list-error/lobbies-list.error';
+import { TranslocoDirective } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-lobbies-list',
@@ -15,6 +16,7 @@ import { LobbiesListError } from './lobbies-list-error/lobbies-list.error';
     LobbiesListHeader,
     LobbiesListNotFound,
     LobbiesListError,
+    TranslocoDirective,
   ],
   templateUrl: './lobbies-list.html',
   styleUrl: './lobbies-list.scss',

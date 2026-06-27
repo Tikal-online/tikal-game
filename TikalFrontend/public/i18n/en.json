@@ -19,7 +19,12 @@
       "header-prefix": "ACTIVE EXPEDITIONS",
       "header": "EXPEDITION LOBBIES",
       "searchtext-input-label": "searchtext",
-      "searchtext-input-placeholder": "Search by name..."
+      "searchtext-input-placeholder": "Search by name...",
+      "columns": {
+        "lobbyname": "LOBBY NAME",
+        "players": "PLAYER",
+        "gamemode": "GAME MODE"
+      }
     },
     "globalChat": {
       "header": "GLOBAL CHAT",
