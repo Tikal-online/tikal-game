@@ -38,7 +38,7 @@ jobs:
 
   sonar-scan:
     name: SonarQube Scan
-    needs: unit-test 
+    needs: unit-test
     uses: ./.github/workflows/node-sonar-scan.yaml
     with:
       project-directory: TikalFrontend
