@@ -1,6 +1,5 @@
 import { inject, Service } from '@angular/core';
 import { Observable } from 'rxjs';
-import { environment } from '../../../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { PaginatedResult } from '../../../../core/dtos/paginated-result';
 
@@ -13,6 +12,8 @@ export type LobbySummary = {
 
 @Service()
 export class LobbyService {
+  private readonly url = '/Api/Lobbies';
+
   private readonly http = inject(HttpClient);
 
   getLobbiesSummary(
@@ -20,9 +21,7 @@ export class LobbyService {
     pageNumber: number,
     searchText: string,
   ): Observable<PaginatedResult<LobbySummary[]>> {
-    const url = `${environment.backend_url}/Api/Lobbies`;
-
-    return this.http.get<PaginatedResult<LobbySummary[]>>(url, {
+    return this.http.get<PaginatedResult<LobbySummary[]>>(this.url, {
       params: {
         pageSize: pageSize,
         pageNumber: pageNumber,
