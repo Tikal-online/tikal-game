@@ -18,6 +18,7 @@ export type ChatMessage = {
   time: Date;
 };
 
+// TODO: find a clean way to unit this service
 @Service()
 export class GlobalChatService {
   readonly message$ = new Subject<ChatMessage>();

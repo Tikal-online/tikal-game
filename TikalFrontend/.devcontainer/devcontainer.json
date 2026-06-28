@@ -7,9 +7,15 @@
   },
   "customizations": {
     "vscode": {
-      "extensions": ["angular.ng-template", "dbaeumer.vscode-eslint", "esbenp.prettier-vscode"]
+      "extensions": [
+        "angular.ng-template",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "ryanluker.vscode-coverage-gutters"
+      ]
     }
   },
+  "runArgs": ["--network=host"],
   "postCreateCommand": "npm install -g npm@latest",
   "remoteUser": "node"
 }

@@ -1,6 +1,5 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { inject, Service } from '@angular/core';
-import { environment } from '../../../../environments/environment';
 import { catchError, map, Observable, throwError } from 'rxjs';
 import { err, ok, Result } from 'neverthrow';
 
@@ -19,12 +18,12 @@ export type Conflict = {
 
 @Service()
 export class AccountService {
+  private readonly url = '/Api/Accounts';
+
   private readonly http = inject(HttpClient);
 
   getAccount(): Observable<Result<Account, NotFound>> {
-    const url = `${environment.backend_url}/Api/Accounts/me`;
-
-    return this.http.get<Account>(url).pipe(
+    return this.http.get<Account>(this.url + '/me').pipe(
       map((account: Account) => ok(account)),
       catchError((error: HttpErrorResponse) => {
         if (error.status === 404) {
@@ -37,10 +36,9 @@ export class AccountService {
   }
 
   createAccount(name: string): Observable<Result<Account, Conflict>> {
-    const url = `${environment.backend_url}/Api/Accounts`;
     const body = { name: name };
 
-    return this.http.post<Account>(url, body).pipe(
+    return this.http.post<Account>(this.url, body).pipe(
       map((account: Account) => ok(account)),
       catchError((error: HttpErrorResponse) => {
         if (error.status === 409) {
