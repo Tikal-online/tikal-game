@@ -1,12 +1,12 @@
 import { ApplicationConfig, provideBrowserGlobalErrorListeners, isDevMode } from '@angular/core';
 import { provideRouter, withViewTransitions } from '@angular/router';
-import { csrfHeaderInterceptor } from './core/interceptors/csrf-header.interceptor';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { routes } from './app.routes';
 import { appInitializer } from './app.initializer';
 import { TranslocoHttpLoader } from './transloco-loader';
 import { provideTransloco } from '@jsverse/transloco';
 import { baseUrlInterceptor } from './core/interceptors/base-url/base-url.interceptor';
+import { csrfHeaderInterceptor } from './core/interceptors/csrf-header/csrf-header.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [

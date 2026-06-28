@@ -24,7 +24,7 @@ describe('BaseUrlInterceptor', () => {
 
   test.for<string>(['/i18n/en.json', '/i18n/de.json', 'test/i18n/ajskldfalksdf/en.json'])(
     'does not change request for url %s',
-    async (url) => {
+    (url) => {
       firstValueFrom(client.get(url));
 
       http.expectOne(url);
@@ -33,7 +33,7 @@ describe('BaseUrlInterceptor', () => {
 
   test.for<string>(['/Api/Accounts', '/Testing', '/lkasdnasjdf234()§403)=('])(
     'prefixes url %s with configured backend url',
-    async (url) => {
+    (url) => {
       firstValueFrom(client.get(url));
 
       http.expectOne(`${environment.backend_url}${url}`);
