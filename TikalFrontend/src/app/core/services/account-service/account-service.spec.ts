@@ -31,7 +31,6 @@ describe('AccountService', () => {
     const promise = firstValueFrom(service.getAccount());
 
     const req = http.expectOne({ method: 'GET', url: '/Api/Accounts/me' });
-
     req.flush('', NOT_FOUND);
 
     const result = await promise;

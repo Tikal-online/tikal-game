@@ -31,7 +31,7 @@ describe('LobbyService', () => {
     [10, 1, 'searchText'],
     [234234234, 349823424, 'asldkfja342342!??'],
   ])(
-    'calls GET /Api/Lobbies with pageSize %i, pageNumber %i and searchText %s when getLobbiesSummary',
+    'getLobbiesSummary calls GET /Api/Lobbies with pageSize %i, pageNumber %i and searchText %s',
     async ([pageSize, pageNumber, searchText]) => {
       const promise = firstValueFrom(service.getLobbiesSummary(pageSize, pageNumber, searchText));
 
