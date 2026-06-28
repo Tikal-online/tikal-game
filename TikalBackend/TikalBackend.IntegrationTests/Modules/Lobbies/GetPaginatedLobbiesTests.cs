@@ -49,6 +49,7 @@ internal sealed class GetPaginatedLobbiesTests : IntegrationTestFixture
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
     }
 
+    // TODO: improve this test by parameterizing it to test multiple scenarios
     [Test]
     public async Task GivenLobbiesAndSearchString_WhenGetPaginatedLobbies_ThenReturnsLobbiesWithMatchingNames()
     {
