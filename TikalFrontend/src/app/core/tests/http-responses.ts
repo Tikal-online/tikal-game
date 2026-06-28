@@ -38,6 +38,11 @@ export const NOT_ACCEPTABLE = {
   statusText: 'NotAcceptable',
 };
 
+export const CONFLICT = {
+  status: 409,
+  statusText: 'Conflict',
+};
+
 export const ERROR_RESPONSES = [
   BAD_REQUEST,
   UNAUTHORIZED,
@@ -46,4 +51,5 @@ export const ERROR_RESPONSES = [
   NOT_FOUND,
   METHOD_NOT_ALLOWED,
   NOT_ACCEPTABLE,
+  CONFLICT,
 ];
