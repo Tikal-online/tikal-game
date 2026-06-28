@@ -2,7 +2,6 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { inject, Service } from '@angular/core';
 import { err, ok, Result } from 'neverthrow';
 import { catchError, map, Observable, throwError } from 'rxjs';
-import { environment } from '../../../../environments/environment';
 
 export type Claim = {
   type: string;
@@ -17,12 +16,12 @@ export type Unauthorized = {
 
 @Service()
 export class AuthService {
+  private readonly url = '/bff/user';
+
   private readonly http = inject(HttpClient);
 
   getSession(): Observable<Result<Session, Unauthorized>> {
-    const url = `${environment.backend_url}/bff/user`;
-
-    return this.http.get<Session>(url).pipe(
+    return this.http.get<Session>(this.url).pipe(
       map((session: Session) => ok(session)),
       catchError((error: HttpErrorResponse) => {
         if (error.status == 401) {
