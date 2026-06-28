@@ -6,6 +6,7 @@
     "dev": "ng serve",
     "build": "ng build",
     "test": "ng test",
+    "test-ci": "ng test --watch=false --ui=false",
     "format": "prettier --write \"./**/*.*\"",
     "format-verify": "prettier --check \"./**/*.*\"",
     "lint": "ng lint --fix",
