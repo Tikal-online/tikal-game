@@ -19,12 +19,12 @@ export type Conflict = {
 
 @Service()
 export class AccountService {
+  private readonly url = '/Api/Accounts';
+
   private readonly http = inject(HttpClient);
 
   getAccount(): Observable<Result<Account, NotFound>> {
-    const url = `${environment.backend_url}/Api/Accounts/me`;
-
-    return this.http.get<Account>(url).pipe(
+    return this.http.get<Account>(this.url + '/me').pipe(
       map((account: Account) => ok(account)),
       catchError((error: HttpErrorResponse) => {
         if (error.status === 404) {

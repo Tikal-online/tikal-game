@@ -11,7 +11,7 @@ const DEFAULT_RESPONSE: PaginatedResult<LobbySummary[]> = {
 
 describe('LobbyService', () => {
   // dependencies
-  let httpTestingController: HttpTestingController;
+  let http: HttpTestingController;
 
   // under test
   let service: LobbyService;
@@ -21,7 +21,7 @@ describe('LobbyService', () => {
       providers: [LobbyService, provideHttpClientTesting()],
     });
 
-    httpTestingController = TestBed.inject(HttpTestingController);
+    http = TestBed.inject(HttpTestingController);
 
     service = TestBed.inject(LobbyService);
   });
@@ -35,11 +35,10 @@ describe('LobbyService', () => {
     async ([pageSize, pageNumber, searchText]) => {
       const promise = firstValueFrom(service.getLobbiesSummary(pageSize, pageNumber, searchText));
 
-      const req = httpTestingController.expectOne({
+      const req = http.expectOne({
         method: 'GET',
         url: `/Api/Lobbies?pageSize=${pageSize}&pageNumber=${pageNumber}&searchText=${searchText}`,
       });
-
       req.flush(DEFAULT_RESPONSE);
 
       expect(await promise).toEqual(DEFAULT_RESPONSE);
@@ -47,6 +46,6 @@ describe('LobbyService', () => {
   );
 
   afterEach(() => {
-    httpTestingController.verify();
+    http.verify();
   });
 });
