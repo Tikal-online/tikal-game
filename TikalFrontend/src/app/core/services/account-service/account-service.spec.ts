@@ -55,7 +55,7 @@ describe('AccountService', () => {
     }
   });
 
-  test.for<HttpResponseData>(ERROR_RESPONSES.filter((error) => error.status != 404))(
+  test.for<HttpResponseData>(ERROR_RESPONSES.filter((error) => error.status !== 404))(
     'getAccount throws error when GET /Api/Accounts/me returns $status',
     async (error: HttpResponseData) => {
       let capturedError: HttpErrorResponse;
