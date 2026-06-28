@@ -22,7 +22,7 @@
       "searchtext-input-placeholder": "Search by name...",
       "columns": {
         "lobbyname": "LOBBY NAME",
-        "players": "PLAYER",
+        "players": "PLAYERS",
         "gamemode": "GAME MODE"
       },
       "not-found": {
