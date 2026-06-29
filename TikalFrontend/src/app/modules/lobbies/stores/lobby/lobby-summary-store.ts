@@ -82,6 +82,7 @@ export const LobbySummaryStore = signalStore(
       pipe(
         distinctUntilChanged(),
         tap(() => patchState(store, { status: 'loading' })),
+        // when adjusting the debounce time make sure to also update it in the tests
         debounceTime(300),
         switchMap((query) => {
           return store._lobbyService
