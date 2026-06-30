@@ -20,6 +20,7 @@
       "header": "EXPEDITION LOBBIES",
       "searchtext-input-label": "searchtext",
       "searchtext-input-placeholder": "Search by name...",
+      "create-lobby-button": "CREATE LOBBY",
       "columns": {
         "lobbyname": "LOBBY NAME",
         "players": "PLAYERS",

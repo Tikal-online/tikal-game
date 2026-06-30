@@ -1,0 +1,5 @@
+@use 'colors';
+
+nav {
+  border-bottom: 1px solid colors.$border;
+}
