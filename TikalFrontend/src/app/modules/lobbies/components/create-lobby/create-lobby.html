@@ -1,0 +1,24 @@
+<nav>
+  <a routerLink="/lobbies">
+    <svg lucideArrowLeft [size]="16"></svg>
+    BACK TO LOBBIES
+  </a>
+  <span class="logo">TIKAL</span>
+  <span></span>
+</nav>
+<ng-container *transloco="let t; prefix: 'lobby.create'">
+  <div class="content">
+    <p class="header-prefix">{{ t('header-prefix') }}</p>
+    <form [formRoot]="lobbyForm">
+      <label for="name" hidden>{{ t('name-input-label') }}</label>
+      <input class="header-input" id="name" type="text" [formField]="lobbyForm.name" />
+      <div class="players">
+        <app-lobby-player-list-header [maxPlayers]="lobbyData().maxPlayers" />
+        <app-lobby-player-list
+          [maxPlayers]="lobbyData().maxPlayers"
+          [players]="[defaultPlayer()]"
+        />
+      </div>
+    </form>
+  </div>
+</ng-container>

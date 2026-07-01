@@ -1,0 +1,39 @@
+@use 'colors';
+
+.content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+
+  padding: 2rem;
+}
+
+nav {
+  border-bottom: 1px solid colors.$border;
+}
+
+.header-prefix {
+  font-size: 0.7rem;
+  letter-spacing: 0.1rem;
+}
+
+.header-input {
+  height: 1.16em;
+  margin: 0 0 2rem 0;
+  padding: 0;
+
+  font-family: 'Cinzel', serif;
+  font-size: clamp(1.6rem, 3vw, 2.5rem);
+  font-weight: 700;
+  color: colors.$text-header;
+
+  background: transparent;
+  border: none;
+  outline: none;
+}
+
+.players {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}

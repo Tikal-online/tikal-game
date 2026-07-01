@@ -20,6 +20,7 @@
       "header": "EXPEDITION LOBBIES",
       "searchtext-input-label": "searchtext",
       "searchtext-input-placeholder": "Search by name...",
+      "create-lobby-button": "CREATE LOBBY",
       "columns": {
         "lobbyname": "LOBBY NAME",
         "players": "PLAYERS",
@@ -52,6 +53,17 @@
         "header": "CONNECTING...",
         "description": "Connecting to the global chat. Please wait."
       }
+    }
+  },
+  "lobby": {
+    "create": {
+      "header-prefix": "NEW LOBBY",
+      "name-input-label": "Lobbyname"
+    },
+    "player-list": {
+      "header": "PLAYERS",
+      "you-label": "You",
+      "open-slot": "Open Slot"
     }
   }
 }

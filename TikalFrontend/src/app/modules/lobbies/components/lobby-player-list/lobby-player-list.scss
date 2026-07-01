@@ -1,0 +1,61 @@
+@use 'colors';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  width: 20rem;
+
+  font-family: 'Crimson', serif;
+
+  background-color: color-mix(in srgb, colors.$card-background 60%, transparent);
+
+  border: 1px solid colors.$border;
+}
+
+// add a top border to all children after the first
+:host > :not([hidden]) ~ :not([hidden]) {
+  border-top-width: 1px;
+  border-top-style: solid;
+  border-top-color: colors.$border;
+}
+
+.player-slot {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.75rem;
+
+  color: colors.$text-header;
+
+  background-color: color-mix(in srgb, colors.$text-header-prefix 10%, transparent);
+
+  padding: 1rem;
+
+  .dot {
+    background-color: colors.$text-header-prefix;
+  }
+}
+
+.empty-slot {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.75rem;
+
+  color: colors.$text-muted;
+
+  background-color: color-mix(in srgb, colors.$card-background-secondary 20%, transparent);
+
+  padding: 1rem;
+
+  .dot {
+    background-color: color-mix(in srgb, colors.$text-muted 30%, transparent);
+  }
+}
+
+.dot {
+  width: 0.5rem;
+  height: 0.5rem;
+
+  border-radius: 50%;
+}

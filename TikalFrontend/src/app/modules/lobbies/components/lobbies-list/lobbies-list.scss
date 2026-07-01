@@ -79,3 +79,18 @@ tr:has(td):hover {
   border-radius: 0.25rem;
   background-color: colors.$card-background-secondary;
 }
+
+.footer {
+  margin-top: 2rem;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 2rem;
+
+  justify-content: space-between;
+
+  button {
+    align-self: flex-start;
+  }
+}

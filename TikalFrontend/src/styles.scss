@@ -43,10 +43,9 @@ body {
 
 // Nav bar
 nav {
-  display: flex;
-  flex-direction: row;
-
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
 
   padding: 1.25rem 2rem;
 }

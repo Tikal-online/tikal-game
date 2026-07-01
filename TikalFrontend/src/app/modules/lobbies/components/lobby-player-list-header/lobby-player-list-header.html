@@ -1,0 +1,7 @@
+<ng-container *transloco="let t; prefix: 'lobby.player-list'">
+  <span class="players-label">{{ t('header') }}</span>
+  <span class="players-count">
+    <svg lucideUsers [size]="12"></svg>
+    1 / {{ maxPlayers() }}
+  </span>
+</ng-container>

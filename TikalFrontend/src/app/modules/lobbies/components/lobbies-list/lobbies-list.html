@@ -1,6 +1,6 @@
 <app-lobbies-list-header />
-<div class="table-container">
-  <ng-container *transloco="let t; prefix: 'lobbies.list'">
+<ng-container *transloco="let t; prefix: 'lobbies.list'">
+  <div class="table-container">
     <table>
       <tr>
         <th>{{ t('columns.lobbyname') }}</th>
@@ -35,11 +35,16 @@
         }
       }
     </table>
-  </ng-container>
-  @if (lobbySummaryStore.noLobbiesFound()) {
-    <app-lobbies-list-not-found />
-  } @else if (lobbySummaryStore.status() === 'error') {
-    <app-lobbies-list-error />
-  }
-</div>
-<app-lobbies-list-pagination />
+    @if (lobbySummaryStore.noLobbiesFound()) {
+      <app-lobbies-list-not-found />
+    } @else if (lobbySummaryStore.status() === 'error') {
+      <app-lobbies-list-error />
+    }
+  </div>
+  <div class="footer">
+    <app-lobbies-list-pagination />
+    <button class="button-primary" routerLink="/lobbies/create" type="button">
+      {{ t('create-lobby-button') }}
+    </button>
+  </div>
+</ng-container>
