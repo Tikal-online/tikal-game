@@ -5,6 +5,7 @@ import { LucideArrowLeft } from '@lucide/angular';
 import { AccountStore } from '../../../../core/stores/account-store/account-store';
 import { LobbyPlayerList } from '../lobby-player-list/lobby-player-list';
 import { Player } from '../../models/player';
+import { LobbyPlayerListHeader } from '../lobby-player-list-header/lobby-player-list-header';
 
 type LobbyData = {
   name: string;
@@ -13,7 +14,14 @@ type LobbyData = {
 
 @Component({
   selector: 'app-create-lobby',
-  imports: [LucideArrowLeft, RouterLink, FormRoot, FormField, LobbyPlayerList],
+  imports: [
+    LucideArrowLeft,
+    RouterLink,
+    FormRoot,
+    FormField,
+    LobbyPlayerList,
+    LobbyPlayerListHeader,
+  ],
   templateUrl: './create-lobby.html',
   styleUrl: './create-lobby.scss',
 })

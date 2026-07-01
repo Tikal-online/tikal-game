@@ -1,0 +1,24 @@
+@use 'colors';
+
+:host {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+
+  font-family: 'Mono', monospace;
+}
+
+.players-label {
+  font-size: 0.6rem;
+  color: colors.$text-muted;
+}
+
+.players-count {
+  font-size: 0.75rem;
+  color: colors.$text-header;
+
+  svg {
+    color: colors.$text-muted;
+  }
+}

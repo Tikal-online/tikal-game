@@ -12,10 +12,7 @@
     <label for="name" hidden>Lobbyname</label>
     <input class="header-input" id="name" type="text" [formField]="lobbyForm.name" />
     <div class="players">
-      <div class="players-header">
-        <span class="players-label">PLAYERS</span>
-        <span class="players-count">1 / {{ lobbyData().maxPlayers }}</span>
-      </div>
+      <app-lobby-player-list-header [maxPlayers]="lobbyData().maxPlayers" />
       <app-lobby-player-list [maxPlayers]="lobbyData().maxPlayers" [players]="[defaultPlayer()]" />
     </div>
   </form>

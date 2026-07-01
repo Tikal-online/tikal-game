@@ -57,6 +57,7 @@
   },
   "lobby": {
     "player-list": {
+      "header": "PLAYERS",
       "you-label": "You",
       "open-slot": "Open Slot"
     }
