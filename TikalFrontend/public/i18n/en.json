@@ -56,6 +56,10 @@
     }
   },
   "lobby": {
+    "create": {
+      "header-prefix": "NEW LOBBY",
+      "name-input-label": "Lobbyname"
+    },
     "player-list": {
       "header": "PLAYERS",
       "you-label": "You",

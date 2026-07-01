@@ -6,6 +6,7 @@ import { AccountStore } from '../../../../core/stores/account-store/account-stor
 import { LobbyPlayerList } from '../lobby-player-list/lobby-player-list';
 import { Player } from '../../models/player';
 import { LobbyPlayerListHeader } from '../lobby-player-list-header/lobby-player-list-header';
+import { TranslocoDirective } from '@jsverse/transloco';
 
 type LobbyData = {
   name: string;
@@ -21,6 +22,7 @@ type LobbyData = {
     FormField,
     LobbyPlayerList,
     LobbyPlayerListHeader,
+    TranslocoDirective,
   ],
   templateUrl: './create-lobby.html',
   styleUrl: './create-lobby.scss',
