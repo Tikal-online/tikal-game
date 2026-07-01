@@ -6,3 +6,10 @@
   <span class="logo">TIKAL</span>
   <span></span>
 </nav>
+<div class="content">
+  <p class="header-prefix">NEW LOBBY</p>
+  <form [formRoot]="lobbyForm">
+    <label for="name" hidden>Lobbyname</label>
+    <input class="header-input" id="name" type="text" [formField]="lobbyForm.name" />
+  </form>
+</div>
