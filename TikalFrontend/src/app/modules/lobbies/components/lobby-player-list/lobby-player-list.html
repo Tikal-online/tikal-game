@@ -1,0 +1,19 @@
+<ng-container *transloco="let t; prefix: 'lobby.player-list'">
+  @for (player of players(); track $index) {
+    <div class="player-slot">
+      <span class="dot"></span>
+      <span>
+        {{ player.name }}
+        @if (isMe(player)) {
+          ({{ t('you-label') }})
+        }
+      </span>
+    </div>
+  }
+  @for (empty of [].constructor(maxPlayers() - 1); track $index) {
+    <div class="empty-slot">
+      <span class="dot"></span>
+      <span>{{ t('open-slot') }}</span>
+    </div>
+  }
+</ng-container>

@@ -54,5 +54,11 @@
         "description": "Connecting to the global chat. Please wait."
       }
     }
+  },
+  "lobby": {
+    "player-list": {
+      "you-label": "You",
+      "open-slot": "Open Slot"
+    }
   }
 }

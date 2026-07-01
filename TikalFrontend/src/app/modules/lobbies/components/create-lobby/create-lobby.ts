@@ -3,6 +3,8 @@ import { form, FormField, FormRoot, max, maxLength, min, required } from '@angul
 import { RouterLink } from '@angular/router';
 import { LucideArrowLeft } from '@lucide/angular';
 import { AccountStore } from '../../../../core/stores/account-store/account-store';
+import { LobbyPlayerList } from '../lobby-player-list/lobby-player-list';
+import { Player } from '../../models/player';
 
 type LobbyData = {
   name: string;
@@ -11,12 +13,19 @@ type LobbyData = {
 
 @Component({
   selector: 'app-create-lobby',
-  imports: [LucideArrowLeft, RouterLink, FormRoot, FormField],
+  imports: [LucideArrowLeft, RouterLink, FormRoot, FormField, LobbyPlayerList],
   templateUrl: './create-lobby.html',
   styleUrl: './create-lobby.scss',
 })
 export class CreateLobby {
   private readonly accountStore = inject(AccountStore);
+
+  readonly defaultPlayer = signal<Player>({
+    userId: this.accountStore.account()!.userId,
+    name: this.accountStore.account()!.name,
+    isOwner: true,
+    isReady: false,
+  });
 
   readonly lobbyData = signal<LobbyData>({
     name: `${this.accountStore.account()?.name}s Lobby`,

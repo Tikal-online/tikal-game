@@ -16,6 +16,7 @@
         <span class="players-label">PLAYERS</span>
         <span class="players-count">1 / {{ lobbyData().maxPlayers }}</span>
       </div>
+      <app-lobby-player-list [maxPlayers]="lobbyData().maxPlayers" [players]="[defaultPlayer()]" />
     </div>
   </form>
 </div>
