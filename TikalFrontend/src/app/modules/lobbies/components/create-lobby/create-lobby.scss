@@ -19,7 +19,7 @@ nav {
 
 .header-input {
   height: 1.16em;
-  margin: 0;
+  margin: 0 0 2rem 0;
   padding: 0;
 
   font-family: 'Cinzel', serif;
@@ -30,4 +30,29 @@ nav {
   background: transparent;
   border: none;
   outline: none;
+}
+
+.players {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.players-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+
+  font-family: 'Mono', monospace;
+}
+
+.players-label {
+  font-size: 0.6rem;
+  color: colors.$text-muted;
+}
+
+.players-count {
+  font-size: 0.75rem;
+  color: colors.$text-header;
 }

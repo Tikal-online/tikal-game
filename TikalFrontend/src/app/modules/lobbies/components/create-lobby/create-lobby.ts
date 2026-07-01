@@ -18,7 +18,7 @@ type LobbyData = {
 export class CreateLobby {
   private readonly accountStore = inject(AccountStore);
 
-  private readonly lobbyData = signal<LobbyData>({
+  readonly lobbyData = signal<LobbyData>({
     name: `${this.accountStore.account()?.name}s Lobby`,
     maxPlayers: 4,
   });

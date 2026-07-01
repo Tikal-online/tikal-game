@@ -11,5 +11,11 @@
   <form [formRoot]="lobbyForm">
     <label for="name" hidden>Lobbyname</label>
     <input class="header-input" id="name" type="text" [formField]="lobbyForm.name" />
+    <div class="players">
+      <div class="players-header">
+        <span class="players-label">PLAYERS</span>
+        <span class="players-count">1 / {{ lobbyData().maxPlayers }}</span>
+      </div>
+    </div>
   </form>
 </div>
