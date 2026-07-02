@@ -42,7 +42,9 @@
     }
   </div>
   <div class="footer">
-    <app-lobbies-list-pagination />
+    @if (lobbySummaryStore.maxPage() > 1) {
+      <app-lobbies-list-pagination />
+    }
     <button class="button-primary" routerLink="/lobbies/create" type="button">
       {{ t('create-lobby-button') }}
     </button>
