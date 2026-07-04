@@ -44,6 +44,10 @@ form {
   outline: none;
 }
 
+.header-input:disabled {
+  cursor: not-allowed;
+}
+
 .form-sections {
   display: flex;
   flex-direction: row;

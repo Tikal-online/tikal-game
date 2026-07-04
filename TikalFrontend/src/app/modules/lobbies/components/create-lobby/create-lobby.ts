@@ -1,7 +1,16 @@
 import { Component, inject, signal } from '@angular/core';
-import { form, FormField, FormRoot, max, maxLength, min, required } from '@angular/forms/signals';
+import {
+  disabled,
+  form,
+  FormField,
+  FormRoot,
+  max,
+  maxLength,
+  min,
+  required,
+} from '@angular/forms/signals';
 import { Router, RouterLink } from '@angular/router';
-import { LucideArrowLeft } from '@lucide/angular';
+import { LucideArrowLeft, LucideLoaderCircle } from '@lucide/angular';
 import { AccountStore } from '../../../../core/stores/account-store/account-store';
 import { LobbyPlayerList } from '../lobby-player-list/lobby-player-list';
 import { Player } from '../../models/player';
@@ -27,6 +36,7 @@ type LobbyData = {
     LobbyPlayerListHeader,
     TranslocoDirective,
     MaxPlayersSelection,
+    LucideLoaderCircle,
   ],
   templateUrl: './create-lobby.html',
   styleUrl: './create-lobby.scss',
@@ -58,6 +68,7 @@ export class CreateLobby {
       required(schemaPath.maxPlayers);
       min(schemaPath.maxPlayers, 2);
       max(schemaPath.maxPlayers, 4);
+      disabled(schemaPath, { when: () => this.lobbyForm().submitting() });
     },
     {
       submission: {
@@ -67,6 +78,8 @@ export class CreateLobby {
           const result = await firstValueFrom(
             this.lobbyService.createLobby(data.name, data.maxPlayers),
           );
+
+          await new Promise((resolve) => setTimeout(resolve, 10000));
 
           if (result.isOk()) {
             this.router.navigate(['/lobbies']);
