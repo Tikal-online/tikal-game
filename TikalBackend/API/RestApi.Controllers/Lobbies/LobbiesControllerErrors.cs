@@ -14,6 +14,15 @@ public sealed partial class LobbiesController
         );
     }
 
+    private ObjectResult PlayerNotInALobby(string userId)
+    {
+        return Problem(
+            title: "Player is not in a lobby",
+            detail: $"Player with userId {userId} is not in a lobby",
+            statusCode: StatusCodes.Status404NotFound
+        );
+    }
+
     private ObjectResult LobbyNotFound(long id)
     {
         return Problem(

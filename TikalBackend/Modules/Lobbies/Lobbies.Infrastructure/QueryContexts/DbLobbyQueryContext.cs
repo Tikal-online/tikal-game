@@ -21,6 +21,14 @@ internal sealed class DbLobbyQueryContext : LobbyQueryContext
             .FirstOrDefaultAsync(l => l.Id == Id);
     }
 
+    public Task<Lobby?> GetByUserIdAsync(string userId)
+    {
+        return lobbiesDbContext.Lobbies.AsNoTracking()
+            .Include(l => l.Players)
+            .Where(l => l.Players.Any(p => p.UserId == userId))
+            .FirstOrDefaultAsync();
+    }
+
     public Task<List<Lobby>> GetPaginatedAsync(int pageSize, int pageNumber, string? searchText)
     {
         IQueryable<Lobby> query = lobbiesDbContext.Lobbies.AsNoTracking()
