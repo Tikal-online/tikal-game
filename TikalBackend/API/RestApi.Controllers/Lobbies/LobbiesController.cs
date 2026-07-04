@@ -35,7 +35,8 @@ public sealed partial class LobbiesController : ApiController
         var result = await sender.Send(command, cancellationToken);
 
         return result.Match<IActionResult>(
-            _ => CreatedAtAction(nameof(GetLobby), new { }),
+            // TODO: have this point to the Lobbies/me endpoint once it exists
+            _ => StatusCode(StatusCodes.Status201Created),
             _ => PlayerAlreadyInALobby()
         );
     }
