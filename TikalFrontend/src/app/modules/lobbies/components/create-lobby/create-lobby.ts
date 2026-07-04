@@ -49,4 +49,8 @@ export class CreateLobby {
     min(schemaPath.maxPlayers, 2);
     max(schemaPath.maxPlayers, 4);
   });
+
+  setMaxPlayers(maxPlayers: number): void {
+    this.lobbyData.update((data) => ({ ...data, maxPlayers: maxPlayers }));
+  }
 }

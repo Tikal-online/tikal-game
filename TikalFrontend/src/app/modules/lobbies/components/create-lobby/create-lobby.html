@@ -12,12 +12,24 @@
     <form [formRoot]="lobbyForm">
       <label for="name" hidden>{{ t('name-input-label') }}</label>
       <input class="header-input" id="name" type="text" [formField]="lobbyForm.name" />
-      <div class="players">
-        <app-lobby-player-list-header [maxPlayers]="lobbyData().maxPlayers" />
-        <app-lobby-player-list
-          [maxPlayers]="lobbyData().maxPlayers"
-          [players]="[defaultPlayer()]"
-        />
+      <div class="form-sections">
+        <section>
+          <app-lobby-player-list-header [maxPlayers]="lobbyData().maxPlayers" />
+          <app-lobby-player-list
+            [maxPlayers]="lobbyData().maxPlayers"
+            [players]="[defaultPlayer()]"
+          />
+        </section>
+        <section>
+          <span class="settings-label">SETTINGS</span>
+          <div class="settings">
+            <div>
+              <button type="button" (click)="setMaxPlayers(2)">2</button>
+              <button type="button" (click)="setMaxPlayers(3)">3</button>
+              <button type="button" (click)="setMaxPlayers(4)">4</button>
+            </div>
+          </div>
+        </section>
       </div>
     </form>
   </div>
