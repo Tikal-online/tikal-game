@@ -24,6 +24,10 @@ button {
   border: none;
 }
 
+button:hover {
+  color: colors.$text-header;
+}
+
 .left {
   border: 1px solid colors.$border;
   border-right: none;
@@ -39,6 +43,11 @@ button {
   border-bottom: 1px solid colors.$border;
 }
 
-button:hover {
-  color: colors.$text-header;
+.selected {
+  background-color: colors.$text-header-prefix;
+  color: colors.$card-background;
+}
+
+.selected:hover {
+  color: colors.$card-background;
 }

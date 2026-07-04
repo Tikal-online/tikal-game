@@ -1,6 +1,27 @@
 <span class="label">Max Players</span>
 <div>
-  <button class="left" type="button">2</button>
-  <button class="middle" type="button">3</button>
-  <button class="right" type="button">4</button>
+  <button
+    class="left"
+    type="button"
+    [class.selected]="maxPlayers() === 2"
+    (click)="setMaxPlayers(2)"
+  >
+    2
+  </button>
+  <button
+    class="middle"
+    type="button"
+    [class.selected]="maxPlayers() === 3"
+    (click)="setMaxPlayers(3)"
+  >
+    3
+  </button>
+  <button
+    class="right"
+    type="button"
+    [class.selected]="maxPlayers() === 4"
+    (click)="setMaxPlayers(4)"
+  >
+    4
+  </button>
 </div>

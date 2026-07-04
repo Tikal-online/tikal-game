@@ -23,7 +23,10 @@
         <section>
           <span class="settings-label">SETTINGS</span>
           <div class="settings">
-            <app-max-players-selection />
+            <app-max-players-selection
+              [maxPlayers]="lobbyData().maxPlayers"
+              (maxPlayersSet)="setMaxPlayers($event)"
+            />
           </div>
         </section>
       </div>
