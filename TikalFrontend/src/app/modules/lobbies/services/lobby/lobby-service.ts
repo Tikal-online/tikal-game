@@ -4,7 +4,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { PaginatedResult } from '../../../../core/dtos/paginated-result';
 import { err, ok, Result } from 'neverthrow';
 import { Lobby } from '../../models/lobby';
-import { Conflict } from '../../../../core/dtos/errors';
+import { Conflict, NotFound } from '../../../../core/dtos/errors';
 
 export type LobbySummary = {
   id: string;
@@ -39,11 +39,24 @@ export class LobbyService {
       maxPlayers: maxPlayers,
     };
 
-    return this.http.post<Lobby>(this.url, body).pipe(
+    return this.http.post(this.url, body).pipe(
       map(() => ok()),
       catchError((error: HttpErrorResponse) => {
         if (error.status === 409) {
           return err({ type: 'Conflict' } as const);
+        }
+
+        return throwError(() => error);
+      }),
+    );
+  }
+
+  getActiveLobby(): Observable<Result<Lobby, NotFound>> {
+    return this.http.get<Lobby>(this.url + '/me').pipe(
+      map((lobby: Lobby) => ok(lobby)),
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 404) {
+          return err({ type: 'NotFound' } as const);
         }
 
         return throwError(() => error);
