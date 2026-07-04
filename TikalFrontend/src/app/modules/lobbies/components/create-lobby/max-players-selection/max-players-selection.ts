@@ -1,8 +1,9 @@
 import { Component, input, output } from '@angular/core';
+import { TranslocoDirective } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-max-players-selection',
-  imports: [],
+  imports: [TranslocoDirective],
   templateUrl: './max-players-selection.html',
   styleUrl: './max-players-selection.scss',
 })
