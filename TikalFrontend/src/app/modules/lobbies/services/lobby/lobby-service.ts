@@ -33,14 +33,14 @@ export class LobbyService {
     });
   }
 
-  createLobby(name: string, maxPlayers: number): Observable<Result<Lobby, Conflict>> {
+  createLobby(name: string, maxPlayers: number): Observable<Result<void, Conflict>> {
     const body = {
       name: name,
       maxPlayers: maxPlayers,
     };
 
     return this.http.post<Lobby>(this.url, body).pipe(
-      map((lobby: Lobby) => ok(lobby)),
+      map(() => ok()),
       catchError((error: HttpErrorResponse) => {
         if (error.status === 409) {
           return err({ type: 'Conflict' } as const);
