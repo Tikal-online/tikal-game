@@ -1,5 +1,8 @@
 using System.Net;
+using System.Net.Http.Json;
+using RestApi.Controllers.Lobbies.Dtos;
 using TikalBackend.IntegrationTests.Extensions;
+using TikalBackend.IntegrationTests.Modules.Lobbies.Dtos;
 
 namespace TikalBackend.IntegrationTests.Modules.Lobbies;
 
@@ -49,15 +52,15 @@ internal sealed class GetLobbyTests : IntegrationTestFixture
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
     }
 
-    // TODO: rewrite this test once Lobbies/me endpoint exists
-    /*
     [TestCaseSource(typeof(CreateLobbyDtoTestCases), nameof(CreateLobbyDtoTestCases.ValidCreateLobbyDtos))]
     public async Task GivenLobbyWithId_WhenGetLobby_ThenReturnsLobby(CreateLobbyDto createLobbyDto)
     {
         // given
         await CreateUserAccount(TestUser.Default);
 
-        var createdLobbyResponse = await Client.PostAsyncWithUser(lobbyUrl, TestUser.Default, createLobbyDto);
+        await Client.PostAsyncWithUser(lobbyUrl, TestUser.Default, createLobbyDto);
+
+        var createdLobbyResponse = await Client.GetAsyncWithUser(lobbyUrl + "/me", TestUser.Default);
 
         var createdLobby = await createdLobbyResponse.Content.ReadFromJsonAsync<LobbyDto>();
 
@@ -67,17 +70,17 @@ internal sealed class GetLobbyTests : IntegrationTestFixture
         var lobby = await response.Content.ReadFromJsonAsync<LobbyDto>();
 
         // then
+        Assert.That(lobby, Is.Not.Null);
+
         using (Assert.EnterMultipleScope())
         {
             Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
 
-            Assert.That(lobby, Is.Not.Null);
-            Assert.That(lobby!.Id, Is.EqualTo(createdLobby.Id));
+            Assert.That(lobby.Id, Is.EqualTo(createdLobby.Id));
             Assert.That(lobby.Name, Is.EqualTo(createdLobby.Name));
             Assert.That(lobby.MaxPlayers, Is.EqualTo(createdLobby.MaxPlayers));
 
             Assert.That(lobby.Players, Is.EquivalentTo(createdLobby.Players));
         }
     }
-    */
 }
