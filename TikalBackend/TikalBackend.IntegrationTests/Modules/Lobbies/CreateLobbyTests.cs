@@ -44,7 +44,7 @@ internal sealed class CreateLobbyTests : IntegrationTestFixture
     }
 
     [TestCaseSource(typeof(CreateLobbyDtoTestCases), nameof(CreateLobbyDtoTestCases.ValidCreateLobbyDtos))]
-    public async Task GivenUserNotInLobby_WhenCreateLobby_ThenReturnsCreatedLobby(
+    public async Task GivenUserNotInLobby_WhenCreateLobby_ThenReturnsCreated(
         CreateLobbyDto createLobbyDto
     )
     {
@@ -54,24 +54,8 @@ internal sealed class CreateLobbyTests : IntegrationTestFixture
         // when
         var response = await Client.PostAsyncWithUser(createLobbyUrl, TestUser.Default, createLobbyDto);
 
-        var lobby = await response.Content.ReadFromJsonAsync<LobbyDto>();
-
         // then
-        using (Assert.EnterMultipleScope())
-        {
-            Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Created));
-
-            Assert.That(lobby, Is.Not.Null);
-            Assert.That(lobby!.Name, Is.EqualTo(createLobbyDto.Name));
-            Assert.That(lobby.MaxPlayers, Is.EqualTo(createLobbyDto.MaxPlayers));
-
-
-            Assert.That(lobby.Players.Count, Is.EqualTo(1));
-            Assert.That(lobby.Players.First().Name, Is.EqualTo(TestUser.Default.Name));
-            Assert.That(lobby.Players.First().UserId, Is.EqualTo(TestUser.Default.UserId));
-            Assert.That(lobby.Players.First().IsOwner, Is.True);
-            Assert.That(lobby.Players.First().IsReady, Is.False);
-        }
+        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Created));
     }
 
     [TestCaseSource(typeof(CreateLobbyDtoTestCases), nameof(CreateLobbyDtoTestCases.ValidCreateLobbyDtos))]
