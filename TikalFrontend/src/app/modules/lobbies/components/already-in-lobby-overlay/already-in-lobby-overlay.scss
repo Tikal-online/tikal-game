@@ -1,0 +1,48 @@
+@use 'colors';
+
+:host {
+  position: absolute;
+  height: 100vh;
+  width: 100%;
+
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 2;
+
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+}
+
+dialog {
+  display: flex;
+  flex-direction: column;
+
+  padding: 2rem;
+
+  width: 100%;
+  max-width: 28rem;
+
+  background-color: colors.$card-background;
+
+  border: 1px solid colors.$border;
+}
+
+h1 {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+
+  align-items: center;
+
+  margin: 0 0 1.5rem 0;
+
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+button {
+  margin: 1.5rem auto 0 auto;
+}

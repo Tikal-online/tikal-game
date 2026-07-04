@@ -19,6 +19,7 @@ import { TranslocoDirective } from '@jsverse/transloco';
 import { MaxPlayersSelection } from './max-players-selection/max-players-selection';
 import { LobbyService } from '../../services/lobby/lobby-service';
 import { firstValueFrom } from 'rxjs';
+import { AlreadyInLobbyOverlay } from '../already-in-lobby-overlay/already-in-lobby-overlay';
 
 type LobbyData = {
   name: string;
@@ -37,6 +38,7 @@ type LobbyData = {
     TranslocoDirective,
     MaxPlayersSelection,
     LucideLoaderCircle,
+    AlreadyInLobbyOverlay,
   ],
   templateUrl: './create-lobby.html',
   styleUrl: './create-lobby.scss',
@@ -54,6 +56,8 @@ export class CreateLobby {
     isOwner: true,
     isReady: false,
   });
+
+  readonly alreadyInLobby = signal<boolean>(false);
 
   readonly lobbyData = signal<LobbyData>({
     name: `${this.accountStore.account()?.name}s Lobby`,
@@ -84,9 +88,7 @@ export class CreateLobby {
             return;
           }
 
-          return {
-            kind: 'serverError',
-          };
+          this.alreadyInLobby.set(true);
         },
       },
     },

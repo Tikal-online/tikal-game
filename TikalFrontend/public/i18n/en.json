@@ -70,6 +70,11 @@
     "settings": {
       "header": "SETTINGS",
       "max-players-label": "Max Players"
+    },
+    "already-in-lobby": {
+      "header": "Already in Lobby",
+      "description": "You are already in an active lobby. Leave it before creating a new one.",
+      "button-label": "GO TO MY LOBBY"
     }
   }
 }
