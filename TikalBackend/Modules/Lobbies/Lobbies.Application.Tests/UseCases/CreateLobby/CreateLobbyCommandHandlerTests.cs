@@ -2,8 +2,8 @@ using Lobbies.Application.DataAccess;
 using Lobbies.Application.UseCases.CreateLobby;
 using Lobbies.Contracts.Commands;
 using Lobbies.Contracts.Errors;
-using Lobbies.Contracts.Models;
 using Moq;
+using OneOf.Types;
 using Shared.Application.Contexts;
 using Shared.Application.Tests;
 
@@ -66,7 +66,7 @@ internal sealed class CreateLobbyCommandHandlerTests
         typeof(CreateLobbyCommandTestCases),
         nameof(CreateLobbyCommandTestCases.ValidCreateLobbyCommands)
     )]
-    public async Task GivenSuccessfulCreation_WhenHandle_ThenReturnsCreatedLobby(CreateLobbyCommand command)
+    public async Task GivenSuccessfulCreation_WhenHandle_ThenReturnsSuccess(CreateLobbyCommand command)
     {
         // given
         SetupHappyPath();
@@ -75,17 +75,6 @@ internal sealed class CreateLobbyCommandHandlerTests
         var result = await handler.Handle(command, CancellationToken.None);
 
         // then
-        using (Assert.EnterMultipleScope())
-        {
-            Assert.That(result.Value, Is.InstanceOf<LobbyModel>());
-            Assert.That(result.AsT0.Name, Is.EqualTo(command.Name));
-            Assert.That(result.AsT0.MaxPlayers, Is.EqualTo(command.MaxPlayers));
-
-            Assert.That(result.AsT0.Players.Count, Is.EqualTo(1));
-            Assert.That(result.AsT0.Players.First().UserId, Is.EqualTo(accountContext.Account.UserId));
-            Assert.That(result.AsT0.Players.First().Name, Is.EqualTo(accountContext.Account.Name));
-            Assert.That(result.AsT0.Players.First().IsOwner, Is.True);
-            Assert.That(result.AsT0.Players.First().IsReady, Is.False);
-        }
+        Assert.That(result.Value, Is.InstanceOf<Success>());
     }
 }

@@ -22,7 +22,8 @@ public sealed partial class LobbiesController : ApiController
     }
 
     [HttpPost]
-    [ProducesResponseType<LobbyDto>(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
     [EndpointDescription("Creates a new lobby containing the currently authenticated user")]
     public async Task<IActionResult> CreateLobby(
         CreateLobbyDto createLobbyDto,
@@ -34,7 +35,7 @@ public sealed partial class LobbiesController : ApiController
         var result = await sender.Send(command, cancellationToken);
 
         return result.Match<IActionResult>(
-            lobbyModel => CreatedAtAction(nameof(CreateLobby), LobbyModelMapper.LobbyModelToLobbyDto(lobbyModel)),
+            _ => CreatedAtAction(nameof(GetLobby), new { }),
             _ => PlayerAlreadyInALobby()
         );
     }
