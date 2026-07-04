@@ -1,0 +1,29 @@
+<ng-container *transloco="let t; prefix: 'lobby.settings'">
+  <span class="label">{{ t('max-players-label') }}</span>
+</ng-container>
+<div>
+  <button
+    class="left"
+    type="button"
+    [class.selected]="maxPlayers() === 2"
+    (click)="setMaxPlayers(2)"
+  >
+    2
+  </button>
+  <button
+    class="middle"
+    type="button"
+    [class.selected]="maxPlayers() === 3"
+    (click)="setMaxPlayers(3)"
+  >
+    3
+  </button>
+  <button
+    class="right"
+    type="button"
+    [class.selected]="maxPlayers() === 4"
+    (click)="setMaxPlayers(4)"
+  >
+    4
+  </button>
+</div>

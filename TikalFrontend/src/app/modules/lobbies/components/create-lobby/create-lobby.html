@@ -6,18 +6,29 @@
   <span class="logo">TIKAL</span>
   <span></span>
 </nav>
-<ng-container *transloco="let t; prefix: 'lobby.create'">
+<ng-container *transloco="let t; prefix: 'lobby'">
   <div class="content">
-    <p class="header-prefix">{{ t('header-prefix') }}</p>
+    <p class="header-prefix">{{ t('create.header-prefix') }}</p>
     <form [formRoot]="lobbyForm">
-      <label for="name" hidden>{{ t('name-input-label') }}</label>
+      <label for="name" hidden>{{ t('create.name-input-label') }}</label>
       <input class="header-input" id="name" type="text" [formField]="lobbyForm.name" />
-      <div class="players">
-        <app-lobby-player-list-header [maxPlayers]="lobbyData().maxPlayers" />
-        <app-lobby-player-list
-          [maxPlayers]="lobbyData().maxPlayers"
-          [players]="[defaultPlayer()]"
-        />
+      <div class="form-sections">
+        <section>
+          <app-lobby-player-list-header [maxPlayers]="lobbyData().maxPlayers" />
+          <app-lobby-player-list
+            [maxPlayers]="lobbyData().maxPlayers"
+            [players]="[defaultPlayer()]"
+          />
+        </section>
+        <section>
+          <span class="settings-label">{{ t('settings.header') }}</span>
+          <div class="settings">
+            <app-max-players-selection
+              [maxPlayers]="lobbyData().maxPlayers"
+              (maxPlayersSet)="setMaxPlayers($event)"
+            />
+          </div>
+        </section>
       </div>
     </form>
   </div>

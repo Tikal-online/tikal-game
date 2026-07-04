@@ -64,6 +64,10 @@
       "header": "PLAYERS",
       "you-label": "You",
       "open-slot": "Open Slot"
+    },
+    "settings": {
+      "header": "SETTINGS",
+      "max-players-label": "Max Players"
     }
   }
 }

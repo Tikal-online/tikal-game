@@ -32,8 +32,45 @@ nav {
   outline: none;
 }
 
-.players {
+.form-sections {
+  display: flex;
+  flex-direction: row;
+  gap: 2.5rem;
+}
+
+section {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+}
+
+.settings-label {
+  font-size: 0.6rem;
+  font-family: 'Mono', monospace;
+  letter-spacing: 0.1rem;
+  color: colors.$text-muted;
+
+  padding: 1.5px 0;
+}
+
+.settings {
+  width: 15rem;
+
+  font-family: 'Mono', monospace;
+
+  background-color: color-mix(in srgb, colors.$card-background 60%, transparent);
+
+  border: 1px solid colors.$border;
+
+  .max-players {
+    display: flex;
+    flex-direction: row;
+  }
+}
+
+// add a top border to all children after the first
+.settings > :not([hidden]) ~ :not([hidden]) {
+  border-top-width: 1px;
+  border-top-style: solid;
+  border-top-color: colors.$border;
 }
