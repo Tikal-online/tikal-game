@@ -37,7 +37,7 @@ jobs:
           global-json-file: global.json
 
       - name: Install GitVersion
-        uses: gittools/actions/gitversion/setup@03e8e0922292bf0491859846a823b253d8dd06ce # v4.6.0
+        uses: gittools/actions/gitversion/setup@7417b1089e2c7de93510f1901d656ddf60bb024f # v4.7.0
         with:
           versionSpec: "6.4.x"
           preferLatestVersion: true
