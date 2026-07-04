@@ -28,6 +28,10 @@ button:hover {
   color: colors.$text-header;
 }
 
+button:disabled {
+  cursor: not-allowed;
+}
+
 .left {
   border: 1px solid colors.$border;
   border-right: none;

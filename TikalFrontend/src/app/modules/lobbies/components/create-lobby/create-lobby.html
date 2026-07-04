@@ -30,6 +30,7 @@
           <span class="settings-label">{{ t('settings.header') }}</span>
           <div class="settings">
             <app-max-players-selection
+              [disabled]="lobbyForm().submitting()"
               [maxPlayers]="lobbyData().maxPlayers"
               (maxPlayersSet)="setMaxPlayers($event)"
             />
