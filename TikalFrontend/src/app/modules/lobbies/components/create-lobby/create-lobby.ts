@@ -7,6 +7,7 @@ import { LobbyPlayerList } from '../lobby-player-list/lobby-player-list';
 import { Player } from '../../models/player';
 import { LobbyPlayerListHeader } from '../lobby-player-list-header/lobby-player-list-header';
 import { TranslocoDirective } from '@jsverse/transloco';
+import { MaxPlayersSelection } from './max-players-selection/max-players-selection';
 
 type LobbyData = {
   name: string;
@@ -23,6 +24,7 @@ type LobbyData = {
     LobbyPlayerList,
     LobbyPlayerListHeader,
     TranslocoDirective,
+    MaxPlayersSelection,
   ],
   templateUrl: './create-lobby.html',
   styleUrl: './create-lobby.scss',
