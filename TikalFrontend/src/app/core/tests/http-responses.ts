@@ -53,3 +53,8 @@ export const ERROR_RESPONSES = [
   NOT_ACCEPTABLE,
   CONFLICT,
 ];
+
+export const CREATED = {
+  status: 201,
+  statusText: 'Created',
+};

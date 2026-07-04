@@ -11,7 +11,13 @@
     <p class="header-prefix">{{ t('create.header-prefix') }}</p>
     <form [formRoot]="lobbyForm">
       <label for="name" hidden>{{ t('create.name-input-label') }}</label>
-      <input class="header-input" id="name" type="text" [formField]="lobbyForm.name" />
+      <input
+        autocomplete="off"
+        class="header-input"
+        id="name"
+        type="text"
+        [formField]="lobbyForm.name"
+      />
       <div class="form-sections">
         <section>
           <app-lobby-player-list-header [maxPlayers]="lobbyData().maxPlayers" />
@@ -24,12 +30,25 @@
           <span class="settings-label">{{ t('settings.header') }}</span>
           <div class="settings">
             <app-max-players-selection
+              [disabled]="lobbyForm().submitting()"
               [maxPlayers]="lobbyData().maxPlayers"
               (maxPlayersSet)="setMaxPlayers($event)"
             />
           </div>
         </section>
       </div>
+      <button
+        class="button-primary footer-button"
+        type="submit"
+        [disabled]="lobbyForm().submitting()"
+      >
+        @if (lobbyForm().submitting()) {
+          <svg class="spin-animation" lucideLoaderCircle [size]="18"></svg>
+          {{ t('create.submitting-button') }}
+        } @else {
+          {{ t('create.submit-button') }}
+        }
+      </button>
     </form>
   </div>
 </ng-container>

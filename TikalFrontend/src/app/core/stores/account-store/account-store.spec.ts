@@ -1,13 +1,9 @@
 import { catchError, firstValueFrom, Observable, of, throwError } from 'rxjs';
-import {
-  Account,
-  AccountService,
-  Conflict,
-  NotFound,
-} from '../../services/account-service/account-service';
+import { Account, AccountService } from '../../services/account-service/account-service';
 import { err, ok, Result } from 'neverthrow';
 import { TestBed } from '@angular/core/testing';
 import { AccountStore } from './account-store';
+import { Conflict, NotFound } from '../../dtos/errors';
 
 const DEFAULT_ACCOUNT: Account = {
   userId: 'userId',

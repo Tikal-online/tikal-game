@@ -6,6 +6,7 @@
     class="left"
     type="button"
     [class.selected]="maxPlayers() === 2"
+    [disabled]="disabled()"
     (click)="setMaxPlayers(2)"
   >
     2
@@ -14,6 +15,7 @@
     class="middle"
     type="button"
     [class.selected]="maxPlayers() === 3"
+    [disabled]="disabled()"
     (click)="setMaxPlayers(3)"
   >
     3
@@ -22,6 +24,7 @@
     class="right"
     type="button"
     [class.selected]="maxPlayers() === 4"
+    [disabled]="disabled()"
     (click)="setMaxPlayers(4)"
   >
     4

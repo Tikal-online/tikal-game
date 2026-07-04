@@ -1,7 +1,10 @@
 import { inject, Service } from '@angular/core';
-import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { catchError, map, Observable, throwError } from 'rxjs';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { PaginatedResult } from '../../../../core/dtos/paginated-result';
+import { err, ok, Result } from 'neverthrow';
+import { Lobby } from '../../models/lobby';
+import { Conflict } from '../../../../core/dtos/errors';
 
 export type LobbySummary = {
   id: string;
@@ -28,5 +31,23 @@ export class LobbyService {
         searchText: searchText,
       },
     });
+  }
+
+  createLobby(name: string, maxPlayers: number): Observable<Result<void, Conflict>> {
+    const body = {
+      name: name,
+      maxPlayers: maxPlayers,
+    };
+
+    return this.http.post<Lobby>(this.url, body).pipe(
+      map(() => ok()),
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 409) {
+          return err({ type: 'Conflict' } as const);
+        }
+
+        return throwError(() => error);
+      }),
+    );
   }
 }

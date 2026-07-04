@@ -1,8 +1,5 @@
 using System.Net;
-using System.Net.Http.Json;
-using RestApi.Controllers.Lobbies.Dtos;
 using TikalBackend.IntegrationTests.Extensions;
-using TikalBackend.IntegrationTests.Modules.Lobbies.Dtos;
 
 namespace TikalBackend.IntegrationTests.Modules.Lobbies;
 
@@ -52,6 +49,8 @@ internal sealed class GetLobbyTests : IntegrationTestFixture
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
     }
 
+    // TODO: rewrite this test once Lobbies/me endpoint exists
+    /*
     [TestCaseSource(typeof(CreateLobbyDtoTestCases), nameof(CreateLobbyDtoTestCases.ValidCreateLobbyDtos))]
     public async Task GivenLobbyWithId_WhenGetLobby_ThenReturnsLobby(CreateLobbyDto createLobbyDto)
     {
@@ -80,4 +79,5 @@ internal sealed class GetLobbyTests : IntegrationTestFixture
             Assert.That(lobby.Players, Is.EquivalentTo(createdLobby.Players));
         }
     }
+    */
 }

@@ -58,7 +58,9 @@
   "lobby": {
     "create": {
       "header-prefix": "NEW LOBBY",
-      "name-input-label": "Lobbyname"
+      "name-input-label": "Lobbyname",
+      "submit-button": "CREATE",
+      "submitting-button": "CREATING"
     },
     "player-list": {
       "header": "PLAYERS",

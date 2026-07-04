@@ -10,6 +10,8 @@ import { TranslocoDirective } from '@jsverse/transloco';
 export class MaxPlayersSelection {
   readonly maxPlayers = input.required<number>();
 
+  readonly disabled = input.required<boolean>();
+
   readonly maxPlayersSet = output<number>();
 
   setMaxPlayers(maxPlayers: number): void {

@@ -1,19 +1,17 @@
 using Lobbies.Application.DataAccess;
-using Lobbies.Application.Mappers;
 using Lobbies.Contracts.Commands;
-using Lobbies.Contracts.Enums;
 using Lobbies.Contracts.Errors;
-using Lobbies.Contracts.Models;
 using Lobbies.Domain.Entities;
 using Lobbies.Domain.Enums;
 using OneOf;
+using OneOf.Types;
 using Shared.Application.Contexts;
 using Shared.Contracts.Messaging;
 
 namespace Lobbies.Application.UseCases.CreateLobby;
 
 internal sealed class CreateLobbyCommandHandler
-    : CommandHandler<CreateLobbyCommand, OneOf<LobbyModel, PlayerAlreadyInALobby>>
+    : CommandHandler<CreateLobbyCommand, OneOf<Success, PlayerAlreadyInALobby>>
 {
     private readonly LobbyRepository lobbyRepository;
 
@@ -36,7 +34,7 @@ internal sealed class CreateLobbyCommandHandler
         this.accountContext = accountContext;
     }
 
-    public async Task<OneOf<LobbyModel, PlayerAlreadyInALobby>> Handle(
+    public async Task<OneOf<Success, PlayerAlreadyInALobby>> Handle(
         CreateLobbyCommand request,
         CancellationToken cancellationToken
     )
@@ -67,20 +65,6 @@ internal sealed class CreateLobbyCommandHandler
 
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
-        var lobbyModel = LobbyMapper.LobbyToLobbyModel(lobby);
-
-        lobbyModel.Players =
-        [
-            new LobbyPlayerModel
-            {
-                Name = accountContext.Account.Name,
-                UserId = player.UserId,
-                SelectedColour = (ColourModel)player.SelectedColour,
-                IsOwner = player.IsOwner,
-                IsReady = player.IsReady
-            }
-        ];
-
-        return lobbyModel;
+        return new Success();
     }
 }
