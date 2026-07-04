@@ -1,4 +1,10 @@
 @use 'colors';
+:host {
+  display: flex;
+  flex-direction: column;
+
+  height: 100vh;
+}
 
 .content {
   display: flex;
@@ -15,6 +21,12 @@ nav {
 .header-prefix {
   font-size: 0.7rem;
   letter-spacing: 0.1rem;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
 .header-input {
@@ -73,4 +85,9 @@ section {
   border-top-width: 1px;
   border-top-style: solid;
   border-top-color: colors.$border;
+}
+
+button {
+  margin-top: auto;
+  align-self: flex-start;
 }
