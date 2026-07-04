@@ -2,6 +2,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { inject, Service } from '@angular/core';
 import { err, ok, Result } from 'neverthrow';
 import { catchError, map, Observable, throwError } from 'rxjs';
+import { Unauthorized } from '../../dtos/errors';
 
 export type Claim = {
   type: string;
@@ -9,10 +10,6 @@ export type Claim = {
 };
 
 export type Session = Claim[];
-
-export type Unauthorized = {
-  type: 'Unauthorized';
-};
 
 @Service()
 export class AuthService {

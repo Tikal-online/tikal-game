@@ -1,13 +1,9 @@
 import { catchError, firstValueFrom, Observable, of, throwError } from 'rxjs';
-import {
-  AuthService,
-  Claim,
-  Session,
-  Unauthorized,
-} from '../../services/auth-service/auth-service';
+import { AuthService, Claim, Session } from '../../services/auth-service/auth-service';
 import { err, ok, Result } from 'neverthrow';
 import { AuthStore } from './auth-store';
 import { TestBed } from '@angular/core/testing';
+import { Unauthorized } from '../../dtos/errors';
 
 const DEFAULT_SESSION: Claim[] = [
   { type: 'sub', value: 'userId' },

@@ -6,11 +6,12 @@ import {
   withProps,
   withState,
 } from '@ngrx/signals';
-import { AuthService, Session, Unauthorized } from '../../services/auth-service/auth-service';
+import { AuthService, Session } from '../../services/auth-service/auth-service';
 import { computed, inject } from '@angular/core';
 import { catchError, Observable, tap, throwError } from 'rxjs';
 import { Result } from 'neverthrow';
 import { environment } from '../../../../environments/environment';
+import { Unauthorized } from '../../dtos/errors';
 
 export type AuthState = {
   initializationFailed: boolean;

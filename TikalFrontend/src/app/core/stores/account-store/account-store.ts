@@ -1,13 +1,9 @@
 import { patchState, signalStore, withMethods, withProps, withState } from '@ngrx/signals';
-import {
-  Account,
-  AccountService,
-  Conflict,
-  NotFound,
-} from '../../services/account-service/account-service';
+import { Account, AccountService } from '../../services/account-service/account-service';
 import { computed, inject } from '@angular/core';
 import { catchError, firstValueFrom, Observable, tap, throwError } from 'rxjs';
 import { Result } from 'neverthrow';
+import { Conflict, NotFound } from '../../dtos/errors';
 
 type AccountState = {
   initializationFailed: boolean;

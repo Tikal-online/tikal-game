@@ -2,18 +2,11 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { inject, Service } from '@angular/core';
 import { catchError, map, Observable, throwError } from 'rxjs';
 import { err, ok, Result } from 'neverthrow';
+import { Conflict, NotFound } from '../../dtos/errors';
 
 export type Account = {
   userId: string;
   name: string;
-};
-
-export type NotFound = {
-  type: 'NotFound';
-};
-
-export type Conflict = {
-  type: 'Conflict';
 };
 
 @Service()
