@@ -2,39 +2,49 @@ using Accounts.Contracts.Models;
 using Accounts.Contracts.Queries;
 using Lobbies.Application.DataAccess;
 using Lobbies.Application.Tests.Data;
-using Lobbies.Application.UseCases.GetLobby;
+using Lobbies.Application.UseCases.GetLobbyForAuthenticatedPlayer;
 using Lobbies.Contracts.Enums;
 using Lobbies.Contracts.Queries;
 using Lobbies.Domain.Entities;
 using MediatR;
 using Moq;
+using Shared.Application.Contexts;
+using Shared.Application.Tests;
 
-namespace Lobbies.Application.Tests.UseCases.GetLobby;
+namespace Lobbies.Application.Tests.UseCases.GetLobbyForAuthenticatedPlayer;
 
-internal sealed class GetLobbyQueryHandlerTests
+internal sealed class GetLobbyForAuthenticatedPlayerQueryHandlerTests
 {
     // dependencies
     private Mock<LobbyQueryContext> lobbyQueryContext;
     private Mock<ISender> sender;
+    private AccountContext accountContext;
 
     // under test
-    private GetLobbyQueryHandler handler;
+    private GetLobbyForAuthenticatedPlayerQueryHandler handler;
 
     [SetUp]
     public void Setup()
     {
         lobbyQueryContext = new Mock<LobbyQueryContext>();
         sender = new Mock<ISender>();
+        accountContext = AccountContextHelper.TestAccountContext;
 
-        handler = new GetLobbyQueryHandler(lobbyQueryContext.Object, sender.Object);
+        handler = new GetLobbyForAuthenticatedPlayerQueryHandler(
+            lobbyQueryContext.Object,
+            sender.Object,
+            accountContext
+        );
     }
 
-    [TestCaseSource(typeof(GetLobbyQueryTestCases), nameof(GetLobbyQueryTestCases.ValidGetLobbyQueries))]
-    public async Task GivenNoLobbyWithId_WhenHandle_ThenReturnsNull(GetLobbyQuery query)
+    [Test]
+    public async Task GivenAuthenticatedPlayerNotInLobby_WhenHandle_ThenReturnsNull()
     {
         // given
-        lobbyQueryContext.Setup(q => q.GetByIdAsync(query.Id))
+        lobbyQueryContext.Setup(q => q.GetByUserIdAsync(accountContext.Account.UserId))
             .ReturnsAsync(default(Lobby));
+
+        var query = new GetLobbyForAuthenticatedPlayerQuery();
 
         // when
         var result = await handler.Handle(query, CancellationToken.None);
@@ -44,12 +54,10 @@ internal sealed class GetLobbyQueryHandlerTests
     }
 
     [TestCaseSource(typeof(LobbyTestCases), nameof(LobbyTestCases.ValidLobbyTestCases))]
-    public async Task GivenLobbyWithId_WhenHandle_ThenReturnsLobbyModel(Lobby lobby)
+    public async Task GivenAuthenticatedPlayerInLobby_WhenHandle_ThenReturnsLobbyModel(Lobby lobby)
     {
         // given
-        var query = new GetLobbyQuery(lobby.Id);
-
-        lobbyQueryContext.Setup(q => q.GetByIdAsync(query.Id))
+        lobbyQueryContext.Setup(q => q.GetByUserIdAsync(accountContext.Account.UserId))
             .ReturnsAsync(lobby);
 
         sender.Setup(s => s.Send(
@@ -61,6 +69,8 @@ internal sealed class GetLobbyQueryHandlerTests
                 Name = "Test",
                 UserId = id
             }).ToList());
+
+        var query = new GetLobbyForAuthenticatedPlayerQuery();
 
         // when
         var result = await handler.Handle(query, CancellationToken.None);
