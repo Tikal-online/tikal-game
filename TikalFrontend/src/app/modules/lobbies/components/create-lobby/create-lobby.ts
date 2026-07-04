@@ -79,8 +79,6 @@ export class CreateLobby {
             this.lobbyService.createLobby(data.name, data.maxPlayers),
           );
 
-          await new Promise((resolve) => setTimeout(resolve, 10000));
-
           if (result.isOk()) {
             this.router.navigate(['/lobbies']);
             return;
