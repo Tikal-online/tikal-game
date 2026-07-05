@@ -28,6 +28,7 @@
         <Project Path="TikalBackend/Modules/Lobbies/Lobbies.Application.Tests/Lobbies.Application.Tests.csproj" />
         <Project Path="TikalBackend/Modules/Lobbies/Lobbies.Application/Lobbies.Application.csproj" />
         <Project Path="TikalBackend/Modules/Lobbies/Lobbies.Contracts/Lobbies.Contracts.csproj" />
+        <Project Path="TikalBackend/Modules/Lobbies/Lobbies.Domain.Tests/Lobbies.Domain.Tests.csproj" />
         <Project Path="TikalBackend/Modules/Lobbies/Lobbies.Domain/Lobbies.Domain.csproj" />
         <Project Path="TikalBackend/Modules/Lobbies/Lobbies.Infrastructure/Lobbies.Infrastructure.csproj" />
     </Folder>
