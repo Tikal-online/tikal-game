@@ -1,0 +1,41 @@
+@use 'colors';
+
+:host {
+  display: flex;
+  flex-direction: column;
+
+  height: 100vh;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+
+  padding: 2rem;
+}
+
+nav {
+  border-bottom: 1px solid colors.$border;
+}
+
+h1 {
+  margin: 0 0 2rem 0;
+
+  font-size: clamp(1.6rem, 3vw, 2.5rem);
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+section {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 0.75rem;
+}
+
+.lobby-buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+}
