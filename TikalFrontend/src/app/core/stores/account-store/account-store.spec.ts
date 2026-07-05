@@ -13,12 +13,12 @@ const DEFAULT_ACCOUNT: Account = {
 describe('AccountStore', () => {
   // dependencies
   const successAccountService = {
-    getAccount: (): Observable<Result<Account, NotFound>> => of(ok(DEFAULT_ACCOUNT)),
+    getAccount: (): Observable<Account | null> => of(DEFAULT_ACCOUNT),
     createAccount: (): Observable<Result<Account, Conflict>> => of(ok(DEFAULT_ACCOUNT)),
   };
 
   const notFoundAccountService = {
-    getAccount: (): Observable<Result<Account, NotFound>> => of(err({ type: 'NotFound' } as const)),
+    getAccount: (): Observable<Account | null> => of(null),
   };
 
   const conflictAccountService = {

@@ -3,7 +3,7 @@ import { Account, AccountService } from '../../services/account-service/account-
 import { computed, inject } from '@angular/core';
 import { catchError, firstValueFrom, Observable, tap, throwError } from 'rxjs';
 import { Result } from 'neverthrow';
-import { Conflict, NotFound } from '../../dtos/errors';
+import { Conflict } from '../../dtos/errors';
 
 type AccountState = {
   initializationFailed: boolean;
@@ -30,12 +30,10 @@ export const AccountStore = signalStore(
 
   withMethods((store) => ({
     // this method returns an observable because it needs to run during app initialization
-    loadAccount(): Observable<Result<Account, NotFound>> {
+    loadAccount(): Observable<Account | null> {
       return store._accountService.getAccount().pipe(
-        tap((result: Result<Account, NotFound>) => {
-          if (result.isOk()) {
-            patchState(store, { account: result.value });
-          }
+        tap((account: Account | null) => {
+          patchState(store, { account });
         }),
         catchError((error) => {
           patchState(store, { initializationFailed: true });

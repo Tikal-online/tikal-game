@@ -27,7 +27,7 @@ describe('AccountService', () => {
     service = TestBed.inject(AccountService);
   });
 
-  test('getAccount returns NotFound when GET /Api/Accounts/me returns 404', async () => {
+  test('getAccount returns null when GET /Api/Accounts/me returns 404', async () => {
     const promise = firstValueFrom(service.getAccount());
 
     const req = http.expectOne({ method: 'GET', url: '/Api/Accounts/me' });
@@ -35,10 +35,7 @@ describe('AccountService', () => {
 
     const result = await promise;
 
-    expect(result.isErr()).toBeTruthy();
-    if (result.isErr()) {
-      expect(result.error).toEqual({ type: 'NotFound' });
-    }
+    expect(result).toBeNull();
   });
 
   test('getAccount returns Account when GET /Api/Accounts/me returns Success', async () => {
@@ -49,10 +46,7 @@ describe('AccountService', () => {
 
     const result = await promise;
 
-    expect(result.isOk()).toBeTruthy();
-    if (result.isOk()) {
-      expect(result.value).toEqual(DEFAULT_ACCOUNT);
-    }
+    expect(result).toEqual(DEFAULT_ACCOUNT);
   });
 
   test.for<HttpResponseData>(ERROR_RESPONSES.filter((error) => error.status !== 404))(
