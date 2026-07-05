@@ -109,7 +109,7 @@ describe('LobbyService', () => {
     },
   );
 
-  test('getActiveLobby returns NotFound when GET /Api/Lobbies/me returns 404', async () => {
+  test('getActiveLobby returns null when GET /Api/Lobbies/me returns 404', async () => {
     const promise = firstValueFrom(service.getActiveLobby());
 
     const req = http.expectOne({ method: 'GET', url: '/Api/Lobbies/me' });
@@ -117,10 +117,7 @@ describe('LobbyService', () => {
 
     const result = await promise;
 
-    expect(result.isErr()).toBeTruthy();
-    if (result.isErr()) {
-      expect(result.error).toEqual({ type: 'NotFound' });
-    }
+    expect(result).toBeNull();
   });
 
   test('getActiveLobby returns Lobby when GET /Api/Lobbies/me returns success', async () => {
@@ -131,10 +128,7 @@ describe('LobbyService', () => {
 
     const result = await promise;
 
-    expect(result.isOk()).toBeTruthy();
-    if (result.isOk()) {
-      expect(result.value).toEqual(DEFAULT_LOBBY);
-    }
+    expect(result).toEqual(DEFAULT_LOBBY);
   });
 
   test.for<HttpResponseData>(ERROR_RESPONSES.filter((error) => error.status !== 404))(
