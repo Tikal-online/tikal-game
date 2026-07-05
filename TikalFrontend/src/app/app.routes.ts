@@ -6,6 +6,7 @@ import { isAuthenticated } from './core/route-guards/is-authenticated/is-authent
 import { hasAccount } from './core/route-guards/has-account/has-account-guard';
 import { hasNoAccount } from './core/route-guards/has-no-account/has-no-account-guard';
 import { CreateLobby } from './modules/lobbies/components/create-lobby/create-lobby';
+import { ActiveLobby } from './modules/lobbies/components/active-lobby/active-lobby';
 
 export const routes: Routes = [
   {
@@ -17,6 +18,7 @@ export const routes: Routes = [
     canActivate: [isAuthenticated, hasAccount],
     children: [
       { path: '', component: Lobbies },
+      { path: 'me', component: ActiveLobby },
       { path: 'create', component: CreateLobby },
     ],
   },
