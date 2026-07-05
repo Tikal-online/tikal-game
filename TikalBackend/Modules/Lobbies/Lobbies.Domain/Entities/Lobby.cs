@@ -11,6 +11,20 @@ public sealed class Lobby
     public required int MaxPlayers { get; set; }
 
     public ICollection<Player> Players { get; set; } = [];
+
+    public bool IsEmpty => Players.Count == 0;
+
+    public void RemovePlayer(Player player)
+    {
+        Players.Remove(player);
+
+        if (Players.Count == 0 || Players.Any(p => p.IsOwner))
+        {
+            return;
+        }
+
+        Players.First().IsOwner = true;
+    }
 }
 
 public static class LobbyValidationRules

@@ -17,4 +17,9 @@ internal sealed class DbLobbyRepository : LobbyRepository
     {
         lobbiesDbContext.Add(lobby);
     }
+
+    public void Delete(Lobby lobby)
+    {
+        lobbiesDbContext.Remove(lobby);
+    }
 }
