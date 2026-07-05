@@ -84,7 +84,7 @@ export class CreateLobby {
           );
 
           if (result.isOk()) {
-            this.router.navigate(['/lobbies']);
+            this.router.navigate(['/lobbies/me'], { replaceUrl: true });
             return;
           }
 
