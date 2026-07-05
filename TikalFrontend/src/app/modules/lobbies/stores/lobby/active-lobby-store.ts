@@ -50,5 +50,11 @@ export const ActiveLobbyStore = signalStore(
         }),
       ),
     ),
+
+    leaveLobby: rxMethod<void>(
+      switchMap(() => {
+        return store._lobbyService.leaveLobby();
+      }),
+    ),
   })),
 );

@@ -154,6 +154,12 @@ describe('LobbyService', () => {
     },
   );
 
+  test('leaveLobby calls POST /Api/Lobbies/leave', async () => {
+    firstValueFrom(service.leaveLobby());
+
+    http.expectOne({ method: 'POST', url: '/Api/Lobbies/leave' });
+  });
+
   afterEach(() => {
     http.verify();
   });
