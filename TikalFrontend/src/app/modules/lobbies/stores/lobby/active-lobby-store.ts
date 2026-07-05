@@ -43,8 +43,7 @@ export const ActiveLobbyStore = signalStore(
         switchMap(() => {
           return store._lobbyService.getActiveLobby().pipe(
             tapResponse({
-              next: (result) =>
-                patchState(store, { lobby: result.isOk() ? result.value : null, status: 'loaded' }),
+              next: (result) => patchState(store, { lobby: result, status: 'loaded' }),
               error: () => patchState(store, { status: 'error' }),
             }),
           );

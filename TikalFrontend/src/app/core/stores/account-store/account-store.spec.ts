@@ -3,7 +3,7 @@ import { Account, AccountService } from '../../services/account-service/account-
 import { err, ok, Result } from 'neverthrow';
 import { TestBed } from '@angular/core/testing';
 import { AccountStore } from './account-store';
-import { Conflict, NotFound } from '../../dtos/errors';
+import { Conflict } from '../../dtos/errors';
 
 const DEFAULT_ACCOUNT: Account = {
   userId: 'userId',
@@ -13,12 +13,12 @@ const DEFAULT_ACCOUNT: Account = {
 describe('AccountStore', () => {
   // dependencies
   const successAccountService = {
-    getAccount: (): Observable<Result<Account, NotFound>> => of(ok(DEFAULT_ACCOUNT)),
+    getAccount: (): Observable<Account | null> => of(DEFAULT_ACCOUNT),
     createAccount: (): Observable<Result<Account, Conflict>> => of(ok(DEFAULT_ACCOUNT)),
   };
 
   const notFoundAccountService = {
-    getAccount: (): Observable<Result<Account, NotFound>> => of(err({ type: 'NotFound' } as const)),
+    getAccount: (): Observable<Account | null> => of(null),
   };
 
   const conflictAccountService = {
@@ -27,7 +27,7 @@ describe('AccountStore', () => {
   };
 
   const throwingAccountService = {
-    getAccount: (): Observable<Result<Account, NotFound>> => throwError(err),
+    getAccount: (): Observable<Account | null> => throwError(err),
   };
 
   test('loadAccount does not set account if account can not be found', async () => {

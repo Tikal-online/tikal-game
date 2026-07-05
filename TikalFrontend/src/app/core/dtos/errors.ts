@@ -1,7 +1,3 @@
-export type NotFound = {
-  type: 'NotFound';
-};
-
 export type Conflict = {
   type: 'Conflict';
 };

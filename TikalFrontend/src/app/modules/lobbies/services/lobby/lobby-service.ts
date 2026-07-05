@@ -1,10 +1,10 @@
 import { inject, Service } from '@angular/core';
-import { catchError, map, Observable, throwError } from 'rxjs';
+import { catchError, map, Observable, of, throwError } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { PaginatedResult } from '../../../../core/dtos/paginated-result';
 import { err, ok, Result } from 'neverthrow';
 import { Lobby } from '../../models/lobby';
-import { Conflict, NotFound } from '../../../../core/dtos/errors';
+import { Conflict } from '../../../../core/dtos/errors';
 
 export type LobbySummary = {
   id: string;
@@ -51,12 +51,12 @@ export class LobbyService {
     );
   }
 
-  getActiveLobby(): Observable<Result<Lobby, NotFound>> {
+  getActiveLobby(): Observable<Lobby | null> {
     return this.http.get<Lobby>(this.url + '/me').pipe(
-      map((lobby: Lobby) => ok(lobby)),
+      map((lobby: Lobby) => lobby),
       catchError((error: HttpErrorResponse) => {
         if (error.status === 404) {
-          return err({ type: 'NotFound' } as const);
+          return of(null);
         }
 
         return throwError(() => error);
