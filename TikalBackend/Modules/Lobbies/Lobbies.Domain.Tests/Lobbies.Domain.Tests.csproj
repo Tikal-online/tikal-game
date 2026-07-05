@@ -24,4 +24,8 @@
         <Using Include="NUnit.Framework"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Lobbies.Domain\Lobbies.Domain.csproj" />
+    </ItemGroup>
+
 </Project>
