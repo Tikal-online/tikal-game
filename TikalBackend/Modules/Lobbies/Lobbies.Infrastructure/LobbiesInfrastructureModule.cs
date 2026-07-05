@@ -26,6 +26,7 @@ public static class LobbiesInfrastructureModule
             });
 
             services.AddScoped<LobbyRepository, DbLobbyRepository>();
+            services.AddScoped<PlayerRepository, DbPlayerRepository>();
 
             services.AddScoped<LobbyQueryContext, DbLobbyQueryContext>();
             services.AddScoped<PlayerQueryContext, DbPlayerQueryContext>();

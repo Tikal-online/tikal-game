@@ -40,6 +40,26 @@ public sealed partial class LobbiesController : ApiController
         );
     }
 
+    [HttpGet("{Id:long}")]
+    [ProducesResponseType<LobbyDto>(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [EndpointDescription("Gets the lobby with the provided Id")]
+    public async Task<IActionResult> GetLobby(long Id, CancellationToken cancellationToken)
+    {
+        var query = new GetLobbyQuery(Id);
+
+        var result = await sender.Send(query, cancellationToken);
+
+        if (result is null)
+        {
+            return LobbyNotFound(Id);
+        }
+
+        var lobbyDto = LobbyModelMapper.LobbyModelToLobbyDto(result);
+
+        return Ok(lobbyDto);
+    }
+
     [HttpGet("me")]
     [ProducesResponseType<LobbyDto>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -62,24 +82,20 @@ public sealed partial class LobbiesController : ApiController
         return Ok(lobbyDto);
     }
 
-    [HttpGet("{Id:long}")]
-    [ProducesResponseType<LobbyDto>(StatusCodes.Status200OK)]
+    [HttpPost("leave")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [EndpointDescription("Gets the lobby with the provided Id")]
-    public async Task<IActionResult> GetLobby(long Id, CancellationToken cancellationToken)
+    [EndpointDescription("Leaves the lobby for the currently authenticated user")]
+    public async Task<IActionResult> LeaveLobby(CancellationToken cancellationToken)
     {
-        var query = new GetLobbyQuery(Id);
+        var command = new LeaveLobbyCommand();
 
-        var result = await sender.Send(query, cancellationToken);
+        var result = await sender.Send(command, cancellationToken);
 
-        if (result is null)
-        {
-            return LobbyNotFound(Id);
-        }
-
-        var lobbyDto = LobbyModelMapper.LobbyModelToLobbyDto(result);
-
-        return Ok(lobbyDto);
+        return result.Match<IActionResult>(
+            _ => Ok(),
+            _ => PlayerNotInALobby(GetCurrentUserId())
+        );
     }
 
     [HttpGet]

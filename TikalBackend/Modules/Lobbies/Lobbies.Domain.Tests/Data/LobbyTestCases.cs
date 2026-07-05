@@ -1,9 +1,9 @@
 using Lobbies.Domain.Entities;
 using Lobbies.Domain.Enums;
 
-namespace Lobbies.Application.Tests.Data;
+namespace Lobbies.Domain.Tests.Data;
 
-internal static class LobbyTestCases
+public static class LobbyTestCases
 {
     public static IEnumerable<Lobby> ValidLobbyTestCases =>
     [

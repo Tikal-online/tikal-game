@@ -25,9 +25,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\..\Shared\Shared.Application.Tests\Shared.Application.Tests.csproj"/>
-        <ProjectReference Include="..\Lobbies.Application\Lobbies.Application.csproj"/>
-        <ProjectReference Include="..\Lobbies.Domain.Tests\Lobbies.Domain.Tests.csproj" />
+      <ProjectReference Include="..\Lobbies.Domain\Lobbies.Domain.csproj" />
     </ItemGroup>
 
 </Project>
