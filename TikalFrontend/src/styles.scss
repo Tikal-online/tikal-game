@@ -211,6 +211,12 @@ a:hover {
 }
 
 // Animations
+.skeleton-bar {
+  height: 0.75rem;
+  border-radius: 0.25rem;
+  background-color: colors.$card-background-secondary;
+}
+
 .spin-animation {
   animation: spin 1s linear infinite;
 }

@@ -10,10 +10,14 @@
       </span>
     </div>
   }
-  @for (empty of [].constructor(maxPlayers() - 1); track $index) {
+  @for (empty of [].constructor(maxPlayers() - players().length); track $index) {
     <div class="empty-slot">
       <span class="dot"></span>
-      <span>{{ t('open-slot') }}</span>
+      @if (isLoading()) {
+        <div class="skeleton-bar" [style.width]="55 + ($index % 3) * 15 + '%'"></div>
+      } @else {
+        <span>{{ t('open-slot') }}</span>
+      }
     </div>
   }
 </ng-container>

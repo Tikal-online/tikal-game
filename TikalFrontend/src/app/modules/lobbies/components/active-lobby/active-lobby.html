@@ -5,17 +5,29 @@
 </nav>
 <div class="content">
   <p class="header-prefix">ACTIVE LOBBY</p>
-  @if (activeLobbyStore.lobby(); as lobby) {
-    <h1>{{ lobby.name }}</h1>
-    <section>
-      <app-lobby-player-list-header [maxPlayers]="lobby.maxPlayers" />
-      <app-lobby-player-list [maxPlayers]="lobby.maxPlayers" [players]="lobby.players" />
-    </section>
-    <div class="lobby-buttons">
-      <button class="button-primary footer-button" type="button">READY UP</button>
-      <button class="button-secondary footer-button" type="button" (click)="leaveLobby()">
-        LEAVE
-      </button>
-    </div>
+  @switch (activeLobbyStore.status()) {
+    @case ('initial')
+    @case ('loading') {
+      <h1>Loading...</h1>
+      <section>
+        <app-lobby-player-list-header [maxPlayers]="4" />
+        <app-lobby-player-list [isLoading]="true" [maxPlayers]="4" [players]="[]" />
+      </section>
+    }
+    @case ('loaded') {
+      @if (activeLobbyStore.lobby(); as lobby) {
+        <h1>{{ lobby.name }}</h1>
+        <section>
+          <app-lobby-player-list-header [maxPlayers]="lobby.maxPlayers" />
+          <app-lobby-player-list [maxPlayers]="lobby.maxPlayers" [players]="lobby.players" />
+        </section>
+        <div class="lobby-buttons">
+          <button class="button-primary footer-button" type="button">READY UP</button>
+          <button class="button-secondary footer-button" type="button" (click)="leaveLobby()">
+            LEAVE
+          </button>
+        </div>
+      }
+    }
   }
 </div>
