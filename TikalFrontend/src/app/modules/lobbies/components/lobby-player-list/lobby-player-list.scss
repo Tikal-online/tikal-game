@@ -29,6 +29,7 @@
 
   background-color: color-mix(in srgb, colors.$text-header-prefix 10%, transparent);
 
+  min-height: 3.4rem;
   padding: 1rem;
 
   .dot {
@@ -46,6 +47,7 @@
 
   background-color: color-mix(in srgb, colors.$card-background-secondary 20%, transparent);
 
+  min-height: 3.4rem;
   padding: 1rem;
 
   .dot {

@@ -16,6 +16,8 @@ export class LobbyPlayerList {
 
   readonly players = input.required<Player[]>();
 
+  readonly isLoading = input<boolean>(false);
+
   isMe(player: Player): boolean {
     return player.userId === this.accountStore.account()?.userId;
   }
