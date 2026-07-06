@@ -1,4 +1,5 @@
 using FluentValidation;
+using Lobbies.Domain.Enums;
 
 namespace Lobbies.Domain.Entities;
 
@@ -14,6 +15,8 @@ public sealed class Lobby
 
     public bool IsEmpty => Players.Count == 0;
 
+    public bool IsFull => Players.Count == MaxPlayers;
+
     public void RemovePlayer(Player player)
     {
         Players.Remove(player);
@@ -24,6 +27,17 @@ public sealed class Lobby
         }
 
         Players.First().IsOwner = true;
+    }
+
+    public Colour GetUnusedColour()
+    {
+        var usedColours = Players.Select(p => p.SelectedColour).ToHashSet();
+
+        var unusedColour = Enum.GetValues<Colour>()
+            .Except(usedColours)
+            .First();
+
+        return unusedColour;
     }
 }
 

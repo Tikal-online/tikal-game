@@ -7,4 +7,6 @@ public interface LobbyRepository
     void Create(Lobby lobby);
 
     void Delete(Lobby lobby);
+
+    Task<Lobby?> GetByIdAsync(long id);
 }
