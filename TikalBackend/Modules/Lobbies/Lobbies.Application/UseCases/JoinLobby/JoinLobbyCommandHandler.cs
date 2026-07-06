@@ -54,7 +54,7 @@ internal sealed class JoinLobbyCommandHandler
 
         if (lobby.IsFull)
         {
-            return new LobbyFull();
+            return new LobbyFull(lobby.Id);
         }
 
         var colour = lobby.GetUnusedColour();

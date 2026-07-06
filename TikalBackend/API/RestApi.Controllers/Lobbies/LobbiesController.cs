@@ -60,6 +60,25 @@ public sealed partial class LobbiesController : ApiController
         return Ok(lobbyDto);
     }
 
+    [HttpPost("{Id:long}/join")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    [EndpointDescription("Joins the lobby for the currently authenticated user")]
+    public async Task<IActionResult> JoinLobby(long Id, CancellationToken cancellationToken)
+    {
+        var query = new JoinLobbyCommand(Id);
+
+        var result = await sender.Send(query, cancellationToken);
+
+        return result.Match<IActionResult>(
+            _ => Ok(),
+            _ => PlayerAlreadyInALobby(),
+            lobbyNotFound => LobbyNotFound(lobbyNotFound.LobbyId),
+            lobbyFull => LobbyFull(lobbyFull.LobbyId)
+        );
+    }
+
     [HttpGet("me")]
     [ProducesResponseType<LobbyDto>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
