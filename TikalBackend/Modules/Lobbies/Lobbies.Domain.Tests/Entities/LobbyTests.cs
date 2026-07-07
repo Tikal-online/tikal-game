@@ -37,4 +37,17 @@ internal sealed class LobbyTests
         Assert.That(lobby.Players, Does.Not.Contain(playerToRemove));
         Assert.That(lobby.Players.Any(p => p.IsOwner), Is.True);
     }
+
+    [TestCaseSource(typeof(LobbyTestCases), nameof(LobbyTestCases.ValidLobbyTestCases))]
+    public void GivenLobby_WhenGetUnusedColour_ThenReturnsColourUsedByNoPlayer(Lobby lobby)
+    {
+        // given
+        var usedColours = lobby.Players.Select(p => p.SelectedColour).ToHashSet();
+
+        // when
+        var unusedColour = lobby.GetUnusedColour();
+
+        // then
+        Assert.That(usedColours.Contains(unusedColour), Is.False);
+    }
 }

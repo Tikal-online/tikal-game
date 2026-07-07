@@ -75,6 +75,29 @@ public static class LobbyTestCases
                     IsReady = false
                 }
             ]
+        },
+        new()
+        {
+            Id = 4,
+            MaxPlayers = 2,
+            Name = "FullLobby",
+            Players =
+            [
+                new Player
+                {
+                    UserId = "b373a291-ce78-47b3-801c-cc384b24fbfe",
+                    SelectedColour = Colour.Green,
+                    IsOwner = true,
+                    IsReady = false
+                },
+                new Player
+                {
+                    UserId = "85f3a4ad-67d8-436d-b552-edd409b178ab",
+                    SelectedColour = Colour.Yellow,
+                    IsOwner = false,
+                    IsReady = true
+                }
+            ]
         }
     ];
 }

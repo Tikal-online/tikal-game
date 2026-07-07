@@ -31,4 +31,13 @@ public sealed partial class LobbiesController
             statusCode: StatusCodes.Status404NotFound
         );
     }
+
+    private ObjectResult LobbyFull(long id)
+    {
+        return Problem(
+            title: "Lobby is full",
+            detail: $"Lobby with ID {id} is full",
+            statusCode: StatusCodes.Status409Conflict
+        );
+    }
 }
