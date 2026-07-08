@@ -75,6 +75,19 @@
       "header": "Already in Lobby",
       "description": "You are already in an active lobby. Leave it before creating a new one.",
       "button-label": "GO TO MY LOBBY"
+    },
+    "preview": {
+      "header-prefix": "LOBBY PREVIEW",
+      "header-loading": "Loading...",
+      "join-button": "JOIN",
+      "joining-button": "JOINING"
+    },
+    "active": {
+      "header-prefix": "ACTIVE LOBBY",
+      "header-loading": "Loading...",
+      "ready-button": "READY UP",
+      "leave-button": "LEAVE",
+      "leaving-button": "LEAVING"
     }
   }
 }
