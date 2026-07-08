@@ -9,8 +9,8 @@ import {
   min,
   required,
 } from '@angular/forms/signals';
-import { Router, RouterLink } from '@angular/router';
-import { LucideArrowLeft, LucideLoaderCircle } from '@lucide/angular';
+import { Router } from '@angular/router';
+import { LucideLoaderCircle } from '@lucide/angular';
 import { AccountStore } from '../../../../core/stores/account-store/account-store';
 import { LobbyPlayerList } from '../lobby-player-list/lobby-player-list';
 import { Player } from '../../models/player';
@@ -29,8 +29,6 @@ type LobbyData = {
 @Component({
   selector: 'app-create-lobby',
   imports: [
-    LucideArrowLeft,
-    RouterLink,
     FormRoot,
     FormField,
     LobbyPlayerList,
