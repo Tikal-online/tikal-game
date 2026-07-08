@@ -1,48 +1,46 @@
 <ng-container *transloco="let t; prefix: 'lobby'">
-  <div class="content">
-    <p class="header-prefix">{{ t('create.header-prefix') }}</p>
-    <form [formRoot]="lobbyForm">
-      <label for="name" hidden>{{ t('create.name-input-label') }}</label>
-      <input
-        autocomplete="off"
-        class="header-input"
-        id="name"
-        type="text"
-        [formField]="lobbyForm.name"
-      />
-      <div class="form-sections">
-        <section>
-          <app-lobby-player-list-header [maxPlayers]="lobbyData().maxPlayers" />
-          <app-lobby-player-list
+  <p class="header-prefix">{{ t('create.header-prefix') }}</p>
+  <form [formRoot]="lobbyForm">
+    <label for="name" hidden>{{ t('create.name-input-label') }}</label>
+    <input
+      autocomplete="off"
+      class="header-input"
+      id="name"
+      type="text"
+      [formField]="lobbyForm.name"
+    />
+    <div class="form-sections">
+      <section>
+        <app-lobby-player-list-header [maxPlayers]="lobbyData().maxPlayers" />
+        <app-lobby-player-list
+          [maxPlayers]="lobbyData().maxPlayers"
+          [players]="[defaultPlayer()]"
+        />
+      </section>
+      <section>
+        <span class="settings-label">{{ t('settings.header') }}</span>
+        <div class="settings">
+          <app-max-players-selection
+            [disabled]="lobbyForm().submitting()"
             [maxPlayers]="lobbyData().maxPlayers"
-            [players]="[defaultPlayer()]"
+            (maxPlayersSet)="setMaxPlayers($event)"
           />
-        </section>
-        <section>
-          <span class="settings-label">{{ t('settings.header') }}</span>
-          <div class="settings">
-            <app-max-players-selection
-              [disabled]="lobbyForm().submitting()"
-              [maxPlayers]="lobbyData().maxPlayers"
-              (maxPlayersSet)="setMaxPlayers($event)"
-            />
-          </div>
-        </section>
-      </div>
-      <button
-        class="button-primary footer-button"
-        type="submit"
-        [disabled]="lobbyForm().submitting()"
-      >
-        @if (lobbyForm().submitting()) {
-          <svg class="spin-animation" lucideLoaderCircle [size]="18"></svg>
-          {{ t('create.submitting-button') }}
-        } @else {
-          {{ t('create.submit-button') }}
-        }
-      </button>
-    </form>
-  </div>
+        </div>
+      </section>
+    </div>
+    <button
+      class="button-primary footer-button"
+      type="submit"
+      [disabled]="lobbyForm().submitting()"
+    >
+      @if (lobbyForm().submitting()) {
+        <svg class="spin-animation" lucideLoaderCircle [size]="18"></svg>
+        {{ t('create.submitting-button') }}
+      } @else {
+        {{ t('create.submit-button') }}
+      }
+    </button>
+  </form>
 </ng-container>
 @if (alreadyInLobby()) {
   <app-already-in-lobby-overlay />
