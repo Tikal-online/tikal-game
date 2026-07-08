@@ -25,7 +25,13 @@
           <app-lobby-player-list [maxPlayers]="lobby.maxPlayers" [players]="lobby.players" />
         </section>
         <div class="lobby-buttons">
-          <button class="button-primary footer-button" type="button">JOIN</button>
+          <button
+            class="button-primary footer-button"
+            type="button"
+            [disabled]="lobby.maxPlayers === lobby.players.length"
+          >
+            JOIN
+          </button>
         </div>
       }
     }
