@@ -20,7 +20,7 @@
         }
         @case ('loaded') {
           @for (lobby of lobbySummaryStore.lobbies(); track $index) {
-            <tr>
+            <tr [routerLink]="lobby.id">
               <td class="lobby-name">
                 <svg lucideGlobe [size]="12"></svg>
                 {{ lobby.name }}
