@@ -48,6 +48,8 @@ nav {
   align-items: center;
 
   padding: 1.25rem 2rem;
+
+  border-bottom: 1px solid colors.$border;
 }
 
 .logo {
@@ -61,14 +63,20 @@ nav {
 // Headings
 .header-prefix {
   font-family: 'Mono', monospace;
-  font-size: 0.65rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.1rem;
 
   color: colors.$text-header-prefix;
 }
 
 h1 {
+  margin: 0 0 2rem 0;
+
+  font-size: 2.5rem;
+  font-weight: 700;
   font-family: 'Cinzel', serif;
   color: colors.$text-header;
+  line-height: 1.1;
 }
 
 .header {
