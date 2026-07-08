@@ -81,6 +81,13 @@
       "header-loading": "Loading...",
       "join-button": "JOIN",
       "joining-button": "JOINING"
+    },
+    "active": {
+      "header-prefix": "ACTIVE LOBBY",
+      "header-loading": "Loading...",
+      "ready-button": "READY UP",
+      "leave-button": "LEAVE",
+      "leaving-button": "LEAVING"
     }
   }
 }

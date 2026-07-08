@@ -3,10 +3,11 @@ import { ActiveLobbyStore } from '../../stores/lobby/active-lobby-store';
 import { LobbyPlayerListHeader } from '../lobby-player-list-header/lobby-player-list-header';
 import { LobbyPlayerList } from '../lobby-player-list/lobby-player-list';
 import { Router } from '@angular/router';
+import { TranslocoDirective } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-active-lobby',
-  imports: [LobbyPlayerListHeader, LobbyPlayerList],
+  imports: [LobbyPlayerListHeader, LobbyPlayerList, TranslocoDirective],
   templateUrl: './active-lobby.html',
   styleUrl: './active-lobby.scss',
 })
