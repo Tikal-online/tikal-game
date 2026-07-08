@@ -1,37 +1,30 @@
-<nav>
-  <span></span>
-  <span class="logo">TIKAL</span>
-  <span></span>
-</nav>
 <ng-container *transloco="let t; prefix: 'lobby.active'">
-  <div class="content">
-    <p class="header-prefix">{{ t('header-prefix') }}</p>
-    @switch (activeLobbyStore.status()) {
-      @case ('initial')
-      @case ('loading') {
-        <h1>{{ t('header-loading') }}</h1>
+  <p class="header-prefix">{{ t('header-prefix') }}</p>
+  @switch (activeLobbyStore.status()) {
+    @case ('initial')
+    @case ('loading') {
+      <h1>{{ t('header-loading') }}</h1>
+      <section>
+        <app-lobby-player-list-header [maxPlayers]="4" />
+        <app-lobby-player-list [isLoading]="true" [maxPlayers]="4" [players]="[]" />
+      </section>
+    }
+    @case ('loaded') {
+      @if (activeLobbyStore.lobby(); as lobby) {
+        <h1>{{ lobby.name }}</h1>
         <section>
-          <app-lobby-player-list-header [maxPlayers]="4" />
-          <app-lobby-player-list [isLoading]="true" [maxPlayers]="4" [players]="[]" />
+          <app-lobby-player-list-header [maxPlayers]="lobby.maxPlayers" />
+          <app-lobby-player-list [maxPlayers]="lobby.maxPlayers" [players]="lobby.players" />
         </section>
-      }
-      @case ('loaded') {
-        @if (activeLobbyStore.lobby(); as lobby) {
-          <h1>{{ lobby.name }}</h1>
-          <section>
-            <app-lobby-player-list-header [maxPlayers]="lobby.maxPlayers" />
-            <app-lobby-player-list [maxPlayers]="lobby.maxPlayers" [players]="lobby.players" />
-          </section>
-          <div class="lobby-buttons">
-            <button class="button-primary footer-button" type="button">
-              {{ t('ready-button') }}
-            </button>
-            <button class="button-secondary footer-button" type="button" (click)="leaveLobby()">
-              {{ t('leave-button') }}
-            </button>
-          </div>
-        }
+        <div class="lobby-buttons">
+          <button class="button-primary footer-button" type="button">
+            {{ t('ready-button') }}
+          </button>
+          <button class="button-secondary footer-button" type="button" (click)="leaveLobby()">
+            {{ t('leave-button') }}
+          </button>
+        </div>
       }
     }
-  </div>
+  }
 </ng-container>

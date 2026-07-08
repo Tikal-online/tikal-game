@@ -1,20 +1,13 @@
 import { Component, inject } from '@angular/core';
 import { PreviewLobbyStore } from '../../stores/lobby/preview-lobby-store';
-import { LucideArrowLeft } from '@lucide/angular';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { LobbyPlayerListHeader } from '../lobby-player-list-header/lobby-player-list-header';
 import { LobbyPlayerList } from '../lobby-player-list/lobby-player-list';
 import { TranslocoDirective } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-preview-lobby',
-  imports: [
-    LucideArrowLeft,
-    RouterLink,
-    LobbyPlayerListHeader,
-    LobbyPlayerList,
-    TranslocoDirective,
-  ],
+  imports: [LobbyPlayerListHeader, LobbyPlayerList, TranslocoDirective],
   templateUrl: './preview-lobby.html',
   styleUrl: './preview-lobby.scss',
 })

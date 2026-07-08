@@ -1,41 +1,31 @@
-<nav>
-  <a routerLink="/lobbies">
-    <svg lucideArrowLeft [size]="16"></svg>
-    BACK TO LOBBIES
-  </a>
-  <span class="logo">TIKAL</span>
-  <span></span>
-</nav>
 <ng-container *transloco="let t; prefix: 'lobby.preview'">
-  <div class="content">
-    <p class="header-prefix">{{ t('header-prefix') }}</p>
-    @switch (previewLobbyStore.status()) {
-      @case ('initial')
-      @case ('loading') {
-        <h1>{{ t('header-loading') }}</h1>
+  <p class="header-prefix">{{ t('header-prefix') }}</p>
+  @switch (previewLobbyStore.status()) {
+    @case ('initial')
+    @case ('loading') {
+      <h1>{{ t('header-loading') }}</h1>
+      <section>
+        <app-lobby-player-list-header [maxPlayers]="4" />
+        <app-lobby-player-list [isLoading]="true" [maxPlayers]="4" [players]="[]" />
+      </section>
+    }
+    @case ('loaded') {
+      @if (previewLobbyStore.lobby(); as lobby) {
+        <h1>{{ lobby.name }}</h1>
         <section>
-          <app-lobby-player-list-header [maxPlayers]="4" />
-          <app-lobby-player-list [isLoading]="true" [maxPlayers]="4" [players]="[]" />
+          <app-lobby-player-list-header [maxPlayers]="lobby.maxPlayers" />
+          <app-lobby-player-list [maxPlayers]="lobby.maxPlayers" [players]="lobby.players" />
         </section>
-      }
-      @case ('loaded') {
-        @if (previewLobbyStore.lobby(); as lobby) {
-          <h1>{{ lobby.name }}</h1>
-          <section>
-            <app-lobby-player-list-header [maxPlayers]="lobby.maxPlayers" />
-            <app-lobby-player-list [maxPlayers]="lobby.maxPlayers" [players]="lobby.players" />
-          </section>
-          <div class="lobby-buttons">
-            <button
-              class="button-primary footer-button"
-              type="button"
-              [disabled]="lobby.maxPlayers === lobby.players.length"
-            >
-              {{ t('join-button') }}
-            </button>
-          </div>
-        }
+        <div class="lobby-buttons">
+          <button
+            class="button-primary footer-button"
+            type="button"
+            [disabled]="lobby.maxPlayers === lobby.players.length"
+          >
+            {{ t('join-button') }}
+          </button>
+        </div>
       }
     }
-  </div>
+  }
 </ng-container>
