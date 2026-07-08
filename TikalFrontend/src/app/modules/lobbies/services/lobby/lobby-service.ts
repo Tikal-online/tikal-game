@@ -51,6 +51,19 @@ export class LobbyService {
     );
   }
 
+  getLobby(id: number): Observable<Lobby | null> {
+    return this.http.get<Lobby>(this.url + `/${id}`).pipe(
+      map((lobby: Lobby) => lobby),
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 404) {
+          return of(null);
+        }
+
+        return throwError(() => error);
+      }),
+    );
+  }
+
   getActiveLobby(): Observable<Lobby | null> {
     return this.http.get<Lobby>(this.url + '/me').pipe(
       map((lobby: Lobby) => lobby),
