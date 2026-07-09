@@ -36,7 +36,7 @@ internal sealed class LeaveLobbyCommandHandler : CommandHandler<LeaveLobbyComman
         CancellationToken cancellationToken
     )
     {
-        var player = await playerRepository.GetByUserIdAsync(accountContext.Account.UserId);
+        var player = await playerRepository.GetByUserIdWithLobbyAsync(accountContext.Account.UserId);
 
         if (player is null)
         {

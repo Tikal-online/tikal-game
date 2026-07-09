@@ -20,9 +20,18 @@
           <button
             class="button-primary footer-button"
             type="button"
-            [disabled]="lobby.maxPlayers === lobby.players.length"
+            [disabled]="
+              lobby.maxPlayers === lobby.players.length ||
+              previewLobbyStore.joiningStatus() === 'joining'
+            "
+            (click)="previewLobbyStore.joinLobby()"
           >
-            {{ t('join-button') }}
+            @if (previewLobbyStore.joiningStatus() === 'joining') {
+              <svg class="spin-animation" lucideLoaderCircle [size]="18"></svg>
+              {{ t('joining-button') }}
+            } @else {
+              {{ t('join-button') }}
+            }
           </button>
         </div>
       }

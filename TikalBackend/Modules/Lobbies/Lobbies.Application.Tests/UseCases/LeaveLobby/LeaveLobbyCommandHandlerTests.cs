@@ -51,7 +51,7 @@ internal sealed class LeaveLobbyCommandHandlerTests
         var player = lobby.Players.First();
         player.Lobby = lobby;
 
-        playerRepository.Setup(r => r.GetByUserIdAsync(accountContext.Account.UserId))
+        playerRepository.Setup(r => r.GetByUserIdWithLobbyAsync(accountContext.Account.UserId))
             .ReturnsAsync(player);
     }
 
@@ -59,7 +59,7 @@ internal sealed class LeaveLobbyCommandHandlerTests
     public async Task GivenPlayerDoesntExist_WhenHandle_ThenReturnsPlayerNotInALobbyError()
     {
         // given
-        playerRepository.Setup(r => r.GetByUserIdAsync(accountContext.Account.UserId))
+        playerRepository.Setup(r => r.GetByUserIdWithLobbyAsync(accountContext.Account.UserId))
             .ReturnsAsync(default(Player));
 
         var command = new LeaveLobbyCommand();

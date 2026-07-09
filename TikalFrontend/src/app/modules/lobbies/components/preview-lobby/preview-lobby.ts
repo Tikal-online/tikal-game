@@ -4,10 +4,11 @@ import { ActivatedRoute } from '@angular/router';
 import { LobbyPlayerListHeader } from '../lobby-player-list-header/lobby-player-list-header';
 import { LobbyPlayerList } from '../lobby-player-list/lobby-player-list';
 import { TranslocoDirective } from '@jsverse/transloco';
+import { LucideLoaderCircle } from '@lucide/angular';
 
 @Component({
   selector: 'app-preview-lobby',
-  imports: [LobbyPlayerListHeader, LobbyPlayerList, TranslocoDirective],
+  imports: [LobbyPlayerListHeader, LobbyPlayerList, TranslocoDirective, LucideLoaderCircle],
   templateUrl: './preview-lobby.html',
   styleUrl: './preview-lobby.scss',
 })
