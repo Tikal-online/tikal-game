@@ -7,6 +7,7 @@ import { TranslocoDirective } from '@jsverse/transloco';
 import { LucideLoaderCircle } from '@lucide/angular';
 import { AlreadyInLobbyOverlay } from '../error-overlays/already-in-lobby-overlay/already-in-lobby-overlay';
 import { LobbyNotFoundOverlay } from '../error-overlays/lobby-not-found-overlay/lobby-not-found-overlay';
+import { LobbyFullOverlay } from '../error-overlays/lobby-full-overlay/lobby-full-overlay';
 
 @Component({
   selector: 'app-preview-lobby',
@@ -17,6 +18,7 @@ import { LobbyNotFoundOverlay } from '../error-overlays/lobby-not-found-overlay/
     LucideLoaderCircle,
     AlreadyInLobbyOverlay,
     LobbyNotFoundOverlay,
+    LobbyFullOverlay,
   ],
   templateUrl: './preview-lobby.html',
   styleUrl: './preview-lobby.scss',

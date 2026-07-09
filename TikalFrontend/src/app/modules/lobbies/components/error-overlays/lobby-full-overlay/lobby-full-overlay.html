@@ -1,0 +1,12 @@
+<ng-container *transloco="let t; prefix: 'lobby.full'">
+  <dialog class="overlay-dialog">
+    <h1 class="overlay-header">
+      <svg lucideTriangleAlert></svg>
+      {{ t('header') }}
+    </h1>
+    <div class="description">{{ t('description') }}</div>
+    <button class="button-primary" routerLink="/lobbies" type="button">
+      {{ t('button-label') }}
+    </button>
+  </dialog>
+</ng-container>
