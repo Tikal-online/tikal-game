@@ -78,6 +78,33 @@ h1 {
   color: colors.$text-muted;
 }
 
+// overlay
+.overlay-dialog {
+  display: flex;
+  flex-direction: column;
+
+  padding: 2rem;
+
+  width: 100%;
+  max-width: 28rem;
+
+  background-color: colors.$card-background;
+
+  border: 1px solid colors.$border;
+}
+
+.overlay-header {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+
+  align-items: center;
+
+  margin: 0 0 1.5rem 0;
+
+  font-size: 1.5rem;
+}
+
 // Links
 a {
   display: inline-flex;

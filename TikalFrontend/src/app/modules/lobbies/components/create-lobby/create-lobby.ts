@@ -19,7 +19,7 @@ import { TranslocoDirective } from '@jsverse/transloco';
 import { MaxPlayersSelection } from './max-players-selection/max-players-selection';
 import { LobbyService } from '../../services/lobby/lobby-service';
 import { firstValueFrom } from 'rxjs';
-import { AlreadyInLobbyOverlay } from '../already-in-lobby-overlay/already-in-lobby-overlay';
+import { AlreadyInLobbyOverlay } from '../error-overlays/already-in-lobby-overlay/already-in-lobby-overlay';
 
 type LobbyData = {
   name: string;

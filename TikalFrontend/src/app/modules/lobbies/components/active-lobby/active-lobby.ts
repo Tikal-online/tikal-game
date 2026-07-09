@@ -4,10 +4,11 @@ import { LobbyPlayerListHeader } from '../lobby-player-list-header/lobby-player-
 import { LobbyPlayerList } from '../lobby-player-list/lobby-player-list';
 import { Router } from '@angular/router';
 import { TranslocoDirective } from '@jsverse/transloco';
+import { LobbyNotFoundOverlay } from '../error-overlays/lobby-not-found-overlay/lobby-not-found-overlay';
 
 @Component({
   selector: 'app-active-lobby',
-  imports: [LobbyPlayerListHeader, LobbyPlayerList, TranslocoDirective],
+  imports: [LobbyPlayerListHeader, LobbyPlayerList, TranslocoDirective, LobbyNotFoundOverlay],
   templateUrl: './active-lobby.html',
   styleUrl: './active-lobby.scss',
 })

@@ -34,7 +34,20 @@
             }
           </button>
         </div>
+      } @else {
+        <app-lobby-not-found-overlay />
       }
     }
   }
 </ng-container>
+@switch (previewLobbyStore.joiningStatus()) {
+  @case ('alreadyInLobby') {
+    <app-already-in-lobby-overlay />
+  }
+  @case ('full') {
+    <app-lobby-full-overlay />
+  }
+  @case ('notFound') {
+    <app-lobby-not-found-overlay />
+  }
+}
