@@ -42,7 +42,7 @@
 </ng-container>
 @switch (previewLobbyStore.joiningStatus()) {
   @case ('alreadyInLobby') {
-    <app-lobby-full-overlay />
+    <app-already-in-lobby-overlay />
   }
   @case ('full') {
     <app-lobby-full-overlay />

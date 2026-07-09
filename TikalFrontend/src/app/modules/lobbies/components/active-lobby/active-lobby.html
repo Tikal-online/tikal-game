@@ -24,6 +24,8 @@
             {{ t('leave-button') }}
           </button>
         </div>
+      } @else {
+        <app-lobby-not-found-overlay />
       }
     }
   }
