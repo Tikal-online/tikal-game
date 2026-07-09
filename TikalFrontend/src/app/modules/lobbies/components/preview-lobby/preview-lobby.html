@@ -34,6 +34,8 @@
             }
           </button>
         </div>
+      } @else {
+        <app-lobby-not-found-overlay />
       }
     }
   }
@@ -41,5 +43,8 @@
 @switch (previewLobbyStore.joiningStatus()) {
   @case ('alreadyInLobby') {
     <app-already-in-lobby-overlay />
+  }
+  @case ('notFound') {
+    <app-lobby-not-found-overlay />
   }
 }

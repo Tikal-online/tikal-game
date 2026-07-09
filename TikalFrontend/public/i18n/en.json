@@ -76,6 +76,11 @@
       "description": "You are already in an active lobby. Leave it before creating a new one.",
       "button-label": "GO TO MY LOBBY"
     },
+    "not-found": {
+      "header": "Lobby not found",
+      "description": "The lobby does not exist anymore. It might have been deleted.",
+      "button-label": "GO TO LOBBIES"
+    },
     "preview": {
       "header-prefix": "LOBBY PREVIEW",
       "header-loading": "Loading...",
