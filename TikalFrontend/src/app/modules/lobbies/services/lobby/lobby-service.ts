@@ -90,10 +90,10 @@ export class LobbyService {
       catchError((error: HttpErrorResponse) => {
         // TODO: improve problem response error handling
         if (error.status === 409) {
-          if (error.message.includes('full')) {
-            return err({ type: 'LobbyFull' } as const);
-          } else {
+          if (error.message === 'Player is already in a lobby') {
             return err({ type: 'PlayerAlreadyInALobby' } as const);
+          } else {
+            return err({ type: 'LobbyFull' } as const);
           }
         } else if (error.status === 404) {
           return err({ type: 'LobbyNotFound' } as const);
