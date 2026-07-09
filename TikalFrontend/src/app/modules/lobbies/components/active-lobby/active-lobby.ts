@@ -5,10 +5,17 @@ import { LobbyPlayerList } from '../lobby-player-list/lobby-player-list';
 import { Router } from '@angular/router';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { LobbyNotFoundOverlay } from '../error-overlays/lobby-not-found-overlay/lobby-not-found-overlay';
+import { LucideLoaderCircle } from '@lucide/angular';
 
 @Component({
   selector: 'app-active-lobby',
-  imports: [LobbyPlayerListHeader, LobbyPlayerList, TranslocoDirective, LobbyNotFoundOverlay],
+  imports: [
+    LobbyPlayerListHeader,
+    LobbyPlayerList,
+    TranslocoDirective,
+    LobbyNotFoundOverlay,
+    LucideLoaderCircle,
+  ],
   templateUrl: './active-lobby.html',
   styleUrl: './active-lobby.scss',
 })
@@ -19,11 +26,5 @@ export class ActiveLobby {
 
   constructor() {
     this.activeLobbyStore.loadActiveLobby();
-  }
-
-  leaveLobby(): void {
-    this.activeLobbyStore.leaveLobby();
-
-    this.router.navigate(['/lobbies']);
   }
 }

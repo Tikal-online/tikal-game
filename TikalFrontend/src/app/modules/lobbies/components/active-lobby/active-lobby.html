@@ -20,8 +20,18 @@
           <button class="button-primary footer-button" type="button">
             {{ t('ready-button') }}
           </button>
-          <button class="button-secondary footer-button" type="button" (click)="leaveLobby()">
-            {{ t('leave-button') }}
+          <button
+            class="button-secondary footer-button"
+            type="button"
+            [disabled]="activeLobbyStore.leavingStatus() === 'leaving'"
+            (click)="activeLobbyStore.leaveLobby()"
+          >
+            @if (activeLobbyStore.leavingStatus() === 'leaving') {
+              <svg class="spin-animation" lucideLoaderCircle [size]="18"></svg>
+              {{ t('leaving-button') }}
+            } @else {
+              {{ t('leave-button') }}
+            }
           </button>
         </div>
       } @else {
