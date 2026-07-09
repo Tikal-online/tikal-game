@@ -5,10 +5,17 @@ import { LobbyPlayerListHeader } from '../lobby-player-list-header/lobby-player-
 import { LobbyPlayerList } from '../lobby-player-list/lobby-player-list';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { LucideLoaderCircle } from '@lucide/angular';
+import { AlreadyInLobbyOverlay } from '../error-overlays/already-in-lobby-overlay/already-in-lobby-overlay';
 
 @Component({
   selector: 'app-preview-lobby',
-  imports: [LobbyPlayerListHeader, LobbyPlayerList, TranslocoDirective, LucideLoaderCircle],
+  imports: [
+    LobbyPlayerListHeader,
+    LobbyPlayerList,
+    TranslocoDirective,
+    LucideLoaderCircle,
+    AlreadyInLobbyOverlay,
+  ],
   templateUrl: './preview-lobby.html',
   styleUrl: './preview-lobby.scss',
 })

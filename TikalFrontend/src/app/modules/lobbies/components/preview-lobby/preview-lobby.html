@@ -38,3 +38,8 @@
     }
   }
 </ng-container>
+@switch (previewLobbyStore.joiningStatus()) {
+  @case ('alreadyInLobby') {
+    <app-already-in-lobby-overlay />
+  }
+}
