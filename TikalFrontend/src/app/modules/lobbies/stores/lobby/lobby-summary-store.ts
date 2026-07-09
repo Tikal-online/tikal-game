@@ -9,7 +9,7 @@ import {
 import { LobbyService, LobbySummary } from '../../services/lobby/lobby-service';
 import { computed, inject } from '@angular/core';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { debounceTime, distinctUntilChanged, pipe, switchMap, tap } from 'rxjs';
+import { debounceTime, pipe, switchMap, tap } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
 
 type LobbySummaryState = {
@@ -80,7 +80,6 @@ export const LobbySummaryStore = signalStore(
       refreshTrigger: boolean;
     }>(
       pipe(
-        distinctUntilChanged(),
         tap(() => patchState(store, { status: 'loading' })),
         // when adjusting the debounce time make sure to also update it in the tests
         debounceTime(300),
