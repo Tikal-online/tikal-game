@@ -6,5 +6,5 @@ public interface PlayerRepository
 {
     void Delete(Player player);
 
-    Task<Player?> GetByUserIdAsync(string userId);
+    Task<Player?> GetByUserIdWithLobbyAsync(string userId);
 }

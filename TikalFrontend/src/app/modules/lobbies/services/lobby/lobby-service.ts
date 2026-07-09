@@ -13,6 +13,9 @@ export type LobbySummary = {
   currentPlayers: number;
 };
 
+export type JoinLobbyError =
+  { type: 'PlayerAlreadyInALobby' } | { type: 'LobbyNotFound' } | { type: 'LobbyFull' };
+
 @Service()
 export class LobbyService {
   private readonly url = '/Api/Lobbies';
@@ -79,5 +82,25 @@ export class LobbyService {
 
   leaveLobby(): Observable<void> {
     return this.http.post<void>(this.url + '/leave', {});
+  }
+
+  joinLobby(id: number): Observable<Result<void, JoinLobbyError>> {
+    return this.http.post<void>(this.url + `/${id}/join`, '').pipe(
+      map(() => ok()),
+      catchError((error: HttpErrorResponse) => {
+        // TODO: improve problem response error handling
+        if (error.status === 409) {
+          if (error.message === 'Player is already in a lobby') {
+            return err({ type: 'PlayerAlreadyInALobby' } as const);
+          } else {
+            return err({ type: 'LobbyFull' } as const);
+          }
+        } else if (error.status === 404) {
+          return err({ type: 'LobbyNotFound' } as const);
+        }
+
+        return throwError(() => error);
+      }),
+    );
   }
 }
