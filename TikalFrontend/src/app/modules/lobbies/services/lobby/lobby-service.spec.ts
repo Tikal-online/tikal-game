@@ -8,21 +8,12 @@ import {
   CREATED,
   ERROR_RESPONSES,
   HttpResponseData,
-  NOT_FOUND,
 } from '../../../../core/tests/http-responses';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Lobby } from '../../models/lobby';
 
 const DEFAULT_RESPONSE: PaginatedResult<LobbySummary[]> = {
   data: [],
   totalCount: 0,
-};
-
-const DEFAULT_LOBBY: Lobby = {
-  id: 1,
-  name: 'LobbyName',
-  maxPlayers: 3,
-  players: [],
 };
 
 describe('LobbyService', () => {
@@ -108,57 +99,6 @@ describe('LobbyService', () => {
       expect(capturedError!.status).toEqual(error.status);
     },
   );
-
-  test('getActiveLobby returns null when GET /Api/Lobbies/me returns 404', async () => {
-    const promise = firstValueFrom(service.getActiveLobby());
-
-    const req = http.expectOne({ method: 'GET', url: '/Api/Lobbies/me' });
-    req.flush('', NOT_FOUND);
-
-    const result = await promise;
-
-    expect(result).toBeNull();
-  });
-
-  test('getActiveLobby returns Lobby when GET /Api/Lobbies/me returns success', async () => {
-    const promise = firstValueFrom(service.getActiveLobby());
-
-    const req = http.expectOne({ method: 'GET', url: '/Api/Lobbies/me' });
-    req.flush(DEFAULT_LOBBY);
-
-    const result = await promise;
-
-    expect(result).toEqual(DEFAULT_LOBBY);
-  });
-
-  test.for<HttpResponseData>(ERROR_RESPONSES.filter((error) => error.status !== 404))(
-    'getActiveLobby throws error when GET /Api/Lobbies/me returns $status',
-    async (error: HttpResponseData) => {
-      let capturedError: HttpErrorResponse;
-
-      const promise = firstValueFrom(
-        service.getActiveLobby().pipe(
-          catchError((httpError) => {
-            capturedError = httpError;
-            return of(httpError);
-          }),
-        ),
-      );
-
-      const req = http.expectOne({ method: 'GET', url: '/Api/Lobbies/me' });
-      req.flush('', error);
-
-      await promise;
-
-      expect(capturedError!.status).toEqual(error.status);
-    },
-  );
-
-  test('leaveLobby calls POST /Api/Lobbies/leave', async () => {
-    firstValueFrom(service.leaveLobby());
-
-    http.expectOne({ method: 'POST', url: '/Api/Lobbies/leave' });
-  });
 
   afterEach(() => {
     http.verify();
