@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
 import { ActiveLobbyStore } from '../../stores/lobby/active-lobby-store';
 import { LobbyPlayerListHeader } from '../lobby-player-list-header/lobby-player-list-header';
 import { LobbyPlayerList } from '../lobby-player-list/lobby-player-list';
@@ -26,5 +26,7 @@ export class ActiveLobby {
 
   constructor() {
     this.activeLobbyStore.loadActiveLobby();
+    this.activeLobbyStore.connect();
+    inject(DestroyRef).onDestroy(() => this.activeLobbyStore.disconnect());
   }
 }

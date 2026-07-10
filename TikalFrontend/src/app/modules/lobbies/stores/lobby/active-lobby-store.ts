@@ -2,6 +2,7 @@ import {
   patchState,
   signalStore,
   withComputed,
+  withHooks,
   withMethods,
   withProps,
   withState,
@@ -13,16 +14,19 @@ import { pipe, switchMap, tap } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
 import { Router } from '@angular/router';
 import { ActiveLobbyService } from '../../services/active-lobby/active-lobby-service';
+import { ConnectionStatus } from '../../../../core/enums/connection-status';
 
 type ActiveLobbyState = {
   lobby: Lobby | null;
   status: 'initial' | 'loading' | 'loaded' | 'error';
+  connectionStatus: ConnectionStatus;
   leavingStatus: 'initial' | 'leaving' | 'error';
 };
 
 const initialState: ActiveLobbyState = {
   lobby: null,
   status: 'initial',
+  connectionStatus: 'Disconnected',
   leavingStatus: 'initial',
 };
 
@@ -41,6 +45,34 @@ export const ActiveLobbyStore = signalStore(
   })),
 
   withMethods((store) => ({
+    connect(): Promise<void> {
+      return store._activeLobbyService.connect();
+    },
+
+    disconnect(): Promise<void> {
+      return store._activeLobbyService.disconnect();
+    },
+
+    watchJoinedPlayers: rxMethod<void>(
+      pipe(
+        switchMap(() => store._activeLobbyService.joinedPlayer$),
+        tap((player) =>
+          patchState(store, (state) => ({
+            lobby: state.lobby
+              ? { ...state.lobby, players: [...state.lobby.players, player] }
+              : null,
+          })),
+        ),
+      ),
+    ),
+
+    watchConnectionStatus: rxMethod<void>(
+      pipe(
+        switchMap(() => store._activeLobbyService.connectionStatus$),
+        tap((status) => patchState(store, { connectionStatus: status })),
+      ),
+    ),
+
     loadActiveLobby: rxMethod<void>(
       pipe(
         tap(() => patchState(store, { status: 'loading', leavingStatus: 'initial' })),
@@ -69,4 +101,11 @@ export const ActiveLobbyStore = signalStore(
       ),
     ),
   })),
+
+  withHooks({
+    onInit(store) {
+      store.watchJoinedPlayers();
+      store.watchConnectionStatus();
+    },
+  }),
 );
