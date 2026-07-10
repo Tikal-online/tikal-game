@@ -2,8 +2,7 @@ import { Service } from '@angular/core';
 import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
 import { environment } from '../../../../../environments/environment';
 import { Subject } from 'rxjs';
-
-export type ConnectionStatus = 'Connected' | 'Connecting' | 'Disconnected';
+import { ConnectionStatus } from '../../../../core/enums/connection-status';
 
 type ChatMessageDto = {
   userId: string;
