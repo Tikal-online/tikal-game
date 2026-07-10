@@ -1,5 +1,4 @@
 using System.Net;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.SignalR.Client;
 using SignalRApi.Hubs.Lobbies.Dtos;
 using TikalBackend.IntegrationTests.Modules.Lobbies.Dtos;
@@ -23,15 +22,24 @@ internal sealed class GlobalChatTests : IntegrationTestFixture
     }
 
     [TestCaseSource(typeof(ChatMessagesTestCases), nameof(ChatMessagesTestCases.ValidChatMessages))]
-    public void GivenUserWithoutAccount_WhenSendMessage_ThenThrowsAccountRequiredHubException(string message)
+    public async Task GivenUserWithoutAccount_WhenConnect_ThenThrowsAccountRequiredHubException(string message)
     {
-        // when & then
-        var exception = Assert.ThrowsAsync<HubException>(async () =>
-        {
-            await using var connection = await CreateConnection(globalChatUrl, TestUser.Default);
-            await connection.InvokeAsync("SendMessage", message);
-        });
+        // given
+        var closedExceptionSource = new TaskCompletionSource<Exception?>();
 
+        // when 
+        await using var connection = await CreateConnection(globalChatUrl, TestUser.Default, false);
+        connection.Closed += ex =>
+        {
+            closedExceptionSource.TrySetResult(ex);
+            return Task.CompletedTask;
+        };
+        await connection.StartAsync();
+
+        // then
+        var exception = await closedExceptionSource.Task.WaitAsync(TimeSpan.FromSeconds(5));
+
+        Assert.That(exception, Is.Not.Null);
         Assert.That(exception.Message, Does.Contain("Account required"));
     }
 
