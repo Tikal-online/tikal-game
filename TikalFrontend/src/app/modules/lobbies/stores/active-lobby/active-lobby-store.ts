@@ -1,14 +1,13 @@
 import {
   patchState,
   signalStore,
-  withComputed,
   withHooks,
   withMethods,
   withProps,
   withState,
 } from '@ngrx/signals';
 import { Lobby } from '../../models/lobby';
-import { computed, inject } from '@angular/core';
+import { inject } from '@angular/core';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { pipe, switchMap, tap } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
@@ -38,10 +37,6 @@ export const ActiveLobbyStore = signalStore(
   withProps(() => ({
     _activeLobbyService: inject(ActiveLobbyService),
     _router: inject(Router),
-  })),
-
-  withComputed(({ status }) => ({
-    isLoading: computed(() => status() === 'loading'),
   })),
 
   withMethods((store) => ({
