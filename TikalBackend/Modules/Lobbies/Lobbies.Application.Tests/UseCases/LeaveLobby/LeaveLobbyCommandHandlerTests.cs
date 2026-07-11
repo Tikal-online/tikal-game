@@ -2,10 +2,8 @@ using Lobbies.Application.DataAccess;
 using Lobbies.Application.UseCases.LeaveLobby;
 using Lobbies.Contracts.Commands;
 using Lobbies.Contracts.Errors;
-using Lobbies.Contracts.Notifications;
 using Lobbies.Domain.Entities;
 using Lobbies.Domain.Tests.Data;
-using MediatR;
 using Moq;
 using OneOf.Types;
 using Shared.Application.Contexts;
@@ -19,7 +17,6 @@ internal sealed class LeaveLobbyCommandHandlerTests
     private Mock<PlayerRepository> playerRepository;
     private Mock<LobbyRepository> lobbyRepository;
     private Mock<UnitOfWork> unitOfWork;
-    private Mock<IPublisher> publisher;
     private AccountContext accountContext;
 
     // under test
@@ -38,14 +35,12 @@ internal sealed class LeaveLobbyCommandHandlerTests
         playerRepository = new Mock<PlayerRepository>();
         lobbyRepository = new Mock<LobbyRepository>();
         unitOfWork = new Mock<UnitOfWork>();
-        publisher = new Mock<IPublisher>();
         accountContext = AccountContextHelper.TestAccountContext;
 
         handler = new LeaveLobbyCommandHandler(
             playerRepository.Object,
             lobbyRepository.Object,
             unitOfWork.Object,
-            publisher.Object,
             accountContext
         );
     }
@@ -92,21 +87,6 @@ internal sealed class LeaveLobbyCommandHandlerTests
 
         playerRepository.Verify(r => r.Delete(It.IsAny<Player>()), Times.Once);
         unitOfWork.Verify(u => u.SaveChangesAsync(CancellationToken.None), Times.Once);
-    }
-
-    [TestCaseSource(nameof(LobbyWithMoreThanOnePlayerTests))]
-    public async Task GivenLobbyWithMultiplePlayers_WhenHandle_ThenPublishesPlayerLeftNotification(Lobby lobby)
-    {
-        // given
-        SetupHappyPath(lobby);
-
-        var command = new LeaveLobbyCommand();
-
-        // when
-        await handler.Handle(command, CancellationToken.None);
-
-        // then
-        publisher.Verify(p => p.Publish(It.IsAny<PlayerLeftNotification>()), Times.Once);
     }
 
     [TestCaseSource(nameof(LobbyWithOnePlayerTests))]

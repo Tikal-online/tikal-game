@@ -37,6 +37,7 @@
         <Project Path="TikalBackend/Shared/Shared.Application.Tests/Shared.Application.Tests.csproj" />
         <Project Path="TikalBackend/Shared/Shared.Application/Shared.Application.csproj" />
         <Project Path="TikalBackend/Shared/Shared.Contracts/Shared.Contracts.csproj" />
+        <Project Path="TikalBackend/Shared/Shared.Domain/Shared.Domain.csproj" />
     </Folder>
     <Project Path="Aspire/Aspire.csproj" />
     <Project Path="BFF/BFF.csproj" />
