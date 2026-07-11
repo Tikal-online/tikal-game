@@ -94,4 +94,32 @@ internal sealed class ActiveLobbyTests : IntegrationTestFixture
         Assert.That(joinedPlayer.UserId, Is.EqualTo(TestUser.TestUser1.UserId));
         Assert.That(joinedPlayer.Name, Is.EqualTo(TestUser.TestUser1.Name));
     }
+
+    [TestCaseSource(typeof(CreateLobbyDtoTestCases), nameof(CreateLobbyDtoTestCases.ValidCreateLobbyDtos))]
+    public async Task GivenLobby_WhenPlayerLeavesLobby_ThenSendsPlayerLeftMessage(CreateLobbyDto createLobbyDto)
+    {
+        // given
+        await CreateUserAccount(TestUser.Default);
+        await Client.PostAsyncWithUser(lobbyUrl, TestUser.Default, createLobbyDto);
+        await using var connection = await CreateConnection(activeLobbyUrl, TestUser.Default);
+
+        var leftPlayerSource = new TaskCompletionSource<LobbyPlayerDto>();
+        connection.On<LobbyPlayerDto>("PlayerLeft", leftPlayerSource.SetResult);
+
+        var lobbyResponse = await Client.GetAsyncWithUser(lobbyUrl + "/me", TestUser.Default);
+        var lobby = await lobbyResponse.Content.ReadFromJsonAsync<LobbyDto>();
+
+        await CreateUserAccount(TestUser.TestUser1);
+        await Client.PostAsyncWithUser($"Lobbies/{lobby!.Id}/join", TestUser.TestUser1, null);
+
+        // when
+        await Client.PostAsyncWithUser(lobbyUrl + "/leave", TestUser.TestUser1, null);
+
+        // then
+        var leftPlayer = await leftPlayerSource.Task.WaitAsync(TimeSpan.FromSeconds(5));
+
+        Assert.That(leftPlayer, Is.Not.Null);
+        Assert.That(leftPlayer.UserId, Is.EqualTo(TestUser.TestUser1.UserId));
+        Assert.That(leftPlayer.Name, Is.EqualTo(TestUser.TestUser1.Name));
+    }
 }
