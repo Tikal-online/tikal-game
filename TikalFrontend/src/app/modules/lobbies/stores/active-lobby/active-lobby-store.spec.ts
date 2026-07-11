@@ -174,4 +174,18 @@ describe('ActiveLobbyStore', () => {
       expect(store.lobby()?.players).toContain(player);
     },
   );
+
+  test.for<Player>(PLAYER_TESTCASES)(
+    'given no active lobby when joinedPlayers$ emits then lobby is still null',
+    (player: Player) => {
+      // given
+      const store = TestBed.inject(ActiveLobbyStore);
+
+      // when
+      activeLobbyService.joinedPlayer$.next(player);
+
+      // then
+      expect(store.lobby()).toBeNull();
+    },
+  );
 });
