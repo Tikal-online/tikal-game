@@ -3,12 +3,20 @@
     "path": "../Tikal.slnx",
     "projects": [
       "TikalBackend/API/RestApi.Controllers/RestApi.Controllers.csproj",
+      "TikalBackend/API/SignalRApi.Hubs/SignalRApi.Hubs.csproj",
       "TikalBackend/TikalBackend.WebHost/TikalBackend.WebHost.csproj",
+      "TikalBackend/TikalBackend.IntegrationTests/TikalBackend.IntegrationTests.csproj",
       "TikalBackend/Modules/Accounts/Accounts.Application/Accounts.Application.csproj",
       "TikalBackend/Modules/Accounts/Accounts.Application.Tests/Accounts.Application.Tests.csproj",
       "TikalBackend/Modules/Accounts/Accounts.Contracts/Accounts.Contracts.csproj",
       "TikalBackend/Modules/Accounts/Accounts.Domain/Accounts.Domain.csproj",
-      "TikalBackend/Modules/Accounts/Accounts.Infrastructure/Accounts.Infrastructure.csproj"
+      "TikalBackend/Modules/Accounts/Accounts.Infrastructure/Accounts.Infrastructure.csproj",
+      "TikalBackend/Modules/Lobbies/Lobbies.Application/Lobbies.Application.csproj",
+      "TikalBackend/Modules/Lobbies/Lobbies.Application.Tests/Lobbies.Application.Tests.csproj",
+      "TikalBackend/Modules/Lobbies/Lobbies.Contracts/Lobbies.Contracts.csproj",
+      "TikalBackend/Modules/Lobbies/Lobbies.Domain/Lobbies.Domain.csproj",
+      "TikalBackend/Modules/Lobbies/Lobbies.Domain.Tests/Lobbies.Domain.Tests.csproj",
+      "TikalBackend/Modules/Lobbies/Lobbies.Infrastructure/Lobbies.Infrastructure.csproj"
     ]
   }
 }
