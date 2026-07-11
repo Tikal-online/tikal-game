@@ -54,5 +54,9 @@ export const AccountStore = signalStore(
 
       return firstValueFrom(request);
     },
+
+    isMe(userId: string): boolean {
+      return store.account()?.userId === userId;
+    },
   })),
 );

@@ -14,10 +14,11 @@ import { tapResponse } from '@ngrx/operators';
 import { Router } from '@angular/router';
 import { ActiveLobbyService } from '../../services/active-lobby/active-lobby-service';
 import { ConnectionStatus } from '../../../../core/enums/connection-status';
+import { AccountStore } from '../../../../core/stores/account-store/account-store';
 
 type ActiveLobbyState = {
   lobby: Lobby | null;
-  status: 'initial' | 'loading' | 'loaded' | 'error';
+  status: 'initial' | 'loading' | 'loaded' | 'left' | 'error';
   connectionStatus: ConnectionStatus;
   leavingStatus: 'initial' | 'leaving' | 'error';
 };
@@ -36,6 +37,7 @@ export const ActiveLobbyStore = signalStore(
 
   withProps(() => ({
     _activeLobbyService: inject(ActiveLobbyService),
+    _accountStore: inject(AccountStore),
     _router: inject(Router),
   })),
 
@@ -64,16 +66,21 @@ export const ActiveLobbyStore = signalStore(
     watchLeftPlayers: rxMethod<void>(
       pipe(
         switchMap(() => store._activeLobbyService.leftPlayers$),
-        tap((player) =>
-          patchState(store, (state) => ({
-            lobby: state.lobby
-              ? {
-                  ...state.lobby,
-                  players: state.lobby.players.filter((p) => p.userId !== player.userId),
-                }
-              : null,
-          })),
-        ),
+        tap((player) => {
+          if (store._accountStore.isMe(player.userId)) {
+            store._activeLobbyService.disconnect();
+            patchState(store, { status: 'left', lobby: null });
+          } else {
+            patchState(store, (state) => ({
+              lobby: state.lobby
+                ? {
+                    ...state.lobby,
+                    players: state.lobby.players.filter((p) => p.userId !== player.userId),
+                  }
+                : null,
+            }));
+          }
+        }),
       ),
     ),
 

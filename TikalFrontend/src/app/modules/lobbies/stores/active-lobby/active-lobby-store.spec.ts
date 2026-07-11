@@ -8,11 +8,16 @@ import { ActiveLobbyStore } from './active-lobby-store';
 import { Lobby } from '../../models/lobby';
 import { PLAYER_TESTCASES } from '../../models/player.testcases';
 import { DEFAULT_TEST_LOBBY, LOBBY_TESTCASES } from '../../models/lobby.testcases';
+import { AccountStore } from '../../../../core/stores/account-store/account-store';
 
 describe('ActiveLobbyStore', () => {
   // dependencies
   const router = {
     navigate: vi.fn(),
+  };
+
+  const accountStore = {
+    isMe: vi.fn(),
   };
 
   const activeLobbyService = {
@@ -29,6 +34,7 @@ describe('ActiveLobbyStore', () => {
     TestBed.configureTestingModule({
       providers: [
         { provide: Router, useValue: router },
+        { provide: AccountStore, useValue: accountStore },
         { provide: ActiveLobbyService, useValue: activeLobbyService },
       ],
     });
@@ -191,12 +197,13 @@ describe('ActiveLobbyStore', () => {
   );
 
   test.for<Lobby>(LOBBY_TESTCASES)(
-    'given active lobby when leftPlayers$ emits then removes player from lobby',
+    'given active lobby when leftPlayers$ emits not me then removes player from lobby',
     (lobby: Lobby) => {
       // given
       const store = TestBed.inject(ActiveLobbyStore);
 
       activeLobbyService.getActiveLobby.mockReturnValueOnce(of(lobby));
+      accountStore.isMe.mockReturnValueOnce(false);
 
       TestBed.runInInjectionContext(() => {
         store.loadActiveLobby();
@@ -213,16 +220,42 @@ describe('ActiveLobbyStore', () => {
   );
 
   test.for<Player>(PLAYER_TESTCASES)(
-    'given no active lobby when leftPlayers$ emits then lobby is still null',
+    'given no active lobby when leftPlayers$ emits not me then lobby is still null',
     (player: Player) => {
       // given
       const store = TestBed.inject(ActiveLobbyStore);
+
+      accountStore.isMe.mockReturnValueOnce(false);
 
       // when
       activeLobbyService.leftPlayers$.next(player);
 
       // then
       expect(store.lobby()).toBeNull();
+    },
+  );
+
+  test.for<Lobby>(LOBBY_TESTCASES)(
+    'given active lobby when leftPlayers$ emits me then disconnects and sets status to left',
+    (lobby: Lobby) => {
+      // given
+      const store = TestBed.inject(ActiveLobbyStore);
+
+      activeLobbyService.getActiveLobby.mockReturnValueOnce(of(lobby));
+      accountStore.isMe.mockReturnValueOnce(true);
+
+      TestBed.runInInjectionContext(() => {
+        store.loadActiveLobby();
+      });
+
+      const player = lobby.players[0];
+
+      // when
+      activeLobbyService.leftPlayers$.next(player);
+
+      // then
+      expect(store.status()).toEqual('left');
+      expect(activeLobbyService.disconnect).toHaveBeenCalledOnce();
     },
   );
 });
