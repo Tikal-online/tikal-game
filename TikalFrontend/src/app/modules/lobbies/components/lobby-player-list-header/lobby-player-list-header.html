@@ -2,6 +2,6 @@
   <span class="players-label">{{ t('header') }}</span>
   <span class="players-count">
     <svg lucideUsers [size]="12"></svg>
-    1 / {{ maxPlayers() }}
+    {{ currentPlayers() }} / {{ maxPlayers() }}
   </span>
 </ng-container>
