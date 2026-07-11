@@ -18,9 +18,9 @@ internal sealed class AccountHubFilter : IHubFilter
         this.sender = sender;
     }
 
-    public async Task OnConnectedAsync(HubLifetimeContext lifetimeContext, Func<HubLifetimeContext, Task> next)
+    public async Task OnConnectedAsync(HubLifetimeContext context, Func<HubLifetimeContext, Task> next)
     {
-        var userId = lifetimeContext.Context.User?.FindFirstValue(ClaimTypes.NameIdentifier);
+        var userId = context.Context.User?.FindFirstValue(ClaimTypes.NameIdentifier);
 
         if (userId is null)
         {
@@ -40,11 +40,11 @@ internal sealed class AccountHubFilter : IHubFilter
             UserId = accountModel.UserId
         };
 
-        lifetimeContext.Context.Items["Account"] = account;
+        context.Context.Items["Account"] = account;
 
         accountContext.Account = account;
 
-        await next(lifetimeContext);
+        await next(context);
     }
 
     public async ValueTask<object?> InvokeMethodAsync(
