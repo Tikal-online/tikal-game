@@ -6,8 +6,8 @@ import { Router } from '@angular/router';
 import { ActiveLobbyService } from '../../services/active-lobby/active-lobby-service';
 import { ActiveLobbyStore } from './active-lobby-store';
 import { Lobby } from '../../models/lobby';
-import { DEFAULT_TEST_LOBBY, LOBBY_TESTCASES } from '../../models/lobby.spec';
-import { PLAYER_TESTCASES } from '../../models/player.spec';
+import { PLAYER_TESTCASES } from '../../models/player.testcases';
+import { DEFAULT_TEST_LOBBY, LOBBY_TESTCASES } from '../../models/lobby.testcases';
 
 describe('ActiveLobbyStore', () => {
   // dependencies
