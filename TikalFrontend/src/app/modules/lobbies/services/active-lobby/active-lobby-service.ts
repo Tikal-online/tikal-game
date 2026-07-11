@@ -11,6 +11,8 @@ import { Player } from '../../models/player';
 export class ActiveLobbyService {
   readonly joinedPlayer$ = new Subject<Player>();
 
+  readonly leftPlayers$ = new Subject<Player>();
+
   readonly connectionStatus$ = new Subject<ConnectionStatus>();
 
   private readonly url = '/Api/Lobbies';
@@ -30,6 +32,10 @@ export class ActiveLobbyService {
 
     this.connection.on('PlayerJoined', (player: Player) => {
       this.joinedPlayer$.next(player);
+    });
+
+    this.connection.on('PlayerLeft', (player: Player) => {
+      this.leftPlayers$.next(player);
     });
 
     this.connection.onclose(() => {

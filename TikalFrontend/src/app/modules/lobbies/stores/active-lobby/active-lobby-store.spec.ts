@@ -17,6 +17,7 @@ describe('ActiveLobbyStore', () => {
 
   const activeLobbyService = {
     joinedPlayer$: new Subject<Player>(),
+    leftPlayers$: new Subject<Player>(),
     connectionStatus$: new Subject<ConnectionStatus>(),
     connect: vi.fn(),
     disconnect: vi.fn(),
@@ -183,6 +184,42 @@ describe('ActiveLobbyStore', () => {
 
       // when
       activeLobbyService.joinedPlayer$.next(player);
+
+      // then
+      expect(store.lobby()).toBeNull();
+    },
+  );
+
+  test.for<Lobby>(LOBBY_TESTCASES)(
+    'given active lobby when leftPlayers$ emits then removes player from lobby',
+    (lobby: Lobby) => {
+      // given
+      const store = TestBed.inject(ActiveLobbyStore);
+
+      activeLobbyService.getActiveLobby.mockReturnValueOnce(of(lobby));
+
+      TestBed.runInInjectionContext(() => {
+        store.loadActiveLobby();
+      });
+
+      const player = lobby.players[0];
+
+      // when
+      activeLobbyService.leftPlayers$.next(player);
+
+      // then
+      expect(store.lobby()?.players).not.toContain(player);
+    },
+  );
+
+  test.for<Player>(PLAYER_TESTCASES)(
+    'given no active lobby when leftPlayers$ emits then lobby is still null',
+    (player: Player) => {
+      // given
+      const store = TestBed.inject(ActiveLobbyStore);
+
+      // when
+      activeLobbyService.leftPlayers$.next(player);
 
       // then
       expect(store.lobby()).toBeNull();
