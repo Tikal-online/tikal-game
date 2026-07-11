@@ -2,10 +2,8 @@ using Lobbies.Application.DataAccess;
 using Lobbies.Application.UseCases.JoinLobby;
 using Lobbies.Contracts.Commands;
 using Lobbies.Contracts.Errors;
-using Lobbies.Contracts.Notifications;
 using Lobbies.Domain.Entities;
 using Lobbies.Domain.Tests.Data;
-using MediatR;
 using Moq;
 using OneOf.Types;
 using Shared.Application.Contexts;
@@ -19,7 +17,6 @@ internal sealed class JoinLobbyCommandHandlerTests
     private Mock<LobbyRepository> lobbyRepository;
     private Mock<PlayerQueryContext> playerQueryContext;
     private Mock<UnitOfWork> unitOfWork;
-    private Mock<IPublisher> publisher;
     private AccountContext accountContext;
 
     // under test
@@ -36,14 +33,12 @@ internal sealed class JoinLobbyCommandHandlerTests
         lobbyRepository = new Mock<LobbyRepository>();
         playerQueryContext = new Mock<PlayerQueryContext>();
         unitOfWork = new Mock<UnitOfWork>();
-        publisher = new Mock<IPublisher>();
         accountContext = AccountContextHelper.TestAccountContext;
 
         handler = new JoinLobbyCommandHandler(
             lobbyRepository.Object,
             playerQueryContext.Object,
             unitOfWork.Object,
-            publisher.Object,
             accountContext
         );
     }
@@ -125,20 +120,5 @@ internal sealed class JoinLobbyCommandHandlerTests
             Assert.That(result.Value, Is.InstanceOf<Success>());
             Assert.That(player, Is.Not.Null);
         }
-    }
-
-    [TestCaseSource(nameof(NotFullLobbyTestCases))]
-    public async Task GivenNotFullLobby_WhenHandle_ThenPublishesPlayerJoinedNotification(Lobby lobby)
-    {
-        // given
-        SetupHappyPath(lobby);
-
-        var command = new JoinLobbyCommand(lobby.Id);
-
-        // when
-        await handler.Handle(command, CancellationToken.None);
-
-        // then
-        publisher.Verify(p => p.Publish(It.IsAny<PlayerJoinedNotification>()), Times.Once);
     }
 }

@@ -183,7 +183,8 @@
         "type": "Project",
         "dependencies": {
           "FluentValidation": "[12.1.1, )",
-          "Riok.Mapperly": "[4.3.1, )"
+          "Riok.Mapperly": "[4.3.1, )",
+          "Shared.Domain": "[1.0.0, )"
         }
       },
       "shared.application": {
@@ -197,6 +198,12 @@
         "dependencies": {
           "MediatR": "[14.1.0, )",
           "OneOf": "[3.0.271, )"
+        }
+      },
+      "shared.domain": {
+        "type": "Project",
+        "dependencies": {
+          "MediatR": "[14.1.0, )"
         }
       },
       "FluentValidation": {

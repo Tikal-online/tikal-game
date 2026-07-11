@@ -1,9 +1,11 @@
 using FluentValidation;
 using Lobbies.Domain.Enums;
+using Lobbies.Domain.Events;
+using Shared.Domain.Entities;
 
 namespace Lobbies.Domain.Entities;
 
-public sealed class Lobby
+public sealed class Lobby : Entity
 {
     public long Id { get; set; }
 
@@ -20,13 +22,20 @@ public sealed class Lobby
     public void RemovePlayer(Player player)
     {
         Players.Remove(player);
+        AddDomainEvent(new PlayerLeftEvent(player));
 
-        if (Players.Count == 0 || Players.Any(p => p.IsOwner))
+        if (IsEmpty || Players.Any(p => p.IsOwner))
         {
             return;
         }
 
         Players.First().IsOwner = true;
+    }
+
+    public void AddPlayer(Player player)
+    {
+        Players.Add(player);
+        AddDomainEvent(new PlayerJoinedEvent(player));
     }
 
     public Colour GetUnusedColour()
