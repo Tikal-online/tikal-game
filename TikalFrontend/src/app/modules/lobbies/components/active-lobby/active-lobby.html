@@ -1,6 +1,6 @@
 <ng-container *transloco="let t; prefix: 'lobby.active'">
   <p class="header-prefix">{{ t('header-prefix') }}</p>
-  @switch (activeLobbyStore.status()) {
+  @switch (activeLobbyStore.loadingStatus()) {
     @case ('initial')
     @case ('loading') {
       <h1>{{ t('header-loading') }}</h1>

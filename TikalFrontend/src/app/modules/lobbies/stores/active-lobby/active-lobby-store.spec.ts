@@ -80,7 +80,7 @@ describe('ActiveLobbyStore', () => {
     expect(activeLobbyService.disconnect).toHaveBeenCalledOnce();
   });
 
-  test('given no active lobby when loadActiveLobby then sets lobby to null and status to loaded', () => {
+  test('given no active lobby when loadActiveLobby then sets lobby to null and loadingStatus to loaded', () => {
     // given
     const store = TestBed.inject(ActiveLobbyStore);
 
@@ -92,11 +92,11 @@ describe('ActiveLobbyStore', () => {
     });
 
     // then
-    expect(store.status()).toEqual('loaded');
+    expect(store.loadingStatus()).toEqual('loaded');
     expect(store.lobby()).toBeNull();
   });
 
-  test('given error when loadActiveLobby then sets status to error', () => {
+  test('given error when loadActiveLobby then sets loadingStatus to error', () => {
     // given
     const store = TestBed.inject(ActiveLobbyStore);
 
@@ -110,11 +110,11 @@ describe('ActiveLobbyStore', () => {
     });
 
     // then
-    expect(store.status()).toEqual('error');
+    expect(store.loadingStatus()).toEqual('error');
   });
 
   test.for<Lobby>(LOBBY_TESTCASES)(
-    'given active lobby when loadActiveLobby then sets lobby to value and status to loaded',
+    'given active lobby when loadActiveLobby then sets lobby to value and loadingStatus to loaded',
     (lobby: Lobby) => {
       // given
       const store = TestBed.inject(ActiveLobbyStore);
@@ -127,7 +127,7 @@ describe('ActiveLobbyStore', () => {
       });
 
       // then
-      expect(store.status()).toEqual('loaded');
+      expect(store.loadingStatus()).toEqual('loaded');
       expect(store.lobby()).toEqual(lobby);
     },
   );

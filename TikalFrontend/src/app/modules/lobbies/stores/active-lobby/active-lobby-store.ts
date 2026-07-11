@@ -18,14 +18,14 @@ import { AccountStore } from '../../../../core/stores/account-store/account-stor
 
 type ActiveLobbyState = {
   lobby: Lobby | null;
-  status: 'initial' | 'loading' | 'loaded' | 'error';
+  loadingStatus: 'initial' | 'loading' | 'loaded' | 'error';
   connectionStatus: ConnectionStatus;
   leavingStatus: 'initial' | 'leaving' | 'error';
 };
 
 const initialState: ActiveLobbyState = {
   lobby: null,
-  status: 'initial',
+  loadingStatus: 'initial',
   connectionStatus: 'Disconnected',
   leavingStatus: 'initial',
 };
@@ -92,12 +92,12 @@ export const ActiveLobbyStore = signalStore(
 
     loadActiveLobby: rxMethod<void>(
       pipe(
-        tap(() => patchState(store, { status: 'loading', leavingStatus: 'initial' })),
+        tap(() => patchState(store, { loadingStatus: 'loading', leavingStatus: 'initial' })),
         switchMap(() => {
           return store._activeLobbyService.getActiveLobby().pipe(
             tapResponse({
-              next: (result) => patchState(store, { lobby: result, status: 'loaded' }),
-              error: () => patchState(store, { status: 'error' }),
+              next: (result) => patchState(store, { lobby: result, loadingStatus: 'loaded' }),
+              error: () => patchState(store, { loadingStatus: 'error' }),
             }),
           );
         }),
