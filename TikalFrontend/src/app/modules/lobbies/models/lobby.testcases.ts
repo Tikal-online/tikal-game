@@ -9,12 +9,6 @@ export const DEFAULT_TEST_LOBBY: Lobby = {
 
 export const LOBBY_TESTCASES: Lobby[] = [
   {
-    id: 1,
-    name: 'Empty Lobby',
-    maxPlayers: 4,
-    players: [],
-  },
-  {
     id: 2,
     name: 'Waiting for Players',
     maxPlayers: 4,
