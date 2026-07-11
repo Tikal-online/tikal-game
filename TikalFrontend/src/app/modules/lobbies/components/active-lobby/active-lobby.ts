@@ -1,5 +1,5 @@
 import { Component, DestroyRef, inject } from '@angular/core';
-import { ActiveLobbyStore } from '../../stores/lobby/active-lobby-store';
+import { ActiveLobbyStore } from '../../stores/active-lobby/active-lobby-store';
 import { LobbyPlayerListHeader } from '../lobby-player-list-header/lobby-player-list-header';
 import { LobbyPlayerList } from '../lobby-player-list/lobby-player-list';
 import { TranslocoDirective } from '@jsverse/transloco';

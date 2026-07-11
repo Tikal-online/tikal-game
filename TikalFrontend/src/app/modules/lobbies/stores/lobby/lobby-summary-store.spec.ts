@@ -49,7 +49,9 @@ describe('LobbySummaryStore', () => {
     const store = TestBed.inject(LobbySummaryStore);
 
     // when
-    store.loadLobbies(of(store.filter()));
+    TestBed.runInInjectionContext(() => {
+      store.loadLobbies(of(store.filter()));
+    });
     await vi.advanceTimersByTimeAsync(DEBOUNCETIME);
 
     // then
@@ -67,7 +69,9 @@ describe('LobbySummaryStore', () => {
     const store = TestBed.inject(LobbySummaryStore);
 
     // when
-    store.loadLobbies(of(store.filter()));
+    TestBed.runInInjectionContext(() => {
+      store.loadLobbies(of(store.filter()));
+    });
     await vi.advanceTimersByTimeAsync(DEBOUNCETIME);
 
     // then
@@ -157,7 +161,9 @@ describe('LobbySummaryStore', () => {
     const store = TestBed.inject(LobbySummaryStore);
 
     // when
-    store.loadLobbies(of(store.filter()));
+    TestBed.runInInjectionContext(() => {
+      store.loadLobbies(of(store.filter()));
+    });
     await vi.advanceTimersByTimeAsync(DEBOUNCETIME);
 
     // then
