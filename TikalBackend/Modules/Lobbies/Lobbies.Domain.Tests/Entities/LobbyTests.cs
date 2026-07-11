@@ -1,4 +1,5 @@
 using Lobbies.Domain.Entities;
+using Lobbies.Domain.Events;
 using Lobbies.Domain.Tests.Data;
 
 namespace Lobbies.Domain.Tests.Entities;
@@ -20,6 +21,22 @@ internal sealed class LobbyTests
 
         // then
         Assert.That(lobby.Players, Does.Not.Contain(playerToRemove));
+    }
+
+    [TestCaseSource(typeof(LobbyTestCases), nameof(LobbyTestCases.ValidLobbyTestCases))]
+    public void GivenLobby_WhenRemovePlayer_ThenAddsPlayerLeftEvent(Lobby lobby)
+    {
+        // given
+        var playerToRemove = lobby.Players.First();
+
+        // when
+        lobby.RemovePlayer(playerToRemove);
+
+        // then
+        var domainEvent = lobby.DomainEvents.OfType<PlayerLeftEvent>().SingleOrDefault();
+
+        Assert.That(domainEvent, Is.Not.Null);
+        Assert.That(domainEvent.Player, Is.EqualTo(playerToRemove));
     }
 
     [TestCaseSource(nameof(LobbyWithMultiplePlayersAndOneOwnerTestCases))]
