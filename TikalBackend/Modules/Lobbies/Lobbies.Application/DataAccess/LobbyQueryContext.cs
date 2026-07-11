@@ -8,6 +8,8 @@ public interface LobbyQueryContext
 
     Task<Lobby?> GetByUserIdAsync(string userId);
 
+    Task<long?> GetIdByUserIdAsync(string userId);
+
     Task<List<Lobby>> GetPaginatedAsync(int pageSize, int pageNumber, string? searchText);
 
     Task<int> GetCountAsync(string? searchText);

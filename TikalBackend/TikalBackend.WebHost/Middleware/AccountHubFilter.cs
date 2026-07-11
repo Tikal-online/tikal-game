@@ -18,12 +18,9 @@ internal sealed class AccountHubFilter : IHubFilter
         this.sender = sender;
     }
 
-    public async ValueTask<object?> InvokeMethodAsync(
-        HubInvocationContext invocationContext,
-        Func<HubInvocationContext, ValueTask<object?>> next
-    )
+    public async Task OnConnectedAsync(HubLifetimeContext context, Func<HubLifetimeContext, Task> next)
     {
-        var userId = invocationContext.Context.User?.FindFirstValue(ClaimTypes.NameIdentifier);
+        var userId = context.Context.User?.FindFirstValue(ClaimTypes.NameIdentifier);
 
         if (userId is null)
         {
@@ -37,11 +34,32 @@ internal sealed class AccountHubFilter : IHubFilter
             throw new HubException("Account required");
         }
 
-        accountContext.Account = new UserAccount
+        var account = new UserAccount
         {
             Name = accountModel.Name,
             UserId = accountModel.UserId
         };
+
+        context.Context.Items["Account"] = account;
+
+        accountContext.Account = account;
+
+        await next(context);
+    }
+
+    public async ValueTask<object?> InvokeMethodAsync(
+        HubInvocationContext invocationContext,
+        Func<HubInvocationContext, ValueTask<object?>> next
+    )
+    {
+        if (invocationContext.Context.Items.TryGetValue("Account", out var value) && value is UserAccount account)
+        {
+            accountContext.Account = account;
+        }
+        else
+        {
+            throw new HubException("Account required");
+        }
 
         return await next(invocationContext);
     }

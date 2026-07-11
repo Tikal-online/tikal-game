@@ -1,11 +1,8 @@
 import { Subject } from 'rxjs';
-import {
-  ChatMessage,
-  ConnectionStatus,
-  GlobalChatService,
-} from '../../services/global-chat/global-chat-service';
+import { ChatMessage, GlobalChatService } from '../../services/global-chat/global-chat-service';
 import { TestBed } from '@angular/core/testing';
 import { GlobalChatStore } from './global-chat-store';
+import { ConnectionStatus } from '../../../../core/enums/connection-status';
 
 describe('GlobalChatStore', () => {
   let globalChatService: {

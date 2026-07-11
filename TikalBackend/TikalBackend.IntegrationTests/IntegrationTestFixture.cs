@@ -32,7 +32,7 @@ internal abstract class IntegrationTestFixture : TestContainerFixture
         return Client.PostAsyncWithUser(createAccountUrl, user, new CreateAccountDto { Name = user.Name });
     }
 
-    protected async Task<HubConnection> CreateConnection(string url, TestUser? user = null)
+    protected async Task<HubConnection> CreateConnection(string url, TestUser? user = null, bool startConnection = true)
     {
         var connection = new HubConnectionBuilder()
             .WithUrl("wss://localhost/" + url,
@@ -47,7 +47,10 @@ internal abstract class IntegrationTestFixture : TestContainerFixture
                 })
             .Build();
 
-        await connection.StartAsync();
+        if (startConnection)
+        {
+            await connection.StartAsync();
+        }
 
         return connection;
     }

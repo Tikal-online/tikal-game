@@ -1,5 +1,4 @@
 using System.Net;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.SignalR.Client;
 using SignalRApi.Hubs.Lobbies.Dtos;
 using TikalBackend.IntegrationTests.Modules.Lobbies.Dtos;
@@ -22,16 +21,25 @@ internal sealed class GlobalChatTests : IntegrationTestFixture
         Assert.That(exception.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
     }
 
-    [TestCaseSource(typeof(ChatMessagesTestCases), nameof(ChatMessagesTestCases.ValidChatMessages))]
-    public void GivenUserWithoutAccount_WhenSendMessage_ThenThrowsAccountRequiredHubException(string message)
+    [Test]
+    public async Task GivenUserWithoutAccount_WhenConnect_ThenThrowsAccountRequiredHubException()
     {
-        // when & then
-        var exception = Assert.ThrowsAsync<HubException>(async () =>
+        // given
+        var closedExceptionSource = new TaskCompletionSource<Exception?>();
+        await using var connection = await CreateConnection(globalChatUrl, TestUser.Default, false);
+        connection.Closed += ex =>
         {
-            await using var connection = await CreateConnection(globalChatUrl, TestUser.Default);
-            await connection.InvokeAsync("SendMessage", message);
-        });
+            closedExceptionSource.TrySetResult(ex);
+            return Task.CompletedTask;
+        };
 
+        // when 
+        await connection.StartAsync();
+
+        // then
+        var exception = await closedExceptionSource.Task.WaitAsync(TimeSpan.FromSeconds(5));
+
+        Assert.That(exception, Is.Not.Null);
         Assert.That(exception.Message, Does.Contain("Account required"));
     }
 

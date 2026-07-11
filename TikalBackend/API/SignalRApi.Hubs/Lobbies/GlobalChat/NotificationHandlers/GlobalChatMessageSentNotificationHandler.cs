@@ -14,10 +14,10 @@ internal sealed class GlobalChatMessageSentNotificationHandler : INotificationHa
         this.hubContext = hubContext;
     }
 
-    public async Task Handle(GlobalChatMessageSentNotification notification, CancellationToken cancellationToken)
+    public Task Handle(GlobalChatMessageSentNotification notification, CancellationToken cancellationToken)
     {
         var messageDto = ChatMessageModelMapper.ChatMessageModelToChatMessageDto(notification.message);
 
-        await hubContext.Clients.All.ReceiveMessage(messageDto);
+        return hubContext.Clients.All.ReceiveMessage(messageDto);
     }
 }

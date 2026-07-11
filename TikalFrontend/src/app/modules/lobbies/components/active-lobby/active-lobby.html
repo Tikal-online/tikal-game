@@ -13,7 +13,10 @@
       @if (activeLobbyStore.lobby(); as lobby) {
         <h1>{{ lobby.name }}</h1>
         <section>
-          <app-lobby-player-list-header [maxPlayers]="lobby.maxPlayers" />
+          <app-lobby-player-list-header
+            [currentPlayers]="lobby.players.length"
+            [maxPlayers]="lobby.maxPlayers"
+          />
           <app-lobby-player-list [maxPlayers]="lobby.maxPlayers" [players]="lobby.players" />
         </section>
         <div class="lobby-buttons">

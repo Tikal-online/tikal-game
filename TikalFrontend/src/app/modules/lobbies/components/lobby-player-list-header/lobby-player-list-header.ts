@@ -10,4 +10,6 @@ import { LucideUsers } from '@lucide/angular';
 })
 export class LobbyPlayerListHeader {
   readonly maxPlayers = input.required<number>();
+
+  readonly currentPlayers = input<number>(1);
 }
