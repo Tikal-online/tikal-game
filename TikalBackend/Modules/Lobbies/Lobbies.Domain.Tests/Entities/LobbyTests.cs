@@ -1,4 +1,5 @@
 using Lobbies.Domain.Entities;
+using Lobbies.Domain.Enums;
 using Lobbies.Domain.Events;
 using Lobbies.Domain.Tests.Data;
 
@@ -37,6 +38,48 @@ internal sealed class LobbyTests
 
         Assert.That(domainEvent, Is.Not.Null);
         Assert.That(domainEvent.Player, Is.EqualTo(playerToRemove));
+    }
+
+
+    [TestCaseSource(typeof(LobbyTestCases), nameof(LobbyTestCases.ValidLobbyTestCases))]
+    public void GivenLobby_WhenAddPlayer_ThenAddsPlayerToList(Lobby lobby)
+    {
+        // given
+        var playerToAdd = new Player
+        {
+            UserId = "user-id",
+            IsOwner = false,
+            IsReady = false,
+            SelectedColour = Colour.Red
+        };
+
+        // when
+        lobby.AddPlayer(playerToAdd);
+
+        // then
+        Assert.That(lobby.Players, Does.Contain(playerToAdd));
+    }
+
+    [TestCaseSource(typeof(LobbyTestCases), nameof(LobbyTestCases.ValidLobbyTestCases))]
+    public void GivenLobby_WhenAddPlayer_ThenAddsPlayerJoinedEvent(Lobby lobby)
+    {
+        // given
+        var playerToAdd = new Player
+        {
+            UserId = "user-id",
+            IsOwner = false,
+            IsReady = false,
+            SelectedColour = Colour.Red
+        };
+
+        // when
+        lobby.AddPlayer(playerToAdd);
+
+        // then
+        var domainEvent = lobby.DomainEvents.OfType<PlayerJoinedEvent>().SingleOrDefault();
+
+        Assert.That(domainEvent, Is.Not.Null);
+        Assert.That(domainEvent.Player, Is.EqualTo(playerToAdd));
     }
 
     [TestCaseSource(nameof(LobbyWithMultiplePlayersAndOneOwnerTestCases))]
