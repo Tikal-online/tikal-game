@@ -21,19 +21,19 @@ internal sealed class GlobalChatTests : IntegrationTestFixture
         Assert.That(exception.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
     }
 
-    [TestCaseSource(typeof(ChatMessagesTestCases), nameof(ChatMessagesTestCases.ValidChatMessages))]
-    public async Task GivenUserWithoutAccount_WhenConnect_ThenThrowsAccountRequiredHubException(string message)
+    [Test]
+    public async Task GivenUserWithoutAccount_WhenConnect_ThenThrowsAccountRequiredHubException()
     {
         // given
         var closedExceptionSource = new TaskCompletionSource<Exception?>();
-
-        // when 
         await using var connection = await CreateConnection(globalChatUrl, TestUser.Default, false);
         connection.Closed += ex =>
         {
             closedExceptionSource.TrySetResult(ex);
             return Task.CompletedTask;
         };
+
+        // when 
         await connection.StartAsync();
 
         // then
