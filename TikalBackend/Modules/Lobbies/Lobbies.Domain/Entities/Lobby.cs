@@ -32,6 +32,12 @@ public sealed class Lobby : Entity
         Players.First().IsOwner = true;
     }
 
+    public void AddPlayer(Player player)
+    {
+        Players.Add(player);
+        AddDomainEvent(new PlayerJoinedEvent(player));
+    }
+
     public Colour GetUnusedColour()
     {
         var usedColours = Players.Select(p => p.SelectedColour).ToHashSet();
