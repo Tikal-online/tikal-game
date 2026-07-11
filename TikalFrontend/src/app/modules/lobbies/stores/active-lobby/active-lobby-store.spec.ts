@@ -132,21 +132,6 @@ describe('ActiveLobbyStore', () => {
     },
   );
 
-  test('given leaving succeeds when leaveLobby then routes back to /lobbies', () => {
-    // given
-    const store = TestBed.inject(ActiveLobbyStore);
-
-    activeLobbyService.leaveLobby.mockReturnValueOnce(of(undefined));
-
-    // when
-    TestBed.runInInjectionContext(() => {
-      store.leaveLobby();
-    });
-
-    // then
-    expect(router.navigate).toHaveBeenCalledWith(['/lobbies']);
-  });
-
   test('given leaving fails when leaveLobby then sets leavingStatus to error', () => {
     // given
     const store = TestBed.inject(ActiveLobbyStore);
@@ -236,7 +221,7 @@ describe('ActiveLobbyStore', () => {
   );
 
   test.for<Lobby>(LOBBY_TESTCASES)(
-    'given active lobby when leftPlayers$ emits me then disconnects and sets status to left',
+    'given active lobby when leftPlayers$ emits me then routes back to lobbies',
     (lobby: Lobby) => {
       // given
       const store = TestBed.inject(ActiveLobbyStore);
@@ -254,8 +239,7 @@ describe('ActiveLobbyStore', () => {
       activeLobbyService.leftPlayers$.next(player);
 
       // then
-      expect(store.status()).toEqual('left');
-      expect(activeLobbyService.disconnect).toHaveBeenCalledOnce();
+      expect(router.navigate).toHaveBeenCalledWith(['/lobbies']);
     },
   );
 });

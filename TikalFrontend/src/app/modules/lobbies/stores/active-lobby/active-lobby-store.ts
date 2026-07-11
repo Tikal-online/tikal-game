@@ -9,7 +9,7 @@ import {
 import { Lobby } from '../../models/lobby';
 import { inject } from '@angular/core';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { pipe, switchMap, tap } from 'rxjs';
+import { catchError, pipe, switchMap, tap } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
 import { Router } from '@angular/router';
 import { ActiveLobbyService } from '../../services/active-lobby/active-lobby-service';
@@ -18,7 +18,7 @@ import { AccountStore } from '../../../../core/stores/account-store/account-stor
 
 type ActiveLobbyState = {
   lobby: Lobby | null;
-  status: 'initial' | 'loading' | 'loaded' | 'left' | 'error';
+  status: 'initial' | 'loading' | 'loaded' | 'error';
   connectionStatus: ConnectionStatus;
   leavingStatus: 'initial' | 'leaving' | 'error';
 };
@@ -68,8 +68,7 @@ export const ActiveLobbyStore = signalStore(
         switchMap(() => store._activeLobbyService.leftPlayers$),
         tap((player) => {
           if (store._accountStore.isMe(player.userId)) {
-            store._activeLobbyService.disconnect();
-            patchState(store, { status: 'left', lobby: null });
+            store._router.navigate(['/lobbies']);
           } else {
             patchState(store, (state) => ({
               lobby: state.lobby
@@ -109,12 +108,9 @@ export const ActiveLobbyStore = signalStore(
       pipe(
         tap(() => patchState(store, { leavingStatus: 'leaving' })),
         switchMap(() => {
-          return store._activeLobbyService.leaveLobby().pipe(
-            tapResponse({
-              next: () => store._router.navigate(['/lobbies']),
-              error: () => patchState(store, { leavingStatus: 'error' }),
-            }),
-          );
+          return store._activeLobbyService
+            .leaveLobby()
+            .pipe(catchError(async () => patchState(store, { leavingStatus: 'error' })));
         }),
       ),
     ),
