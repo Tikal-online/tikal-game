@@ -12,14 +12,14 @@ public sealed class LobbiesDbContext : DbContext, UnitOfWork
 
     private readonly IMediator mediator;
 
+    public DbSet<Player> Players { get; set; }
+
+    public DbSet<Lobby> Lobbies { get; set; }
+
     public LobbiesDbContext(DbContextOptions<LobbiesDbContext> options, IMediator mediator) : base(options)
     {
         this.mediator = mediator;
     }
-
-    public DbSet<Player> Players { get; set; }
-
-    public DbSet<Lobby> Lobbies { get; set; }
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
