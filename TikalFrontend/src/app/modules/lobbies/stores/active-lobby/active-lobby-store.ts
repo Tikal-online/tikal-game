@@ -9,22 +9,23 @@ import {
 import { Lobby } from '../../models/lobby';
 import { inject } from '@angular/core';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { pipe, switchMap, tap } from 'rxjs';
+import { catchError, pipe, switchMap, tap } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
 import { Router } from '@angular/router';
 import { ActiveLobbyService } from '../../services/active-lobby/active-lobby-service';
 import { ConnectionStatus } from '../../../../core/enums/connection-status';
+import { AccountStore } from '../../../../core/stores/account-store/account-store';
 
 type ActiveLobbyState = {
   lobby: Lobby | null;
-  status: 'initial' | 'loading' | 'loaded' | 'error';
+  loadingStatus: 'initial' | 'loading' | 'loaded' | 'error';
   connectionStatus: ConnectionStatus;
   leavingStatus: 'initial' | 'leaving' | 'error';
 };
 
 const initialState: ActiveLobbyState = {
   lobby: null,
-  status: 'initial',
+  loadingStatus: 'initial',
   connectionStatus: 'Disconnected',
   leavingStatus: 'initial',
 };
@@ -36,6 +37,7 @@ export const ActiveLobbyStore = signalStore(
 
   withProps(() => ({
     _activeLobbyService: inject(ActiveLobbyService),
+    _accountStore: inject(AccountStore),
     _router: inject(Router),
   })),
 
@@ -64,16 +66,20 @@ export const ActiveLobbyStore = signalStore(
     watchLeftPlayers: rxMethod<void>(
       pipe(
         switchMap(() => store._activeLobbyService.leftPlayers$),
-        tap((player) =>
-          patchState(store, (state) => ({
-            lobby: state.lobby
-              ? {
-                  ...state.lobby,
-                  players: state.lobby.players.filter((p) => p.userId !== player.userId),
-                }
-              : null,
-          })),
-        ),
+        tap((player) => {
+          if (store._accountStore.isMe(player.userId)) {
+            store._router.navigate(['/lobbies']);
+          } else {
+            patchState(store, (state) => ({
+              lobby: state.lobby
+                ? {
+                    ...state.lobby,
+                    players: state.lobby.players.filter((p) => p.userId !== player.userId),
+                  }
+                : null,
+            }));
+          }
+        }),
       ),
     ),
 
@@ -86,12 +92,12 @@ export const ActiveLobbyStore = signalStore(
 
     loadActiveLobby: rxMethod<void>(
       pipe(
-        tap(() => patchState(store, { status: 'loading', leavingStatus: 'initial' })),
+        tap(() => patchState(store, { loadingStatus: 'loading', leavingStatus: 'initial' })),
         switchMap(() => {
           return store._activeLobbyService.getActiveLobby().pipe(
             tapResponse({
-              next: (result) => patchState(store, { lobby: result, status: 'loaded' }),
-              error: () => patchState(store, { status: 'error' }),
+              next: (result) => patchState(store, { lobby: result, loadingStatus: 'loaded' }),
+              error: () => patchState(store, { loadingStatus: 'error' }),
             }),
           );
         }),
@@ -102,12 +108,9 @@ export const ActiveLobbyStore = signalStore(
       pipe(
         tap(() => patchState(store, { leavingStatus: 'leaving' })),
         switchMap(() => {
-          return store._activeLobbyService.leaveLobby().pipe(
-            tapResponse({
-              next: () => store._router.navigate(['/lobbies']),
-              error: () => patchState(store, { leavingStatus: 'error' }),
-            }),
-          );
+          return store._activeLobbyService
+            .leaveLobby()
+            .pipe(catchError(async () => patchState(store, { leavingStatus: 'error' })));
         }),
       ),
     ),
