@@ -30,7 +30,7 @@
             (click)="activeLobbyStore.leaveLobby()"
           >
             @if (activeLobbyStore.leavingStatus() === 'leaving') {
-              <svg class="spin-animation" lucideLoaderCircle [size]="18"></svg>
+              <svg class="spin-animation" lucideLoaderCircle [size]="16"></svg>
               {{ t('leaving-button') }}
             } @else {
               {{ t('leave-button') }}
