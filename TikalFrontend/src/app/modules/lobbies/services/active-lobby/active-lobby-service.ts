@@ -6,9 +6,13 @@ import { ConnectionStatus } from '../../../../core/enums/connection-status';
 import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
 import { environment } from '../../../../../environments/environment';
 import { Player } from '../../models/player';
+import { ChatMessage } from '../../models/chat-message';
+import { ChatMessageDto } from '../../../../core/dtos/chat-message';
 
 @Service()
 export class ActiveLobbyService {
+  readonly message$ = new Subject<ChatMessage>();
+
   readonly joinedPlayer$ = new Subject<Player>();
 
   readonly leftPlayers$ = new Subject<Player>();
@@ -29,6 +33,10 @@ export class ActiveLobbyService {
         },
       })
       .build();
+
+    this.connection.on('ReceiveMessage', (message: ChatMessageDto) => {
+      this.message$.next({ ...message, time: new Date() });
+    });
 
     this.connection.on('PlayerJoined', (player: Player) => {
       this.joinedPlayer$.next(player);

@@ -2,10 +2,11 @@ import { Component, inject } from '@angular/core';
 import { ActiveLobbyStore } from '../../stores/active-lobby/active-lobby-store';
 import { ChatHeader } from '../chat-header/chat-header';
 import { LucideMessageSquare } from '@lucide/angular';
+import { ChatMessages } from '../chat-messages/chat-messages';
 
 @Component({
   selector: 'app-lobby-chat',
-  imports: [ChatHeader, LucideMessageSquare],
+  imports: [ChatHeader, LucideMessageSquare, ChatMessages],
   templateUrl: './lobby-chat.html',
   styleUrl: './lobby-chat.scss',
 })

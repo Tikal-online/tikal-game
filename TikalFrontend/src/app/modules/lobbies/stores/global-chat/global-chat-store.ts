@@ -7,10 +7,11 @@ import {
   withProps,
   withState,
 } from '@ngrx/signals';
-import { ChatMessage, GlobalChatService } from '../../services/global-chat/global-chat-service';
+import { GlobalChatService } from '../../services/global-chat/global-chat-service';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { pipe, switchMap, tap } from 'rxjs';
 import { ConnectionStatus } from '../../../../core/enums/connection-status';
+import { ChatMessage } from '../../models/chat-message';
 
 export type GlobalChatState = {
   status: ConnectionStatus;

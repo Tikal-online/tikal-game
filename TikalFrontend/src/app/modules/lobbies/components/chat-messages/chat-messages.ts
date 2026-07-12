@@ -1,8 +1,8 @@
 import { Component, inject, input } from '@angular/core';
-import { ChatMessage } from '../../services/global-chat/global-chat-service';
 import { AccountStore } from '../../../../core/stores/account-store/account-store';
 import { MyChatMessage } from './my-chat-message/my-chat-message';
 import { EnemyChatMessage } from './enemy-chat-message/enemy-chat-message';
+import { ChatMessage } from '../../models/chat-message';
 
 @Component({
   selector: 'app-chat-messages',

@@ -15,6 +15,7 @@ import { Router } from '@angular/router';
 import { ActiveLobbyService } from '../../services/active-lobby/active-lobby-service';
 import { ConnectionStatus } from '../../../../core/enums/connection-status';
 import { AccountStore } from '../../../../core/stores/account-store/account-store';
+import { ChatMessage } from '../../models/chat-message';
 
 type ActiveLobbyState = {
   lobby: Lobby | null;
@@ -22,6 +23,7 @@ type ActiveLobbyState = {
   connectionStatus: ConnectionStatus;
   leavingStatus: 'initial' | 'leaving' | 'error';
   showLobbyChat: boolean;
+  messages: ChatMessage[];
 };
 
 const initialState: ActiveLobbyState = {
@@ -30,6 +32,7 @@ const initialState: ActiveLobbyState = {
   connectionStatus: 'Disconnected',
   leavingStatus: 'initial',
   showLobbyChat: true,
+  messages: [],
 };
 
 export const ActiveLobbyStore = signalStore(
@@ -100,6 +103,15 @@ export const ActiveLobbyStore = signalStore(
       ),
     ),
 
+    watchMessages: rxMethod<void>(
+      pipe(
+        switchMap(() => store._activeLobbyService.message$),
+        tap((message) =>
+          patchState(store, (state) => ({ messages: [message, ...state.messages] })),
+        ),
+      ),
+    ),
+
     loadActiveLobby: rxMethod<void>(
       pipe(
         tap(() =>
@@ -107,6 +119,7 @@ export const ActiveLobbyStore = signalStore(
             loadingStatus: 'loading',
             leavingStatus: 'initial',
             showLobbyChat: true,
+            messages: [],
           }),
         ),
         switchMap(() => {
@@ -137,6 +150,7 @@ export const ActiveLobbyStore = signalStore(
       store.watchJoinedPlayers();
       store.watchConnectionStatus();
       store.watchLeftPlayers();
+      store.watchMessages();
     },
   }),
 );

@@ -9,6 +9,7 @@ import { Lobby } from '../../models/lobby';
 import { PLAYER_TESTCASES } from '../../models/player.testcases';
 import { DEFAULT_TEST_LOBBY, LOBBY_TESTCASES } from '../../models/lobby.testcases';
 import { AccountStore } from '../../../../core/stores/account-store/account-store';
+import { ChatMessage } from '../../models/chat-message';
 
 describe('ActiveLobbyStore', () => {
   // dependencies
@@ -21,6 +22,7 @@ describe('ActiveLobbyStore', () => {
   };
 
   const activeLobbyService = {
+    message$: new Subject<ChatMessage>(),
     joinedPlayer$: new Subject<Player>(),
     leftPlayers$: new Subject<Player>(),
     connectionStatus$: new Subject<ConnectionStatus>(),

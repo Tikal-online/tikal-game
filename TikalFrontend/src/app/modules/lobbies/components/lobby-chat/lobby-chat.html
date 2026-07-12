@@ -5,6 +5,11 @@
       [status]="activeLobbyStore.connectionStatus()"
       (closed)="activeLobbyStore.hideChat()"
     />
+    @switch (activeLobbyStore.connectionStatus()) {
+      @case ('Connected') {
+        <app-chat-messages [messages]="activeLobbyStore.messages()" />
+      }
+    }
   </div>
 } @else {
   <div
