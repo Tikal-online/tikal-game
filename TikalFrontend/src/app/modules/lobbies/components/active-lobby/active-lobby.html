@@ -2,52 +2,48 @@
   @switch (activeLobbyStore.loadingStatus()) {
     @case ('initial')
     @case ('loading') {
-      <div class="lobby-content">
-        <div class="lobby-details">
-          <p class="header-prefix">{{ t('header-prefix') }}</p>
-          <h1>{{ t('header-loading') }}</h1>
-          <section>
-            <app-lobby-player-list-header [maxPlayers]="4" />
-            <app-lobby-player-list [isLoading]="true" [maxPlayers]="4" [players]="[]" />
-          </section>
-        </div>
-        <app-lobby-chat />
+      <div class="lobby-details">
+        <p class="header-prefix">{{ t('header-prefix') }}</p>
+        <h1>{{ t('header-loading') }}</h1>
+        <section>
+          <app-lobby-player-list-header [maxPlayers]="4" />
+          <app-lobby-player-list [isLoading]="true" [maxPlayers]="4" [players]="[]" />
+        </section>
       </div>
+      <app-lobby-chat />
     }
     @case ('loaded') {
       @if (activeLobbyStore.lobby(); as lobby) {
-        <div class="lobby-content">
-          <div class="lobby-details">
-            <p class="header-prefix">{{ t('header-prefix') }}</p>
-            <h1>{{ lobby.name }}</h1>
-            <section>
-              <app-lobby-player-list-header
-                [currentPlayers]="lobby.players.length"
-                [maxPlayers]="lobby.maxPlayers"
-              />
-              <app-lobby-player-list [maxPlayers]="lobby.maxPlayers" [players]="lobby.players" />
-            </section>
-            <div class="lobby-buttons">
-              <button class="button-primary footer-button" type="button">
-                {{ t('ready-button') }}
-              </button>
-              <button
-                class="button-secondary footer-button"
-                type="button"
-                [disabled]="activeLobbyStore.leavingStatus() === 'leaving'"
-                (click)="activeLobbyStore.leaveLobby()"
-              >
-                @if (activeLobbyStore.leavingStatus() === 'leaving') {
-                  <svg class="spin-animation" lucideLoaderCircle [size]="16"></svg>
-                  {{ t('leaving-button') }}
-                } @else {
-                  {{ t('leave-button') }}
-                }
-              </button>
-            </div>
+        <div class="lobby-details">
+          <p class="header-prefix">{{ t('header-prefix') }}</p>
+          <h1>{{ lobby.name }}</h1>
+          <section>
+            <app-lobby-player-list-header
+              [currentPlayers]="lobby.players.length"
+              [maxPlayers]="lobby.maxPlayers"
+            />
+            <app-lobby-player-list [maxPlayers]="lobby.maxPlayers" [players]="lobby.players" />
+          </section>
+          <div class="lobby-buttons">
+            <button class="button-primary footer-button" type="button">
+              {{ t('ready-button') }}
+            </button>
+            <button
+              class="button-secondary footer-button"
+              type="button"
+              [disabled]="activeLobbyStore.leavingStatus() === 'leaving'"
+              (click)="activeLobbyStore.leaveLobby()"
+            >
+              @if (activeLobbyStore.leavingStatus() === 'leaving') {
+                <svg class="spin-animation" lucideLoaderCircle [size]="16"></svg>
+                {{ t('leaving-button') }}
+              } @else {
+                {{ t('leave-button') }}
+              }
+            </button>
           </div>
-          <app-lobby-chat />
         </div>
+        <app-lobby-chat />
       } @else {
         <app-lobby-not-found-overlay />
       }
