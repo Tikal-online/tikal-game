@@ -5,6 +5,7 @@ import { LobbyPlayerList } from '../lobby-player-list/lobby-player-list';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { LobbyNotFoundOverlay } from '../error-overlays/lobby-not-found-overlay/lobby-not-found-overlay';
 import { LucideLoaderCircle } from '@lucide/angular';
+import { LobbyChat } from '../lobby-chat/lobby-chat';
 
 @Component({
   selector: 'app-active-lobby',
@@ -14,6 +15,7 @@ import { LucideLoaderCircle } from '@lucide/angular';
     TranslocoDirective,
     LobbyNotFoundOverlay,
     LucideLoaderCircle,
+    LobbyChat,
   ],
   templateUrl: './active-lobby.html',
   styleUrl: './active-lobby.scss',

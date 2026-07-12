@@ -1,0 +1,38 @@
+@use 'colors';
+
+:host {
+  opacity: 90%;
+}
+
+.expanded {
+  display: flex;
+  flex-direction: column;
+
+  height: 100%;
+  width: 20rem;
+
+  background-color: colors.$card-background;
+  border-left: 1px solid colors.$border;
+}
+
+.collapsed {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  height: 100%;
+  min-width: 2rem;
+
+  background-color: colors.$card-background;
+  border-left: 1px solid colors.$border;
+
+  color: colors.$text-muted;
+
+  cursor: pointer;
+}
+
+.collapsed:hover {
+  background-color: colors.$card-background-secondary;
+  color: colors.$text-header-prefix;
+}

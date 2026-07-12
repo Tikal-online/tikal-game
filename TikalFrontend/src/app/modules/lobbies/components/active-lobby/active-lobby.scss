@@ -5,6 +5,18 @@
   flex-direction: column;
 
   height: 100vh;
+}
+
+.lobby-content {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+}
+
+.lobby-details {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 
   padding: 2rem;
 }
