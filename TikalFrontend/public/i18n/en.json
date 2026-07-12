@@ -37,11 +37,6 @@
     },
     "globalChat": {
       "header": "GLOBAL CHAT",
-      "header-status": {
-        "connected": "LIVE",
-        "connecting": "CONNECTING",
-        "disconnected": "DISCONNECTED"
-      },
       "message-input-label": "Message",
       "message-input-placeholder": "Say something...",
       "disconnected": {
@@ -98,6 +93,13 @@
       "ready-button": "READY UP",
       "leave-button": "LEAVE",
       "leaving-button": "LEAVING"
+    }
+  },
+  "chat" : {
+    "header": {
+      "connected": "LIVE",
+      "connecting": "CONNECTING",
+      "disconnected": "DISCONNECTED"
     }
   }
 }

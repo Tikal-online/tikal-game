@@ -1,19 +1,25 @@
 @if (globalChatStore.isExpanded()) {
-  <div class="expanded">
-    <app-global-chat-header />
-    @switch (globalChatStore.status()) {
-      @case ('Connected') {
-        <app-global-chat-messages />
-        <app-global-chat-form />
+  <ng-container *transloco="let t; prefix: 'lobbies.globalChat'">
+    <div class="expanded">
+      <app-chat-header
+        [header]="t('header')"
+        [status]="globalChatStore.status()"
+        (closed)="globalChatStore.collapse()"
+      />
+      @switch (globalChatStore.status()) {
+        @case ('Connected') {
+          <app-global-chat-messages />
+          <app-global-chat-form />
+        }
+        @case ('Connecting') {
+          <app-global-chat-connecting />
+        }
+        @case ('Disconnected') {
+          <app-global-chat-disconnected />
+        }
       }
-      @case ('Connecting') {
-        <app-global-chat-connecting />
-      }
-      @case ('Disconnected') {
-        <app-global-chat-disconnected />
-      }
-    }
-  </div>
+    </div>
+  </ng-container>
 } @else {
   <div
     class="collapsed"
