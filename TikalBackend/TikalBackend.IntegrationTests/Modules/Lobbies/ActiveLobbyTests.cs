@@ -2,6 +2,7 @@ using System.Net;
 using System.Net.Http.Json;
 using Microsoft.AspNetCore.SignalR.Client;
 using RestApi.Controllers.Lobbies.Dtos;
+using SignalRApi.Hubs.Lobbies.Dtos;
 using TikalBackend.IntegrationTests.Extensions;
 using TikalBackend.IntegrationTests.Modules.Lobbies.Dtos;
 using LobbyPlayerDto = SignalRApi.Hubs.Lobbies.Dtos.LobbyPlayerDto;
@@ -91,8 +92,12 @@ internal sealed class ActiveLobbyTests : IntegrationTestFixture
         var joinedPlayer = await joinedPlayerSource.Task.WaitAsync(TimeSpan.FromSeconds(5));
 
         Assert.That(joinedPlayer, Is.Not.Null);
-        Assert.That(joinedPlayer.UserId, Is.EqualTo(TestUser.TestUser1.UserId));
-        Assert.That(joinedPlayer.Name, Is.EqualTo(TestUser.TestUser1.Name));
+
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(joinedPlayer.UserId, Is.EqualTo(TestUser.TestUser1.UserId));
+            Assert.That(joinedPlayer.Name, Is.EqualTo(TestUser.TestUser1.Name));
+        }
     }
 
     [TestCaseSource(typeof(CreateLobbyDtoTestCases), nameof(CreateLobbyDtoTestCases.ValidCreateLobbyDtos))]
@@ -119,7 +124,50 @@ internal sealed class ActiveLobbyTests : IntegrationTestFixture
         var leftPlayer = await leftPlayerSource.Task.WaitAsync(TimeSpan.FromSeconds(5));
 
         Assert.That(leftPlayer, Is.Not.Null);
-        Assert.That(leftPlayer.UserId, Is.EqualTo(TestUser.TestUser1.UserId));
-        Assert.That(leftPlayer.Name, Is.EqualTo(TestUser.TestUser1.Name));
+
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(leftPlayer.UserId, Is.EqualTo(TestUser.TestUser1.UserId));
+            Assert.That(leftPlayer.Name, Is.EqualTo(TestUser.TestUser1.Name));
+        }
+    }
+
+    [TestCaseSource(typeof(SendMessageDtoTestCases), nameof(SendMessageDtoTestCases.ValidSendMessageDtoCommands))]
+    public async Task GivenLobby_WhenPlayerSendsChatMessage_ThenSendsChatMessage(SendMessageDto sendMessageDto)
+    {
+        // given
+        var createLobbyDto = new CreateLobbyDto
+        {
+            Name = "Test Lobby",
+            MaxPlayers = 4
+        };
+
+        await CreateUserAccount(TestUser.Default);
+        await Client.PostAsyncWithUser(lobbyUrl, TestUser.Default, createLobbyDto);
+        await using var connection = await CreateConnection(activeLobbyUrl, TestUser.Default);
+
+        var chatMessageSource = new TaskCompletionSource<ChatMessageDto>();
+        connection.On<ChatMessageDto>("ReceiveMessage", chatMessageSource.SetResult);
+
+        var lobbyResponse = await Client.GetAsyncWithUser(lobbyUrl + "/me", TestUser.Default);
+        var lobby = await lobbyResponse.Content.ReadFromJsonAsync<LobbyDto>();
+
+        await CreateUserAccount(TestUser.TestUser1);
+        await Client.PostAsyncWithUser($"Lobbies/{lobby!.Id}/join", TestUser.TestUser1, null);
+
+        // when
+        await Client.PostAsyncWithUser(lobbyUrl + "/sendMessage", TestUser.TestUser1, sendMessageDto);
+
+        // then
+        var chatMessage = await chatMessageSource.Task.WaitAsync(TimeSpan.FromSeconds(5));
+
+        Assert.That(chatMessage, Is.Not.Null);
+
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(chatMessage.UserId, Is.EqualTo(TestUser.TestUser1.UserId));
+            Assert.That(chatMessage.Username, Is.EqualTo(TestUser.TestUser1.Name));
+            Assert.That(chatMessage.Content, Is.EqualTo(sendMessageDto.Message));
+        }
     }
 }

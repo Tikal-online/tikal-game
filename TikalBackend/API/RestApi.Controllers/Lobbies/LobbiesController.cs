@@ -116,6 +116,22 @@ public sealed partial class LobbiesController : ApiController
         );
     }
 
+    [HttpPost("sendMessage")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [EndpointDescription("Sends a message to the lobby for the currently authenticated user")]
+    public async Task<IActionResult> SendMessage(SendMessageDto sendMessageDto, CancellationToken cancellationToken)
+    {
+        var command = new SendLobbyChatMessageCommand(sendMessageDto.Message);
+
+        var result = await sender.Send(command, cancellationToken);
+
+        return result.Match<IActionResult>(
+            _ => Ok(),
+            _ => PlayerNotInALobby(GetCurrentUserId())
+        );
+    }
+
     [HttpGet]
     [ProducesResponseType<PaginatedDto<List<LobbySummaryDto>>>(StatusCodes.Status200OK)]
     [EndpointDescription("Gets a paginated summary of the currently active lobbies. Can be filtered by lobby name")]

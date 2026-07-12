@@ -40,7 +40,6 @@ internal sealed class LobbyTests
         Assert.That(domainEvent.Player, Is.EqualTo(playerToRemove));
     }
 
-
     [TestCaseSource(typeof(LobbyTestCases), nameof(LobbyTestCases.ValidLobbyTestCases))]
     public void GivenLobby_WhenAddPlayer_ThenAddsPlayerToList(Lobby lobby)
     {
