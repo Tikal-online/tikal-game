@@ -3,6 +3,7 @@ using Lobbies.Domain.Entities;
 using Lobbies.Infrastructure.Extensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Shared.Domain.Entities;
 
 namespace Lobbies.Infrastructure.Database;
 
@@ -23,9 +24,15 @@ public sealed class LobbiesDbContext : DbContext, UnitOfWork
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
+        var entitiesWithEvents = ChangeTracker
+            .Entries<Entity>()
+            .Select(e => e.Entity)
+            .Where(e => e.DomainEvents.Count > 0)
+            .ToList();
+
         var result = await base.SaveChangesAsync(cancellationToken);
 
-        await mediator.DispatchDomainEventsAsync(this);
+        await mediator.DispatchDomainEventsAsync(entitiesWithEvents);
 
         return result;
     }

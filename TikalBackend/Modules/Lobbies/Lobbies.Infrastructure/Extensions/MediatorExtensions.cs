@@ -1,5 +1,4 @@
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Shared.Domain.Entities;
 
 namespace Lobbies.Infrastructure.Extensions;
@@ -8,14 +7,8 @@ internal static class MediatorExtensions
 {
     extension(IMediator mediator)
     {
-        public async Task DispatchDomainEventsAsync(DbContext dbContext)
+        public async Task DispatchDomainEventsAsync(List<Entity> entitiesWithEvents)
         {
-            var entitiesWithEvents = dbContext.ChangeTracker
-                .Entries<Entity>()
-                .Select(e => e.Entity)
-                .Where(e => e.DomainEvents.Count != 0)
-                .ToList();
-
             var domainEvents = entitiesWithEvents
                 .SelectMany(e => e.DomainEvents)
                 .ToList();
