@@ -8,7 +8,7 @@
       />
       @switch (globalChatStore.status()) {
         @case ('Connected') {
-          <app-global-chat-messages />
+          <app-chat-messages [messages]="globalChatStore.messages()" />
           <app-global-chat-form />
         }
         @case ('Connecting') {

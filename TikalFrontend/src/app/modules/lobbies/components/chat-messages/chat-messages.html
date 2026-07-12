@@ -1,5 +1,5 @@
-@for (message of globalChatStore.messages(); track $index) {
-  @if (isMyMessage(message)) {
+@for (message of messages(); track $index) {
+  @if (accountStore.isMe(message.userId)) {
     <app-my-chat-message class="my-message" [time]="message.time">
       {{ message.content }}
     </app-my-chat-message>
