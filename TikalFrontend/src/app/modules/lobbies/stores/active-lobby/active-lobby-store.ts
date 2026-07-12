@@ -21,6 +21,7 @@ type ActiveLobbyState = {
   loadingStatus: 'initial' | 'loading' | 'loaded' | 'error';
   connectionStatus: ConnectionStatus;
   leavingStatus: 'initial' | 'leaving' | 'error';
+  showLobbyChat: boolean;
 };
 
 const initialState: ActiveLobbyState = {
@@ -28,6 +29,7 @@ const initialState: ActiveLobbyState = {
   loadingStatus: 'initial',
   connectionStatus: 'Disconnected',
   leavingStatus: 'initial',
+  showLobbyChat: true,
 };
 
 export const ActiveLobbyStore = signalStore(
@@ -48,6 +50,14 @@ export const ActiveLobbyStore = signalStore(
 
     disconnect(): Promise<void> {
       return store._activeLobbyService.disconnect();
+    },
+
+    showChat(): void {
+      patchState(store, { showLobbyChat: true });
+    },
+
+    hideChat(): void {
+      patchState(store, { showLobbyChat: false });
     },
 
     watchJoinedPlayers: rxMethod<void>(
@@ -92,7 +102,13 @@ export const ActiveLobbyStore = signalStore(
 
     loadActiveLobby: rxMethod<void>(
       pipe(
-        tap(() => patchState(store, { loadingStatus: 'loading', leavingStatus: 'initial' })),
+        tap(() =>
+          patchState(store, {
+            loadingStatus: 'loading',
+            leavingStatus: 'initial',
+            showLobbyChat: true,
+          }),
+        ),
         switchMap(() => {
           return store._activeLobbyService.getActiveLobby().pipe(
             tapResponse({

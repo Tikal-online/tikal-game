@@ -1,1 +1,18 @@
-<div class="expanded"></div>
+@if (activeLobbyStore.showLobbyChat()) {
+  <div class="expanded">
+    <app-chat-header
+      header="Lobby"
+      [status]="activeLobbyStore.connectionStatus()"
+      (closed)="activeLobbyStore.hideChat()"
+    />
+  </div>
+} @else {
+  <div
+    class="collapsed"
+    tabindex="0"
+    (click)="activeLobbyStore.showChat()"
+    (keydown.enter)="activeLobbyStore.showChat()"
+  >
+    <svg lucideMessageSquare [size]="15"></svg>
+  </div>
+}
