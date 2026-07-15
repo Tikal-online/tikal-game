@@ -1,6 +1,5 @@
-import { Component, inject, signal } from '@angular/core';
-import { GlobalChatStore } from '../../../stores/global-chat/global-chat-store';
-import { form, required, maxLength, disabled, FormRoot, FormField } from '@angular/forms/signals';
+import { Component, input, signal } from '@angular/core';
+import { form, required, maxLength, disabled, FormField, FormRoot } from '@angular/forms/signals';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { LucideSendHorizontal } from '@lucide/angular';
 
@@ -9,15 +8,15 @@ type ChatFormData = {
 };
 
 @Component({
-  selector: 'app-global-chat-form',
+  selector: 'app-chat-form',
   imports: [TranslocoDirective, FormRoot, FormField, LucideSendHorizontal],
-  templateUrl: './global-chat-form.html',
-  styleUrl: './global-chat-form.scss',
+  templateUrl: './chat-form.html',
+  styleUrl: './chat-form.scss',
 })
-export class GlobalChatForm {
+export class ChatForm {
   private readonly chatFormData = signal<ChatFormData>({ message: '' });
 
-  private readonly globalChatStore = inject(GlobalChatStore);
+  readonly action = input.required<(message: string) => Promise<void>>();
 
   readonly chatForm = form(
     this.chatFormData,
@@ -31,7 +30,7 @@ export class GlobalChatForm {
         action: async (field) => {
           const message = field().value().message;
 
-          await this.globalChatStore.sendMessage(message);
+          await this.action()(message);
 
           field.message().reset('');
 

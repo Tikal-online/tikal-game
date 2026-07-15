@@ -1,0 +1,24 @@
+@if (activeLobbyStore.showLobbyChat()) {
+  <div class="expanded">
+    <app-chat-header
+      header="Lobby"
+      [status]="activeLobbyStore.connectionStatus()"
+      (closed)="activeLobbyStore.hideChat()"
+    />
+    @switch (activeLobbyStore.connectionStatus()) {
+      @case ('Connected') {
+        <app-chat-messages [messages]="activeLobbyStore.messages()" />
+        <app-chat-form [action]="activeLobbyStore.sendMessage" />
+      }
+    }
+  </div>
+} @else {
+  <div
+    class="collapsed"
+    tabindex="0"
+    (click)="activeLobbyStore.showChat()"
+    (keydown.enter)="activeLobbyStore.showChat()"
+  >
+    <svg lucideMessageSquare [size]="15"></svg>
+  </div>
+}

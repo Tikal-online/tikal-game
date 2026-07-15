@@ -3,19 +3,8 @@ import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
 import { environment } from '../../../../../environments/environment';
 import { Subject } from 'rxjs';
 import { ConnectionStatus } from '../../../../core/enums/connection-status';
-
-type ChatMessageDto = {
-  userId: string;
-  username: string;
-  content: string;
-};
-
-export type ChatMessage = {
-  userId: string;
-  username: string;
-  content: string;
-  time: Date;
-};
+import { ChatMessageDto } from '../../../../core/dtos/chat-message';
+import { ChatMessage } from '../../models/chat-message';
 
 // TODO: find a clean way to unit this service
 @Service()

@@ -2,9 +2,15 @@
 
 :host {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
 
   height: 100vh;
+}
+
+.lobby-details {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 
   padding: 2rem;
 }
