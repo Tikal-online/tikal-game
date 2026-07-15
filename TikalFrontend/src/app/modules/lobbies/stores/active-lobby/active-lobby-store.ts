@@ -9,7 +9,7 @@ import {
 import { Lobby } from '../../models/lobby';
 import { inject } from '@angular/core';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { catchError, pipe, switchMap, tap } from 'rxjs';
+import { catchError, firstValueFrom, pipe, switchMap, tap } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
 import { Router } from '@angular/router';
 import { ActiveLobbyService } from '../../services/active-lobby/active-lobby-service';
@@ -61,6 +61,10 @@ export const ActiveLobbyStore = signalStore(
 
     hideChat(): void {
       patchState(store, { showLobbyChat: false });
+    },
+
+    sendMessage(message: string): Promise<void> {
+      return firstValueFrom(store._activeLobbyService.sendMessage(message));
     },
 
     watchJoinedPlayers: rxMethod<void>(

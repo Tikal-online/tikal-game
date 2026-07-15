@@ -89,4 +89,8 @@ export class ActiveLobbyService {
   leaveLobby(): Observable<void> {
     return this.http.post<void>(this.url + '/leave', {});
   }
+
+  sendMessage(message: string): Observable<void> {
+    return this.http.post<void>(this.url + '/sendMessage', { message: message });
+  }
 }

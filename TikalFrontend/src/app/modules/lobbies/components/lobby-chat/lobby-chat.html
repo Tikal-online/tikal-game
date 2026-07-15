@@ -8,6 +8,7 @@
     @switch (activeLobbyStore.connectionStatus()) {
       @case ('Connected') {
         <app-chat-messages [messages]="activeLobbyStore.messages()" />
+        <app-chat-form [action]="activeLobbyStore.sendMessage" />
       }
     }
   </div>
