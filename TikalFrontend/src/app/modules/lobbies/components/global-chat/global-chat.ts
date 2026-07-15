@@ -1,23 +1,23 @@
 import { Component, DestroyRef, inject } from '@angular/core';
 import { LucideMessageSquare } from '@lucide/angular';
 import { GlobalChatStore } from '../../stores/global-chat/global-chat-store';
-import { GlobalChatForm } from './global-chat-form/global-chat-form';
 import { GlobalChatDisconnected } from './global-chat-disconnected/global-chat-disconnected';
 import { GlobalChatConnecting } from './global-chat-connecting/global-chat-connecting';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { ChatHeader } from '../chat-header/chat-header';
 import { ChatMessages } from '../chat-messages/chat-messages';
+import { ChatForm } from '../chat-form/chat-form';
 
 @Component({
   selector: 'app-global-chat',
   imports: [
     TranslocoDirective,
     LucideMessageSquare,
-    GlobalChatForm,
     GlobalChatDisconnected,
     GlobalChatConnecting,
     ChatHeader,
     ChatMessages,
+    ChatForm,
   ],
   templateUrl: './global-chat.html',
   styleUrl: './global-chat.scss',
