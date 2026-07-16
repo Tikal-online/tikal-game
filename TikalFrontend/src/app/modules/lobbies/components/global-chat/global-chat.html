@@ -15,7 +15,7 @@
           <app-chat-connecting />
         }
         @case ('Disconnected') {
-          <app-global-chat-disconnected />
+          <app-chat-disconnected (connect)="globalChatStore.connect()" />
         }
       }
     </div>
