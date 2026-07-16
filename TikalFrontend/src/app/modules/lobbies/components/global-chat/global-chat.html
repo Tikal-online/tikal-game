@@ -12,10 +12,10 @@
           <app-chat-form [action]="globalChatStore.sendMessage" />
         }
         @case ('Connecting') {
-          <app-global-chat-connecting />
+          <app-chat-connecting />
         }
         @case ('Disconnected') {
-          <app-global-chat-disconnected />
+          <app-chat-disconnected (connect)="globalChatStore.connect()" />
         }
       }
     </div>

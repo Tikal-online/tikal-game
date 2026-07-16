@@ -3,9 +3,9 @@ import { TranslocoDirective } from '@jsverse/transloco';
 import { LucideCircle, LucideLoaderCircle, LucideWifiOff } from '@lucide/angular';
 
 @Component({
-  selector: 'app-global-chat-connecting',
+  selector: 'app-chat-connecting',
   imports: [LucideWifiOff, LucideCircle, LucideLoaderCircle, TranslocoDirective],
-  templateUrl: './global-chat-connecting.html',
-  styleUrl: './global-chat-connecting.scss',
+  templateUrl: './chat-connecting.html',
+  styleUrl: './chat-connecting.scss',
 })
-export class GlobalChatConnecting {}
+export class ChatConnecting {}
