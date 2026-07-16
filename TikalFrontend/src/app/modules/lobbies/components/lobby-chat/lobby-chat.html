@@ -1,7 +1,7 @@
 @if (activeLobbyStore.showLobbyChat()) {
   <div class="expanded">
     <app-chat-header
-      header="Lobby"
+      header="Lobby Chat"
       [status]="activeLobbyStore.connectionStatus()"
       (closed)="activeLobbyStore.hideChat()"
     />
@@ -9,6 +9,12 @@
       @case ('Connected') {
         <app-chat-messages [messages]="activeLobbyStore.messages()" />
         <app-chat-form [action]="activeLobbyStore.sendMessage" />
+      }
+      @case ('Connecting') {
+        <app-chat-connecting />
+      }
+      @case ('Disconnected') {
+        <app-chat-disconnected (connect)="activeLobbyStore.connect()" />
       }
     }
   </div>
