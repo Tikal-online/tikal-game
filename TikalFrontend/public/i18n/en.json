@@ -36,16 +36,7 @@
       }
     },
     "globalChat": {
-      "header": "GLOBAL CHAT",
-      "disconnected": {
-        "header": "CONNECTION LOST",
-        "description": "Unable to connect to the global chat.",
-        "reconnect-button-label": "RECONNECT"
-      },
-      "connecting": {
-        "header": "CONNECTING...",
-        "description": "Connecting to the global chat. Please wait."
-      }
+      "header": "GLOBAL CHAT"
     }
   },
   "lobby": {
@@ -100,6 +91,15 @@
       "connected": "LIVE",
       "connecting": "CONNECTING",
       "disconnected": "DISCONNECTED"
+    },
+    "disconnected": {
+      "header": "CONNECTION LOST",
+      "description": "Unable to connect.",
+      "reconnect-button-label": "RECONNECT"
+    },
+    "connecting": {
+      "header": "CONNECTING...",
+      "description": "Establishing connection. Please wait."
     }
   }
 }
