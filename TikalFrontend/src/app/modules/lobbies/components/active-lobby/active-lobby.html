@@ -10,7 +10,6 @@
           <app-lobby-player-list [isLoading]="true" [maxPlayers]="4" [players]="[]" />
         </section>
       </div>
-      <app-lobby-chat />
     }
     @case ('loaded') {
       @if (activeLobbyStore.lobby(); as lobby) {
@@ -43,10 +42,10 @@
             </button>
           </div>
         </div>
-        <app-lobby-chat />
       } @else {
         <app-lobby-not-found-overlay />
       }
     }
   }
 </ng-container>
+<app-lobby-chat />
