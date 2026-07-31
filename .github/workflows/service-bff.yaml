@@ -31,21 +31,11 @@ jobs:
       project-directory: BFF
       project-name: bff
 
-  migrate:
-    name: Migrate
+  push:
+    name: Push Image
     needs: release
     if: github.ref == 'refs/heads/main'
-    uses: ./.github/workflows/dotnet-bff-migrate-db.yaml
-    secrets: inherit
-    with:
-      project-directory: BFF
-      keyvault-name: tikal-tikalbff-keyvault
-
-  deploy:
-    name: Deploy
-    needs: [ migrate, release ]
-    if: github.ref == 'refs/heads/main'
-    uses: ./.github/workflows/shared-deploy-release.yaml
+    uses: ./.github/workflows/shared-push-image.yaml
     secrets: inherit
     with:
       dockerfile: ./BFF/Dockerfile

@@ -20,11 +20,6 @@ using OpenTelemetry.Trace;
 
 var builder = WebApplication.CreateBuilder(args);
 
-if (builder.Environment.IsProduction())
-{
-    builder.Configuration.ConfigureKeyVault();
-}
-
 builder.Services.AddControllers();
 
 var frontendConfiguration =
@@ -158,6 +153,12 @@ builder.Services.AddHealthChecks();
 builder.Services.AddSingleton<IReturnUrlValidator, FrontendHostReturnUrlValidator>();
 
 var app = builder.Build();
+
+if (args.Contains("migrate"))
+{
+    app.ApplyMigrations();
+    return;
+}
 
 if (app.Environment.IsDevelopment())
 {
