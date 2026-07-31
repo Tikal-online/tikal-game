@@ -126,7 +126,7 @@ internal static class HostingExtensions
             return app;
         }
 
-        private void MigrateDatabase()
+        public void MigrateDatabase()
         {
             using var serviceScope = app.Services.CreateScope();
 
