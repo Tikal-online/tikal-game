@@ -1,5 +1,4 @@
 using System.Reflection;
-using Azure.Identity;
 using Duende.IdentityServer;
 using Duende.IdentityServer.EntityFramework.DbContexts;
 using Duende.IdentityServer.EntityFramework.Mappers;
@@ -127,7 +126,7 @@ internal static class HostingExtensions
             return app;
         }
 
-        private void MigrateDatabase()
+        public void MigrateDatabase()
         {
             using var serviceScope = app.Services.CreateScope();
 
@@ -137,27 +136,10 @@ internal static class HostingExtensions
         }
     }
 
-    extension(ConfigurationManager configurationManager)
-    {
-        private void ConfigureKeyVault()
-        {
-            var keyVaultName = configurationManager.GetValue<string>("KeyVaultName") ?? string.Empty;
-
-            var keyVaultUri = new Uri($"https://{keyVaultName}.vault.azure.net/");
-
-            configurationManager.AddAzureKeyVault(keyVaultUri, new DefaultAzureCredential());
-        }
-    }
-
     extension(WebApplicationBuilder builder)
     {
         public WebApplication ConfigureServices()
         {
-            if (builder.Environment.IsProduction())
-            {
-                builder.Configuration.ConfigureKeyVault();
-            }
-
             builder.Services.AddRazorPages();
 
             builder.Services.AddHealthChecks();

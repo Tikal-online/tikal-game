@@ -40,21 +40,11 @@ jobs:
       project-directory: Identity
       project-name: identity
 
-  migrate:
-    name: Migrate
+  push:
+    name: Push Image
     needs: release
     if: github.ref == 'refs/heads/main'
-    uses: ./.github/workflows/dotnet-identity-migrate-db.yaml
-    secrets: inherit
-    with:
-      project-directory: Identity
-      keyvault-name: tikal-identity-keyvault
-
-  deploy:
-    name: Deploy
-    needs: [ migrate, release ]
-    if: github.ref == 'refs/heads/main'
-    uses: ./.github/workflows/shared-deploy-release.yaml
+    uses: ./.github/workflows/shared-push-image.yaml
     secrets: inherit
     with:
       dockerfile: ./Identity/Dockerfile
