@@ -154,7 +154,7 @@ builder.Services.AddSingleton<IReturnUrlValidator, FrontendHostReturnUrlValidato
 
 var app = builder.Build();
 
-if (args.Contains("migrate"))
+if (args.Contains("migrate", StringComparer.OrdinalIgnoreCase))
 {
     app.ApplyMigrations();
     return;

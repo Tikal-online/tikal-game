@@ -17,7 +17,7 @@ on:
 
 jobs:
   deploy-release:
-    name: Deploy Release
+    name: Push Image
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout
@@ -38,7 +38,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@dc802804100637a589fabce1cb79ff13a1411302 # v6.2.0
         with:
-          images: ${{ env.AZ_REGISTRY }}/${{ inputs.project-name }}
+          images: ${{ secrets.DOCKERHUB_USERNAME }}/${{ inputs.project-name }}
           tags: |
             type=semver,pattern={{version}},value=${{ inputs.version }}
 
