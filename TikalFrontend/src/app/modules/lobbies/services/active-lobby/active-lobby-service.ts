@@ -17,6 +17,8 @@ export class ActiveLobbyService {
 
   readonly leftPlayers$ = new Subject<Player>();
 
+  readonly updatedPlayers$ = new Subject<Player>();
+
   readonly connectionStatus$ = new Subject<ConnectionStatus>();
 
   private readonly url = '/Api/Lobbies';
@@ -44,6 +46,10 @@ export class ActiveLobbyService {
 
     this.connection.on('PlayerLeft', (player: Player) => {
       this.leftPlayers$.next(player);
+    });
+
+    this.connection.on('PlayerUpdated', (player: Player) => {
+      this.updatedPlayers$.next(player);
     });
 
     this.connection.onclose(() => {
