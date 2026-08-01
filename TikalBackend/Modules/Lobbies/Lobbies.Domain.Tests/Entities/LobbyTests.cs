@@ -97,6 +97,25 @@ internal sealed class LobbyTests
         Assert.That(lobby.Players.Any(p => p.IsOwner), Is.True);
     }
 
+    [TestCaseSource(nameof(LobbyWithMultiplePlayersAndOneOwnerTestCases))]
+    public void GivenLobbyWithMultiplePlayersAndOneOwner_WhenOwnerIsRemoved_ThenAddsPlayerUpdatedEvent(
+        Lobby lobby
+    )
+    {
+        // given
+        var playerToRemove = lobby.Players.First(p => p.IsOwner);
+
+        // when
+        lobby.RemovePlayer(playerToRemove);
+
+        // then
+        var domainEvent = lobby.DomainEvents.OfType<PlayerUpdatedEvent>().SingleOrDefault();
+        var promotedPlayer = lobby.Players.First(p => p.IsOwner);
+
+        Assert.That(domainEvent, Is.Not.Null);
+        Assert.That(domainEvent.Player, Is.EqualTo(promotedPlayer));
+    }
+
     [TestCaseSource(typeof(LobbyTestCases), nameof(LobbyTestCases.ValidLobbyTestCases))]
     public void GivenLobby_WhenGetUnusedColour_ThenReturnsColourUsedByNoPlayer(Lobby lobby)
     {
@@ -107,6 +126,6 @@ internal sealed class LobbyTests
         var unusedColour = lobby.GetUnusedColour();
 
         // then
-        Assert.That(usedColours.Contains(unusedColour), Is.False);
+        Assert.That(usedColours, Does.Not.Contain(unusedColour));
     }
 }

@@ -29,7 +29,10 @@ public sealed class Lobby : Entity
             return;
         }
 
-        Players.First().IsOwner = true;
+        var firstPlayer = Players.First();
+
+        firstPlayer.IsOwner = true;
+        AddDomainEvent(new PlayerUpdatedEvent(firstPlayer));
     }
 
     public void AddPlayer(Player player)
