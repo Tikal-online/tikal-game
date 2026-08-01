@@ -128,7 +128,21 @@ builder.Services.AddOpenTelemetry()
     {
         tracing
             .AddSource(builder.Environment.ApplicationName)
-            .AddAspNetCoreInstrumentation()
+            .AddAspNetCoreInstrumentation(options =>
+            {
+                // set the display name for calls hitting the catch-all forwarding endpoint to match the called endpoint
+                // instead of a generic catch-all name
+                options.EnrichWithHttpResponse = (activity, httpResponse) =>
+                {
+                    var httpRequest = httpResponse.HttpContext.Request;
+
+                    if (httpRequest.Path.StartsWithSegments("/Api"))
+                    {
+                        activity.DisplayName = $"{httpRequest.Method} {httpRequest.Path}";
+                        activity.SetTag("http.route", httpRequest.Path.Value);
+                    }
+                };
+            })
             .AddHttpClientInstrumentation()
             .AddNpgsql()
             .AddOtlpExporter();
