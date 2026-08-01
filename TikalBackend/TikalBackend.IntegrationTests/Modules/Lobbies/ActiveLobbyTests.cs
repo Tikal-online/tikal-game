@@ -132,6 +132,43 @@ internal sealed class ActiveLobbyTests : IntegrationTestFixture
         }
     }
 
+    [TestCaseSource(typeof(CreateLobbyDtoTestCases), nameof(CreateLobbyDtoTestCases.ValidCreateLobbyDtos))]
+    public async Task GivenLobby_WhenLastOwnerLeavesLobby_ThenPromotesPlayerAndSendsPlayerUpdatedNotification(
+        CreateLobbyDto createLobbyDto
+    )
+    {
+        // given
+        await CreateUserAccount(TestUser.Default);
+        await Client.PostAsyncWithUser(lobbyUrl, TestUser.Default, createLobbyDto);
+
+        var lobbyResponse = await Client.GetAsyncWithUser(lobbyUrl + "/me", TestUser.Default);
+        var lobby = await lobbyResponse.Content.ReadFromJsonAsync<LobbyDto>();
+
+        await CreateUserAccount(TestUser.TestUser1);
+        await Client.PostAsyncWithUser($"Lobbies/{lobby!.Id}/join", TestUser.TestUser1, null);
+
+        await using var connection = await CreateConnection(activeLobbyUrl, TestUser.TestUser1);
+        await Client.GetAsyncWithUser(lobbyUrl + "/me", TestUser.TestUser1);
+
+        var updatedPlayerSource = new TaskCompletionSource<LobbyPlayerDto>();
+        connection.On<LobbyPlayerDto>("PlayerUpdated", updatedPlayerSource.SetResult);
+
+        // when
+        await Client.PostAsyncWithUser(lobbyUrl + "/leave", TestUser.Default, null);
+
+        // then
+        var updatedPlayer = await updatedPlayerSource.Task.WaitAsync(TimeSpan.FromSeconds(5));
+
+        Assert.That(updatedPlayer, Is.Not.Null);
+
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(updatedPlayer.UserId, Is.EqualTo(TestUser.TestUser1.UserId));
+            Assert.That(updatedPlayer.Name, Is.EqualTo(TestUser.TestUser1.Name));
+            Assert.That(updatedPlayer.IsOwner, Is.True);
+        }
+    }
+
     [TestCaseSource(typeof(SendMessageDtoTestCases), nameof(SendMessageDtoTestCases.ValidSendMessageDtoCommands))]
     public async Task GivenLobby_WhenPlayerSendsChatMessage_ThenSendsChatMessage(SendMessageDto sendMessageDto)
     {

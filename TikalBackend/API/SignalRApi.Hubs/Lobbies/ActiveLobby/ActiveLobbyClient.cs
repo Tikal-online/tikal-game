@@ -8,5 +8,7 @@ public interface ActiveLobbyClient
 
     Task PlayerLeft(LobbyPlayerDto lobbyPlayerDto);
 
+    Task PlayerUpdated(LobbyPlayerDto lobbyPlayerDto);
+
     Task ReceiveMessage(ChatMessageDto chatMessageDto);
 }

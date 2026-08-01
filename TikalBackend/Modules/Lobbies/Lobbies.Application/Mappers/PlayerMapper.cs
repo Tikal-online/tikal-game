@@ -20,7 +20,7 @@ internal static class PlayerMapper
         };
     }
 
-    private static LobbyPlayerModel PlayerToLobbyPlayerModel(Player player, AccountModel account)
+    public static LobbyPlayerModel PlayerToLobbyPlayerModel(Player player, AccountModel account)
     {
         return new LobbyPlayerModel
         {
