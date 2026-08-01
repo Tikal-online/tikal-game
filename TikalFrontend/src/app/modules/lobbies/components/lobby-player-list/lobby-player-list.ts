@@ -2,10 +2,11 @@ import { Component, inject, input } from '@angular/core';
 import { Player } from '../../models/player';
 import { AccountStore } from '../../../../core/stores/account-store/account-store';
 import { TranslocoDirective } from '@jsverse/transloco';
+import { LucideCrown } from '@lucide/angular';
 
 @Component({
   selector: 'app-lobby-player-list',
-  imports: [TranslocoDirective],
+  imports: [TranslocoDirective, LucideCrown],
   templateUrl: './lobby-player-list.html',
   styleUrl: './lobby-player-list.scss',
 })

@@ -2,6 +2,9 @@
   @for (player of players(); track $index) {
     <div class="player-slot">
       <span class="dot"></span>
+      @if (player.isOwner) {
+        <svg lucideCrown [size]="14"></svg>
+      }
       <span>
         {{ player.name }}
         @if (isMe(player)) {
