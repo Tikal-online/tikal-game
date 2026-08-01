@@ -25,6 +25,7 @@ describe('ActiveLobbyStore', () => {
     message$: new Subject<ChatMessage>(),
     joinedPlayer$: new Subject<Player>(),
     leftPlayers$: new Subject<Player>(),
+    updatedPlayers$: new Subject<Player>(),
     connectionStatus$: new Subject<ConnectionStatus>(),
     connect: vi.fn(),
     disconnect: vi.fn(),
@@ -242,6 +243,43 @@ describe('ActiveLobbyStore', () => {
 
       // then
       expect(router.navigate).toHaveBeenCalledWith(['/lobbies']);
+    },
+  );
+
+  test.for<Lobby>(LOBBY_TESTCASES)(
+    'given active lobby when updatedPlayers$ emits then replaces player with matching userId',
+    (lobby: Lobby) => {
+      // given
+      const store = TestBed.inject(ActiveLobbyStore);
+
+      activeLobbyService.getActiveLobby.mockReturnValueOnce(of(lobby));
+
+      TestBed.runInInjectionContext(() => {
+        store.loadActiveLobby();
+      });
+
+      const player = lobby.players[0];
+      player.name = 'updatedName';
+
+      // when
+      activeLobbyService.updatedPlayers$.next(player);
+
+      // then
+      expect(store.lobby()?.players[0].name).toEqual('updatedName');
+    },
+  );
+
+  test.for<Player>(PLAYER_TESTCASES)(
+    'given no active lobby when updatedPlayers$ emits then lobby is still null',
+    (player: Player) => {
+      // given
+      const store = TestBed.inject(ActiveLobbyStore);
+
+      // when
+      activeLobbyService.updatedPlayers$.next(player);
+
+      // then
+      expect(store.lobby()).toBeNull();
     },
   );
 });

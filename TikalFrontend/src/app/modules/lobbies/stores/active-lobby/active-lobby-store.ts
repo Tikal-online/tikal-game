@@ -100,6 +100,24 @@ export const ActiveLobbyStore = signalStore(
       ),
     ),
 
+    watchUpdatedPlayers: rxMethod<void>(
+      pipe(
+        switchMap(() => store._activeLobbyService.updatedPlayers$),
+        tap((player) => {
+          patchState(store, (state) => ({
+            lobby: state.lobby
+              ? {
+                  ...state.lobby,
+                  players: state.lobby.players.map((p) =>
+                    p.userId === player.userId ? player : p,
+                  ),
+                }
+              : null,
+          }));
+        }),
+      ),
+    ),
+
     watchConnectionStatus: rxMethod<void>(
       pipe(
         switchMap(() => store._activeLobbyService.connectionStatus$),
@@ -154,6 +172,7 @@ export const ActiveLobbyStore = signalStore(
       store.watchJoinedPlayers();
       store.watchConnectionStatus();
       store.watchLeftPlayers();
+      store.watchUpdatedPlayers();
       store.watchMessages();
     },
   }),
