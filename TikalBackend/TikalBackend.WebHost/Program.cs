@@ -8,11 +8,6 @@ using TikalBackend.WebHost.SchemaTransformers;
 
 var builder = WebApplication.CreateBuilder(args);
 
-if (builder.Environment.IsProduction())
-{
-    builder.Configuration.ConfigureKeyVault();
-}
-
 builder.Logging.ClearProviders();
 
 builder.Services.ConfigureOpenTelemetry();
@@ -34,6 +29,12 @@ builder.Services.AddHealthChecks();
 builder.Services.ConfigureAuthentication(builder.Configuration);
 
 var app = builder.Build();
+
+if (args.Contains("migrate", StringComparer.OrdinalIgnoreCase))
+{
+    app.ApplyMigrations();
+    return;
+}
 
 if (app.Environment.IsDevelopment())
 {
