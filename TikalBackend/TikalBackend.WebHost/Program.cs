@@ -12,7 +12,8 @@ builder.Logging.ClearProviders();
 
 builder.Services.ConfigureOpenTelemetry();
 
-builder.Services.AddControllers().AddApplicationPart(AssemblyReference.Assembly);
+builder.Services.AddControllers(options => { options.Filters.Add<TracingActionFilter>(); })
+    .AddApplicationPart(AssemblyReference.Assembly);
 
 builder.Services.AddSignalR(options => { options.AddFilter<AccountHubFilter>(); });
 
