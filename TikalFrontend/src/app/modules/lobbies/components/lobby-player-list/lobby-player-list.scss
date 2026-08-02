@@ -55,6 +55,22 @@
   }
 }
 
+.not-ready {
+  margin-left: auto;
+
+  font-family: 'Mono', monospace;
+  font-size: 0.7rem;
+  color: colors.$text-muted;
+}
+
+.ready {
+  margin-left: auto;
+
+  font-family: 'Mono', monospace;
+  font-size: 0.7rem;
+  color: colors.$text-header-prefix;
+}
+
 .dot {
   width: 0.5rem;
   height: 0.5rem;

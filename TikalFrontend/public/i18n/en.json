@@ -49,7 +49,9 @@
     "player-list": {
       "header": "PLAYERS",
       "you-label": "You",
-      "open-slot": "Open Slot"
+      "open-slot": "Open Slot",
+      "ready": "READY",
+      "not-ready": "NOT READY"
     },
     "settings": {
       "header": "SETTINGS",
