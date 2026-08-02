@@ -11,6 +11,7 @@ using Shared.Application;
 using TikalBackend.WebHost.Configuration;
 using TikalBackend.WebHost.ExceptionHandlers;
 using TikalBackend.WebHost.Pipelines;
+using TikalBackend.WebHost.Telemetry;
 
 namespace TikalBackend.WebHost.Extensions;
 
@@ -47,6 +48,7 @@ internal static class ServiceCollectionExtensions
                 .WithTracing(tracing =>
                 {
                     tracing
+                        .AddSource(ActivitySources.ControllerSourceName)
                         .AddAspNetCoreInstrumentation()
                         .AddHttpClientInstrumentation()
                         .AddNpgsql()

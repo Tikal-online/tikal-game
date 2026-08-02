@@ -47,7 +47,7 @@ internal sealed class AccountHubFilter : IHubFilter
         await next(context);
     }
 
-    public async ValueTask<object?> InvokeMethodAsync(
+    public ValueTask<object?> InvokeMethodAsync(
         HubInvocationContext invocationContext,
         Func<HubInvocationContext, ValueTask<object?>> next
     )
@@ -61,6 +61,6 @@ internal sealed class AccountHubFilter : IHubFilter
             throw new HubException("Account required");
         }
 
-        return await next(invocationContext);
+        return next(invocationContext);
     }
 }
