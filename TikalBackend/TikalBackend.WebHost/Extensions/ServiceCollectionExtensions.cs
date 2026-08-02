@@ -49,6 +49,7 @@ internal static class ServiceCollectionExtensions
                 {
                     tracing
                         .AddSource(ActivitySources.ControllerSourceName)
+                        .AddSource(ActivitySources.MediatRSourceName)
                         .AddAspNetCoreInstrumentation()
                         .AddHttpClientInstrumentation()
                         .AddNpgsql()
@@ -79,6 +80,7 @@ internal static class ServiceCollectionExtensions
                     SignalRApi.Hubs.AssemblyReference.Assembly
                 );
 
+                c.AddBehavior(typeof(IPipelineBehavior<,>), typeof(TracingPipeline<,>));
                 c.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationPipeline<,>));
             });
         }
