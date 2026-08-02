@@ -11,6 +11,11 @@
           ({{ t('you-label') }})
         }
       </span>
+      @if (player.isReady) {
+        <span class="ready">{{ t('ready') }}</span>
+      } @else {
+        <span class="not-ready">{{ t('not-ready') }}</span>
+      }
     </div>
   }
   @for (empty of [].constructor(maxPlayers() - players().length); track $index) {
