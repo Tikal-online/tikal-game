@@ -49,3 +49,28 @@ jobs:
           file: ${{ inputs.dockerfile }}
           push: true
           tags: ${{ steps.meta.outputs.tags }}
+
+      - name: Set output for Git short SHA
+        id: git-sha
+        run: echo "sha=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Trigger update workflow in the manifests repository
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        env:
+          APP: ${{ inputs.project-name }}
+          IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/${{ inputs.project-name }}:${{ inputs.version }}
+          SHA: ${{ steps.git-sha.outputs.sha }}
+        with:
+          github-token: ${{ secrets.INFRASTRUCTURE_PAT }}
+          script: |
+            await github.rest.actions.createWorkflowDispatch({
+              owner: 'Tikal-online',
+              repo: 'tikal-infrastructure',
+              workflow_id: 'update-container-image.yaml',
+              ref: 'main',
+              inputs: {
+                application: process.env.APP,
+                image: process.env.IMAGE,
+                sha: process.env.SHA
+              }
+            })
