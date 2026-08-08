@@ -57,7 +57,7 @@ app.MapHealthChecks("/healthcheck");
 
 app.MapControllers();
 
-app.MapHub<GlobalChatHub>("/hub/globalChat");
-app.MapHub<ActiveLobbyHub>("/hub/activeLobby");
+app.MapHub<GlobalChatHub>("/hub/globalChat").DisableHttpMetrics();
+app.MapHub<ActiveLobbyHub>("/hub/activeLobby").DisableHttpMetrics();
 
 await app.RunAsync();
