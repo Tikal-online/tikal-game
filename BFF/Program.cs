@@ -194,6 +194,10 @@ app.UseAuthentication();
 app.UseBff();
 app.UseAuthorization();
 
+app.MapRemoteBffApiEndpoint("/Api/hub", new Uri($"{backendConfiguration.Url}/hub"))
+    .WithAccessToken()
+    .DisableHttpMetrics();
+
 app.MapRemoteBffApiEndpoint("/Api", new Uri(backendConfiguration.Url))
     .WithAccessToken();
 
