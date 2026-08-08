@@ -52,7 +52,7 @@ jobs:
 
       - name: Set output for Git short SHA
         id: git-sha
-        run: echo "sha=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT" 
+        run: echo "sha=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
 
       - name: Trigger update workflow in the manifests repository
         uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
