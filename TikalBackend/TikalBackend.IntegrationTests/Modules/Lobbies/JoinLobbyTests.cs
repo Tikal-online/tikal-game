@@ -12,7 +12,7 @@ internal sealed class JoinLobbyTests : IntegrationTestFixture
 
     private static string BuildUrl(long id)
     {
-        return $"Lobbies/{id}/join";
+        return $"Lobbies/{id}/players";
     }
 
     [Test]

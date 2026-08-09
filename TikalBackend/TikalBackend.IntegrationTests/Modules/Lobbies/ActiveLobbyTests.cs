@@ -86,7 +86,7 @@ internal sealed class ActiveLobbyTests : IntegrationTestFixture
 
         // when
         await CreateUserAccount(TestUser.TestUser1);
-        await Client.PostAsyncWithUser($"Lobbies/{lobby!.Id}/join", TestUser.TestUser1, null);
+        await Client.PostAsyncWithUser($"Lobbies/{lobby!.Id}/players", TestUser.TestUser1, null);
 
         // then
         var joinedPlayer = await joinedPlayerSource.Task.WaitAsync(TimeSpan.FromSeconds(5));
@@ -115,7 +115,7 @@ internal sealed class ActiveLobbyTests : IntegrationTestFixture
         var lobby = await lobbyResponse.Content.ReadFromJsonAsync<LobbyDto>();
 
         await CreateUserAccount(TestUser.TestUser1);
-        await Client.PostAsyncWithUser($"Lobbies/{lobby!.Id}/join", TestUser.TestUser1, null);
+        await Client.PostAsyncWithUser($"Lobbies/{lobby!.Id}/players", TestUser.TestUser1, null);
 
         // when
         await Client.PostAsyncWithUser(lobbyUrl + "/leave", TestUser.TestUser1, null);
@@ -145,7 +145,7 @@ internal sealed class ActiveLobbyTests : IntegrationTestFixture
         var lobby = await lobbyResponse.Content.ReadFromJsonAsync<LobbyDto>();
 
         await CreateUserAccount(TestUser.TestUser1);
-        await Client.PostAsyncWithUser($"Lobbies/{lobby!.Id}/join", TestUser.TestUser1, null);
+        await Client.PostAsyncWithUser($"Lobbies/{lobby!.Id}/players", TestUser.TestUser1, null);
 
         await using var connection = await CreateConnection(activeLobbyUrl, TestUser.TestUser1);
         await Client.GetAsyncWithUser(lobbyUrl + "/me", TestUser.TestUser1);
@@ -190,7 +190,7 @@ internal sealed class ActiveLobbyTests : IntegrationTestFixture
         var lobby = await lobbyResponse.Content.ReadFromJsonAsync<LobbyDto>();
 
         await CreateUserAccount(TestUser.TestUser1);
-        await Client.PostAsyncWithUser($"Lobbies/{lobby!.Id}/join", TestUser.TestUser1, null);
+        await Client.PostAsyncWithUser($"Lobbies/{lobby!.Id}/players", TestUser.TestUser1, null);
 
         // when
         await Client.PostAsyncWithUser(lobbyUrl + "/sendMessage", TestUser.TestUser1, sendMessageDto);

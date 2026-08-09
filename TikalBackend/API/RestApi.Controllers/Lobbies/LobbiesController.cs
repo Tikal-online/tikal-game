@@ -60,10 +60,10 @@ public sealed partial class LobbiesController : ApiController
         return Ok(lobbyDto);
     }
 
-    [HttpPost("{Id:long}/join")]
+    [HttpPost("{Id:long}/players")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
-    [EndpointDescription("Joins the lobby for the currently authenticated user")]
+    [EndpointDescription("Adds the currently authenticated user to the provided lobby")]
     public async Task<IActionResult> JoinLobby(long Id, CancellationToken cancellationToken)
     {
         var query = new JoinLobbyCommand(Id);
