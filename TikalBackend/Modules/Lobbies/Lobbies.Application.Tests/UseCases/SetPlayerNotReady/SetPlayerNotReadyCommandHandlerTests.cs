@@ -53,7 +53,7 @@ internal sealed class SetPlayerNotReadyCommandHandlerTests
         // then
         Assert.That(result.Value, Is.InstanceOf<PlayerNotInALobby>());
     }
-    
+
     [TestCaseSource(typeof(PlayerTestCases), nameof(PlayerTestCases.ValidPlayerTestCases))]
     public async Task GivenExistingPlayer_WhenHandle_ThenReturnsSuccessAndPlayerIsNotReady(Player player)
     {
