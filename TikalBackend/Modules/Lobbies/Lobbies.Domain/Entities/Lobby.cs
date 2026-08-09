@@ -41,6 +41,11 @@ public sealed class Lobby : Entity
         AddDomainEvent(new PlayerJoinedEvent(player));
     }
 
+    public Player? GetPlayer(string userId)
+    {
+        return Players.FirstOrDefault(p => p.UserId == userId);
+    }
+
     public Colour GetUnusedColour()
     {
         var usedColours = Players.Select(p => p.SelectedColour).ToHashSet();

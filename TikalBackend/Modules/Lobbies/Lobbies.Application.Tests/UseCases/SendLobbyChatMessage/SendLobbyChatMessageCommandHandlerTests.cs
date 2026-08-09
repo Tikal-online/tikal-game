@@ -3,6 +3,8 @@ using Lobbies.Application.UseCases.SendLobbyChatMessage;
 using Lobbies.Contracts.Commands;
 using Lobbies.Contracts.Errors;
 using Lobbies.Contracts.Notifications;
+using Lobbies.Domain.Entities;
+using Lobbies.Domain.Tests.Data;
 using MediatR;
 using Moq;
 using Shared.Application.Contexts;
@@ -30,43 +32,57 @@ internal sealed class SendLobbyChatMessageCommandHandlerTests
         handler = new SendLobbyChatMessageCommandHandler(lobbyQueryContext.Object, publisher.Object, accountContext);
     }
 
-    private void SetupHappyPath()
+    private void SetupHappyPath(Lobby lobby)
     {
-        // player is in a lobby
-        lobbyQueryContext.Setup(q => q.GetIdByUserIdAsync(accountContext.Account.UserId))
-            .ReturnsAsync(1);
+        // lobby exists
+        lobbyQueryContext.Setup(r => r.GetByIdAsync(lobby.Id))
+            .ReturnsAsync(lobby);
+
+        // lobby contains authenticated player
+        var player = lobby.Players.First();
+        player.UserId = accountContext.Account.UserId;
+        player.Lobby = lobby;
     }
 
-
-    [TestCaseSource(
-        typeof(SendLobbyChatMessageCommandTestCases),
-        nameof(SendLobbyChatMessageCommandTestCases.ValidSendLobbyMessageCommands)
-    )]
-    public async Task GivenPlayerNotInALobby_WhenHandle_ThenReturnsPlayerNotInALobbyError(
-        SendLobbyChatMessageCommand command
-    )
+    [Test]
+    public async Task GivenLobbyDoesntExist_WhenHandle_ThenReturnsLobbyNotFoundError()
     {
         // given
-        lobbyQueryContext.Setup(q => q.GetIdByUserIdAsync(accountContext.Account.UserId))
-            .ReturnsAsync((long?)null);
+        lobbyQueryContext.Setup(r => r.GetByIdAsync(1))
+            .ReturnsAsync(default(Lobby));
+
+        var command = new SendLobbyChatMessageCommand(1, "My chat message");
 
         // when
         var result = await handler.Handle(command, CancellationToken.None);
 
         // then
-        Assert.That(result.Value, Is.InstanceOf<PlayerNotInALobby>());
+        Assert.That(result.Value, Is.InstanceOf<LobbyNotFound>());
     }
 
-    [TestCaseSource(
-        typeof(SendLobbyChatMessageCommandTestCases),
-        nameof(SendLobbyChatMessageCommandTestCases.ValidSendLobbyMessageCommands)
-    )]
-    public async Task GivenPlayerInALobby_WhenHandle_ThenPublishesMessageSentNotification(
-        SendLobbyChatMessageCommand command
-    )
+    [TestCaseSource(typeof(LobbyTestCases), nameof(LobbyTestCases.ValidLobbyTestCases))]
+    public async Task GivenPlayerIsNotPartOfLobby_WhenHandle_ThenReturnsPlayerNotInGivenLobbyError(Lobby lobby)
     {
         // given
-        SetupHappyPath();
+        lobbyQueryContext.Setup(r => r.GetByIdAsync(lobby.Id))
+            .ReturnsAsync(lobby);
+
+        var command = new SendLobbyChatMessageCommand(lobby.Id, "My chat message");
+
+        // when
+        var result = await handler.Handle(command, CancellationToken.None);
+
+        // then
+        Assert.That(result.Value, Is.InstanceOf<PlayerNotInGivenLobby>());
+    }
+
+    [TestCaseSource(typeof(LobbyTestCases), nameof(LobbyTestCases.ValidLobbyTestCases))]
+    public async Task GivenPlayerInLobby_WhenHandle_ThenPublishesMessageSentNotification(Lobby lobby)
+    {
+        // given
+        SetupHappyPath(lobby);
+
+        var command = new SendLobbyChatMessageCommand(lobby.Id, "my chat message");
 
         // when
         await handler.Handle(command, CancellationToken.None);

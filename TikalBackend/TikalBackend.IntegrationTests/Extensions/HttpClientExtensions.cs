@@ -13,6 +13,13 @@ internal static class HttpClientExtensions
             return client.SendAsync(request);
         }
 
+        public Task<HttpResponseMessage> DeleteAsyncWithUser(string url, TestUser user)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Delete, url).WithUser(user);
+
+            return client.SendAsync(request);
+        }
+
         public Task<HttpResponseMessage> PostAsyncWithUser(string url, TestUser user, object? body)
         {
             var request = new HttpRequestMessage(HttpMethod.Post, url)

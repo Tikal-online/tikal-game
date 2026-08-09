@@ -8,13 +8,11 @@ namespace TikalBackend.IntegrationTests.Modules.Lobbies;
 
 internal sealed class GetLobbyForAuthenticatedPlayerTests : IntegrationTestFixture
 {
-    private const string lobbyUrl = "Lobbies";
-
     [Test]
     public async Task GivenUnauthenticatedUser_WhenGetLobbyForAuthenticatedPlayer_ThenReturnsUnauthorized()
     {
         // when
-        var response = await Client.GetAsync(lobbyUrl + "/me");
+        var response = await Client.GetAsync(LobbyUrl.GetActiveLobby);
 
         // then
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
@@ -24,7 +22,7 @@ internal sealed class GetLobbyForAuthenticatedPlayerTests : IntegrationTestFixtu
     public async Task GivenUserWithoutAccount_WhenGetLobbyForAuthenticatedPlayer_ThenReturnsUnauthorized()
     {
         // when
-        var response = await Client.GetAsyncWithUser(lobbyUrl + "/me", TestUser.Default);
+        var response = await Client.GetAsyncWithUser(LobbyUrl.GetActiveLobby, TestUser.Default);
 
         // then
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
@@ -37,7 +35,7 @@ internal sealed class GetLobbyForAuthenticatedPlayerTests : IntegrationTestFixtu
         await CreateUserAccount(TestUser.Default);
 
         // when
-        var response = await Client.GetAsyncWithUser(lobbyUrl + "/me", TestUser.Default);
+        var response = await Client.GetAsyncWithUser(LobbyUrl.GetActiveLobby, TestUser.Default);
 
         // then
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
@@ -51,10 +49,10 @@ internal sealed class GetLobbyForAuthenticatedPlayerTests : IntegrationTestFixtu
         // given
         await CreateUserAccount(TestUser.Default);
 
-        await Client.PostAsyncWithUser(lobbyUrl, TestUser.Default, createLobbyDto);
+        await Client.PostAsyncWithUser(LobbyUrl.CreateLobby, TestUser.Default, createLobbyDto);
 
         // when
-        var response = await Client.GetAsyncWithUser(lobbyUrl + "/me", TestUser.Default);
+        var response = await Client.GetAsyncWithUser(LobbyUrl.GetActiveLobby, TestUser.Default);
 
         var lobby = await response.Content.ReadFromJsonAsync<LobbyDto>();
 

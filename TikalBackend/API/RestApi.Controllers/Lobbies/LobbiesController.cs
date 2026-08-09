@@ -60,10 +60,11 @@ public sealed partial class LobbiesController : ApiController
         return Ok(lobbyDto);
     }
 
-    [HttpPost("{Id:long}/join")]
+    [HttpPost("{Id:long}/Players")]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
-    [EndpointDescription("Joins the lobby for the currently authenticated user")]
+    [EndpointDescription("Adds the currently authenticated user to the provided lobby")]
     public async Task<IActionResult> JoinLobby(long Id, CancellationToken cancellationToken)
     {
         var query = new JoinLobbyCommand(Id);
@@ -100,35 +101,38 @@ public sealed partial class LobbiesController : ApiController
         return Ok(lobbyDto);
     }
 
-    [HttpPost("leave")]
+    [HttpDelete("{Id:long}/Players/me")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [EndpointDescription("Leaves the lobby for the currently authenticated user")]
-    public async Task<IActionResult> LeaveLobby(CancellationToken cancellationToken)
+    [EndpointDescription("Removes the currently authenticated user from the provided lobby")]
+    public async Task<IActionResult> LeaveLobby(long Id, CancellationToken cancellationToken)
     {
-        var command = new LeaveLobbyCommand();
+        var command = new LeaveLobbyCommand(Id);
 
         var result = await sender.Send(command, cancellationToken);
 
         return result.Match<IActionResult>(
             _ => Ok(),
-            _ => PlayerNotInALobby(GetCurrentUserId())
+            _ => LobbyNotFound(Id),
+            _ => PlayerNotInGivenLobby(Id)
         );
     }
 
-    [HttpPost("sendMessage")]
+    [HttpPost("{Id:long}/Messages")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [EndpointDescription("Sends a message to the lobby for the currently authenticated user")]
-    public async Task<IActionResult> SendMessage(SendMessageDto sendMessageDto, CancellationToken cancellationToken)
+    [EndpointDescription("Sends a message to the lobby")]
+    public async Task<IActionResult> SendMessage(long Id, SendMessageDto sendMessageDto,
+        CancellationToken cancellationToken)
     {
-        var command = new SendLobbyChatMessageCommand(sendMessageDto.Message);
+        var command = new SendLobbyChatMessageCommand(Id, sendMessageDto.Message);
 
         var result = await sender.Send(command, cancellationToken);
 
         return result.Match<IActionResult>(
             _ => Ok(),
-            _ => PlayerNotInALobby(GetCurrentUserId())
+            _ => LobbyNotFound(Id),
+            _ => PlayerNotInGivenLobby(Id)
         );
     }
 
@@ -136,8 +140,10 @@ public sealed partial class LobbiesController : ApiController
     [ProducesResponseType<PaginatedDto<List<LobbySummaryDto>>>(StatusCodes.Status200OK)]
     [EndpointDescription("Gets a paginated summary of the currently active lobbies. Can be filtered by lobby name")]
     public async Task<IActionResult> GetPaginatedLobbies(
-        [FromQuery][Required][Range(1, int.MaxValue)] int pageSize,
-        [FromQuery][Required][Range(1, int.MaxValue)] int pageNumber,
+        [FromQuery] [Required] [Range(1, int.MaxValue)]
+        int pageSize,
+        [FromQuery] [Required] [Range(1, int.MaxValue)]
+        int pageNumber,
         [FromQuery] string? searchText,
         CancellationToken cancellationToken
     )

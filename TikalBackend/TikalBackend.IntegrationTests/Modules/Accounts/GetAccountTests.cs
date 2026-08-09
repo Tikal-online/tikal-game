@@ -9,15 +9,11 @@ namespace TikalBackend.IntegrationTests.Modules.Accounts;
 
 internal sealed class GetAccountTests : IntegrationTestFixture
 {
-    private const string getAccountUrl = "Accounts/me";
-
-    private const string createAccountUrl = "Accounts";
-
     [Test]
     public async Task GivenUnauthenticatedUser_WhenGetAccount_ThenReturnsUnauthorized()
     {
         // when
-        var response = await Client.GetAsync(getAccountUrl);
+        var response = await Client.GetAsync(AccountUrl.GetAccount);
 
         // then
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
@@ -27,7 +23,7 @@ internal sealed class GetAccountTests : IntegrationTestFixture
     public async Task GivenNoUserAccountForAuthenticatedUser_WhenGetAccount_ThenReturnsNotFound()
     {
         // when
-        var response = await Client.GetAsyncWithUser(getAccountUrl, TestUser.Default);
+        var response = await Client.GetAsyncWithUser(AccountUrl.GetAccount, TestUser.Default);
 
         // then
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
@@ -39,10 +35,10 @@ internal sealed class GetAccountTests : IntegrationTestFixture
     )
     {
         // given
-        await Client.PostAsyncWithUser(createAccountUrl, TestUser.Default, createAccountDto);
+        await Client.PostAsyncWithUser(AccountUrl.CreateAccount, TestUser.Default, createAccountDto);
 
         // when
-        var response = await Client.GetAsyncWithUser(getAccountUrl, TestUser.Default);
+        var response = await Client.GetAsyncWithUser(AccountUrl.GetAccount, TestUser.Default);
 
         var account = await response.Content.ReadFromJsonAsync<AccountModel>();
 

@@ -9,8 +9,6 @@ namespace TikalBackend.IntegrationTests.Modules.Lobbies;
 
 internal sealed class GetPaginatedLobbiesTests : IntegrationTestFixture
 {
-    private const string lobbyUrl = "Lobbies";
-
     [Test]
     public async Task GivenUnauthenticatedUser_WhenGetPaginatedLobbies_ThenReturnsUnauthorized()
     {
@@ -21,7 +19,7 @@ internal sealed class GetPaginatedLobbiesTests : IntegrationTestFixture
             ["searchText"] = ""
         };
 
-        var url = QueryHelpers.AddQueryString(lobbyUrl, queryParams);
+        var url = QueryHelpers.AddQueryString(LobbyUrl.GetLobbies, queryParams);
 
         // when
         var response = await Client.GetAsync(url);
@@ -40,7 +38,7 @@ internal sealed class GetPaginatedLobbiesTests : IntegrationTestFixture
             ["searchText"] = ""
         };
 
-        var url = QueryHelpers.AddQueryString(lobbyUrl, queryParams);
+        var url = QueryHelpers.AddQueryString(LobbyUrl.GetLobbies, queryParams);
 
         // when
         var response = await Client.GetAsyncWithUser(url, TestUser.Default);
@@ -59,7 +57,7 @@ internal sealed class GetPaginatedLobbiesTests : IntegrationTestFixture
         await CreateUserAccount(TestUser.TestUser2);
 
         await Client.PostAsyncWithUser(
-            lobbyUrl,
+            LobbyUrl.CreateLobby,
             TestUser.Default,
             new CreateLobbyDto
             {
@@ -69,7 +67,7 @@ internal sealed class GetPaginatedLobbiesTests : IntegrationTestFixture
         );
 
         await Client.PostAsyncWithUser(
-            lobbyUrl,
+            LobbyUrl.CreateLobby,
             TestUser.TestUser1,
             new CreateLobbyDto
             {
@@ -79,7 +77,7 @@ internal sealed class GetPaginatedLobbiesTests : IntegrationTestFixture
         );
 
         await Client.PostAsyncWithUser(
-            lobbyUrl,
+            LobbyUrl.CreateLobby,
             TestUser.TestUser2,
             new CreateLobbyDto
             {
@@ -95,7 +93,7 @@ internal sealed class GetPaginatedLobbiesTests : IntegrationTestFixture
             ["searchText"] = "2"
         };
 
-        var url = QueryHelpers.AddQueryString(lobbyUrl, queryParams);
+        var url = QueryHelpers.AddQueryString(LobbyUrl.GetLobbies, queryParams);
 
         // when
         var response = await Client.GetAsyncWithUser(url, TestUser.Default);

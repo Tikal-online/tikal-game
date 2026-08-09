@@ -47,28 +47,46 @@ internal sealed class LeaveLobbyCommandHandlerTests
 
     private void SetupHappyPath(Lobby lobby)
     {
-        // player exists
-        var player = lobby.Players.First();
-        player.Lobby = lobby;
+        // lobby exists
+        lobbyRepository.Setup(r => r.GetByIdAsync(lobby.Id))
+            .ReturnsAsync(lobby);
 
-        playerRepository.Setup(r => r.GetByUserIdWithLobbyAsync(accountContext.Account.UserId))
-            .ReturnsAsync(player);
+        // lobby contains authenticated player
+        var player = lobby.Players.First();
+        player.UserId = accountContext.Account.UserId;
+        player.Lobby = lobby;
     }
 
     [Test]
-    public async Task GivenPlayerDoesntExist_WhenHandle_ThenReturnsPlayerNotInALobbyError()
+    public async Task GivenLobbyDoesntExist_WhenHandle_ThenReturnsLobbyNotFoundError()
     {
         // given
-        playerRepository.Setup(r => r.GetByUserIdWithLobbyAsync(accountContext.Account.UserId))
-            .ReturnsAsync(default(Player));
+        lobbyRepository.Setup(r => r.GetByIdAsync(1))
+            .ReturnsAsync(default(Lobby));
 
-        var command = new LeaveLobbyCommand();
+        var command = new LeaveLobbyCommand(1);
 
         // when
         var result = await handler.Handle(command, CancellationToken.None);
 
         // then
-        Assert.That(result.Value, Is.InstanceOf<PlayerNotInALobby>());
+        Assert.That(result.Value, Is.InstanceOf<LobbyNotFound>());
+    }
+
+    [TestCaseSource(nameof(LobbyWithMoreThanOnePlayerTests))]
+    public async Task GivenPlayerIsNotPartOfLobby_WhenHandle_ThenReturnsPlayerNotInGivenLobbyError(Lobby lobby)
+    {
+        // given
+        lobbyRepository.Setup(r => r.GetByIdAsync(lobby.Id))
+            .ReturnsAsync(lobby);
+
+        var command = new LeaveLobbyCommand(lobby.Id);
+
+        // when
+        var result = await handler.Handle(command, CancellationToken.None);
+
+        // then
+        Assert.That(result.Value, Is.InstanceOf<PlayerNotInGivenLobby>());
     }
 
     [TestCaseSource(nameof(LobbyWithMoreThanOnePlayerTests))]
@@ -77,7 +95,7 @@ internal sealed class LeaveLobbyCommandHandlerTests
         // given
         SetupHappyPath(lobby);
 
-        var command = new LeaveLobbyCommand();
+        var command = new LeaveLobbyCommand(lobby.Id);
 
         // when
         var result = await handler.Handle(command, CancellationToken.None);
@@ -95,7 +113,7 @@ internal sealed class LeaveLobbyCommandHandlerTests
         // given
         SetupHappyPath(lobby);
 
-        var command = new LeaveLobbyCommand();
+        var command = new LeaveLobbyCommand(lobby.Id);
 
         // when
         var result = await handler.Handle(command, CancellationToken.None);

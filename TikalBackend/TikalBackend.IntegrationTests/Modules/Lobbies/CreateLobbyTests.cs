@@ -8,13 +8,11 @@ namespace TikalBackend.IntegrationTests.Modules.Lobbies;
 
 internal sealed class CreateLobbyTests : IntegrationTestFixture
 {
-    private const string createLobbyUrl = "Lobbies";
-
     [TestCaseSource(typeof(CreateLobbyDtoTestCases), nameof(CreateLobbyDtoTestCases.ValidCreateLobbyDtos))]
     public async Task GivenUnauthenticatedUser_WhenCreateLobby_ThenReturnsUnauthorized(CreateLobbyDto createLobbyDto)
     {
         // when
-        var response = await Client.PostAsJsonAsync(createLobbyUrl, createLobbyDto);
+        var response = await Client.PostAsJsonAsync(LobbyUrl.CreateLobby, createLobbyDto);
 
         // then
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
@@ -27,7 +25,7 @@ internal sealed class CreateLobbyTests : IntegrationTestFixture
         await CreateUserAccount(TestUser.Default);
 
         // when
-        var response = await Client.PostAsyncWithUser(createLobbyUrl, TestUser.Default, createLobbyDto);
+        var response = await Client.PostAsyncWithUser(LobbyUrl.CreateLobby, TestUser.Default, createLobbyDto);
 
         // then
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
@@ -37,7 +35,7 @@ internal sealed class CreateLobbyTests : IntegrationTestFixture
     public async Task GivenUserWithoutAccount_WhenCreateLobby_ThenReturnsUnauthorized(CreateLobbyDto createLobbyDto)
     {
         // when
-        var response = await Client.PostAsyncWithUser(createLobbyUrl, TestUser.Default, createLobbyDto);
+        var response = await Client.PostAsyncWithUser(LobbyUrl.CreateLobby, TestUser.Default, createLobbyDto);
 
         // then
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
@@ -52,7 +50,7 @@ internal sealed class CreateLobbyTests : IntegrationTestFixture
         await CreateUserAccount(TestUser.Default);
 
         // when
-        var response = await Client.PostAsyncWithUser(createLobbyUrl, TestUser.Default, createLobbyDto);
+        var response = await Client.PostAsyncWithUser(LobbyUrl.CreateLobby, TestUser.Default, createLobbyDto);
 
         // then
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Created));
@@ -63,10 +61,10 @@ internal sealed class CreateLobbyTests : IntegrationTestFixture
     {
         // given
         await CreateUserAccount(TestUser.Default);
-        await Client.PostAsyncWithUser(createLobbyUrl, TestUser.Default, createLobbyDto);
+        await Client.PostAsyncWithUser(LobbyUrl.CreateLobby, TestUser.Default, createLobbyDto);
 
         // when
-        var response = await Client.PostAsyncWithUser(createLobbyUrl, TestUser.Default, createLobbyDto);
+        var response = await Client.PostAsyncWithUser(LobbyUrl.CreateLobby, TestUser.Default, createLobbyDto);
 
         // then
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Conflict));

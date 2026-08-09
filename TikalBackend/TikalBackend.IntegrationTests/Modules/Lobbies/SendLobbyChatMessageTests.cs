@@ -8,17 +8,13 @@ namespace TikalBackend.IntegrationTests.Modules.Lobbies;
 
 internal sealed class SendLobbyChatMessageTests : IntegrationTestFixture
 {
-    private const string lobbyUrl = "Lobbies";
-
-    private const string sendLobbyChatMessageUrl = "Lobbies/sendMessage";
-
     [TestCaseSource(typeof(SendMessageDtoTestCases), nameof(SendMessageDtoTestCases.ValidSendMessageDtoCommands))]
     public async Task GivenUnauthenticatedUser_WhenSendLobbyChatMessage_ThenReturnsUnauthorized(
         SendMessageDto sendMessageDto
     )
     {
         // when
-        var response = await Client.PostAsJsonAsync(sendLobbyChatMessageUrl, sendMessageDto);
+        var response = await Client.PostAsJsonAsync(LobbyUrl.SendMessage(1), sendMessageDto);
 
         // then
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
@@ -30,14 +26,14 @@ internal sealed class SendLobbyChatMessageTests : IntegrationTestFixture
     )
     {
         // when
-        var response = await Client.PostAsyncWithUser(sendLobbyChatMessageUrl, TestUser.Default, sendMessageDto);
+        var response = await Client.PostAsyncWithUser(LobbyUrl.SendMessage(1), TestUser.Default, sendMessageDto);
 
         // then
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
     }
 
     [TestCaseSource(typeof(SendMessageDtoTestCases), nameof(SendMessageDtoTestCases.ValidSendMessageDtoCommands))]
-    public async Task GivenUserNotInALobby_WhenSendLobbyChatMessage_ThenReturnsNotFound(
+    public async Task GivenLobbyDoesntExist_WhenSendLobbyChatMessage_ThenReturnsNotFound(
         SendMessageDto sendMessageDto
     )
     {
@@ -45,27 +41,56 @@ internal sealed class SendLobbyChatMessageTests : IntegrationTestFixture
         await CreateUserAccount(TestUser.Default);
 
         // when
-        var response = await Client.PostAsyncWithUser(sendLobbyChatMessageUrl, TestUser.Default, sendMessageDto);
+        var response = await Client.PostAsyncWithUser(LobbyUrl.SendMessage(1), TestUser.Default, sendMessageDto);
 
         // then
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
     }
 
     [TestCaseSource(typeof(SendMessageDtoTestCases), nameof(SendMessageDtoTestCases.ValidSendMessageDtoCommands))]
-    public async Task GivenUserInALobby_WhenSendLobbyChatMessage_ThenReturnsSuccess(
+    public async Task GivenPlayerNotInLobby_WhenSendLobbyChatMessage_ThenReturnsNotFound(
         SendMessageDto sendMessageDto
     )
     {
         // given
         await CreateUserAccount(TestUser.Default);
+        await CreateUserAccount(TestUser.TestUser1);
+
         await Client.PostAsyncWithUser(
-            lobbyUrl,
+            LobbyUrl.CreateLobby,
+            TestUser.TestUser1,
+            new CreateLobbyDto { Name = "TestLobby", MaxPlayers = 4 }
+        );
+        var lobbyResponse = await Client.GetAsyncWithUser(LobbyUrl.GetActiveLobby, TestUser.TestUser1);
+        var lobby = await lobbyResponse.Content.ReadFromJsonAsync<LobbyDto>();
+
+        // when
+        var response =
+            await Client.PostAsyncWithUser(LobbyUrl.SendMessage(lobby!.Id), TestUser.Default, sendMessageDto);
+
+        // then
+        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
+    }
+
+    [TestCaseSource(typeof(SendMessageDtoTestCases), nameof(SendMessageDtoTestCases.ValidSendMessageDtoCommands))]
+    public async Task GivenPlayerInLobby_WhenSendLobbyChatMessage_ThenReturnsSuccess(
+        SendMessageDto sendMessageDto
+    )
+    {
+        // given
+        await CreateUserAccount(TestUser.Default);
+
+        await Client.PostAsyncWithUser(
+            LobbyUrl.CreateLobby,
             TestUser.Default,
             new CreateLobbyDto { Name = "TestLobby", MaxPlayers = 4 }
         );
+        var lobbyResponse = await Client.GetAsyncWithUser(LobbyUrl.GetActiveLobby, TestUser.Default);
+        var lobby = await lobbyResponse.Content.ReadFromJsonAsync<LobbyDto>();
 
         // when
-        var response = await Client.PostAsyncWithUser(sendLobbyChatMessageUrl, TestUser.Default, sendMessageDto);
+        var response =
+            await Client.PostAsyncWithUser(LobbyUrl.SendMessage(lobby!.Id), TestUser.Default, sendMessageDto);
 
         // then
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));

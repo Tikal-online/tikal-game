@@ -17,9 +17,4 @@ public sealed class Player
     public long LobbyId { get; set; }
 
     public Lobby Lobby { get; set; } = null!;
-
-    public void LeaveLobby()
-    {
-        Lobby.RemovePlayer(this);
-    }
 }
