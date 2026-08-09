@@ -8,7 +8,8 @@ using Shared.Contracts.Messaging;
 
 namespace Lobbies.Application.UseCases.LeaveLobby;
 
-internal sealed class LeaveLobbyCommandHandler : CommandHandler<LeaveLobbyCommand, OneOf<Success, PlayerNotInALobby>>
+internal sealed class LeaveLobbyCommandHandler
+    : CommandHandler<LeaveLobbyCommand, OneOf<Success, LobbyNotFound, PlayerNotInGivenLobby>>
 {
     private readonly PlayerRepository playerRepository;
 
@@ -31,19 +32,26 @@ internal sealed class LeaveLobbyCommandHandler : CommandHandler<LeaveLobbyComman
         this.accountContext = accountContext;
     }
 
-    public async Task<OneOf<Success, PlayerNotInALobby>> Handle(
+    public async Task<OneOf<Success, LobbyNotFound, PlayerNotInGivenLobby>> Handle(
         LeaveLobbyCommand request,
         CancellationToken cancellationToken
     )
     {
-        var player = await playerRepository.GetByUserIdWithLobbyAsync(accountContext.Account.UserId);
+        var lobby = await lobbyRepository.GetByIdAsync(request.Id);
+
+        if (lobby is null)
+        {
+            return new LobbyNotFound(request.Id);
+        }
+
+        var player = lobby.GetPlayer(accountContext.Account.UserId);
 
         if (player is null)
         {
-            return new PlayerNotInALobby();
+            return new PlayerNotInGivenLobby(request.Id);
         }
 
-        player.LeaveLobby();
+        lobby.RemovePlayer(player);
         playerRepository.Delete(player);
 
         if (player.Lobby.IsEmpty)

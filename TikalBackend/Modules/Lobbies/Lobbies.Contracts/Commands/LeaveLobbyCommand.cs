@@ -5,4 +5,4 @@ using Shared.Contracts.Messaging;
 
 namespace Lobbies.Contracts.Commands;
 
-public sealed record LeaveLobbyCommand : Command<OneOf<Success, PlayerNotInALobby>>;
+public sealed record LeaveLobbyCommand(long Id) : Command<OneOf<Success, LobbyNotFound, PlayerNotInGivenLobby>>;

@@ -9,7 +9,7 @@ import {
 import { Lobby } from '../../models/lobby';
 import { inject } from '@angular/core';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { catchError, firstValueFrom, pipe, switchMap, tap } from 'rxjs';
+import { catchError, filter, firstValueFrom, pipe, switchMap, tap } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
 import { Router } from '@angular/router';
 import { ActiveLobbyService } from '../../services/active-lobby/active-lobby-service';
@@ -157,10 +157,11 @@ export const ActiveLobbyStore = signalStore(
 
     leaveLobby: rxMethod<void>(
       pipe(
+        filter(() => !!store.lobby()),
         tap(() => patchState(store, { leavingStatus: 'leaving' })),
         switchMap(() => {
           return store._activeLobbyService
-            .leaveLobby()
+            .leaveLobby(store.lobby()!.id)
             .pipe(catchError(async () => patchState(store, { leavingStatus: 'error' })));
         }),
       ),

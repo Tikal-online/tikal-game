@@ -118,7 +118,7 @@ internal sealed class ActiveLobbyTests : IntegrationTestFixture
         await Client.PostAsyncWithUser($"Lobbies/{lobby!.Id}/players", TestUser.TestUser1, null);
 
         // when
-        await Client.PostAsyncWithUser(lobbyUrl + "/leave", TestUser.TestUser1, null);
+        await Client.DeleteAsyncWithUser($"Lobbies/{lobby.Id}/players/me", TestUser.TestUser1);
 
         // then
         var leftPlayer = await leftPlayerSource.Task.WaitAsync(TimeSpan.FromSeconds(5));
@@ -154,7 +154,7 @@ internal sealed class ActiveLobbyTests : IntegrationTestFixture
         connection.On<LobbyPlayerDto>("PlayerUpdated", updatedPlayerSource.SetResult);
 
         // when
-        await Client.PostAsyncWithUser(lobbyUrl + "/leave", TestUser.Default, null);
+        await Client.DeleteAsyncWithUser($"Lobbies/{lobby.Id}/players/me", TestUser.Default);
 
         // then
         var updatedPlayer = await updatedPlayerSource.Task.WaitAsync(TimeSpan.FromSeconds(5));

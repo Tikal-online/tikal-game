@@ -135,11 +135,9 @@ describe('ActiveLobbyStore', () => {
     },
   );
 
-  test('given leaving fails when leaveLobby then sets leavingStatus to error', () => {
+  test('given no active lobby when leaveLobby then does not call leaveLobby', async () => {
     // given
     const store = TestBed.inject(ActiveLobbyStore);
-
-    activeLobbyService.leaveLobby.mockReturnValueOnce(throwError(() => new Error('test error')));
 
     // when
     TestBed.runInInjectionContext(() => {
@@ -147,8 +145,28 @@ describe('ActiveLobbyStore', () => {
     });
 
     // then
-    expect(store.leavingStatus()).toEqual('error');
+    expect(activeLobbyService.leaveLobby).not.toHaveBeenCalled();
   });
+
+  test.for<Lobby>(LOBBY_TESTCASES)(
+    'given leaving fails when leaveLobby then sets leavingStatus to error',
+    (lobby: Lobby) => {
+      // given
+      const store = TestBed.inject(ActiveLobbyStore);
+
+      activeLobbyService.getActiveLobby.mockReturnValueOnce(of(lobby));
+      activeLobbyService.leaveLobby.mockReturnValueOnce(throwError(() => new Error('test error')));
+
+      // when
+      TestBed.runInInjectionContext(() => {
+        store.loadActiveLobby();
+        store.leaveLobby();
+      });
+
+      // then
+      expect(store.leavingStatus()).toEqual('error');
+    },
+  );
 
   test.for<Player>(PLAYER_TESTCASES)(
     'given active lobby when joinedPlayers$ emits then adds player to lobby',
