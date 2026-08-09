@@ -37,18 +37,18 @@ internal sealed class LeaveLobbyCommandHandler
         CancellationToken cancellationToken
     )
     {
-        var lobby = await lobbyRepository.GetByIdAsync(request.Id);
+        var lobby = await lobbyRepository.GetByIdAsync(request.LobbyId);
 
         if (lobby is null)
         {
-            return new LobbyNotFound(request.Id);
+            return new LobbyNotFound(request.LobbyId);
         }
 
         var player = lobby.GetPlayer(accountContext.Account.UserId);
 
         if (player is null)
         {
-            return new PlayerNotInGivenLobby(request.Id);
+            return new PlayerNotInGivenLobby(request.LobbyId);
         }
 
         lobby.RemovePlayer(player);

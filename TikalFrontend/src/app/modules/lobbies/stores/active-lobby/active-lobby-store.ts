@@ -64,7 +64,13 @@ export const ActiveLobbyStore = signalStore(
     },
 
     sendMessage(message: string): Promise<void> {
-      return firstValueFrom(store._activeLobbyService.sendMessage(message));
+      const id = store.lobby()?.id;
+
+      if (!id) {
+        return Promise.resolve();
+      }
+
+      return firstValueFrom(store._activeLobbyService.sendMessage(id, message));
     },
 
     watchJoinedPlayers: rxMethod<void>(

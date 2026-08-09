@@ -193,7 +193,7 @@ internal sealed class ActiveLobbyTests : IntegrationTestFixture
         await Client.PostAsyncWithUser($"Lobbies/{lobby!.Id}/players", TestUser.TestUser1, null);
 
         // when
-        await Client.PostAsyncWithUser(lobbyUrl + "/sendMessage", TestUser.TestUser1, sendMessageDto);
+        await Client.PostAsyncWithUser($"Lobbies/{lobby.Id}/messages", TestUser.TestUser1, sendMessageDto);
 
         // then
         var chatMessage = await chatMessageSource.Task.WaitAsync(TimeSpan.FromSeconds(5));

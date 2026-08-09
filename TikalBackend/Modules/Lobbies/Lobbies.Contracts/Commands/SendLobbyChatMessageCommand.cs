@@ -5,4 +5,5 @@ using Shared.Contracts.Messaging;
 
 namespace Lobbies.Contracts.Commands;
 
-public sealed record SendLobbyChatMessageCommand(string MessageContent) : Command<OneOf<Success, PlayerNotInALobby>>;
+public sealed record SendLobbyChatMessageCommand(long LobbyId, string MessageContent)
+    : Command<OneOf<Success, LobbyNotFound, PlayerNotInGivenLobby>>;

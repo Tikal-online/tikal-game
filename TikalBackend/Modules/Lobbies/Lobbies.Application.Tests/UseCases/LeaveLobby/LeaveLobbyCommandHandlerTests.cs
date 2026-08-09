@@ -47,7 +47,7 @@ internal sealed class LeaveLobbyCommandHandlerTests
 
     private void SetupHappyPath(Lobby lobby)
     {
-        // lobby with player exists
+        // lobby exists
         lobbyRepository.Setup(r => r.GetByIdAsync(lobby.Id))
             .ReturnsAsync(lobby);
 

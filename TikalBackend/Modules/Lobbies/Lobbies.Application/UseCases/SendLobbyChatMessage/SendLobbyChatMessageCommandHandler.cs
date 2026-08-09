@@ -12,7 +12,7 @@ using Shared.Contracts.Messaging;
 namespace Lobbies.Application.UseCases.SendLobbyChatMessage;
 
 internal sealed class SendLobbyChatMessageCommandHandler
-    : CommandHandler<SendLobbyChatMessageCommand, OneOf<Success, PlayerNotInALobby>>
+    : CommandHandler<SendLobbyChatMessageCommand, OneOf<Success, LobbyNotFound, PlayerNotInGivenLobby>>
 {
     private readonly LobbyQueryContext lobbyQueryContext;
 
@@ -31,16 +31,23 @@ internal sealed class SendLobbyChatMessageCommandHandler
         this.accountContext = accountContext;
     }
 
-    public async Task<OneOf<Success, PlayerNotInALobby>> Handle(
+    public async Task<OneOf<Success, LobbyNotFound, PlayerNotInGivenLobby>> Handle(
         SendLobbyChatMessageCommand request,
         CancellationToken cancellationToken
     )
     {
-        var lobbyId = await lobbyQueryContext.GetIdByUserIdAsync(accountContext.Account.UserId);
+        var lobby = await lobbyQueryContext.GetByIdAsync(request.LobbyId);
 
-        if (lobbyId is null)
+        if (lobby is null)
         {
-            return new PlayerNotInALobby();
+            return new LobbyNotFound(request.LobbyId);
+        }
+
+        var player = lobby.GetPlayer(accountContext.Account.UserId);
+
+        if (player is null)
+        {
+            return new PlayerNotInGivenLobby(request.LobbyId);
         }
 
         var message = new ChatMessageModel
@@ -50,7 +57,7 @@ internal sealed class SendLobbyChatMessageCommandHandler
             Content = request.MessageContent
         };
 
-        var notification = new LobbyChatMessageSentNotification(message, lobbyId.Value);
+        var notification = new LobbyChatMessageSentNotification(message, lobby.Id);
 
         await publisher.Publish(notification, cancellationToken);
 
