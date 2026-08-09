@@ -30,4 +30,15 @@ public sealed class Player : Entity
         IsReady = true;
         AddDomainEvent(new PlayerUpdatedEvent(this));
     }
+
+    public void ReadyDown()
+    {
+        if (!IsReady)
+        {
+            return;
+        }
+
+        IsReady = false;
+        AddDomainEvent(new PlayerUpdatedEvent(this));
+    }
 }
