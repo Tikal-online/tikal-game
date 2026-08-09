@@ -8,18 +8,11 @@ namespace TikalBackend.IntegrationTests.Modules.Lobbies;
 
 internal sealed class JoinLobbyTests : IntegrationTestFixture
 {
-    private const string lobbyUrl = "Lobbies";
-
-    private static string BuildUrl(long id)
-    {
-        return $"Lobbies/{id}/players";
-    }
-
     [Test]
     public async Task GivenUnauthenticatedUser_WhenJoinLobby_ThenReturnsUnauthorized()
     {
         // when
-        var response = await Client.PostAsync(BuildUrl(1), null);
+        var response = await Client.PostAsync(LobbyUrl.JoinLobby(1), null);
 
         // then
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
@@ -29,7 +22,7 @@ internal sealed class JoinLobbyTests : IntegrationTestFixture
     public async Task GivenUserWithoutAccount_WhenJoinLobby_ThenReturnsUnauthorized()
     {
         // when
-        var response = await Client.PostAsyncWithUser(BuildUrl(1), TestUser.Default, null);
+        var response = await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(1), TestUser.Default, null);
 
         // then
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
@@ -42,7 +35,7 @@ internal sealed class JoinLobbyTests : IntegrationTestFixture
         await CreateUserAccount(TestUser.Default);
 
         // when
-        var response = await Client.PostAsyncWithUser(BuildUrl(1), TestUser.Default, null);
+        var response = await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(1), TestUser.Default, null);
 
         // then
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
@@ -53,16 +46,16 @@ internal sealed class JoinLobbyTests : IntegrationTestFixture
     {
         // given
         await CreateUserAccount(TestUser.Default);
-        await Client.PostAsyncWithUser(lobbyUrl, TestUser.Default, createLobbyDto);
+        await Client.PostAsyncWithUser(LobbyUrl.CreateLobby, TestUser.Default, createLobbyDto);
 
         await CreateUserAccount(TestUser.TestUser1);
-        await Client.PostAsyncWithUser(lobbyUrl, TestUser.TestUser1, createLobbyDto);
+        await Client.PostAsyncWithUser(LobbyUrl.CreateLobby, TestUser.TestUser1, createLobbyDto);
 
-        var lobbyResponse = await Client.GetAsyncWithUser(lobbyUrl + "/me", TestUser.TestUser1);
+        var lobbyResponse = await Client.GetAsyncWithUser(LobbyUrl.GetActiveLobby, TestUser.TestUser1);
         var lobby = await lobbyResponse.Content.ReadFromJsonAsync<LobbyDto>();
 
         // when
-        var response = await Client.PostAsyncWithUser(BuildUrl(lobby!.Id), TestUser.Default, null);
+        var response = await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby!.Id), TestUser.Default, null);
 
         // then
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Conflict));
@@ -75,9 +68,9 @@ internal sealed class JoinLobbyTests : IntegrationTestFixture
         await CreateUserAccount(TestUser.Default);
 
         await CreateUserAccount(TestUser.TestUser1);
-        await Client.PostAsyncWithUser(lobbyUrl, TestUser.TestUser1, createLobbyDto);
+        await Client.PostAsyncWithUser(LobbyUrl.CreateLobby, TestUser.TestUser1, createLobbyDto);
 
-        var lobbyResponse = await Client.GetAsyncWithUser(lobbyUrl + "/me", TestUser.TestUser1);
+        var lobbyResponse = await Client.GetAsyncWithUser(LobbyUrl.GetActiveLobby, TestUser.TestUser1);
         var lobby = await lobbyResponse.Content.ReadFromJsonAsync<LobbyDto>();
 
         List<TestUser> users = [TestUser.TestUser2, TestUser.TestUser3, TestUser.TestUser4];
@@ -86,11 +79,11 @@ internal sealed class JoinLobbyTests : IntegrationTestFixture
         for (var i = 0; i < lobby!.MaxPlayers - 1; i++)
         {
             await CreateUserAccount(users[i]);
-            await Client.PostAsyncWithUser(BuildUrl(lobby.Id), users[i], null);
+            await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), users[i], null);
         }
 
         // when
-        var response = await Client.PostAsyncWithUser(BuildUrl(lobby.Id), TestUser.Default, null);
+        var response = await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.Default, null);
 
         // then
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Conflict));

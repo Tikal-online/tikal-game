@@ -1,14 +1,13 @@
 using Microsoft.AspNetCore.SignalR.Client;
 using RestApi.Controllers.Accounts.Dtos;
 using TikalBackend.IntegrationTests.Extensions;
+using TikalBackend.IntegrationTests.Modules.Accounts;
 using TikalBackend.IntegrationTests.Utils;
 
 namespace TikalBackend.IntegrationTests;
 
 internal abstract class IntegrationTestFixture : TestContainerFixture
 {
-    private const string createAccountUrl = "Accounts";
-
     private CustomWebApplicationFactory factory;
 
     protected HttpClient Client { get; private set; }
@@ -29,7 +28,7 @@ internal abstract class IntegrationTestFixture : TestContainerFixture
 
     protected Task CreateUserAccount(TestUser user)
     {
-        return Client.PostAsyncWithUser(createAccountUrl, user, new CreateAccountDto { Name = user.Name });
+        return Client.PostAsyncWithUser(AccountUrl.CreateAccount, user, new CreateAccountDto { Name = user.Name });
     }
 
     protected async Task<HubConnection> CreateConnection(string url, TestUser? user = null, bool startConnection = true)

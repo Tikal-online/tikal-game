@@ -8,8 +8,6 @@ namespace TikalBackend.IntegrationTests.Modules.Lobbies;
 
 internal sealed class GetLobbyTests : IntegrationTestFixture
 {
-    private const string lobbyUrl = "Lobbies";
-
     private static IEnumerable<long> LobbyIdTestCases =>
     [
         0,
@@ -23,7 +21,7 @@ internal sealed class GetLobbyTests : IntegrationTestFixture
     public async Task GivenUnauthenticatedUser_WhenGetLobby_ThenReturnsUnauthorized(long lobbyId)
     {
         // when
-        var response = await Client.GetAsync($"{lobbyUrl}/{lobbyId}");
+        var response = await Client.GetAsync(LobbyUrl.GetLobby(lobbyId));
 
         // then
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
@@ -33,7 +31,7 @@ internal sealed class GetLobbyTests : IntegrationTestFixture
     public async Task GivenUserWithoutAccount_WhenGetLobby_ThenReturnsUnauthorized(long lobbyId)
     {
         // when
-        var response = await Client.GetAsyncWithUser($"{lobbyUrl}/{lobbyId}", TestUser.Default);
+        var response = await Client.GetAsyncWithUser(LobbyUrl.GetLobby(lobbyId), TestUser.Default);
 
         // then
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
@@ -46,7 +44,7 @@ internal sealed class GetLobbyTests : IntegrationTestFixture
         await CreateUserAccount(TestUser.Default);
 
         // when
-        var response = await Client.GetAsyncWithUser($"{lobbyUrl}/{lobbyId}", TestUser.Default);
+        var response = await Client.GetAsyncWithUser(LobbyUrl.GetLobby(lobbyId), TestUser.Default);
 
         // then
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
@@ -58,14 +56,14 @@ internal sealed class GetLobbyTests : IntegrationTestFixture
         // given
         await CreateUserAccount(TestUser.Default);
 
-        await Client.PostAsyncWithUser(lobbyUrl, TestUser.Default, createLobbyDto);
+        await Client.PostAsyncWithUser(LobbyUrl.CreateLobby, TestUser.Default, createLobbyDto);
 
-        var createdLobbyResponse = await Client.GetAsyncWithUser(lobbyUrl + "/me", TestUser.Default);
+        var createdLobbyResponse = await Client.GetAsyncWithUser(LobbyUrl.GetActiveLobby, TestUser.Default);
 
         var createdLobby = await createdLobbyResponse.Content.ReadFromJsonAsync<LobbyDto>();
 
         // when
-        var response = await Client.GetAsyncWithUser($"{lobbyUrl}/{createdLobby!.Id}", TestUser.Default);
+        var response = await Client.GetAsyncWithUser(LobbyUrl.GetLobby(createdLobby!.Id), TestUser.Default);
 
         var lobby = await response.Content.ReadFromJsonAsync<LobbyDto>();
 

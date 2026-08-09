@@ -9,15 +9,13 @@ namespace TikalBackend.IntegrationTests.Modules.Accounts;
 
 internal sealed class CreateAccountTests : IntegrationTestFixture
 {
-    private const string createAccountUrl = "Accounts";
-
     [TestCaseSource(typeof(CreateAccountDtoTestCases), nameof(CreateAccountDtoTestCases.ValidCreateAccountDtos))]
     public async Task GivenUnauthenticatedUser_WhenCreateAccount_ThenReturnsUnauthorized(
         CreateAccountDto createAccountDto
     )
     {
         // when
-        var response = await Client.PostAsJsonAsync(createAccountUrl, createAccountDto);
+        var response = await Client.PostAsJsonAsync(AccountUrl.CreateAccount, createAccountDto);
 
         // then
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
@@ -29,7 +27,7 @@ internal sealed class CreateAccountTests : IntegrationTestFixture
     )
     {
         // when
-        var response = await Client.PostAsyncWithUser(createAccountUrl, TestUser.Default, createAccountDto);
+        var response = await Client.PostAsyncWithUser(AccountUrl.CreateAccount, TestUser.Default, createAccountDto);
 
         // then
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
@@ -41,10 +39,10 @@ internal sealed class CreateAccountTests : IntegrationTestFixture
     )
     {
         // given
-        await Client.PostAsyncWithUser(createAccountUrl, TestUser.Default, createAccountDto);
+        await Client.PostAsyncWithUser(AccountUrl.CreateAccount, TestUser.Default, createAccountDto);
 
         // when
-        var response = await Client.PostAsyncWithUser(createAccountUrl, TestUser.Default, createAccountDto);
+        var response = await Client.PostAsyncWithUser(AccountUrl.CreateAccount, TestUser.Default, createAccountDto);
 
         // then
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Conflict));
@@ -56,7 +54,7 @@ internal sealed class CreateAccountTests : IntegrationTestFixture
     )
     {
         // when
-        var response = await Client.PostAsyncWithUser(createAccountUrl, TestUser.Default, createAccountDto);
+        var response = await Client.PostAsyncWithUser(AccountUrl.CreateAccount, TestUser.Default, createAccountDto);
 
         var account = await response.Content.ReadFromJsonAsync<AccountModel>();
 

@@ -11,16 +11,14 @@ namespace TikalBackend.IntegrationTests.Modules.Lobbies;
 
 internal sealed class ActiveLobbyTests : IntegrationTestFixture
 {
-    private const string activeLobbyUrl = "hub/activeLobby";
-
-    private const string lobbyUrl = "Lobbies";
-
     [Test]
     public void GivenUnauthenticatedUser_WhenConnect_ThenReturnsUnauthorized()
     {
         // when & then
-        var exception =
-            Assert.ThrowsAsync<HttpRequestException>(async () => { await CreateConnection(activeLobbyUrl); });
+        var exception = Assert.ThrowsAsync<HttpRequestException>(async () =>
+        {
+            await CreateConnection(LobbyUrl.ActiveLobbyHub);
+        });
 
         Assert.That(exception.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
     }
@@ -30,7 +28,7 @@ internal sealed class ActiveLobbyTests : IntegrationTestFixture
     {
         // given
         var closedExceptionSource = new TaskCompletionSource<Exception?>();
-        await using var connection = await CreateConnection(activeLobbyUrl, TestUser.Default, false);
+        await using var connection = await CreateConnection(LobbyUrl.ActiveLobbyHub, TestUser.Default, false);
         connection.Closed += ex =>
         {
             closedExceptionSource.TrySetResult(ex);
@@ -53,7 +51,7 @@ internal sealed class ActiveLobbyTests : IntegrationTestFixture
         // given
         var closedExceptionSource = new TaskCompletionSource<Exception?>();
         await CreateUserAccount(TestUser.Default);
-        await using var connection = await CreateConnection(activeLobbyUrl, TestUser.Default, false);
+        await using var connection = await CreateConnection(LobbyUrl.ActiveLobbyHub, TestUser.Default, false);
         connection.Closed += ex =>
         {
             closedExceptionSource.TrySetResult(ex);
@@ -75,18 +73,18 @@ internal sealed class ActiveLobbyTests : IntegrationTestFixture
     {
         // given
         await CreateUserAccount(TestUser.Default);
-        await Client.PostAsyncWithUser(lobbyUrl, TestUser.Default, createLobbyDto);
-        await using var connection = await CreateConnection(activeLobbyUrl, TestUser.Default);
+        await Client.PostAsyncWithUser(LobbyUrl.CreateLobby, TestUser.Default, createLobbyDto);
+        await using var connection = await CreateConnection(LobbyUrl.ActiveLobbyHub, TestUser.Default);
 
         var joinedPlayerSource = new TaskCompletionSource<LobbyPlayerDto>();
         connection.On<LobbyPlayerDto>("PlayerJoined", joinedPlayerSource.SetResult);
 
-        var lobbyResponse = await Client.GetAsyncWithUser(lobbyUrl + "/me", TestUser.Default);
+        var lobbyResponse = await Client.GetAsyncWithUser(LobbyUrl.GetActiveLobby, TestUser.Default);
         var lobby = await lobbyResponse.Content.ReadFromJsonAsync<LobbyDto>();
 
         // when
         await CreateUserAccount(TestUser.TestUser1);
-        await Client.PostAsyncWithUser($"Lobbies/{lobby!.Id}/players", TestUser.TestUser1, null);
+        await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby!.Id), TestUser.TestUser1, null);
 
         // then
         var joinedPlayer = await joinedPlayerSource.Task.WaitAsync(TimeSpan.FromSeconds(5));
@@ -105,20 +103,20 @@ internal sealed class ActiveLobbyTests : IntegrationTestFixture
     {
         // given
         await CreateUserAccount(TestUser.Default);
-        await Client.PostAsyncWithUser(lobbyUrl, TestUser.Default, createLobbyDto);
-        await using var connection = await CreateConnection(activeLobbyUrl, TestUser.Default);
+        await Client.PostAsyncWithUser(LobbyUrl.CreateLobby, TestUser.Default, createLobbyDto);
+        await using var connection = await CreateConnection(LobbyUrl.ActiveLobbyHub, TestUser.Default);
 
         var leftPlayerSource = new TaskCompletionSource<LobbyPlayerDto>();
         connection.On<LobbyPlayerDto>("PlayerLeft", leftPlayerSource.SetResult);
 
-        var lobbyResponse = await Client.GetAsyncWithUser(lobbyUrl + "/me", TestUser.Default);
+        var lobbyResponse = await Client.GetAsyncWithUser(LobbyUrl.GetActiveLobby, TestUser.Default);
         var lobby = await lobbyResponse.Content.ReadFromJsonAsync<LobbyDto>();
 
         await CreateUserAccount(TestUser.TestUser1);
-        await Client.PostAsyncWithUser($"Lobbies/{lobby!.Id}/players", TestUser.TestUser1, null);
+        await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby!.Id), TestUser.TestUser1, null);
 
         // when
-        await Client.DeleteAsyncWithUser($"Lobbies/{lobby.Id}/players/me", TestUser.TestUser1);
+        await Client.DeleteAsyncWithUser(LobbyUrl.LeaveLobby(lobby.Id), TestUser.TestUser1);
 
         // then
         var leftPlayer = await leftPlayerSource.Task.WaitAsync(TimeSpan.FromSeconds(5));
@@ -139,22 +137,22 @@ internal sealed class ActiveLobbyTests : IntegrationTestFixture
     {
         // given
         await CreateUserAccount(TestUser.Default);
-        await Client.PostAsyncWithUser(lobbyUrl, TestUser.Default, createLobbyDto);
+        await Client.PostAsyncWithUser(LobbyUrl.CreateLobby, TestUser.Default, createLobbyDto);
 
-        var lobbyResponse = await Client.GetAsyncWithUser(lobbyUrl + "/me", TestUser.Default);
+        var lobbyResponse = await Client.GetAsyncWithUser(LobbyUrl.GetActiveLobby, TestUser.Default);
         var lobby = await lobbyResponse.Content.ReadFromJsonAsync<LobbyDto>();
 
         await CreateUserAccount(TestUser.TestUser1);
-        await Client.PostAsyncWithUser($"Lobbies/{lobby!.Id}/players", TestUser.TestUser1, null);
+        await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby!.Id), TestUser.TestUser1, null);
 
-        await using var connection = await CreateConnection(activeLobbyUrl, TestUser.TestUser1);
-        await Client.GetAsyncWithUser(lobbyUrl + "/me", TestUser.TestUser1);
+        await using var connection = await CreateConnection(LobbyUrl.ActiveLobbyHub, TestUser.TestUser1);
+        await Client.GetAsyncWithUser(LobbyUrl.GetActiveLobby, TestUser.TestUser1);
 
         var updatedPlayerSource = new TaskCompletionSource<LobbyPlayerDto>();
         connection.On<LobbyPlayerDto>("PlayerUpdated", updatedPlayerSource.SetResult);
 
         // when
-        await Client.DeleteAsyncWithUser($"Lobbies/{lobby.Id}/players/me", TestUser.Default);
+        await Client.DeleteAsyncWithUser(LobbyUrl.LeaveLobby(lobby.Id), TestUser.Default);
 
         // then
         var updatedPlayer = await updatedPlayerSource.Task.WaitAsync(TimeSpan.FromSeconds(5));
@@ -180,20 +178,20 @@ internal sealed class ActiveLobbyTests : IntegrationTestFixture
         };
 
         await CreateUserAccount(TestUser.Default);
-        await Client.PostAsyncWithUser(lobbyUrl, TestUser.Default, createLobbyDto);
-        await using var connection = await CreateConnection(activeLobbyUrl, TestUser.Default);
+        await Client.PostAsyncWithUser(LobbyUrl.CreateLobby, TestUser.Default, createLobbyDto);
+        await using var connection = await CreateConnection(LobbyUrl.ActiveLobbyHub, TestUser.Default);
 
         var chatMessageSource = new TaskCompletionSource<ChatMessageDto>();
         connection.On<ChatMessageDto>("ReceiveMessage", chatMessageSource.SetResult);
 
-        var lobbyResponse = await Client.GetAsyncWithUser(lobbyUrl + "/me", TestUser.Default);
+        var lobbyResponse = await Client.GetAsyncWithUser(LobbyUrl.GetActiveLobby, TestUser.Default);
         var lobby = await lobbyResponse.Content.ReadFromJsonAsync<LobbyDto>();
 
         await CreateUserAccount(TestUser.TestUser1);
-        await Client.PostAsyncWithUser($"Lobbies/{lobby!.Id}/players", TestUser.TestUser1, null);
+        await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby!.Id), TestUser.TestUser1, null);
 
         // when
-        await Client.PostAsyncWithUser($"Lobbies/{lobby.Id}/messages", TestUser.TestUser1, sendMessageDto);
+        await Client.PostAsyncWithUser(LobbyUrl.SendMessage(lobby.Id), TestUser.TestUser1, sendMessageDto);
 
         // then
         var chatMessage = await chatMessageSource.Task.WaitAsync(TimeSpan.FromSeconds(5));
