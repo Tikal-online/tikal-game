@@ -31,4 +31,20 @@ public sealed partial class PlayersController : ApiController
             _ => PlayerNotInALobby(GetCurrentUserId())
         );
     }
+
+    [HttpDelete("me/ready")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [EndpointDescription("Changes the lobby status of the player of the currently authenticated user to not ready")]
+    public async Task<IActionResult> SetPlayerNotReady(CancellationToken cancellationToken)
+    {
+        var command = new SetPlayerNotReadyCommand();
+
+        var result = await sender.Send(command, cancellationToken);
+
+        return result.Match<IActionResult>(
+            _ => Ok(),
+            _ => PlayerNotInALobby(GetCurrentUserId())
+        );
+    }
 }
