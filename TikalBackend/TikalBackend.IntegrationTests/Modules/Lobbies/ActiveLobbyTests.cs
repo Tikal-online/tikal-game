@@ -240,4 +240,40 @@ internal sealed class ActiveLobbyTests : IntegrationTestFixture
             Assert.That(updatedPlayer.IsReady, Is.True);
         }
     }
+
+    [TestCaseSource(typeof(CreateLobbyDtoTestCases), nameof(CreateLobbyDtoTestCases.ValidCreateLobbyDtos))]
+    public async Task GivenLobby_WhenPlayerReadyDown_ThenSetsPlayerToNotReadyAndSendsPlayerUpdatedNotification(
+        CreateLobbyDto createLobbyDto
+    )
+    {
+        // given
+        await CreateUserAccount(TestUser.Default);
+        await Client.PostAsyncWithUser(LobbyUrl.CreateLobby, TestUser.Default, createLobbyDto);
+        await using var connection = await CreateConnection(LobbyUrl.ActiveLobbyHub, TestUser.Default);
+
+        var lobbyResponse = await Client.GetAsyncWithUser(LobbyUrl.GetActiveLobby, TestUser.Default);
+        var lobby = await lobbyResponse.Content.ReadFromJsonAsync<LobbyDto>();
+
+        await CreateUserAccount(TestUser.TestUser1);
+        await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby!.Id), TestUser.TestUser1, null);
+        await Client.PutAsyncWithUser(LobbyUrl.SetPlayerReady, TestUser.TestUser1, null);
+
+        var updatedPlayerSource = new TaskCompletionSource<LobbyPlayerDto>();
+        connection.On<LobbyPlayerDto>("PlayerUpdated", updatedPlayerSource.SetResult);
+
+        // when
+        await Client.DeleteAsyncWithUser(LobbyUrl.SetPlayerNotReady, TestUser.TestUser1);
+
+        // then
+        var updatedPlayer = await updatedPlayerSource.Task.WaitAsync(TimeSpan.FromSeconds(5));
+
+        Assert.That(updatedPlayer, Is.Not.Null);
+
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(updatedPlayer.UserId, Is.EqualTo(TestUser.TestUser1.UserId));
+            Assert.That(updatedPlayer.Name, Is.EqualTo(TestUser.TestUser1.Name));
+            Assert.That(updatedPlayer.IsReady, Is.False);
+        }
+    }
 }

@@ -8,6 +8,8 @@ internal static class LobbyUrl
 
     public const string SetPlayerReady = $"{playerUrl}/me/ready";
 
+    public const string SetPlayerNotReady = $"{playerUrl}/me/ready";
+
     public const string ActiveLobbyHub = "hub/activeLobby";
 
     public const string CreateLobby = $"{lobbyUrl}";
