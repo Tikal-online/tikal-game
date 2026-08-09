@@ -19,16 +19,16 @@ internal static class LobbyUrl
 
     public static string JoinLobby(long id)
     {
-        return $"Lobbies/{id}/players";
+        return $"Lobbies/{id}/Players";
     }
 
     public static string LeaveLobby(long id)
     {
-        return $"Lobbies/{id}/players/me";
+        return $"Lobbies/{id}/Players/me";
     }
 
     public static string SendMessage(long id)
     {
-        return $"Lobbies/{id}/messages";
+        return $"Lobbies/{id}/Messages";
     }
 }

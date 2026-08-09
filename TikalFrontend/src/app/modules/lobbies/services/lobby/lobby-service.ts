@@ -68,7 +68,7 @@ export class LobbyService {
   }
 
   joinLobby(id: number): Observable<Result<void, JoinLobbyError>> {
-    return this.http.post<void>(this.url + `/${id}/players`, '').pipe(
+    return this.http.post<void>(this.url + `/${id}/Players`, '').pipe(
       map(() => ok()),
       catchError((error: HttpErrorResponse) => {
         // TODO: improve problem response error handling

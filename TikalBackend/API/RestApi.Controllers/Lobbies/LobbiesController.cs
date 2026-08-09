@@ -60,8 +60,9 @@ public sealed partial class LobbiesController : ApiController
         return Ok(lobbyDto);
     }
 
-    [HttpPost("{Id:long}/players")]
+    [HttpPost("{Id:long}/Players")]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     [EndpointDescription("Adds the currently authenticated user to the provided lobby")]
     public async Task<IActionResult> JoinLobby(long Id, CancellationToken cancellationToken)
@@ -100,7 +101,7 @@ public sealed partial class LobbiesController : ApiController
         return Ok(lobbyDto);
     }
 
-    [HttpDelete("{Id:long}/players/me")]
+    [HttpDelete("{Id:long}/Players/me")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [EndpointDescription("Removes the currently authenticated user from the provided lobby")]
@@ -117,7 +118,7 @@ public sealed partial class LobbiesController : ApiController
         );
     }
 
-    [HttpPost("{Id:long}/messages")]
+    [HttpPost("{Id:long}/Messages")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [EndpointDescription("Sends a message to the lobby")]

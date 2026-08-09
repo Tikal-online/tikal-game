@@ -93,10 +93,10 @@ export class ActiveLobbyService {
   }
 
   leaveLobby(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.url}/${id}/players/me`);
+    return this.http.delete<void>(`${this.url}/${id}/Players/me`);
   }
 
   sendMessage(id: number, message: string): Observable<void> {
-    return this.http.post<void>(`${this.url}/${id}/messages`, { message: message });
+    return this.http.post<void>(`${this.url}/${id}/Messages`, { message: message });
   }
 }
