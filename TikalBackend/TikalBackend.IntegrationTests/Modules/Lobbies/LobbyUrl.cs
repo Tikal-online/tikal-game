@@ -2,7 +2,11 @@ namespace TikalBackend.IntegrationTests.Modules.Lobbies;
 
 internal static class LobbyUrl
 {
+    private const string playerUrl = "Players";
+
     private const string lobbyUrl = "Lobbies";
+
+    public const string SetPlayerReady = $"{playerUrl}/me/ready";
 
     public const string ActiveLobbyHub = "hub/activeLobby";
 

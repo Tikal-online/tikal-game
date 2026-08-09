@@ -1,8 +1,10 @@
 using Lobbies.Domain.Enums;
+using Lobbies.Domain.Events;
+using Shared.Domain.Entities;
 
 namespace Lobbies.Domain.Entities;
 
-public sealed class Player
+public sealed class Player : Entity
 {
     public long Id { get; set; }
 
@@ -17,4 +19,15 @@ public sealed class Player
     public long LobbyId { get; set; }
 
     public Lobby Lobby { get; set; } = null!;
+
+    public void ReadyUp()
+    {
+        if (IsReady)
+        {
+            return;
+        }
+
+        IsReady = true;
+        AddDomainEvent(new PlayerUpdatedEvent(this));
+    }
 }
