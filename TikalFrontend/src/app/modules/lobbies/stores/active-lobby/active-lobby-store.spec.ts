@@ -8,17 +8,12 @@ import { ActiveLobbyStore } from './active-lobby-store';
 import { Lobby } from '../../models/lobby';
 import { PLAYER_TESTCASES } from '../../models/player.testcases';
 import { DEFAULT_TEST_LOBBY, LOBBY_TESTCASES } from '../../models/lobby.testcases';
-import { AccountStore } from '../../../../core/stores/account-store/account-store';
 import { ChatMessage } from '../../models/chat-message';
 
 describe('ActiveLobbyStore', () => {
   // dependencies
   const router = {
     navigate: vi.fn(),
-  };
-
-  const accountStore = {
-    isMe: vi.fn(),
   };
 
   const activeLobbyService = {
@@ -37,7 +32,6 @@ describe('ActiveLobbyStore', () => {
     TestBed.configureTestingModule({
       providers: [
         { provide: Router, useValue: router },
-        { provide: AccountStore, useValue: accountStore },
         { provide: ActiveLobbyService, useValue: activeLobbyService },
       ],
     });
@@ -209,13 +203,13 @@ describe('ActiveLobbyStore', () => {
       const store = TestBed.inject(ActiveLobbyStore);
 
       activeLobbyService.getActiveLobby.mockReturnValueOnce(of(lobby));
-      accountStore.isMe.mockReturnValueOnce(false);
 
       TestBed.runInInjectionContext(() => {
         store.loadActiveLobby();
       });
 
       const player = lobby.players[0];
+      player.isMe = false;
 
       // when
       activeLobbyService.leftPlayers$.next(player);
@@ -225,13 +219,11 @@ describe('ActiveLobbyStore', () => {
     },
   );
 
-  test.for<Player>(PLAYER_TESTCASES)(
+  test.for<Player>(PLAYER_TESTCASES.filter((p) => !p.isMe))(
     'given no active lobby when leftPlayers$ emits not me then lobby is still null',
     (player: Player) => {
       // given
       const store = TestBed.inject(ActiveLobbyStore);
-
-      accountStore.isMe.mockReturnValueOnce(false);
 
       // when
       activeLobbyService.leftPlayers$.next(player);
@@ -248,13 +240,13 @@ describe('ActiveLobbyStore', () => {
       const store = TestBed.inject(ActiveLobbyStore);
 
       activeLobbyService.getActiveLobby.mockReturnValueOnce(of(lobby));
-      accountStore.isMe.mockReturnValueOnce(true);
 
       TestBed.runInInjectionContext(() => {
         store.loadActiveLobby();
       });
 
       const player = lobby.players[0];
+      player.isMe = true;
 
       // when
       activeLobbyService.leftPlayers$.next(player);

@@ -7,7 +7,7 @@
       }
       <span>
         {{ player.name }}
-        @if (isMe(player)) {
+        @if (player.isMe) {
           ({{ t('you-label') }})
         }
       </span>

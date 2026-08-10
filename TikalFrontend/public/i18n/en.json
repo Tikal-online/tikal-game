@@ -1,7 +1,7 @@
 {
   "home": {
     "header-prefix": "— AN EXPEDITION INTO THE UNKNOWN —",
-    "description": "A multiplayer strategy game of rival archaeologists racing through the depths of the Central American jungle. Unearth relics, claim ruins, and outwitt your rivals.",
+    "description": "A multiplayer strategy game of rival archaeologists racing through the depths of the Central American jungle.",
     "play-button": "BEGIN EXPEDITION",
     "tutorial-button": "HOW TO PLAY"
   },
@@ -81,7 +81,10 @@
     "active": {
       "header-prefix": "ACTIVE LOBBY",
       "header-loading": "Loading...",
-      "ready-button": "READY UP",
+      "ready-up-button": "READY UP",
+      "readying-up-button": "READYING UP",
+      "ready-down-button": "READY DOWN",
+      "readying-down-button": "READYING DOWN",
       "leave-button": "LEAVE",
       "leaving-button": "LEAVING"
     }

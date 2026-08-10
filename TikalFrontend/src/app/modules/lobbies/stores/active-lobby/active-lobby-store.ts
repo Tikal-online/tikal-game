@@ -14,7 +14,6 @@ import { tapResponse } from '@ngrx/operators';
 import { Router } from '@angular/router';
 import { ActiveLobbyService } from '../../services/active-lobby/active-lobby-service';
 import { ConnectionStatus } from '../../../../core/enums/connection-status';
-import { AccountStore } from '../../../../core/stores/account-store/account-store';
 import { ChatMessage } from '../../models/chat-message';
 
 type ActiveLobbyState = {
@@ -22,6 +21,7 @@ type ActiveLobbyState = {
   loadingStatus: 'initial' | 'loading' | 'loaded' | 'error';
   connectionStatus: ConnectionStatus;
   leavingStatus: 'initial' | 'leaving' | 'error';
+  readyingStatus: 'initial' | 'loading' | 'loaded' | 'error';
   showLobbyChat: boolean;
   messages: ChatMessage[];
 };
@@ -31,6 +31,7 @@ const initialState: ActiveLobbyState = {
   loadingStatus: 'initial',
   connectionStatus: 'Disconnected',
   leavingStatus: 'initial',
+  readyingStatus: 'initial',
   showLobbyChat: true,
   messages: [],
 };
@@ -42,7 +43,6 @@ export const ActiveLobbyStore = signalStore(
 
   withProps(() => ({
     _activeLobbyService: inject(ActiveLobbyService),
-    _accountStore: inject(AccountStore),
     _router: inject(Router),
   })),
 
@@ -90,7 +90,7 @@ export const ActiveLobbyStore = signalStore(
       pipe(
         switchMap(() => store._activeLobbyService.leftPlayers$),
         tap((player) => {
-          if (store._accountStore.isMe(player.userId)) {
+          if (player.isMe) {
             store._router.navigate(['/lobbies']);
           } else {
             patchState(store, (state) => ({
@@ -153,7 +153,11 @@ export const ActiveLobbyStore = signalStore(
         switchMap(() => {
           return store._activeLobbyService.getActiveLobby().pipe(
             tapResponse({
-              next: (result) => patchState(store, { lobby: result, loadingStatus: 'loaded' }),
+              next: (result) =>
+                patchState(store, {
+                  lobby: result,
+                  loadingStatus: 'loaded',
+                }),
               error: () => patchState(store, { loadingStatus: 'error' }),
             }),
           );
@@ -169,6 +173,35 @@ export const ActiveLobbyStore = signalStore(
           return store._activeLobbyService
             .leaveLobby(store.lobby()!.id)
             .pipe(catchError(async () => patchState(store, { leavingStatus: 'error' })));
+        }),
+      ),
+    ),
+
+    readyUp: rxMethod<void>(
+      pipe(
+        tap(() => patchState(store, { readyingStatus: 'loading' })),
+        switchMap(() => {
+          return store._activeLobbyService.readyUp().pipe(
+            tapResponse({
+              next: () => patchState(store, { readyingStatus: 'loaded' }),
+              error: () => patchState(store, { readyingStatus: 'error' }),
+            }),
+          );
+        }),
+      ),
+    ),
+
+    readyDown: rxMethod<void>(
+      pipe(
+        filter(() => !!store.lobby()),
+        tap(() => patchState(store, { readyingStatus: 'loading' })),
+        switchMap(() => {
+          return store._activeLobbyService.readyDown().pipe(
+            tapResponse({
+              next: () => patchState(store, { readyingStatus: 'loaded' }),
+              error: () => patchState(store, { readyingStatus: 'error' }),
+            }),
+          );
         }),
       ),
     ),
