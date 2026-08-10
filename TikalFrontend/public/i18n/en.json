@@ -82,7 +82,9 @@
       "header-prefix": "ACTIVE LOBBY",
       "header-loading": "Loading...",
       "ready-up-button": "READY UP",
+      "readying-up-button": "READYING UP",
       "ready-down-button": "READY DOWN",
+      "readying-down-button": "READYING DOWN",
       "leave-button": "LEAVE",
       "leaving-button": "LEAVING"
     }

@@ -31,7 +31,11 @@
                 [disabled]="activeLobbyStore.readyingStatus() === 'loading'"
                 (click)="activeLobbyStore.readyDown()"
               >
-                {{ t('ready-down-button') }}
+                @if (activeLobbyStore.readyingStatus() === 'loading') {
+                  {{ t('readying-down-button') }}
+                } @else {
+                  {{ t('ready-down-button') }}
+                }
               </button>
             } @else {
               <button
@@ -40,7 +44,11 @@
                 [disabled]="activeLobbyStore.readyingStatus() === 'loading'"
                 (click)="activeLobbyStore.readyUp()"
               >
-                {{ t('ready-up-button') }}
+                @if (activeLobbyStore.readyingStatus() === 'loading') {
+                  {{ t('readying-up-button') }}
+                } @else {
+                  {{ t('ready-up-button') }}
+                }
               </button>
             }
             <button
