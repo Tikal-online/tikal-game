@@ -33,7 +33,7 @@
   "devDependencies": {
     "@angular/build": "^22.1.2",
     "@angular/cli": "^22.1.2",
-    "@angular/compiler-cli": "^22.1.0",
+    "@angular/compiler-cli": "^22.1.1",
     "@vitest/coverage-v8": "^4.1.10",
     "@vitest/ui": "^4.1.9",
     "angular-eslint": "^22.1.0",
