@@ -3,4 +3,5 @@ export type Player = {
   name: string;
   isOwner: boolean;
   isReady: boolean;
+  isMe: boolean;
 };

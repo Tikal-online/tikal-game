@@ -4,7 +4,7 @@ export const DEFAULT_TEST_LOBBY: Lobby = {
   id: 1,
   name: 'TestLobby',
   maxPlayers: 4,
-  players: [{ userId: 'u1', name: 'Alice', isOwner: true, isReady: true }],
+  players: [{ userId: 'u1', name: 'Alice', isOwner: true, isReady: true, isMe: false }],
 };
 
 export const LOBBY_TESTCASES: Lobby[] = [
@@ -12,15 +12,15 @@ export const LOBBY_TESTCASES: Lobby[] = [
     id: 2,
     name: 'Waiting for Players',
     maxPlayers: 4,
-    players: [{ userId: 'u1', name: 'Alice', isOwner: true, isReady: true }],
+    players: [{ userId: 'u1', name: 'Alice', isOwner: true, isReady: true, isMe: false }],
   },
   {
     id: 3,
     name: 'Duo Ready Up',
     maxPlayers: 2,
     players: [
-      { userId: 'u2', name: 'Bob', isOwner: true, isReady: true },
-      { userId: 'u3', name: 'Charlie', isOwner: false, isReady: true },
+      { userId: 'u2', name: 'Bob', isOwner: true, isReady: true, isMe: false },
+      { userId: 'u3', name: 'Charlie', isOwner: false, isReady: true, isMe: false },
     ],
   },
   {
@@ -28,9 +28,9 @@ export const LOBBY_TESTCASES: Lobby[] = [
     name: 'Almost Full',
     maxPlayers: 4,
     players: [
-      { userId: 'u4', name: 'Dana', isOwner: true, isReady: true },
-      { userId: 'u5', name: 'Eve', isOwner: false, isReady: false },
-      { userId: 'u6', name: 'Frank', isOwner: false, isReady: true },
+      { userId: 'u4', name: 'Dana', isOwner: true, isReady: true, isMe: false },
+      { userId: 'u5', name: 'Eve', isOwner: false, isReady: false, isMe: false },
+      { userId: 'u6', name: 'Frank', isOwner: false, isReady: true, isMe: false },
     ],
   },
   {
@@ -38,10 +38,10 @@ export const LOBBY_TESTCASES: Lobby[] = [
     name: 'Full House',
     maxPlayers: 4,
     players: [
-      { userId: 'u7', name: 'Grace', isOwner: true, isReady: true },
-      { userId: 'u8', name: 'Heidi', isOwner: false, isReady: true },
-      { userId: 'u9', name: 'Ivan', isOwner: false, isReady: true },
-      { userId: 'u10', name: 'Judy', isOwner: false, isReady: false },
+      { userId: 'u7', name: 'Grace', isOwner: true, isReady: true, isMe: false },
+      { userId: 'u8', name: 'Heidi', isOwner: false, isReady: true, isMe: false },
+      { userId: 'u9', name: 'Ivan', isOwner: false, isReady: true, isMe: false },
+      { userId: 'u10', name: 'Judy', isOwner: false, isReady: false, isMe: false },
     ],
   },
   {
@@ -49,8 +49,8 @@ export const LOBBY_TESTCASES: Lobby[] = [
     name: 'Trio Not Ready',
     maxPlayers: 3,
     players: [
-      { userId: 'u11', name: 'Karl', isOwner: true, isReady: false },
-      { userId: 'u12', name: 'Liam', isOwner: false, isReady: false },
+      { userId: 'u11', name: 'Karl', isOwner: true, isReady: false, isMe: false },
+      { userId: 'u12', name: 'Liam', isOwner: false, isReady: false, isMe: false },
     ],
   },
 ];

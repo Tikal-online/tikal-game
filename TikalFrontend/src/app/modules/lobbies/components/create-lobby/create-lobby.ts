@@ -53,6 +53,7 @@ export class CreateLobby {
     name: this.accountStore.account()!.name,
     isOwner: true,
     isReady: false,
+    isMe: true,
   });
 
   readonly alreadyInLobby = signal<boolean>(false);

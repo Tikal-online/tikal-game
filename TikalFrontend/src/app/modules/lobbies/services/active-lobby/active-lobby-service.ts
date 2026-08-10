@@ -1,13 +1,14 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { inject, Service } from '@angular/core';
 import { catchError, map, Observable, of, Subject, throwError } from 'rxjs';
-import { Lobby } from '../../models/lobby';
+import { Lobby, markAuthenticatedPlayer } from '../../models/lobby';
 import { ConnectionStatus } from '../../../../core/enums/connection-status';
 import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
 import { environment } from '../../../../../environments/environment';
 import { Player } from '../../models/player';
 import { ChatMessage } from '../../models/chat-message';
 import { ChatMessageDto } from '../../../../core/dtos/chat-message';
+import { AccountStore } from '../../../../core/stores/account-store/account-store';
 
 @Service()
 export class ActiveLobbyService {
@@ -20,6 +21,8 @@ export class ActiveLobbyService {
   readonly updatedPlayers$ = new Subject<Player>();
 
   readonly connectionStatus$ = new Subject<ConnectionStatus>();
+
+  private readonly accountStore = inject(AccountStore);
 
   private readonly url = '/Api/Lobbies';
 
@@ -41,14 +44,26 @@ export class ActiveLobbyService {
     });
 
     this.connection.on('PlayerJoined', (player: Player) => {
+      if (this.accountStore.isMe(player.userId)) {
+        player.isMe = true;
+      }
+
       this.joinedPlayer$.next(player);
     });
 
     this.connection.on('PlayerLeft', (player: Player) => {
+      if (this.accountStore.isMe(player.userId)) {
+        player.isMe = true;
+      }
+
       this.leftPlayers$.next(player);
     });
 
     this.connection.on('PlayerUpdated', (player: Player) => {
+      if (this.accountStore.isMe(player.userId)) {
+        player.isMe = true;
+      }
+
       this.updatedPlayers$.next(player);
     });
 
@@ -81,7 +96,7 @@ export class ActiveLobbyService {
 
   getActiveLobby(): Observable<Lobby | null> {
     return this.http.get<Lobby>(this.url + '/me').pipe(
-      map((lobby: Lobby) => lobby),
+      map((lobby: Lobby) => markAuthenticatedPlayer(lobby, this.accountStore.account()?.userId)),
       catchError((error: HttpErrorResponse) => {
         if (error.status === 404) {
           return of(null);
@@ -94,6 +109,14 @@ export class ActiveLobbyService {
 
   leaveLobby(id: number): Observable<void> {
     return this.http.delete<void>(`${this.url}/${id}/Players/me`);
+  }
+
+  readyUp(): Observable<void> {
+    return this.http.put<void>('/Api/Players/me/ready', {});
+  }
+
+  readyDown(): Observable<void> {
+    return this.http.delete<void>('/Api/Players/me/ready');
   }
 
   sendMessage(id: number, message: string): Observable<void> {

@@ -24,9 +24,25 @@
             <app-lobby-player-list [maxPlayers]="lobby.maxPlayers" [players]="lobby.players" />
           </section>
           <div class="lobby-buttons">
-            <button class="button-primary footer-button" type="button">
-              {{ t('ready-button') }}
-            </button>
+            @if (lobby.players.find((p) => p.isMe)?.isReady) {
+              <button
+                class="button-primary footer-button"
+                type="button"
+                [disabled]="activeLobbyStore.readyingStatus() === 'loading'"
+                (click)="activeLobbyStore.readyDown()"
+              >
+                {{ t('ready-down-button') }}
+              </button>
+            } @else {
+              <button
+                class="button-primary footer-button"
+                type="button"
+                [disabled]="activeLobbyStore.readyingStatus() === 'loading'"
+                (click)="activeLobbyStore.readyUp()"
+              >
+                {{ t('ready-up-button') }}
+              </button>
+            }
             <button
               class="button-secondary footer-button"
               type="button"
