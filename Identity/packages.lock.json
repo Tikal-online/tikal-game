@@ -4,11 +4,11 @@
     "net10.0": {
       "Duende.IdentityServer.AspNetIdentity": {
         "type": "Direct",
-        "requested": "[7.4.7, )",
-        "resolved": "7.4.7",
-        "contentHash": "iGa4IhUy7FvRNEeOd4DB1giXnIV1oUgDCT9pApfvvdT6yxgZMUJMuu3sGCpsrOhdVElFUkVCL4YxC89BRQJy+Q==",
+        "requested": "[7.4.10, )",
+        "resolved": "7.4.10",
+        "contentHash": "8SknQjzq8pC+P2dw9YZU2gqmPqYtfFh73c8GSzmw1F3vZrZvy3qk6YUHj8KAyWrSbHAoRw2eEx30UO1qI6pJsQ==",
         "dependencies": {
-          "Duende.IdentityServer": "7.4.7"
+          "Duende.IdentityServer": "7.4.10"
         }
       },
       "Duende.IdentityServer.EntityFramework": {
@@ -138,11 +138,11 @@
       },
       "Duende.IdentityServer": {
         "type": "Transitive",
-        "resolved": "7.4.7",
-        "contentHash": "9Xfb3UOm//sJTl23j+Xbcpl+81KDMZDs15M78JFrcqAahqzFYCjAM+DejZxjXfvsOORD0+E6snDHbR4WhSVVmg==",
+        "resolved": "7.4.10",
+        "contentHash": "Y4gSVE33CF/xoJeU4vnyGb/q2XpIGC5Obd7rs4FlUILo4LfB14Nnlvq3GcCxp7rFlLA7h9ViFuBFknNdUKr97g==",
         "dependencies": {
-          "Duende.IdentityServer.Storage": "7.4.7",
-          "Microsoft.AspNetCore.Authentication.OpenIdConnect": "10.0.4"
+          "Duende.IdentityServer.Storage": "7.4.10",
+          "Microsoft.AspNetCore.Authentication.OpenIdConnect": "10.0.7"
         }
       },
       "Duende.IdentityServer.EntityFramework.Storage": {
@@ -156,8 +156,8 @@
       },
       "Duende.IdentityServer.Storage": {
         "type": "Transitive",
-        "resolved": "7.4.7",
-        "contentHash": "pP+OKt4f8u532m+nORqwe1y3PFcQAw731EnKLnMt4eBtL1YZTuivs2Oox77Eukl8pnU1JK6zibjH9TJkoeS+bQ==",
+        "resolved": "7.4.10",
+        "contentHash": "fxp5ena/jGQnu+joEwmY3nwkyRXa5MaLSHaImq0PoMA5v1nxwHADrbUvgAesHt1dc1YUU3okYD2TA6Pap+zBcA==",
         "dependencies": {
           "Duende.IdentityModel": "8.0.1"
         }
@@ -169,8 +169,8 @@
       },
       "Microsoft.AspNetCore.Authentication.OpenIdConnect": {
         "type": "Transitive",
-        "resolved": "10.0.4",
-        "contentHash": "S8hPSqhgkR8nLNgQ54K1lRDBv9WM64XWPTNBeJkTN8KTvQ1YX/ol6ue/JCvYtJ7mWU5r2VzdbW/BA8bJlkDEbw==",
+        "resolved": "10.0.7",
+        "contentHash": "Q7c2IKS/EwKScck80dp5zps1g62Dbqpteeh/mGMReFKuiP+88yWT4jB+mcP4cIFA+wsuIxh9uFJa6GHK4/9rzQ==",
         "dependencies": {
           "Microsoft.IdentityModel.Protocols.OpenIdConnect": "8.0.1"
         }
