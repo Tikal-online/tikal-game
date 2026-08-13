@@ -13,12 +13,12 @@
       },
       "Duende.IdentityServer.EntityFramework": {
         "type": "Direct",
-        "requested": "[7.4.10, )",
-        "resolved": "7.4.10",
-        "contentHash": "1mPdnsuHScOulfbJCB2D7b6mXmB9GAheCMOUKydMAY6fmYt5gSO0h+SBt6Lj5Fq/RUJYCyrhB6+tvJB0RR/pLg==",
+        "requested": "[7.4.11, )",
+        "resolved": "7.4.11",
+        "contentHash": "xc1ZYWSjUXPBBJZi2Wj6e8aH6z1NZaYlUs35HTP5WSAV2+yHfWk2PDl1dj2URvmEi74tLqdyXHxxicn5E9slaw==",
         "dependencies": {
-          "Duende.IdentityServer": "7.4.10",
-          "Duende.IdentityServer.EntityFramework.Storage": "7.4.10"
+          "Duende.IdentityServer": "7.4.11",
+          "Duende.IdentityServer.EntityFramework.Storage": "7.4.11"
         }
       },
       "Microsoft.AspNetCore.DataProtection.EntityFrameworkCore": {
@@ -138,26 +138,26 @@
       },
       "Duende.IdentityServer": {
         "type": "Transitive",
-        "resolved": "7.4.10",
-        "contentHash": "Y4gSVE33CF/xoJeU4vnyGb/q2XpIGC5Obd7rs4FlUILo4LfB14Nnlvq3GcCxp7rFlLA7h9ViFuBFknNdUKr97g==",
+        "resolved": "7.4.11",
+        "contentHash": "ugVHezIvXNckMGk6MBaYWqViyY3MazZI2purHn6GLqjpx2a0ac2jbtLkgHeExUpuiuYbTEWerxjMBX2Jwnqrww==",
         "dependencies": {
-          "Duende.IdentityServer.Storage": "7.4.10",
+          "Duende.IdentityServer.Storage": "7.4.11",
           "Microsoft.AspNetCore.Authentication.OpenIdConnect": "10.0.7"
         }
       },
       "Duende.IdentityServer.EntityFramework.Storage": {
         "type": "Transitive",
-        "resolved": "7.4.10",
-        "contentHash": "qpl0g4nVsFcmAdyzT1x0bNqJnlTe9mrSGaekR36TIq/13cLFJ86/3uMMXDExTc+KdytCCe5x3nGeECOD1O5emw==",
+        "resolved": "7.4.11",
+        "contentHash": "6KuznfOw3gtN/k/SEabXjpqt2DisQt9+U6AagIGPZx1ObjLs7gZOCmbu4qbV78XMBPcsHS9tJI31d5NoBlQYEg==",
         "dependencies": {
-          "Duende.IdentityServer.Storage": "7.4.10",
+          "Duende.IdentityServer.Storage": "7.4.11",
           "Microsoft.EntityFrameworkCore.Relational": "10.0.7"
         }
       },
       "Duende.IdentityServer.Storage": {
         "type": "Transitive",
-        "resolved": "7.4.10",
-        "contentHash": "fxp5ena/jGQnu+joEwmY3nwkyRXa5MaLSHaImq0PoMA5v1nxwHADrbUvgAesHt1dc1YUU3okYD2TA6Pap+zBcA==",
+        "resolved": "7.4.11",
+        "contentHash": "OV5xkrXkVOwHCZgXPRst4iPO88Li3SeOEeRFqUis1AiJDI14WfUevuwNQD7D3uWTTkH5rYIe5bmhDfE+YgWH2Q==",
         "dependencies": {
           "Duende.IdentityModel": "8.0.1"
         }
