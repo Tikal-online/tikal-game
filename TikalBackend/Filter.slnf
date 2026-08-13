@@ -16,7 +16,9 @@
       "TikalBackend/Modules/Lobbies/Lobbies.Contracts/Lobbies.Contracts.csproj",
       "TikalBackend/Modules/Lobbies/Lobbies.Domain/Lobbies.Domain.csproj",
       "TikalBackend/Modules/Lobbies/Lobbies.Domain.Tests/Lobbies.Domain.Tests.csproj",
-      "TikalBackend/Modules/Lobbies/Lobbies.Infrastructure/Lobbies.Infrastructure.csproj"
+      "TikalBackend/Modules/Lobbies/Lobbies.Infrastructure/Lobbies.Infrastructure.csproj",
+      "TikalBackend/Modules/Games/Games.Domain/Games.Domain.csproj",
+      "TikalBackend/Modules/Games/Games.Domain.Tests/Games.Domain.Tests.csproj"
     ]
   }
 }
