@@ -102,11 +102,11 @@ public static class TileMapPathFinding
             {
                 {
                     new HexCoordinate(0, 0),
-                    new EmptyTile { Costs = new TravelCosts() }
+                    new EmptyTile { Costs = new TravelCosts(northeast: 0) }
                 },
                 {
                     new HexCoordinate(1, -1),
-                    new EmptyTile { Costs = new TravelCosts() }
+                    new EmptyTile { Costs = new TravelCosts(southwest: 0) }
                 }
             },
             new HexCoordinate(0, 0),

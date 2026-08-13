@@ -18,10 +18,5 @@ public readonly struct TravelCosts
         costs = [north, northeast, southeast, south, southwest, northwest];
     }
 
-    public TravelCosts()
-    {
-        costs = [0, 0, 0, 0, 0, 0];
-    }
-
     public int this[Edge edge] => costs[(int)edge];
 }

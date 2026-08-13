@@ -64,7 +64,7 @@ public sealed class TileMap : IEnumerable<KeyValuePair<HexCoordinate, Tile>>
 
                 var newCost = cost_so_far[current] + travelCost;
 
-                if (!cost_so_far.ContainsKey(next) || newCost < cost_so_far[next])
+                if (!cost_so_far.TryGetValue(next, out var oldCost) || newCost < oldCost)
                 {
                     cost_so_far[next] = newCost;
                     var priority = newCost + Heuristic(next, goal);
