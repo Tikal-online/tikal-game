@@ -15,6 +15,8 @@ public sealed class Lobby : Entity
 
     public ICollection<Player> Players { get; set; } = [];
 
+    public bool InGame { get; set; }
+
     public bool IsEmpty => Players.Count == 0;
 
     public bool IsFull => Players.Count == MaxPlayers;
