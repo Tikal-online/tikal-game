@@ -78,6 +78,7 @@ internal static class ServiceCollectionExtensions
                 c.RegisterServicesFromAssemblies(
                     AssemblyReference.Assembly,
                     Lobbies.Application.AssemblyReference.Assembly,
+                    Games.Application.AssemblyReference.Assembly,
                     SignalRApi.Hubs.AssemblyReference.Assembly
                 );
 
@@ -89,7 +90,9 @@ internal static class ServiceCollectionExtensions
         private void AddValidators()
         {
             services.AddValidatorsFromAssemblies([
-                AssemblyReference.Assembly, Lobbies.Application.AssemblyReference.Assembly
+                AssemblyReference.Assembly,
+                Lobbies.Application.AssemblyReference.Assembly,
+                Games.Application.AssemblyReference.Assembly
             ]);
         }
 

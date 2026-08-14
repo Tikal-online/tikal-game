@@ -1,5 +1,6 @@
 using Games.Application.DataAccess;
 using Games.Infrastructure.Database;
+using Games.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,6 +22,8 @@ public static class GamesInfrastructureModule
                         GamesDbContext.Schema
                     ));
             });
+
+            services.AddScoped<GameRepository, DbGameRepository>();
 
             services.AddScoped<UnitOfWork>(sp => sp.GetRequiredService<GamesDbContext>());
         }

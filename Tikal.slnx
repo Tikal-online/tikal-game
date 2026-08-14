@@ -26,6 +26,7 @@
     </Folder>
     <Folder Name="/TikalBackend/Modules/Games/">
         <Project Path="TikalBackend/Modules/Games/Games.Application/Games.Application.csproj" />
+        <Project Path="TikalBackend/Modules/Games/Games.Contracts/Games.Contracts.csproj" />
         <Project Path="TikalBackend/Modules/Games/Games.Domain.Tests/Games.Domain.Tests.csproj" />
         <Project Path="TikalBackend/Modules/Games/Games.Domain/Games.Domain.csproj" />
         <Project Path="TikalBackend/Modules/Games/Games.Infrastructure/Games.Infrastructure.csproj" />
