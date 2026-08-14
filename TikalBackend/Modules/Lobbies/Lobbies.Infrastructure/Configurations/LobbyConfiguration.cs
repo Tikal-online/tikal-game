@@ -17,6 +17,9 @@ internal sealed class LobbyConfiguration : IEntityTypeConfiguration<Lobby>
         builder.Property(x => x.MaxPlayers)
             .IsRequired();
 
+        builder.Property(x => x.InGame)
+            .IsRequired();
+
         builder.HasMany(x => x.Players)
             .WithOne(x => x.Lobby)
             .HasForeignKey(x => x.LobbyId)

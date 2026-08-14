@@ -2,6 +2,7 @@
 using Lobbies.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -10,9 +11,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Lobbies.Infrastructure.Database.Migrations
 {
     [DbContext(typeof(LobbiesDbContext))]
-    partial class LobbiesDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260814051121_Add_Lobby_InGame_Flag")]
+    partial class Add_Lobby_InGame_Flag
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
