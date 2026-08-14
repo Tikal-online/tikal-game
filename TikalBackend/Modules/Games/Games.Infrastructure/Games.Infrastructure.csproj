@@ -14,4 +14,8 @@
         <ProjectReference Include="..\Games.Application\Games.Application.csproj"/>
     </ItemGroup>
 
+    <ItemGroup>
+        <Folder Include="Database\Migrations\"/>
+    </ItemGroup>
+
 </Project>

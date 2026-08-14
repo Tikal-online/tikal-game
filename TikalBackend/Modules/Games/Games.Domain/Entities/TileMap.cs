@@ -9,6 +9,8 @@ public sealed class TileMap : IEnumerable<KeyValuePair<HexCoordinate, Tile>>
 {
     private readonly Dictionary<HexCoordinate, Tile> tiles = [];
 
+    public List<KeyValuePair<HexCoordinate, Tile>> Tiles => tiles.ToList();
+
     public IEnumerator<KeyValuePair<HexCoordinate, Tile>> GetEnumerator()
     {
         return tiles.GetEnumerator();

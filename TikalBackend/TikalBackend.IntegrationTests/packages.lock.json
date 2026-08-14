@@ -749,6 +749,29 @@
           "Npgsql.EntityFrameworkCore.PostgreSQL": "[10.0.3, )"
         }
       },
+      "games.application": {
+        "type": "Project",
+        "dependencies": {
+          "Games.Domain": "[1.0.0, )",
+          "Shared.Application": "[1.0.0, )"
+        }
+      },
+      "games.domain": {
+        "type": "Project",
+        "dependencies": {
+          "OneOf": "[3.0.271, )",
+          "Shared.Domain": "[1.0.0, )"
+        }
+      },
+      "games.infrastructure": {
+        "type": "Project",
+        "dependencies": {
+          "Games.Application": "[1.0.0, )",
+          "Microsoft.EntityFrameworkCore": "[10.0.11, )",
+          "Microsoft.EntityFrameworkCore.Relational": "[10.0.11, )",
+          "Npgsql.EntityFrameworkCore.PostgreSQL": "[10.0.3, )"
+        }
+      },
       "lobbies.application": {
         "type": "Project",
         "dependencies": {
@@ -827,6 +850,8 @@
           "Accounts.Application": "[1.0.0, )",
           "Accounts.Infrastructure": "[1.0.0, )",
           "FluentValidation.DependencyInjectionExtensions": "[12.1.1, )",
+          "Games.Application": "[1.0.0, )",
+          "Games.Infrastructure": "[1.0.0, )",
           "Lobbies.Application": "[1.0.0, )",
           "Lobbies.Infrastructure": "[1.0.0, )",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "[10.0.11, )",

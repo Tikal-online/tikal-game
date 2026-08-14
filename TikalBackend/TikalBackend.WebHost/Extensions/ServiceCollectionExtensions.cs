@@ -1,6 +1,7 @@
 using Accounts.Application;
 using Accounts.Infrastructure;
 using FluentValidation;
+using Games.Infrastructure;
 using Lobbies.Infrastructure;
 using MediatR;
 using Npgsql;
@@ -108,6 +109,8 @@ internal static class ServiceCollectionExtensions
             services.AddAccountsInfrastructure(connectionString);
 
             services.AddLobbiesInfrastructure(connectionString);
+
+            services.AddGamesInfrastructure(connectionString);
         }
 
         public void AddExceptionHandlers()

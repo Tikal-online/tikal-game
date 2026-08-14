@@ -1,10 +1,13 @@
+using Games.Application.DataAccess;
 using Games.Domain.Entities;
+using Games.Infrastructure.Extensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Shared.Domain.Entities;
 
 namespace Games.Infrastructure.Database;
 
-public sealed class GamesDbContext : DbContext
+public sealed class GamesDbContext : DbContext, UnitOfWork
 {
     public const string Schema = "Games";
 
@@ -17,6 +20,21 @@ public sealed class GamesDbContext : DbContext
     public GamesDbContext(DbContextOptions<GamesDbContext> options, IMediator mediator) : base(options)
     {
         this.mediator = mediator;
+    }
+
+    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        var entitiesWithEvents = ChangeTracker
+            .Entries<Entity>()
+            .Select(e => e.Entity)
+            .Where(e => e.DomainEvents.Count > 0)
+            .ToList();
+
+        var result = await base.SaveChangesAsync(cancellationToken);
+
+        await mediator.DispatchDomainEventsAsync(entitiesWithEvents);
+
+        return result;
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
