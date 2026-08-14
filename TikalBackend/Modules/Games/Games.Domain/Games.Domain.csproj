@@ -10,4 +10,8 @@
         <PackageReference Include="OneOf"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\Shared\Shared.Domain\Shared.Domain.csproj" />
+    </ItemGroup>
+
 </Project>

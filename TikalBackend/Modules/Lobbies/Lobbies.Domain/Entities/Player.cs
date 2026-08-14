@@ -1,6 +1,6 @@
-using Lobbies.Domain.Enums;
 using Lobbies.Domain.Events;
 using Shared.Domain.Entities;
+using Shared.Domain.Enums;
 
 namespace Lobbies.Domain.Entities;
 

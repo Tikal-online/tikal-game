@@ -1,5 +1,5 @@
 using Lobbies.Domain.Entities;
-using Lobbies.Domain.Enums;
+using Shared.Domain.Enums;
 
 namespace Lobbies.Domain.Tests.Data;
 

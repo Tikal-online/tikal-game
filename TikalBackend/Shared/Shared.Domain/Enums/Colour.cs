@@ -1,4 +1,4 @@
-namespace Lobbies.Domain.Enums;
+namespace Shared.Domain.Enums;
 
 public enum Colour
 {
