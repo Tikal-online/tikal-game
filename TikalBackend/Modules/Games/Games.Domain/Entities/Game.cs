@@ -1,3 +1,5 @@
+using FluentValidation;
+
 namespace Games.Domain.Entities;
 
 public sealed class Game
@@ -8,5 +10,18 @@ public sealed class Game
 
     public ICollection<Player> Players { get; set; } = [];
 
-    public required TileMap TileMap { get; set; }
+    public TileMap TileMap { get; set; } = null!;
+}
+
+public static class GameValidationRules
+{
+    extension<T>(IRuleBuilder<T, int> ruleBuilder)
+    {
+        public void ValidPlayerCount()
+        {
+            ruleBuilder
+                .InclusiveBetween(2, 4)
+                .WithMessage("Players must be between 2 and 4");
+        }
+    }
 }
