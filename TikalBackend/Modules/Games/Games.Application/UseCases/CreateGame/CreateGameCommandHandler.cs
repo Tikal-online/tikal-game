@@ -35,7 +35,13 @@ internal sealed class CreateGameCommandHandler
                     new EmptyTile
                     {
                         Costs = new TravelCosts(SouthEast: 1, Northwest: 10),
-                        Coordinate = new HexCoordinate(4, 7)
+                        Coordinate = new HexCoordinate(4, 7),
+                        HasBarracks = false
+                    },
+                    new TempleTile
+                    {
+                        Costs = new TravelCosts(SouthEast: 1, South: 10),
+                        Coordinate = new HexCoordinate(4, 8)
                     }
                 ]
             }

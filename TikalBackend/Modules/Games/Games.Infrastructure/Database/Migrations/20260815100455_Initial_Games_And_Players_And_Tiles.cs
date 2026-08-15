@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Games.Infrastructure.Database.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial_Games_And_Players : Migration
+    public partial class Initial_Games_And_Players_And_Tiles : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -22,8 +22,7 @@ namespace Games.Infrastructure.Database.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    LobbyId = table.Column<long>(type: "bigint", nullable: false),
-                    TileMap = table.Column<string>(type: "jsonb", nullable: false)
+                    LobbyId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -54,6 +53,50 @@ namespace Games.Infrastructure.Database.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "TileMap",
+                schema: "Games",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    GameId = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TileMap", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TileMap_Games_GameId",
+                        column: x => x.GameId,
+                        principalSchema: "Games",
+                        principalTable: "Games",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Tile",
+                schema: "Games",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    TileMapId = table.Column<long>(type: "bigint", nullable: false),
+                    TileType = table.Column<int>(type: "integer", nullable: false),
+                    HasBarracks = table.Column<bool>(type: "boolean", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Tile", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Tile_TileMap_TileMapId",
+                        column: x => x.TileMapId,
+                        principalSchema: "Games",
+                        principalTable: "TileMap",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Games_LobbyId",
                 schema: "Games",
@@ -73,6 +116,19 @@ namespace Games.Infrastructure.Database.Migrations
                 table: "Players",
                 column: "UserId",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Tile_TileMapId",
+                schema: "Games",
+                table: "Tile",
+                column: "TileMapId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TileMap_GameId",
+                schema: "Games",
+                table: "TileMap",
+                column: "GameId",
+                unique: true);
         }
 
         /// <inheritdoc />
@@ -80,6 +136,14 @@ namespace Games.Infrastructure.Database.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Players",
+                schema: "Games");
+
+            migrationBuilder.DropTable(
+                name: "Tile",
+                schema: "Games");
+
+            migrationBuilder.DropTable(
+                name: "TileMap",
                 schema: "Games");
 
             migrationBuilder.DropTable(

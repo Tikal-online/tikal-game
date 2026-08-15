@@ -6,7 +6,13 @@ namespace Games.Domain.Entities;
 
 public sealed class TileMap
 {
-    public List<Tile> Tiles { get; init; } = [];
+    public long Id { get; set; }
+
+    public long GameId { get; set; }
+
+    public Game Game { get; set; } = null!;
+
+    public required List<Tile> Tiles { get; init; } = [];
 
     public OneOf<int, NoPathFound> GetTravelCost(HexCoordinate start, HexCoordinate goal)
     {
