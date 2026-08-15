@@ -2,13 +2,14 @@ using Games.Application.DataAccess;
 using Games.Application.Mappers;
 using Games.Contracts.Commands;
 using Games.Domain.Entities;
+using OneOf;
 using OneOf.Types;
 using Shared.Contracts.Messaging;
 
 namespace Games.Application.UseCases.CreateGame;
 
 internal sealed class CreateGameCommandHandler
-    : CommandHandler<CreateGameCommand, Success>
+    : CommandHandler<CreateGameCommand, OneOf<Success>>
 {
     private readonly GameRepository gameRepository;
 
@@ -20,7 +21,7 @@ internal sealed class CreateGameCommandHandler
         this.unitOfWork = unitOfWork;
     }
 
-    public async Task<Success> Handle(CreateGameCommand request, CancellationToken cancellationToken)
+    public async Task<OneOf<Success>> Handle(CreateGameCommand request, CancellationToken cancellationToken)
     {
         var players = PlayerMapper.DictionaryToPlayers(request.Players);
 
