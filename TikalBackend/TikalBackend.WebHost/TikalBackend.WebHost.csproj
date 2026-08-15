@@ -38,6 +38,7 @@
         <ProjectReference Include="..\Modules\Lobbies\Lobbies.Application\Lobbies.Application.csproj"/>
         <ProjectReference Include="..\Modules\Lobbies\Lobbies.Infrastructure\Lobbies.Infrastructure.csproj"/>
         <ProjectReference Include="..\Shared\Shared.Application\Shared.Application.csproj"/>
+        <ProjectReference Include="..\Shared\Shared.Infrastructure\Shared.Infrastructure.csproj"/>
     </ItemGroup>
 
     <ItemGroup>

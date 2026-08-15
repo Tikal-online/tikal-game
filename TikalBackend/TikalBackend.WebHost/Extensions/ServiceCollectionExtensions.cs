@@ -9,6 +9,7 @@ using OpenTelemetry.Logs;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;
 using Shared.Application;
+using Shared.Infrastructure;
 using TikalBackend.WebHost.Configuration;
 using TikalBackend.WebHost.ExceptionHandlers;
 using TikalBackend.WebHost.Pipelines;
@@ -114,6 +115,8 @@ internal static class ServiceCollectionExtensions
             services.AddLobbiesInfrastructure(connectionString);
 
             services.AddGamesInfrastructure(connectionString);
+
+            services.AddSharedInfrastructure();
         }
 
         public void AddExceptionHandlers()
