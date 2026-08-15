@@ -1,8 +1,8 @@
 using Accounts.Contracts.Models;
-using Lobbies.Contracts.Enums;
 using Lobbies.Contracts.Models;
 using Lobbies.Domain.Entities;
 using Shared.Application.Contexts;
+using Shared.Contracts.Enums;
 
 namespace Lobbies.Application.Mappers;
 
@@ -40,5 +40,10 @@ internal static class PlayerMapper
         var accountDictionary = accounts.ToDictionary(a => a.UserId);
 
         return players.Select(p => PlayerToLobbyPlayerModel(p, accountDictionary[p.UserId])).ToList();
+    }
+
+    public static Dictionary<ColourModel, string> PlayersToDictionary(ICollection<Player> players)
+    {
+        return players.ToDictionary(p => (ColourModel)p.SelectedColour, p => p.UserId);
     }
 }

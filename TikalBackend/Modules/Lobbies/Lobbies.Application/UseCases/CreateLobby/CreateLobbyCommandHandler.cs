@@ -2,11 +2,11 @@ using Lobbies.Application.DataAccess;
 using Lobbies.Contracts.Commands;
 using Lobbies.Contracts.Errors;
 using Lobbies.Domain.Entities;
-using Lobbies.Domain.Enums;
 using OneOf;
 using OneOf.Types;
 using Shared.Application.Contexts;
 using Shared.Contracts.Messaging;
+using Shared.Domain.Enums;
 
 namespace Lobbies.Application.UseCases.CreateLobby;
 

@@ -1,4 +1,5 @@
 using Accounts.Infrastructure.Database;
+using Games.Infrastructure.Database;
 using Lobbies.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
@@ -19,6 +20,9 @@ internal static class WebApplicationExtensions
 
             var lobbiesDbContext = scope.ServiceProvider.GetRequiredService<LobbiesDbContext>();
             lobbiesDbContext.Database.Migrate();
+
+            var gamesDbContext = scope.ServiceProvider.GetRequiredService<GamesDbContext>();
+            gamesDbContext.Database.Migrate();
         }
 
         public void UseScalarUi()

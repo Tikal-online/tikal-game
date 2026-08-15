@@ -10,6 +10,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\Modules\Accounts\Accounts.Contracts\Accounts.Contracts.csproj"/>
+        <ProjectReference Include="..\..\Modules\Games\Games.Contracts\Games.Contracts.csproj"/>
         <ProjectReference Include="..\..\Modules\Lobbies\Lobbies.Contracts\Lobbies.Contracts.csproj"/>
         <ProjectReference Include="..\..\Shared\Shared.Api\Shared.Api.csproj"/>
     </ItemGroup>

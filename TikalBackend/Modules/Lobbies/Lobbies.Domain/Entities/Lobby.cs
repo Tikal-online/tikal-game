@@ -1,7 +1,7 @@
 using FluentValidation;
-using Lobbies.Domain.Enums;
 using Lobbies.Domain.Events;
 using Shared.Domain.Entities;
+using Shared.Domain.Enums;
 
 namespace Lobbies.Domain.Entities;
 
@@ -20,6 +20,8 @@ public sealed class Lobby : Entity
     public bool IsEmpty => Players.Count == 0;
 
     public bool IsFull => Players.Count == MaxPlayers;
+
+    public bool CanBeStarted => Players.Count >= 2 && Players.All(p => p.IsReady) && !InGame;
 
     public void RemovePlayer(Player player)
     {
@@ -57,6 +59,11 @@ public sealed class Lobby : Entity
             .First();
 
         return unusedColour;
+    }
+
+    public void Start()
+    {
+        InGame = true;
     }
 }
 

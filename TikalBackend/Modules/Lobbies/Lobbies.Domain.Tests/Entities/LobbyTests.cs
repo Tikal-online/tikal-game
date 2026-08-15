@@ -1,7 +1,7 @@
 using Lobbies.Domain.Entities;
-using Lobbies.Domain.Enums;
 using Lobbies.Domain.Events;
 using Lobbies.Domain.Tests.Data;
+using Shared.Domain.Enums;
 
 namespace Lobbies.Domain.Tests.Entities;
 

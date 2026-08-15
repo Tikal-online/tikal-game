@@ -33,6 +33,8 @@
         <ProjectReference Include="..\API\SignalRApi.Hubs\SignalRApi.Hubs.csproj"/>
         <ProjectReference Include="..\Modules\Accounts\Accounts.Application\Accounts.Application.csproj"/>
         <ProjectReference Include="..\Modules\Accounts\Accounts.Infrastructure\Accounts.Infrastructure.csproj"/>
+        <ProjectReference Include="..\Modules\Games\Games.Application\Games.Application.csproj"/>
+        <ProjectReference Include="..\Modules\Games\Games.Infrastructure\Games.Infrastructure.csproj"/>
         <ProjectReference Include="..\Modules\Lobbies\Lobbies.Application\Lobbies.Application.csproj"/>
         <ProjectReference Include="..\Modules\Lobbies\Lobbies.Infrastructure\Lobbies.Infrastructure.csproj"/>
         <ProjectReference Include="..\Shared\Shared.Application\Shared.Application.csproj"/>

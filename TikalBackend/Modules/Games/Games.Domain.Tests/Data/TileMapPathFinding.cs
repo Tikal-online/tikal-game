@@ -12,14 +12,19 @@ public static class TileMapPathFinding
         new(
             new TileMap
             {
-                {
-                    new HexCoordinate(0, 0),
-                    new EmptyTile { Costs = new TravelCosts(northeast: 1) }
-                },
-                {
-                    new HexCoordinate(1, -1),
-                    new EmptyTile { Costs = new TravelCosts(southwest: 1) }
-                }
+                Tiles =
+                [
+                    new EmptyTile
+                    {
+                        Costs = new TravelCosts(NorthEast: 1),
+                        Coordinate = new HexCoordinate(0, 0)
+                    },
+                    new EmptyTile
+                    {
+                        Costs = new TravelCosts(SouthWest: 1),
+                        Coordinate = new HexCoordinate(1, -1)
+                    }
+                ]
             },
             new HexCoordinate(0, 0),
             new HexCoordinate(1, -1),
@@ -29,18 +34,24 @@ public static class TileMapPathFinding
         new(
             new TileMap
             {
-                {
-                    new HexCoordinate(0, 0),
-                    new EmptyTile { Costs = new TravelCosts(southeast: 1) }
-                },
-                {
-                    new HexCoordinate(1, 0),
-                    new EmptyTile { Costs = new TravelCosts(southeast: 1, northwest: 1) }
-                },
-                {
-                    new HexCoordinate(2, 0),
-                    new EmptyTile { Costs = new TravelCosts(northwest: 1) }
-                }
+                Tiles =
+                [
+                    new EmptyTile
+                    {
+                        Costs = new TravelCosts(SouthEast: 1),
+                        Coordinate = new HexCoordinate(0, 0)
+                    },
+                    new EmptyTile
+                    {
+                        Costs = new TravelCosts(SouthEast: 1, Northwest: 1),
+                        Coordinate = new HexCoordinate(1, 0)
+                    },
+                    new EmptyTile
+                    {
+                        Costs = new TravelCosts(Northwest: 1),
+                        Coordinate = new HexCoordinate(2, 0)
+                    }
+                ]
             },
             new HexCoordinate(0, 0),
             new HexCoordinate(2, 0),
@@ -50,26 +61,35 @@ public static class TileMapPathFinding
         new(
             new TileMap
             {
-                {
-                    new HexCoordinate(0, 0),
-                    new EmptyTile { Costs = new TravelCosts(southeast: 5, northeast: 1) }
-                },
-                {
-                    new HexCoordinate(1, 0),
-                    new EmptyTile { Costs = new TravelCosts(northwest: 5, southeast: 5, north: 5) }
-                },
-                {
-                    new HexCoordinate(2, 0),
-                    new EmptyTile { Costs = new TravelCosts(northeast: 5, north: 1) }
-                },
-                {
-                    new HexCoordinate(1, -1),
-                    new EmptyTile { Costs = new TravelCosts(southwest: 1, southeast: 1) }
-                },
-                {
-                    new HexCoordinate(2, -1),
-                    new EmptyTile { Costs = new TravelCosts(northwest: 1, south: 1) }
-                }
+                Tiles =
+                [
+                    new EmptyTile
+                    {
+                        Costs = new TravelCosts(SouthEast: 5, NorthEast: 1),
+                        Coordinate = new HexCoordinate(0, 0)
+                    },
+
+                    new EmptyTile
+                    {
+                        Costs = new TravelCosts(Northwest: 5, SouthEast: 5, North: 5),
+                        Coordinate = new HexCoordinate(1, 0)
+                    },
+                    new EmptyTile
+                    {
+                        Costs = new TravelCosts(NorthEast: 5, North: 1),
+                        Coordinate = new HexCoordinate(2, 0)
+                    },
+                    new EmptyTile
+                    {
+                        Costs = new TravelCosts(SouthWest: 1, SouthEast: 1),
+                        Coordinate = new HexCoordinate(1, -1)
+                    },
+                    new EmptyTile
+                    {
+                        Costs = new TravelCosts(Northwest: 1, South: 1),
+                        Coordinate = new HexCoordinate(2, -1)
+                    }
+                ]
             },
             new HexCoordinate(0, 0),
             new HexCoordinate(2, 0),
@@ -84,14 +104,19 @@ public static class TileMapPathFinding
         new(
             new TileMap
             {
-                {
-                    new HexCoordinate(0, 0),
-                    new EmptyTile { Costs = new TravelCosts(northeast: 1) }
-                },
-                {
-                    new HexCoordinate(2, -2),
-                    new EmptyTile { Costs = new TravelCosts(southwest: 1) }
-                }
+                Tiles =
+                [
+                    new EmptyTile
+                    {
+                        Costs = new TravelCosts(NorthEast: 1),
+                        Coordinate = new HexCoordinate(0, 0)
+                    },
+                    new EmptyTile
+                    {
+                        Costs = new TravelCosts(SouthWest: 1),
+                        Coordinate = new HexCoordinate(2, -2)
+                    }
+                ]
             },
             new HexCoordinate(0, 0),
             new HexCoordinate(2, -2)
@@ -100,14 +125,19 @@ public static class TileMapPathFinding
         new(
             new TileMap
             {
-                {
-                    new HexCoordinate(0, 0),
-                    new EmptyTile { Costs = new TravelCosts(northeast: 0) }
-                },
-                {
-                    new HexCoordinate(1, -1),
-                    new EmptyTile { Costs = new TravelCosts(southwest: 0) }
-                }
+                Tiles =
+                [
+                    new EmptyTile
+                    {
+                        Costs = new TravelCosts(NorthEast: 0),
+                        Coordinate = new HexCoordinate(0, 0)
+                    },
+                    new EmptyTile
+                    {
+                        Costs = new TravelCosts(SouthWest: 0),
+                        Coordinate = new HexCoordinate(1, -1)
+                    }
+                ]
             },
             new HexCoordinate(0, 0),
             new HexCoordinate(1, -1)

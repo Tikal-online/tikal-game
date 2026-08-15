@@ -25,8 +25,11 @@
         <Project Path="TikalBackend/Modules/Accounts/Accounts.Infrastructure/Accounts.Infrastructure.csproj" />
     </Folder>
     <Folder Name="/TikalBackend/Modules/Games/">
+        <Project Path="TikalBackend/Modules/Games/Games.Application/Games.Application.csproj" />
+        <Project Path="TikalBackend/Modules/Games/Games.Contracts/Games.Contracts.csproj" />
         <Project Path="TikalBackend/Modules/Games/Games.Domain.Tests/Games.Domain.Tests.csproj" />
         <Project Path="TikalBackend/Modules/Games/Games.Domain/Games.Domain.csproj" />
+        <Project Path="TikalBackend/Modules/Games/Games.Infrastructure/Games.Infrastructure.csproj" />
     </Folder>
     <Folder Name="/TikalBackend/Modules/Lobbies/">
         <Project Path="TikalBackend/Modules/Lobbies/Lobbies.Application.Tests/Lobbies.Application.Tests.csproj" />

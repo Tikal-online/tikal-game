@@ -2,21 +2,29 @@ using Games.Domain.Enums;
 
 namespace Games.Domain.Types;
 
-public readonly struct TravelCosts
+public readonly record struct TravelCosts(
+    int North = 0,
+    int NorthEast = 0,
+    int SouthEast = 0,
+    int South = 0,
+    int SouthWest = 0,
+    int Northwest = 0
+)
 {
-    private readonly int[] costs;
-
-    public TravelCosts(
-        int north = 0,
-        int northeast = 0,
-        int southeast = 0,
-        int south = 0,
-        int southwest = 0,
-        int northwest = 0
-    )
+    public int this[Edge edge]
     {
-        costs = [north, northeast, southeast, south, southwest, northwest];
+        get
+        {
+            return edge switch
+            {
+                Edge.North => North,
+                Edge.NorthEast => NorthEast,
+                Edge.SouthEast => SouthEast,
+                Edge.South => South,
+                Edge.SouthWest => SouthWest,
+                Edge.NorthWest => Northwest,
+                _ => throw new ArgumentOutOfRangeException(nameof(edge), edge, null)
+            };
+        }
     }
-
-    public int this[Edge edge] => costs[(int)edge];
 }

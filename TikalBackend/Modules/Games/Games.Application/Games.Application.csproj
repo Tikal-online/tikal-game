@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\..\Shared\Shared.Application\Shared.Application.csproj"/>
+        <ProjectReference Include="..\Games.Contracts\Games.Contracts.csproj"/>
+        <ProjectReference Include="..\Games.Domain\Games.Domain.csproj"/>
+    </ItemGroup>
+
+</Project>

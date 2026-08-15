@@ -363,10 +363,43 @@
           "Npgsql.EntityFrameworkCore.PostgreSQL": "[10.0.3, )"
         }
       },
+      "games.application": {
+        "type": "Project",
+        "dependencies": {
+          "Games.Contracts": "[1.0.0, )",
+          "Games.Domain": "[1.0.0, )",
+          "Shared.Application": "[1.0.0, )"
+        }
+      },
+      "games.contracts": {
+        "type": "Project",
+        "dependencies": {
+          "Shared.Contracts": "[1.0.0, )"
+        }
+      },
+      "games.domain": {
+        "type": "Project",
+        "dependencies": {
+          "FluentValidation": "[12.1.1, )",
+          "OneOf": "[3.0.271, )",
+          "Riok.Mapperly": "[4.3.1, )",
+          "Shared.Domain": "[1.0.0, )"
+        }
+      },
+      "games.infrastructure": {
+        "type": "Project",
+        "dependencies": {
+          "Games.Application": "[1.0.0, )",
+          "Microsoft.EntityFrameworkCore": "[10.0.11, )",
+          "Microsoft.EntityFrameworkCore.Relational": "[10.0.11, )",
+          "Npgsql.EntityFrameworkCore.PostgreSQL": "[10.0.3, )"
+        }
+      },
       "lobbies.application": {
         "type": "Project",
         "dependencies": {
           "Accounts.Contracts": "[1.0.0, )",
+          "Games.Contracts": "[1.0.0, )",
           "Lobbies.Contracts": "[1.0.0, )",
           "Lobbies.Domain": "[1.0.0, )",
           "Shared.Application": "[1.0.0, )"
@@ -399,6 +432,7 @@
         "type": "Project",
         "dependencies": {
           "Accounts.Contracts": "[1.0.0, )",
+          "Games.Contracts": "[1.0.0, )",
           "Lobbies.Contracts": "[1.0.0, )",
           "Riok.Mapperly": "[4.3.1, )",
           "Shared.Api": "[1.0.0, )"

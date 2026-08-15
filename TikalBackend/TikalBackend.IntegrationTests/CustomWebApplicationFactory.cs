@@ -1,4 +1,5 @@
 using Accounts.Infrastructure.Database;
+using Games.Infrastructure.Database;
 using Lobbies.Infrastructure.Database;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Hosting;
@@ -68,7 +69,26 @@ internal sealed class CustomWebApplicationFactory : WebApplicationFactory<Progra
                     databaseConnectionString,
                     npgOptions => npgOptions.MigrationsHistoryTable(
                         HistoryRepository.DefaultTableName,
-                        AccountsDbContext.Schema
+                        LobbiesDbContext.Schema
+                    )
+                );
+            });
+
+            var gamesContextOptionsDescriptor =
+                services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<GamesDbContext>));
+
+            if (gamesContextOptionsDescriptor != null)
+            {
+                services.Remove(gamesContextOptionsDescriptor);
+            }
+
+            services.AddDbContext<GamesDbContext>(options =>
+            {
+                options.UseNpgsql(
+                    databaseConnectionString,
+                    npgOptions => npgOptions.MigrationsHistoryTable(
+                        HistoryRepository.DefaultTableName,
+                        GamesDbContext.Schema
                     )
                 );
             });

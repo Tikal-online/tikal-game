@@ -2,7 +2,6 @@ using Accounts.Contracts.Models;
 using Accounts.Contracts.Queries;
 using Lobbies.Application.DataAccess;
 using Lobbies.Application.UseCases.GetLobbyForAuthenticatedPlayer;
-using Lobbies.Contracts.Enums;
 using Lobbies.Contracts.Queries;
 using Lobbies.Domain.Entities;
 using Lobbies.Domain.Tests.Data;
@@ -10,6 +9,7 @@ using MediatR;
 using Moq;
 using Shared.Application.Contexts;
 using Shared.Application.Tests;
+using Shared.Contracts.Enums;
 
 namespace Lobbies.Application.Tests.UseCases.GetLobbyForAuthenticatedPlayer;
 

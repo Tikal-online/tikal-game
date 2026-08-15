@@ -8,6 +8,12 @@
 
     <ItemGroup>
         <PackageReference Include="OneOf"/>
+        <PackageReference Include="FluentValidation"/>
+        <PackageReference Include="Riok.Mapperly"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\..\Shared\Shared.Domain\Shared.Domain.csproj"/>
     </ItemGroup>
 
 </Project>

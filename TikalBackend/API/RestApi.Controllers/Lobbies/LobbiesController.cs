@@ -136,6 +136,25 @@ public sealed partial class LobbiesController : ApiController
         );
     }
 
+    [HttpPost("{Id:long}/Start")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    [EndpointDescription("Starts a lobby if there it contains at least 2 players and all of them are ready")]
+    public async Task<IActionResult> StartLobby(long Id, CancellationToken cancellationToken)
+    {
+        var command = new StartLobbyCommand(Id);
+
+        var result = await sender.Send(command, cancellationToken);
+
+        return result.Match<IActionResult>(
+            _ => Ok(),
+            _ => LobbyNotFound(Id),
+            _ => PlayerNotInGivenLobby(Id),
+            _ => LobbyCannotBeStarted(Id)
+        );
+    }
+
     [HttpGet]
     [ProducesResponseType<PaginatedDto<List<LobbySummaryDto>>>(StatusCodes.Status200OK)]
     [EndpointDescription("Gets a paginated summary of the currently active lobbies. Can be filtered by lobby name")]

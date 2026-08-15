@@ -1,6 +1,6 @@
-namespace Lobbies.Domain.Enums;
+namespace Shared.Contracts.Enums;
 
-public enum Colour
+public enum ColourModel
 {
     Red = 0,
     Black = 1,
