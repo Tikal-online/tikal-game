@@ -31,12 +31,19 @@ internal sealed class CreateGameCommandHandler
             Points = 0
         };
 
+        var player2 = new Player
+        {
+            UserId = "userId2",
+            Colour = Colour.Black,
+            Points = 0
+        };
         var game = new Game
         {
             LobbyId = 1,
             Players =
             [
-                player
+                player,
+                player2
             ],
             TileMap = new TileMap
             {
@@ -60,6 +67,11 @@ internal sealed class CreateGameCommandHandler
                     {
                         Costs = new TravelCosts(SouthEast: 1, South: 10),
                         Coordinate = new HexCoordinate(4, 8)
+                    },
+                    new VolcanoTile
+                    {
+                        Costs = new TravelCosts(SouthEast: 1, South: 10),
+                        Coordinate = new HexCoordinate(4, 10)
                     }
                 ]
             }
@@ -68,6 +80,8 @@ internal sealed class CreateGameCommandHandler
         gameRepository.Create(game);
 
         await unitOfWork.SaveChangesAsync(cancellationToken);
+
+        var retrievedGame = await gameRepository.GetByUserId("userId");
 
         return new Success();
     }
