@@ -846,6 +846,13 @@
           "MediatR": "[14.1.0, )"
         }
       },
+      "shared.infrastructure": {
+        "type": "Project",
+        "dependencies": {
+          "OneOf": "[3.0.271, )",
+          "Shared.Application": "[1.0.0, )"
+        }
+      },
       "signalrapi.hubs": {
         "type": "Project",
         "dependencies": {
@@ -875,6 +882,7 @@
           "RestApi.Controllers": "[1.0.0, )",
           "Scalar.AspNetCore": "[2.16.17, )",
           "Shared.Application": "[1.0.0, )",
+          "Shared.Infrastructure": "[1.0.0, )",
           "SignalRApi.Hubs": "[1.0.0, )"
         }
       },
