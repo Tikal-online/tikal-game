@@ -4,11 +4,11 @@
     "net10.0": {
       "Duende.IdentityServer.AspNetIdentity": {
         "type": "Direct",
-        "requested": "[7.4.7, )",
-        "resolved": "7.4.7",
-        "contentHash": "iGa4IhUy7FvRNEeOd4DB1giXnIV1oUgDCT9pApfvvdT6yxgZMUJMuu3sGCpsrOhdVElFUkVCL4YxC89BRQJy+Q==",
+        "requested": "[7.4.11, )",
+        "resolved": "7.4.11",
+        "contentHash": "S/JbV0CkFOwzkpxrDL1HNkXyxGCQ9BAm7lt9aVdasXxweB6NA7JY1SQNIjllRiPUW530HkUedWAUso1KqTtRqg==",
         "dependencies": {
-          "Duende.IdentityServer": "7.4.7"
+          "Duende.IdentityServer": "7.4.11"
         }
       },
       "Duende.IdentityServer.EntityFramework": {
@@ -138,10 +138,10 @@
       },
       "Duende.IdentityServer": {
         "type": "Transitive",
-        "resolved": "7.4.10",
-        "contentHash": "Y4gSVE33CF/xoJeU4vnyGb/q2XpIGC5Obd7rs4FlUILo4LfB14Nnlvq3GcCxp7rFlLA7h9ViFuBFknNdUKr97g==",
+        "resolved": "7.4.11",
+        "contentHash": "ugVHezIvXNckMGk6MBaYWqViyY3MazZI2purHn6GLqjpx2a0ac2jbtLkgHeExUpuiuYbTEWerxjMBX2Jwnqrww==",
         "dependencies": {
-          "Duende.IdentityServer.Storage": "7.4.10",
+          "Duende.IdentityServer.Storage": "7.4.11",
           "Microsoft.AspNetCore.Authentication.OpenIdConnect": "10.0.7"
         }
       },
@@ -156,8 +156,8 @@
       },
       "Duende.IdentityServer.Storage": {
         "type": "Transitive",
-        "resolved": "7.4.10",
-        "contentHash": "fxp5ena/jGQnu+joEwmY3nwkyRXa5MaLSHaImq0PoMA5v1nxwHADrbUvgAesHt1dc1YUU3okYD2TA6Pap+zBcA==",
+        "resolved": "7.4.11",
+        "contentHash": "OV5xkrXkVOwHCZgXPRst4iPO88Li3SeOEeRFqUis1AiJDI14WfUevuwNQD7D3uWTTkH5rYIe5bmhDfE+YgWH2Q==",
         "dependencies": {
           "Duende.IdentityModel": "8.0.1"
         }
