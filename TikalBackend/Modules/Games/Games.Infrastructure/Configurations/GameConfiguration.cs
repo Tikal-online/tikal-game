@@ -14,13 +14,7 @@ internal sealed class GameConfiguration : IEntityTypeConfiguration<Game>
             .IsRequired();
 
         builder.ComplexProperty(x => x.TileMap,
-            b =>
-            {
-                b.ToJson();
-                b.ComplexProperty(
-                    x => x.Tiles,
-                    bu => bu.ToJson());
-            });
+            b => { b.ToJson(); });
 
         builder.HasMany(x => x.Players)
             .WithOne(x => x.Game)

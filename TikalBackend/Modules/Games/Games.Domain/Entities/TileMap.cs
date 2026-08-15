@@ -1,43 +1,17 @@
-using System.Collections;
 using Games.Domain.Errors;
 using Games.Domain.Types;
 using OneOf;
 
 namespace Games.Domain.Entities;
 
-public sealed class TileMap : IEnumerable<KeyValuePair<HexCoordinate, Tile>>
+public sealed class TileMap
 {
-    private readonly Dictionary<HexCoordinate, Tile> tiles = [];
-
-    public List<KeyValuePair<HexCoordinate, Tile>> Tiles => tiles.ToList();
-
-    public IEnumerator<KeyValuePair<HexCoordinate, Tile>> GetEnumerator()
-    {
-        return tiles.GetEnumerator();
-    }
-
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return GetEnumerator();
-    }
-
-    public void Add(HexCoordinate coordinate, Tile tile)
-    {
-        tiles.Add(coordinate, tile);
-    }
-
-    public Tile? GetTile(HexCoordinate coordinate)
-    {
-        return tiles.GetValueOrDefault(coordinate);
-    }
-
-    public bool SetTile(HexCoordinate coordinate, Tile newTile)
-    {
-        return tiles.TryAdd(coordinate, newTile);
-    }
+    public List<Tile> Tiles { get; init; } = [];
 
     public OneOf<int, NoPathFound> GetTravelCost(HexCoordinate start, HexCoordinate goal)
     {
+        var dict = Tiles.ToDictionary(tile => tile.Coordinate);
+
         var frontier = new PriorityQueue<HexCoordinate, int>();
         frontier.Enqueue(start, 0);
 
@@ -55,9 +29,9 @@ public sealed class TileMap : IEnumerable<KeyValuePair<HexCoordinate, Tile>>
                 return cost_so_far[current];
             }
 
-            foreach (var next in GetNeighbours(current))
+            foreach (var next in GetNeighbours(current, dict))
             {
-                var travelCost = GetTileTravelCost(current, next);
+                var travelCost = GetTileTravelCost(current, next, dict);
 
                 if (travelCost == 0)
                 {
@@ -78,26 +52,29 @@ public sealed class TileMap : IEnumerable<KeyValuePair<HexCoordinate, Tile>>
         return new NoPathFound(start, goal);
     }
 
-    private IEnumerable<HexCoordinate> GetNeighbours(HexCoordinate coordinate)
+    private static IEnumerable<HexCoordinate> GetNeighbours(
+        HexCoordinate coordinate,
+        Dictionary<HexCoordinate, Tile> dict
+    )
     {
-        foreach (var direction in HexCoordinate.Directions.Keys)
+        foreach (var direction in HexCoordinate.Directions)
         {
             var neighbour = coordinate + direction;
 
-            if (tiles.ContainsKey(neighbour))
+            if (dict.ContainsKey(neighbour))
             {
                 yield return neighbour;
             }
         }
     }
 
-    private int GetTileTravelCost(HexCoordinate a, HexCoordinate b)
+    private static int GetTileTravelCost(HexCoordinate a, HexCoordinate b, Dictionary<HexCoordinate, Tile> dict)
     {
         var tileAEdge = a.GetEdge(b);
         var tileBEdge = b.GetEdge(a);
 
-        var tileA = tiles[a];
-        var tileB = tiles[b];
+        var tileA = dict[a];
+        var tileB = dict[b];
 
         return tileA.Costs[tileAEdge] + tileB.Costs[tileBEdge];
     }
