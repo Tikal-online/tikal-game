@@ -91,7 +91,7 @@ namespace Games.Infrastructure.Database.Migrations
 
                     b.HasIndex("TileMapId");
 
-                    b.ToTable("Tile", "Games");
+                    b.ToTable("Tiles", "Games");
 
                     b.HasDiscriminator<int>("TileType");
 
@@ -114,7 +114,36 @@ namespace Games.Infrastructure.Database.Migrations
                     b.HasIndex("GameId")
                         .IsUnique();
 
-                    b.ToTable("TileMap", "Games");
+                    b.ToTable("TileMaps", "Games");
+                });
+
+            modelBuilder.Entity("Games.Domain.Entities.TroopAssignment", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<int>("Count")
+                        .HasColumnType("integer");
+
+                    b.Property<long>("PlayerId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("TileId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("TroopType")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PlayerId");
+
+                    b.HasIndex("TileId");
+
+                    b.ToTable("TroopAssignments", "Games");
                 });
 
             modelBuilder.Entity("Games.Domain.Entities.EmptyTile", b =>
@@ -167,12 +196,41 @@ namespace Games.Infrastructure.Database.Migrations
                     b.Navigation("Game");
                 });
 
+            modelBuilder.Entity("Games.Domain.Entities.TroopAssignment", b =>
+                {
+                    b.HasOne("Games.Domain.Entities.Player", "Player")
+                        .WithMany("TroopAssignments")
+                        .HasForeignKey("PlayerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Games.Domain.Entities.Tile", "Tile")
+                        .WithMany("TroopAssignments")
+                        .HasForeignKey("TileId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Player");
+
+                    b.Navigation("Tile");
+                });
+
             modelBuilder.Entity("Games.Domain.Entities.Game", b =>
                 {
                     b.Navigation("Players");
 
                     b.Navigation("TileMap")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Games.Domain.Entities.Player", b =>
+                {
+                    b.Navigation("TroopAssignments");
+                });
+
+            modelBuilder.Entity("Games.Domain.Entities.Tile", b =>
+                {
+                    b.Navigation("TroopAssignments");
                 });
 
             modelBuilder.Entity("Games.Domain.Entities.TileMap", b =>

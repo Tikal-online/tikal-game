@@ -15,4 +15,6 @@ public sealed class Player
     public long GameId { get; set; }
 
     public Game Game { get; set; } = null!;
+
+    public ICollection<TroopAssignment> TroopAssignments { get; set; } = [];
 }

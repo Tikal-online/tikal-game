@@ -23,5 +23,10 @@ internal sealed class PlayerConfiguration : IEntityTypeConfiguration<Player>
 
         builder.HasIndex(x => x.UserId)
             .IsUnique();
+
+        builder.HasMany(x => x.TroopAssignments)
+            .WithOne(x => x.Player)
+            .HasForeignKey(x => x.PlayerId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

@@ -17,6 +17,12 @@ public sealed class GamesDbContext : DbContext, UnitOfWork
 
     public DbSet<Game> Games { get; set; }
 
+    public DbSet<TileMap> TileMaps { get; set; }
+
+    public DbSet<Tile> Tiles { get; set; }
+
+    public DbSet<TroopAssignment> TroopAssignments { get; set; }
+
     public GamesDbContext(DbContextOptions<GamesDbContext> options, IMediator mediator) : base(options)
     {
         this.mediator = mediator;

@@ -16,4 +16,6 @@ public abstract class Tile
     public required TravelCosts Costs { get; init; }
 
     public required HexCoordinate Coordinate { get; init; }
+
+    public ICollection<TroopAssignment> TroopAssignments { get; set; } = [];
 }
