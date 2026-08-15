@@ -46,7 +46,6 @@ internal sealed class CreateGameCommandHandler
                     {
                         Costs = new TravelCosts(SouthEast: 1, Northwest: 10),
                         Coordinate = new HexCoordinate(4, 7),
-                        HasBarracks = false,
                         TroopAssignments =
                         [
                             new TroopAssignment

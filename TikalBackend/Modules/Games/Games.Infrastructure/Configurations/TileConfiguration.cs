@@ -13,13 +13,51 @@ internal sealed class TileConfiguration : IEntityTypeConfiguration<Tile>
 
         builder.HasDiscriminator<int>("TileType")
             .HasValue<EmptyTile>((int)TileType.Empty)
+            .HasValue<TreasureTile>((int)TileType.Treasure)
+            .HasValue<VolcanoTile>((int)TileType.Volcano)
             .HasValue<TempleTile>((int)TileType.Temple);
 
         builder.Ignore(x => x.Type);
 
-        builder.Ignore(x => x.Coordinate);
+        builder.ComplexProperty(x => x.Costs,
+            costs =>
+            {
+                costs.Property(c => c.North)
+                    .HasColumnName("NorthCost")
+                    .IsRequired();
 
-        builder.Ignore(x => x.Costs);
+                costs.Property(c => c.NorthEast)
+                    .HasColumnName("NorthEastCost")
+                    .IsRequired();
+
+                costs.Property(c => c.SouthEast)
+                    .HasColumnName("SouthEastCost")
+                    .IsRequired();
+
+                costs.Property(c => c.South)
+                    .HasColumnName("SouthCost")
+                    .IsRequired();
+
+                costs.Property(c => c.SouthWest)
+                    .HasColumnName("SouthWestCost")
+                    .IsRequired();
+
+                costs.Property(c => c.Northwest)
+                    .HasColumnName("NorthWestCost")
+                    .IsRequired();
+            });
+
+        builder.ComplexProperty(x => x.Coordinate,
+            coordinate =>
+            {
+                coordinate.Property(c => c.Q)
+                    .HasColumnName("QCoordinate")
+                    .IsRequired();
+
+                coordinate.Property(c => c.R)
+                    .HasColumnName("RCoordinate")
+                    .IsRequired();
+            });
 
         builder.HasMany(x => x.TroopAssignments)
             .WithOne(x => x.Tile)

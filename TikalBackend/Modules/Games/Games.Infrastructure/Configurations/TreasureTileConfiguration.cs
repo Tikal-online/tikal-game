@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Games.Infrastructure.Configurations;
 
-internal class EmptyTileConfiguration : IEntityTypeConfiguration<EmptyTile>
+internal class TreasureTileConfiguration : IEntityTypeConfiguration<TreasureTile>
 {
-    public void Configure(EntityTypeBuilder<EmptyTile> builder)
+    public void Configure(EntityTypeBuilder<TreasureTile> builder)
     {
     }
 }
