@@ -49,4 +49,13 @@ public sealed partial class LobbiesController
             statusCode: StatusCodes.Status409Conflict
         );
     }
+
+    private ObjectResult LobbyCannotBeStarted(long lobbyId)
+    {
+        return Problem(
+            title: "Lobby cannot be started",
+            detail: $"Lobby with ID {lobbyId} cannot be started",
+            statusCode: StatusCodes.Status409Conflict
+        );
+    }
 }

@@ -21,6 +21,8 @@ public sealed class Lobby : Entity
 
     public bool IsFull => Players.Count == MaxPlayers;
 
+    public bool CanBeStarted => Players.Count >= 2 && Players.All(p => p.IsReady) && !InGame;
+
     public void RemovePlayer(Player player)
     {
         Players.Remove(player);
@@ -57,6 +59,11 @@ public sealed class Lobby : Entity
             .First();
 
         return unusedColour;
+    }
+
+    public void Start()
+    {
+        InGame = true;
     }
 }
 

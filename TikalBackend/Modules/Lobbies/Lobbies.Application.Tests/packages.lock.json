@@ -263,10 +263,17 @@
           "Shared.Contracts": "[1.0.0, )"
         }
       },
+      "games.contracts": {
+        "type": "Project",
+        "dependencies": {
+          "Shared.Contracts": "[1.0.0, )"
+        }
+      },
       "lobbies.application": {
         "type": "Project",
         "dependencies": {
           "Accounts.Contracts": "[1.0.0, )",
+          "Games.Contracts": "[1.0.0, )",
           "Lobbies.Contracts": "[1.0.0, )",
           "Lobbies.Domain": "[1.0.0, )",
           "Shared.Application": "[1.0.0, )"

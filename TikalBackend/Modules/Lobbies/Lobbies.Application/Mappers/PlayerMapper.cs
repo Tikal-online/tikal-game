@@ -41,4 +41,9 @@ internal static class PlayerMapper
 
         return players.Select(p => PlayerToLobbyPlayerModel(p, accountDictionary[p.UserId])).ToList();
     }
+
+    public static Dictionary<ColourModel, string> PlayersToDictionary(ICollection<Player> players)
+    {
+        return players.ToDictionary(p => (ColourModel)p.SelectedColour, p => p.UserId);
+    }
 }
