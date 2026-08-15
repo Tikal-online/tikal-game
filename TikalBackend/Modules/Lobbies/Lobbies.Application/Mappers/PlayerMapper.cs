@@ -1,8 +1,8 @@
 using Accounts.Contracts.Models;
-using Lobbies.Contracts.Enums;
 using Lobbies.Contracts.Models;
 using Lobbies.Domain.Entities;
 using Shared.Application.Contexts;
+using Shared.Contracts.Enums;
 
 namespace Lobbies.Application.Mappers;
 

@@ -1,4 +1,4 @@
-using Lobbies.Contracts.Enums;
+using Shared.Contracts.Enums;
 
 namespace Lobbies.Contracts.Models;
 
