@@ -3,4 +3,4 @@ using Shared.Contracts.Messaging;
 
 namespace Lobbies.Contracts.Queries;
 
-public record GetLobbyForAuthenticatedPlayerQuery : Query<LobbyModel?>;
+public sealed record GetLobbyForAuthenticatedPlayerQuery : Query<LobbyModel?>;
