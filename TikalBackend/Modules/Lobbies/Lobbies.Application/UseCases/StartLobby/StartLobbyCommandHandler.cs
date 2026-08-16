@@ -7,7 +7,6 @@ using MediatR;
 using OneOf;
 using OneOf.Types;
 using Shared.Application.Contexts;
-using Shared.Application.DataAccess;
 using Shared.Contracts.Errors;
 using Shared.Contracts.Messaging;
 
@@ -23,22 +22,18 @@ internal sealed class StartLobbyCommandHandler
 
     private readonly ISender sender;
 
-    private readonly TransactionHandler transactionHandler;
-
     private readonly AccountContext accountContext;
 
     public StartLobbyCommandHandler(
         LobbyRepository lobbyRepository,
         UnitOfWork unitOfWork,
         ISender sender,
-        TransactionHandler transactionHandler,
         AccountContext accountContext
     )
     {
         this.lobbyRepository = lobbyRepository;
         this.unitOfWork = unitOfWork;
         this.sender = sender;
-        this.transactionHandler = transactionHandler;
         this.accountContext = accountContext;
     }
 
@@ -75,14 +70,10 @@ internal sealed class StartLobbyCommandHandler
 
         var playerDictionary = PlayerMapper.PlayersToDictionary(lobby.Players);
 
-        return await transactionHandler.CommitScopedTransaction(async ct =>
-            {
-                await sender.Send(new CreateGameCommand(lobby.Id, playerDictionary), ct);
+        await sender.Send(new CreateGameCommand(lobby.Id, playerDictionary), cancellationToken);
 
-                await unitOfWork.SaveChangesAsync(ct);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
 
-                return new Success();
-            },
-            cancellationToken);
+        return new Success();
     }
 }

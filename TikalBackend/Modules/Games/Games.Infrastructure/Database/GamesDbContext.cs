@@ -1,3 +1,4 @@
+using System.Transactions;
 using Games.Application.DataAccess;
 using Games.Domain.Entities;
 using Games.Infrastructure.Extensions;
@@ -23,6 +24,7 @@ public sealed class GamesDbContext : DbContext, UnitOfWork
 
     public DbSet<TroopAssignment> TroopAssignments { get; set; }
 
+
     public GamesDbContext(DbContextOptions<GamesDbContext> options, IMediator mediator) : base(options)
     {
         this.mediator = mediator;
@@ -36,9 +38,17 @@ public sealed class GamesDbContext : DbContext, UnitOfWork
             .Where(e => e.DomainEvents.Count > 0)
             .ToList();
 
+        using var transaction = new TransactionScope(
+            TransactionScopeOption.Required,
+            new TransactionOptions { IsolationLevel = IsolationLevel.ReadCommitted },
+            TransactionScopeAsyncFlowOption.Enabled
+        );
+
         var result = await base.SaveChangesAsync(cancellationToken);
 
         await mediator.DispatchDomainEventsAsync(entitiesWithEvents);
+
+        transaction.Complete();
 
         return result;
     }

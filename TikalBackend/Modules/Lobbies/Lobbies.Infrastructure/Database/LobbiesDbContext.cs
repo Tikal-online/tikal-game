@@ -1,3 +1,4 @@
+using System.Transactions;
 using Lobbies.Application.DataAccess;
 using Lobbies.Domain.Entities;
 using Lobbies.Infrastructure.Extensions;
@@ -13,14 +14,14 @@ public sealed class LobbiesDbContext : DbContext, UnitOfWork
 
     private readonly IMediator mediator;
 
-    public DbSet<Player> Players { get; set; }
-
-    public DbSet<Lobby> Lobbies { get; set; }
-
     public LobbiesDbContext(DbContextOptions<LobbiesDbContext> options, IMediator mediator) : base(options)
     {
         this.mediator = mediator;
     }
+
+    public DbSet<Player> Players { get; set; }
+
+    public DbSet<Lobby> Lobbies { get; set; }
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
@@ -30,9 +31,17 @@ public sealed class LobbiesDbContext : DbContext, UnitOfWork
             .Where(e => e.DomainEvents.Count > 0)
             .ToList();
 
+        using var transaction = new TransactionScope(
+            TransactionScopeOption.Required,
+            new TransactionOptions { IsolationLevel = IsolationLevel.ReadCommitted },
+            TransactionScopeAsyncFlowOption.Enabled
+        );
+
         var result = await base.SaveChangesAsync(cancellationToken);
 
         await mediator.DispatchDomainEventsAsync(entitiesWithEvents);
+
+        transaction.Complete();
 
         return result;
     }
