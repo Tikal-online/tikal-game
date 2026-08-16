@@ -64,6 +64,7 @@ public sealed class Lobby : Entity
     public void Start()
     {
         InGame = true;
+        AddDomainEvent(new LobbyStartedEvent(this));
     }
 }
 

@@ -72,7 +72,7 @@ public static class LobbyTestCases
                     UserId = "40023ae5-63d9-48ca-b8f3-bccaa948a6e7",
                     SelectedColour = Colour.Yellow,
                     IsOwner = true,
-                    IsReady = false
+                    IsReady = true
                 }
             ]
         },
@@ -88,7 +88,7 @@ public static class LobbyTestCases
                     UserId = "b373a291-ce78-47b3-801c-cc384b24fbfe",
                     SelectedColour = Colour.Green,
                     IsOwner = true,
-                    IsReady = false
+                    IsReady = true
                 },
                 new Player
                 {

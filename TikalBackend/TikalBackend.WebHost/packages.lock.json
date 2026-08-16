@@ -368,6 +368,7 @@
         "dependencies": {
           "Games.Contracts": "[1.0.0, )",
           "Games.Domain": "[1.0.0, )",
+          "Lobbies.Contracts": "[1.0.0, )",
           "Shared.Application": "[1.0.0, )"
         }
       },
@@ -455,13 +456,6 @@
         "type": "Project",
         "dependencies": {
           "MediatR": "[14.1.0, )"
-        }
-      },
-      "shared.infrastructure": {
-        "type": "Project",
-        "dependencies": {
-          "OneOf": "[3.0.271, )",
-          "Shared.Application": "[1.0.0, )"
         }
       },
       "signalrapi.hubs": {

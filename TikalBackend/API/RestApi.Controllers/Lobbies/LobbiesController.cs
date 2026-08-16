@@ -151,6 +151,7 @@ public sealed partial class LobbiesController : ApiController
             _ => Ok(),
             _ => LobbyNotFound(Id),
             _ => PlayerNotInGivenLobby(Id),
+            _ => Unprivileged(),
             _ => LobbyCannotBeStarted(Id)
         );
     }
