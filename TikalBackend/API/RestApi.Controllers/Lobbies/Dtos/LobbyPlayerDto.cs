@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
-using RestApi.Controllers.Lobbies.Enums;
+using RestApi.Controllers.Shared.Dtos.Enums;
 
 namespace RestApi.Controllers.Lobbies.Dtos;
 
