@@ -37,4 +37,9 @@ internal static class LobbyUrl
     {
         return $"Lobbies/{id}/Messages";
     }
+
+    public static string StartLobby(long id)
+    {
+        return $"Lobbies/{id}/Start";
+    }
 }
