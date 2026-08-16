@@ -1,9 +1,6 @@
-using Games.Contracts.Commands;
 using Lobbies.Application.DataAccess;
-using Lobbies.Application.Mappers;
 using Lobbies.Contracts.Commands;
 using Lobbies.Contracts.Errors;
-using MediatR;
 using OneOf;
 using OneOf.Types;
 using Shared.Application.Contexts;
@@ -20,20 +17,16 @@ internal sealed class StartLobbyCommandHandler
 
     private readonly UnitOfWork unitOfWork;
 
-    private readonly ISender sender;
-
     private readonly AccountContext accountContext;
 
     public StartLobbyCommandHandler(
         LobbyRepository lobbyRepository,
         UnitOfWork unitOfWork,
-        ISender sender,
         AccountContext accountContext
     )
     {
         this.lobbyRepository = lobbyRepository;
         this.unitOfWork = unitOfWork;
-        this.sender = sender;
         this.accountContext = accountContext;
     }
 
@@ -67,10 +60,6 @@ internal sealed class StartLobbyCommandHandler
         }
 
         lobby.Start();
-
-        var playerDictionary = PlayerMapper.PlayersToDictionary(lobby.Players);
-
-        await sender.Send(new CreateGameCommand(lobby.Id, playerDictionary), cancellationToken);
 
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
