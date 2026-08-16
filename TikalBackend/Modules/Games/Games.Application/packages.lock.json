@@ -45,6 +45,12 @@
           "Microsoft.IdentityModel.Logging": "8.14.0"
         }
       },
+      "accounts.contracts": {
+        "type": "Project",
+        "dependencies": {
+          "Shared.Contracts": "[1.0.0, )"
+        }
+      },
       "games.contracts": {
         "type": "Project",
         "dependencies": {
