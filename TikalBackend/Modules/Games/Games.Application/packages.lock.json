@@ -60,6 +60,12 @@
           "Shared.Domain": "[1.0.0, )"
         }
       },
+      "lobbies.contracts": {
+        "type": "Project",
+        "dependencies": {
+          "Shared.Contracts": "[1.0.0, )"
+        }
+      },
       "shared.application": {
         "type": "Project",
         "dependencies": {

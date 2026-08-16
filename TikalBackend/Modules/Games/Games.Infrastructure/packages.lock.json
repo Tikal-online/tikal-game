@@ -163,6 +163,7 @@
         "dependencies": {
           "Games.Contracts": "[1.0.0, )",
           "Games.Domain": "[1.0.0, )",
+          "Lobbies.Contracts": "[1.0.0, )",
           "Shared.Application": "[1.0.0, )"
         }
       },
@@ -179,6 +180,12 @@
           "OneOf": "[3.0.271, )",
           "Riok.Mapperly": "[4.3.1, )",
           "Shared.Domain": "[1.0.0, )"
+        }
+      },
+      "lobbies.contracts": {
+        "type": "Project",
+        "dependencies": {
+          "Shared.Contracts": "[1.0.0, )"
         }
       },
       "shared.application": {
