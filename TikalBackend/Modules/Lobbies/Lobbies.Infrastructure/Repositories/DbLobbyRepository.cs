@@ -24,7 +24,7 @@ internal sealed class DbLobbyRepository : LobbyRepository
         lobbiesDbContext.Remove(lobby);
     }
 
-    public Task<Lobby?> GetByIdAsync(long id)
+    public Task<Lobby?> GetById(long id)
     {
         return lobbiesDbContext.Lobbies
             .Include(l => l.Players)

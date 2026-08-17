@@ -6,5 +6,5 @@ public interface AccountRepository
 {
     void Create(Account account);
 
-    Task<Account?> GetByUserIdAsync(string userId);
+    Task<Account?> GetByUserId(string userId);
 }

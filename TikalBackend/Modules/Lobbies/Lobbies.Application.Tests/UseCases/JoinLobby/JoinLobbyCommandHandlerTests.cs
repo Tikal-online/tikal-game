@@ -49,7 +49,7 @@ internal sealed class JoinLobbyCommandHandlerTests
         playerQueryContext.Setup(p => p.PlayerExists(accountContext.Account.UserId)).ReturnsAsync(false);
 
         // lobby exists
-        lobbyRepository.Setup(r => r.GetByIdAsync(lobby.Id)).ReturnsAsync(lobby);
+        lobbyRepository.Setup(r => r.GetById(lobby.Id)).ReturnsAsync(lobby);
     }
 
     [TestCaseSource(nameof(NotFullLobbyTestCases))]
@@ -75,7 +75,7 @@ internal sealed class JoinLobbyCommandHandlerTests
         // given
         SetupHappyPath(lobby);
 
-        lobbyRepository.Setup(r => r.GetByIdAsync(lobby.Id)).ReturnsAsync(default(Lobby));
+        lobbyRepository.Setup(r => r.GetById(lobby.Id)).ReturnsAsync(default(Lobby));
 
         var command = new JoinLobbyCommand(lobby.Id);
 

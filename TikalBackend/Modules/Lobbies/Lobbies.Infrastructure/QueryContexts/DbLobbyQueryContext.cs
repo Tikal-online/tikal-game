@@ -14,14 +14,14 @@ internal sealed class DbLobbyQueryContext : LobbyQueryContext
         this.lobbiesDbContext = lobbiesDbContext;
     }
 
-    public Task<Lobby?> GetByIdAsync(long Id)
+    public Task<Lobby?> GetById(long Id)
     {
         return lobbiesDbContext.Lobbies.AsNoTracking()
             .Include(l => l.Players)
             .FirstOrDefaultAsync(l => l.Id == Id);
     }
 
-    public Task<Lobby?> GetByUserIdAsync(string userId)
+    public Task<Lobby?> GetByUserId(string userId)
     {
         return lobbiesDbContext.Lobbies.AsNoTracking()
             .Include(l => l.Players)
@@ -29,7 +29,7 @@ internal sealed class DbLobbyQueryContext : LobbyQueryContext
             .FirstOrDefaultAsync();
     }
 
-    public Task<long?> GetIdByUserIdAsync(string userId)
+    public Task<long?> GetIdByUserId(string userId)
     {
         return lobbiesDbContext.Lobbies.AsNoTracking()
             .Where(l => l.Players.Any(p => p.UserId == userId))
@@ -37,7 +37,7 @@ internal sealed class DbLobbyQueryContext : LobbyQueryContext
             .FirstOrDefaultAsync();
     }
 
-    public Task<List<Lobby>> GetPaginatedAsync(int pageSize, int pageNumber, string? searchText)
+    public Task<List<Lobby>> GetPaginated(int pageSize, int pageNumber, string? searchText)
     {
         IQueryable<Lobby> query = lobbiesDbContext.Lobbies.AsNoTracking()
             .Include(l => l.Players);
@@ -54,7 +54,7 @@ internal sealed class DbLobbyQueryContext : LobbyQueryContext
             .ToListAsync();
     }
 
-    public Task<int> GetCountAsync(string? searchText)
+    public Task<int> GetCount(string? searchText)
     {
         var query = lobbiesDbContext.Lobbies.AsNoTracking();
 

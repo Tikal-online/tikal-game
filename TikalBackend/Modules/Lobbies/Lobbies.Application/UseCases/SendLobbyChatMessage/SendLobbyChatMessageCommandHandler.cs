@@ -36,7 +36,7 @@ internal sealed class SendLobbyChatMessageCommandHandler
         CancellationToken cancellationToken
     )
     {
-        var lobby = await lobbyQueryContext.GetByIdAsync(request.LobbyId);
+        var lobby = await lobbyQueryContext.GetById(request.LobbyId);
 
         if (lobby is null)
         {

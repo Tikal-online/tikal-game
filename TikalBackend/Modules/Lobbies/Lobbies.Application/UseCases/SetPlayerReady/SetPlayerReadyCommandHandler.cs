@@ -33,7 +33,7 @@ internal sealed class SetPlayerReadyCommandHandler
         CancellationToken cancellationToken
     )
     {
-        var player = await playerRepository.GetByUserIdAsync(accountContext.Account.UserId);
+        var player = await playerRepository.GetByUserId(accountContext.Account.UserId);
 
         if (player is null)
         {

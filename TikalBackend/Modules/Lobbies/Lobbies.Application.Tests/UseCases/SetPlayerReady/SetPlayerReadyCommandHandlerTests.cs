@@ -34,7 +34,7 @@ internal sealed class SetPlayerReadyCommandHandlerTests
     private void SetupHappyPath(Player player)
     {
         // player exists
-        playerRepository.Setup(r => r.GetByUserIdAsync(accountContext.Account.UserId))
+        playerRepository.Setup(r => r.GetByUserId(accountContext.Account.UserId))
             .ReturnsAsync(player);
     }
 
@@ -42,7 +42,7 @@ internal sealed class SetPlayerReadyCommandHandlerTests
     public async Task GivenNonExistingPlayer_WhenHandle_ThenReturnsPlayerNotInALobbyError()
     {
         // given
-        playerRepository.Setup(r => r.GetByUserIdAsync(accountContext.Account.UserId))
+        playerRepository.Setup(r => r.GetByUserId(accountContext.Account.UserId))
             .ReturnsAsync(default(Player));
 
         var command = new SetPlayerReadyCommand();

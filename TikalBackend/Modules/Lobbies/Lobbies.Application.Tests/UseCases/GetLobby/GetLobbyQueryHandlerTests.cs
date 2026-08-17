@@ -33,7 +33,7 @@ internal sealed class GetLobbyQueryHandlerTests
     public async Task GivenNoLobbyWithId_WhenHandle_ThenReturnsNull(GetLobbyQuery query)
     {
         // given
-        lobbyQueryContext.Setup(q => q.GetByIdAsync(query.Id))
+        lobbyQueryContext.Setup(q => q.GetById(query.Id))
             .ReturnsAsync(default(Lobby));
 
         // when
@@ -49,7 +49,7 @@ internal sealed class GetLobbyQueryHandlerTests
         // given
         var query = new GetLobbyQuery(lobby.Id);
 
-        lobbyQueryContext.Setup(q => q.GetByIdAsync(query.Id))
+        lobbyQueryContext.Setup(q => q.GetById(query.Id))
             .ReturnsAsync(lobby);
 
         sender.Setup(s => s.Send(

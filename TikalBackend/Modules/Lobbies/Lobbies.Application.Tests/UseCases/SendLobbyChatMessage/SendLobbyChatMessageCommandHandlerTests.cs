@@ -35,7 +35,7 @@ internal sealed class SendLobbyChatMessageCommandHandlerTests
     private void SetupHappyPath(Lobby lobby)
     {
         // lobby exists
-        lobbyQueryContext.Setup(r => r.GetByIdAsync(lobby.Id))
+        lobbyQueryContext.Setup(r => r.GetById(lobby.Id))
             .ReturnsAsync(lobby);
 
         // lobby contains authenticated player
@@ -48,7 +48,7 @@ internal sealed class SendLobbyChatMessageCommandHandlerTests
     public async Task GivenLobbyDoesntExist_WhenHandle_ThenReturnsLobbyNotFoundError()
     {
         // given
-        lobbyQueryContext.Setup(r => r.GetByIdAsync(1))
+        lobbyQueryContext.Setup(r => r.GetById(1))
             .ReturnsAsync(default(Lobby));
 
         var command = new SendLobbyChatMessageCommand(1, "My chat message");
@@ -64,7 +64,7 @@ internal sealed class SendLobbyChatMessageCommandHandlerTests
     public async Task GivenPlayerIsNotPartOfLobby_WhenHandle_ThenReturnsPlayerNotInGivenLobbyError(Lobby lobby)
     {
         // given
-        lobbyQueryContext.Setup(r => r.GetByIdAsync(lobby.Id))
+        lobbyQueryContext.Setup(r => r.GetById(lobby.Id))
             .ReturnsAsync(lobby);
 
         var command = new SendLobbyChatMessageCommand(lobby.Id, "My chat message");

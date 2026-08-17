@@ -41,7 +41,7 @@ internal sealed class GetLobbyForAuthenticatedPlayerQueryHandlerTests
     public async Task GivenAuthenticatedPlayerNotInLobby_WhenHandle_ThenReturnsNull()
     {
         // given
-        lobbyQueryContext.Setup(q => q.GetByUserIdAsync(accountContext.Account.UserId))
+        lobbyQueryContext.Setup(q => q.GetByUserId(accountContext.Account.UserId))
             .ReturnsAsync(default(Lobby));
 
         var query = new GetLobbyForAuthenticatedPlayerQuery();
@@ -57,7 +57,7 @@ internal sealed class GetLobbyForAuthenticatedPlayerQueryHandlerTests
     public async Task GivenAuthenticatedPlayerInLobby_WhenHandle_ThenReturnsLobbyModel(Lobby lobby)
     {
         // given
-        lobbyQueryContext.Setup(q => q.GetByUserIdAsync(accountContext.Account.UserId))
+        lobbyQueryContext.Setup(q => q.GetByUserId(accountContext.Account.UserId))
             .ReturnsAsync(lobby);
 
         sender.Setup(s => s.Send(

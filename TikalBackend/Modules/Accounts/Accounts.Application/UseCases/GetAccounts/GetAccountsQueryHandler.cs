@@ -17,7 +17,7 @@ internal sealed class GetAccountsQueryHandler : QueryHandler<GetAccountsQuery, L
 
     public async Task<List<AccountModel>> Handle(GetAccountsQuery request, CancellationToken cancellationToken)
     {
-        var accounts = await accountQueryContext.GetByUserIdsAsync(request.UserIds);
+        var accounts = await accountQueryContext.GetByUserIds(request.UserIds);
 
         var accountModels = AccountMapper.AccountsToAccountModels(accounts);
 

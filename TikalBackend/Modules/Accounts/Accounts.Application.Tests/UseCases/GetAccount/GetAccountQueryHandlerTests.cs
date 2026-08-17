@@ -28,7 +28,7 @@ internal sealed class GetAccountQueryHandlerTests
     {
         // given
         accountQueryContext
-            .Setup(q => q.GetByUserIdAsync(query.UserId))
+            .Setup(q => q.GetByUserId(query.UserId))
             .ReturnsAsync(default(Account));
 
         // when
@@ -43,7 +43,7 @@ internal sealed class GetAccountQueryHandlerTests
     {
         // given
         accountQueryContext
-            .Setup(q => q.GetByUserIdAsync(account.UserId))
+            .Setup(q => q.GetByUserId(account.UserId))
             .ReturnsAsync(account);
 
         var query = new GetAccountQuery(account.UserId);
