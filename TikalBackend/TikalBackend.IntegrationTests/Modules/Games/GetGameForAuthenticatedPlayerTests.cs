@@ -82,9 +82,9 @@ internal sealed class GetGameForAuthenticatedPlayerTests : IntegrationTestFixtur
                 var player = game.Players.FirstOrDefault(p => p.UserId == expectedPlayer.UserId);
 
                 Assert.That(player, Is.Not.Null);
-                Assert.That(player.UserId, Is.EqualTo(expectedPlayer.UserId));
+                Assert.That(player!.UserId, Is.EqualTo(expectedPlayer.UserId));
                 Assert.That(player.Name, Is.EqualTo(expectedPlayer.Name));
-                Assert.That(player.Points, Is.EqualTo(0));
+                Assert.That(player.Points, Is.Zero);
             }
         }
     }
