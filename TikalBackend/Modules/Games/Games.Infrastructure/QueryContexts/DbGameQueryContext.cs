@@ -18,8 +18,7 @@ internal sealed class DbGameQueryContext : GameQueryContext
     {
         return gamesDbContext.Games.AsNoTracking()
             .Include(game => game.Players)
-            .Include(game => game.TileMap)
-            .ThenInclude(tileMap => tileMap.Tiles)
+            .Include(game => game.Tiles)
             .ThenInclude(tile => tile.TroopAssignments)
             .AsSplitQuery()
             .SingleOrDefaultAsync(g => g.Players.Any(p => p.UserId == userId));
