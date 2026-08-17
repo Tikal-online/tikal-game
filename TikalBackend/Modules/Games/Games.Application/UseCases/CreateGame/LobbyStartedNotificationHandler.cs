@@ -27,33 +27,31 @@ internal sealed class LobbyStartedNotificationHandler : INotificationHandler<Lob
         {
             LobbyId = notification.LobbyId,
             Players = players,
-            TileMap = new TileMap
-            {
-                Tiles = [
-                    new EmptyTile
-                    {
-                        Costs = new TravelCosts(North: 1, NorthEast: 1, SouthEast: 1),
-                        Coordinate = new HexCoordinate(0, 0)
-                    },
-                    new TempleTile
-                    {
-                        TempleLevel = 1,
-                        Costs = new TravelCosts(North: 1, NorthEast: 1, South: 1),
-                        Coordinate = new HexCoordinate(0, -1)
-                    },
-                    new EmptyTile
-                    {
-                        Costs = new TravelCosts(North: 1, NorthEast: 1, SouthEast: 1),
-                        Coordinate = new HexCoordinate(1, -1)
-                    },
-                    new TempleTile
-                    {
-                        TempleLevel = 1,
-                        Costs = new TravelCosts(NorthEast: 1, Northwest: 1),
-                        Coordinate = new HexCoordinate(1, 0)
-                    }
-                ]
-            }
+            Tiles =
+            [
+                new EmptyTile
+                {
+                    Costs = new TravelCosts(1, 1, 1),
+                    Coordinate = new HexCoordinate(0, 0)
+                },
+                new TempleTile
+                {
+                    TempleLevel = 1,
+                    Costs = new TravelCosts(1, 1, South: 1),
+                    Coordinate = new HexCoordinate(0, -1)
+                },
+                new EmptyTile
+                {
+                    Costs = new TravelCosts(1, 1, 1),
+                    Coordinate = new HexCoordinate(1, -1)
+                },
+                new TempleTile
+                {
+                    TempleLevel = 1,
+                    Costs = new TravelCosts(NorthEast: 1, Northwest: 1),
+                    Coordinate = new HexCoordinate(1, 0)
+                }
+            ]
         };
 
         gameRepository.Create(game);

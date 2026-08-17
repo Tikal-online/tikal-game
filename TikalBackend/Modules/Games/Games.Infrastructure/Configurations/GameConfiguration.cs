@@ -13,10 +13,10 @@ internal sealed class GameConfiguration : IEntityTypeConfiguration<Game>
         builder.Property(x => x.LobbyId)
             .IsRequired();
 
-        builder.HasOne(x => x.TileMap)
+        builder.HasMany(x => x.Tiles)
             .WithOne(x => x.Game)
-            .HasForeignKey<TileMap>(x => x.GameId)
-            .IsRequired();
+            .HasForeignKey(x => x.GameId)
+            .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasMany(x => x.Players)
             .WithOne(x => x.Game)

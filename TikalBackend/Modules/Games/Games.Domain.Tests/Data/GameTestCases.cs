@@ -27,27 +27,24 @@ public static class GameTestCases
                     Points = 0
                 }
             ],
-            TileMap = new TileMap
-            {
-                Tiles =
-                [
-                    new EmptyTile
-                    {
-                        Costs = new TravelCosts(NorthEast: 1),
-                        Coordinate = new HexCoordinate(0, 0)
-                    },
-                    new EmptyTile
-                    {
-                        Costs = new TravelCosts(SouthWest: 1),
-                        Coordinate = new HexCoordinate(1, -1)
-                    },
-                    new VolcanoTile
-                    {
-                        Costs = new TravelCosts(),
-                        Coordinate = new HexCoordinate(2, -1)
-                    }
-                ]
-            }
+            Tiles =
+            [
+                new EmptyTile
+                {
+                    Costs = new TravelCosts(NorthEast: 1),
+                    Coordinate = new HexCoordinate(0, 0)
+                },
+                new EmptyTile
+                {
+                    Costs = new TravelCosts(SouthWest: 1),
+                    Coordinate = new HexCoordinate(1, -1)
+                },
+                new VolcanoTile
+                {
+                    Costs = new TravelCosts(),
+                    Coordinate = new HexCoordinate(2, -1)
+                }
+            ]
         }
     ];
 }

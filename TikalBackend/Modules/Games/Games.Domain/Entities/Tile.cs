@@ -7,9 +7,9 @@ public abstract class Tile
 {
     public long Id { get; set; }
 
-    public long TileMapId { get; set; }
+    public long GameId { get; set; }
 
-    public TileMap TileMap { get; set; } = null!;
+    public Game Game { get; set; } = null!;
 
     public abstract TileType Type { get; }
 
