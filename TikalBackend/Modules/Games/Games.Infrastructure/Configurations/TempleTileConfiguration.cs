@@ -8,5 +8,7 @@ internal class TempleTileConfiguration : IEntityTypeConfiguration<TempleTile>
 {
     public void Configure(EntityTypeBuilder<TempleTile> builder)
     {
+        builder.Property(x => x.TempleLevel)
+            .IsRequired();
     }
 }

@@ -5,4 +5,6 @@ namespace Games.Domain.Entities;
 public sealed class TempleTile : Tile
 {
     public override TileType Type => TileType.Temple;
+
+    public required int TempleLevel { get; set; }
 }
