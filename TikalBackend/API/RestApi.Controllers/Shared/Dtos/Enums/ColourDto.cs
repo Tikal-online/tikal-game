@@ -1,4 +1,4 @@
-namespace RestApi.Controllers.Lobbies.Enums;
+namespace RestApi.Controllers.Shared.Dtos.Enums;
 
 public enum ColourDto
 {

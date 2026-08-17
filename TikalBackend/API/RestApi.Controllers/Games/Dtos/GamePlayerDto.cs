@@ -2,9 +2,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using RestApi.Controllers.Shared.Dtos.Enums;
 
-namespace RestApi.Controllers.Lobbies.Dtos;
+namespace RestApi.Controllers.Games.Dtos;
 
-public sealed record LobbyPlayerDto
+public sealed record GamePlayerDto
 {
     [Required]
     [MaxLength(100)]
@@ -15,9 +15,7 @@ public sealed record LobbyPlayerDto
     public required string Name { get; set; }
 
     [JsonConverter(typeof(JsonStringEnumConverter))]
-    public required ColourDto SelectedColour { get; set; }
+    public required ColourDto Colour { get; set; }
 
-    public required bool IsReady { get; set; }
-
-    public required bool IsOwner { get; set; }
+    public required int Points { get; set; }
 }

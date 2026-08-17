@@ -6,9 +6,14 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\..\Shared\Shared.Application\Shared.Application.csproj"/>
+        <ProjectReference Include="..\..\Accounts\Accounts.Contracts\Accounts.Contracts.csproj"/>
         <ProjectReference Include="..\..\Lobbies\Lobbies.Contracts\Lobbies.Contracts.csproj"/>
         <ProjectReference Include="..\Games.Contracts\Games.Contracts.csproj"/>
         <ProjectReference Include="..\Games.Domain\Games.Domain.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <InternalsVisibleTo Include="Games.Application.Tests"/>
     </ItemGroup>
 
 </Project>
