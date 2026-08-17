@@ -19,7 +19,7 @@ internal sealed class DbPlayerRepository : PlayerRepository
         lobbiesDbContext.Remove(player);
     }
 
-    public Task<Player?> GetByUserIdAsync(string userId)
+    public Task<Player?> GetByUserId(string userId)
     {
         return lobbiesDbContext.Players
             .Where(p => p.UserId == userId)

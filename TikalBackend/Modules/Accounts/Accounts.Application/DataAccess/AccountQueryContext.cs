@@ -4,7 +4,7 @@ namespace Accounts.Application.DataAccess;
 
 public interface AccountQueryContext
 {
-    Task<Account?> GetByUserIdAsync(string userId);
+    Task<Account?> GetByUserId(string userId);
 
-    Task<List<Account>> GetByUserIdsAsync(ISet<string> userIds);
+    Task<List<Account>> GetByUserIds(ISet<string> userIds);
 }

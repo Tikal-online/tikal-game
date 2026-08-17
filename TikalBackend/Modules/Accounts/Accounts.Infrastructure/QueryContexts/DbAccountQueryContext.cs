@@ -14,12 +14,12 @@ internal sealed class DbAccountQueryContext : AccountQueryContext
         this.accountsDbContext = accountsDbContext;
     }
 
-    public Task<Account?> GetByUserIdAsync(string userId)
+    public Task<Account?> GetByUserId(string userId)
     {
         return accountsDbContext.Accounts.AsNoTracking().FirstOrDefaultAsync(x => x.UserId == userId);
     }
 
-    public Task<List<Account>> GetByUserIdsAsync(ISet<string> userIds)
+    public Task<List<Account>> GetByUserIds(ISet<string> userIds)
     {
         return accountsDbContext.Accounts.AsNoTracking().Where(x => userIds.Contains(x.UserId)).ToListAsync();
     }

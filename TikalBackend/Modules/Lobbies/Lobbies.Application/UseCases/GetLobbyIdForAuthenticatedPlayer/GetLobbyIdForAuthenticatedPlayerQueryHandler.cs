@@ -23,6 +23,6 @@ internal sealed class GetLobbyIdForAuthenticatedPlayerQueryHandler
 
     public Task<long?> Handle(GetLobbyIdForAuthenticatedPlayerQuery request, CancellationToken cancellationToken)
     {
-        return lobbyQueryContext.GetIdByUserIdAsync(accountContext.Account.UserId);
+        return lobbyQueryContext.GetIdByUserId(accountContext.Account.UserId);
     }
 }

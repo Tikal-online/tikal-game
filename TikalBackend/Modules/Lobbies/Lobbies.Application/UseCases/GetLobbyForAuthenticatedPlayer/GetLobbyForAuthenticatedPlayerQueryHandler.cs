@@ -34,7 +34,7 @@ internal sealed class GetLobbyForAuthenticatedPlayerQueryHandler
         CancellationToken cancellationToken
     )
     {
-        var lobby = await lobbyQueryContext.GetByUserIdAsync(accountContext.Account.UserId);
+        var lobby = await lobbyQueryContext.GetByUserId(accountContext.Account.UserId);
 
         if (lobby is null)
         {

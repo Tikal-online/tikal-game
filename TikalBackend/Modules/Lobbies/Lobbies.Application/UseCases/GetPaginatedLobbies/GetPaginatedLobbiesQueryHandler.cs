@@ -22,7 +22,7 @@ internal sealed class GetPaginatedLobbiesQueryHandler
         CancellationToken cancellationToken
     )
     {
-        var lobbies = await lobbyQueryContext.GetPaginatedAsync(
+        var lobbies = await lobbyQueryContext.GetPaginated(
             request.PageSize,
             request.PageNumber,
             request.SearchText
@@ -30,7 +30,7 @@ internal sealed class GetPaginatedLobbiesQueryHandler
 
         var lobbySummaryModels = LobbyMapper.LobbiesToLobbySummaryModels(lobbies);
 
-        var lobbyCount = await lobbyQueryContext.GetCountAsync(request.SearchText);
+        var lobbyCount = await lobbyQueryContext.GetCount(request.SearchText);
 
         return new PaginatedResult<List<LobbySummaryModel>>
         {

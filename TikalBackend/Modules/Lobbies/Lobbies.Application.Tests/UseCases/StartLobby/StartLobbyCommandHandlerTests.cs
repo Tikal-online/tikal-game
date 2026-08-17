@@ -47,7 +47,7 @@ internal sealed class StartLobbyCommandHandlerTests
     private void SetupHappyPath(Lobby lobby)
     {
         // lobby exists
-        lobbyRepository.Setup(r => r.GetByIdAsync(lobby.Id))
+        lobbyRepository.Setup(r => r.GetById(lobby.Id))
             .ReturnsAsync(lobby);
 
         // lobby contains authenticated player who is owner
@@ -61,7 +61,7 @@ internal sealed class StartLobbyCommandHandlerTests
     public async Task GivenLobbyDoesntExist_WhenHandle_ThenReturnsLobbyNotFoundError()
     {
         // given
-        lobbyRepository.Setup(r => r.GetByIdAsync(1))
+        lobbyRepository.Setup(r => r.GetById(1))
             .ReturnsAsync(default(Lobby));
 
         var command = new StartLobbyCommand(1);
@@ -77,7 +77,7 @@ internal sealed class StartLobbyCommandHandlerTests
     public async Task GivenPlayerIsNotPartOfLobby_WhenHandle_ThenReturnsPlayerNotInGivenLobbyError(Lobby lobby)
     {
         // given
-        lobbyRepository.Setup(r => r.GetByIdAsync(lobby.Id))
+        lobbyRepository.Setup(r => r.GetById(lobby.Id))
             .ReturnsAsync(lobby);
 
         var command = new StartLobbyCommand(lobby.Id);

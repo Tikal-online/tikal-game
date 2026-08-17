@@ -4,13 +4,13 @@ namespace Lobbies.Application.DataAccess;
 
 public interface LobbyQueryContext
 {
-    Task<Lobby?> GetByIdAsync(long Id);
+    Task<Lobby?> GetById(long Id);
 
-    Task<Lobby?> GetByUserIdAsync(string userId);
+    Task<Lobby?> GetByUserId(string userId);
 
-    Task<long?> GetIdByUserIdAsync(string userId);
+    Task<long?> GetIdByUserId(string userId);
 
-    Task<List<Lobby>> GetPaginatedAsync(int pageSize, int pageNumber, string? searchText);
+    Task<List<Lobby>> GetPaginated(int pageSize, int pageNumber, string? searchText);
 
-    Task<int> GetCountAsync(string? searchText);
+    Task<int> GetCount(string? searchText);
 }

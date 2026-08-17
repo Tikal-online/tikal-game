@@ -42,7 +42,7 @@ internal sealed class CreateAccountCommandHandlerTests
         };
 
         accountRepository
-            .Setup(r => r.GetByUserIdAsync(command.UserId))
+            .Setup(r => r.GetByUserId(command.UserId))
             .ReturnsAsync(existingAccount);
 
         // when
@@ -66,7 +66,7 @@ internal sealed class CreateAccountCommandHandlerTests
     {
         // given
         accountRepository
-            .Setup(r => r.GetByUserIdAsync(command.UserId))
+            .Setup(r => r.GetByUserId(command.UserId))
             .ReturnsAsync(default(Account));
 
         // when

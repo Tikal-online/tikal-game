@@ -45,7 +45,7 @@ internal sealed class JoinLobbyCommandHandler
             return new PlayerAlreadyInALobby();
         }
 
-        var lobby = await lobbyRepository.GetByIdAsync(request.LobbyId);
+        var lobby = await lobbyRepository.GetById(request.LobbyId);
 
         if (lobby is null)
         {

@@ -22,7 +22,7 @@ internal sealed class GetLobbyQueryHandler : QueryHandler<GetLobbyQuery, LobbyMo
 
     public async Task<LobbyModel?> Handle(GetLobbyQuery request, CancellationToken cancellationToken)
     {
-        var lobby = await lobbyQueryContext.GetByIdAsync(request.Id);
+        var lobby = await lobbyQueryContext.GetById(request.Id);
 
         if (lobby is null)
         {

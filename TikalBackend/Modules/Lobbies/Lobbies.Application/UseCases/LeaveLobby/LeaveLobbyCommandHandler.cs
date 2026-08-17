@@ -37,7 +37,7 @@ internal sealed class LeaveLobbyCommandHandler
         CancellationToken cancellationToken
     )
     {
-        var lobby = await lobbyRepository.GetByIdAsync(request.LobbyId);
+        var lobby = await lobbyRepository.GetById(request.LobbyId);
 
         if (lobby is null)
         {
