@@ -8,5 +8,5 @@ public sealed class Game
 
     public ICollection<Player> Players { get; set; } = [];
 
-    public required List<Tile> Tiles { get; init; } = [];
+    public List<Tile> Tiles { get; init; } = [];
 }
