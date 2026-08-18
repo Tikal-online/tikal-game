@@ -36,12 +36,12 @@ public static class TilesPathFinding
                 },
                 new EmptyTile
                 {
-                    Costs = new TravelCosts(SouthEast: 1, Northwest: 1),
+                    Costs = new TravelCosts(SouthEast: 1, NorthWest: 1),
                     Coordinate = new HexCoordinate(1, 0)
                 },
                 new EmptyTile
                 {
-                    Costs = new TravelCosts(Northwest: 1),
+                    Costs = new TravelCosts(NorthWest: 1),
                     Coordinate = new HexCoordinate(2, 0)
                 }
             ]),
@@ -59,7 +59,7 @@ public static class TilesPathFinding
                 },
                 new EmptyTile
                 {
-                    Costs = new TravelCosts(Northwest: 5, SouthEast: 5, North: 5),
+                    Costs = new TravelCosts(NorthWest: 5, SouthEast: 5, North: 5),
                     Coordinate = new HexCoordinate(1, 0)
                 },
                 new EmptyTile
@@ -74,7 +74,7 @@ public static class TilesPathFinding
                 },
                 new EmptyTile
                 {
-                    Costs = new TravelCosts(Northwest: 1, South: 1),
+                    Costs = new TravelCosts(NorthWest: 1, South: 1),
                     Coordinate = new HexCoordinate(2, -1)
                 }
             ]),

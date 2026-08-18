@@ -8,7 +8,7 @@ public readonly record struct TravelCosts(
     int SouthEast = 0,
     int South = 0,
     int SouthWest = 0,
-    int Northwest = 0
+    int NorthWest = 0
 )
 {
     public int this[Edge edge]
@@ -22,7 +22,7 @@ public readonly record struct TravelCosts(
                 Edge.SouthEast => SouthEast,
                 Edge.South => South,
                 Edge.SouthWest => SouthWest,
-                Edge.NorthWest => Northwest,
+                Edge.NorthWest => NorthWest,
                 _ => throw new ArgumentOutOfRangeException(nameof(edge), edge, null)
             };
         }
