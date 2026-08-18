@@ -15,6 +15,4 @@ internal static partial class GameMapper
     [MapDerivedType<VolcanoTile, VolcanoTileModel>]
     [MapDerivedType<TempleTile, TempleTileModel>]
     private static partial TileModel TileToTileModel(Tile tile);
-
-    private static partial List<TileModel> TilesToTileModels(List<Tile> tiles);
 }

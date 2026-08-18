@@ -76,6 +76,7 @@ internal sealed class GetGameForAuthenticatedPlayerTests : IntegrationTestFixtur
             Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
 
             Assert.That(game.Players, Has.Count.EqualTo(expectedPlayers.Length));
+            Assert.That(game.Tiles, Has.Count.EqualTo(4));
 
             foreach (var expectedPlayer in expectedPlayers)
             {
