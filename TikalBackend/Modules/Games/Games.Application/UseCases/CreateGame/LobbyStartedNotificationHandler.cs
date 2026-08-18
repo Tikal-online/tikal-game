@@ -48,7 +48,7 @@ internal sealed class LobbyStartedNotificationHandler : INotificationHandler<Lob
                 new TempleTile
                 {
                     TempleLevel = 1,
-                    Costs = new TravelCosts(NorthEast: 1, Northwest: 1),
+                    Costs = new TravelCosts(NorthEast: 1, NorthWest: 1),
                     Coordinate = new HexCoordinate(1, 0)
                 }
             ]

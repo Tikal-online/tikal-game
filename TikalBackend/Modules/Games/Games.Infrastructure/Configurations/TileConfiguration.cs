@@ -42,7 +42,7 @@ internal sealed class TileConfiguration : IEntityTypeConfiguration<Tile>
                     .HasColumnName("SouthWestCost")
                     .IsRequired();
 
-                costs.Property(c => c.Northwest)
+                costs.Property(c => c.NorthWest)
                     .HasColumnName("NorthWestCost")
                     .IsRequired();
             });
