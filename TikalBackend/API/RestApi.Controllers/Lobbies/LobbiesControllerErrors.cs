@@ -41,6 +41,15 @@ public sealed partial class LobbiesController
         );
     }
 
+    private ObjectResult LobbyInGame(long id)
+    {
+        return Problem(
+            title: "Lobby is in game",
+            detail: $"Lobby with ID {id} is in game",
+            statusCode: StatusCodes.Status409Conflict
+        );
+    }
+
     private ObjectResult LobbyFull(long id)
     {
         return Problem(

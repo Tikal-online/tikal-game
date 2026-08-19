@@ -75,4 +75,26 @@ internal sealed class LeaveLobbyTests : IntegrationTestFixture
         // then
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
     }
+
+    [TestCaseSource(typeof(CreateLobbyDtoTestCases), nameof(CreateLobbyDtoTestCases.ValidCreateLobbyDtos))]
+    public async Task GivenLobbyInGame_WhenLeaveLobby_ThenReturnsConflict(CreateLobbyDto createLobbyDto)
+    {
+        // given
+        await CreateUserAccount(TestUser.Default);
+        var lobby = await CreateAndGetLobby(createLobbyDto, TestUser.Default);
+
+        await CreateUserAccount(TestUser.TestUser1);
+        await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.TestUser1, null);
+
+        await Client.PutAsyncWithUser(LobbyUrl.SetPlayerReady, TestUser.Default, null);
+        await Client.PutAsyncWithUser(LobbyUrl.SetPlayerReady, TestUser.TestUser1, null);
+
+        await Client.PostAsyncWithUser(LobbyUrl.StartLobby(lobby.Id), TestUser.Default, null);
+
+        // when
+        var response = await Client.DeleteAsyncWithUser(LobbyUrl.LeaveLobby(lobby.Id), TestUser.Default);
+
+        // then
+        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Conflict));
+    }
 }

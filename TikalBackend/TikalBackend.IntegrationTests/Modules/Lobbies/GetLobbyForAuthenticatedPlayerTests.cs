@@ -65,6 +65,7 @@ internal sealed class GetLobbyForAuthenticatedPlayerTests : IntegrationTestFixtu
 
             Assert.That(lobby.Name, Is.EqualTo(createLobbyDto.Name));
             Assert.That(lobby.MaxPlayers, Is.EqualTo(createLobbyDto.MaxPlayers));
+            Assert.That(lobby.InGame, Is.False);
 
             Assert.That(lobby.Players, Has.Count.EqualTo(1));
             Assert.That(lobby.Players[0].UserId, Is.EqualTo(TestUser.Default.UserId));

@@ -40,6 +40,7 @@ internal sealed class DbLobbyQueryContext : LobbyQueryContext
     public Task<List<Lobby>> GetPaginated(int pageSize, int pageNumber, string? searchText)
     {
         IQueryable<Lobby> query = lobbiesDbContext.Lobbies.AsNoTracking()
+            .Where(l => !l.InGame)
             .Include(l => l.Players);
 
         if (searchText is not null)
@@ -56,7 +57,8 @@ internal sealed class DbLobbyQueryContext : LobbyQueryContext
 
     public Task<int> GetCount(string? searchText)
     {
-        var query = lobbiesDbContext.Lobbies.AsNoTracking();
+        var query = lobbiesDbContext.Lobbies.AsNoTracking()
+            .Where(l => !l.InGame);
 
         if (searchText is not null)
         {

@@ -8,6 +8,7 @@ using Moq;
 using OneOf.Types;
 using Shared.Application.Contexts;
 using Shared.Application.Tests;
+using Shared.Application.Tests.Extensions;
 
 namespace Lobbies.Application.Tests.UseCases.JoinLobby;
 
@@ -23,9 +24,16 @@ internal sealed class JoinLobbyCommandHandlerTests
     private JoinLobbyCommandHandler handler;
 
     // test data
-    public static IEnumerable<Lobby> NotFullLobbyTestCases => LobbyTestCases.ValidLobbyTestCases.Where(l => !l.IsFull);
+    public static IEnumerable<Lobby> NotFullLobbyTestCases => LobbyTestCases.ValidLobbyTestCases
+        .Where(l => !l.IsFull)
+        .Select(l => l.DeepClone());
 
-    public static IEnumerable<Lobby> FullLobbyTestCases => LobbyTestCases.ValidLobbyTestCases.Where(l => l.IsFull);
+    public static IEnumerable<Lobby> FullLobbyTestCases => LobbyTestCases.ValidLobbyTestCases
+        .Where(l => l.IsFull)
+        .Select(l => l.DeepClone());
+
+    public static IEnumerable<Lobby> InGameLobbyTestCases => LobbyTestCases.InGameLobbyTestCases
+        .Select(l => l.DeepClone());
 
     [SetUp]
     public void Setup()
@@ -99,6 +107,21 @@ internal sealed class JoinLobbyCommandHandlerTests
 
         // then
         Assert.That(result.Value, Is.InstanceOf<LobbyFull>());
+    }
+
+    [TestCaseSource(nameof(InGameLobbyTestCases))]
+    public async Task GivenLobbyInGame_WhenHandle_ThenReturnsLobbyInGameError(Lobby lobby)
+    {
+        // given
+        SetupHappyPath(lobby);
+
+        var command = new JoinLobbyCommand(lobby.Id);
+
+        // when
+        var result = await handler.Handle(command, CancellationToken.None);
+
+        // then
+        Assert.That(result.Value, Is.InstanceOf<LobbyInGame>());
     }
 
     [TestCaseSource(nameof(NotFullLobbyTestCases))]

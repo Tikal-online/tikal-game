@@ -8,6 +8,7 @@ using Moq;
 using OneOf.Types;
 using Shared.Application.Contexts;
 using Shared.Application.Tests;
+using Shared.Application.Tests.Extensions;
 
 namespace Lobbies.Application.Tests.UseCases.LeaveLobby;
 
@@ -24,10 +25,15 @@ internal sealed class LeaveLobbyCommandHandlerTests
 
     // test data
     public static IEnumerable<Lobby> LobbyWithMoreThanOnePlayerTests => LobbyTestCases.ValidLobbyTestCases
-        .Where(l => l.Players.Count > 1);
+        .Where(l => l.Players.Count > 1)
+        .Select(l => l.DeepClone());
 
     public static IEnumerable<Lobby> LobbyWithOnePlayerTests => LobbyTestCases.ValidLobbyTestCases
-        .Where(l => l.Players.Count == 1);
+        .Where(l => l.Players.Count == 1)
+        .Select(l => l.DeepClone());
+
+    public static IEnumerable<Lobby> InGameLobbyTests => LobbyTestCases.InGameLobbyTestCases
+        .Select(l => l.DeepClone());
 
     [SetUp]
     public void Setup()
@@ -87,6 +93,21 @@ internal sealed class LeaveLobbyCommandHandlerTests
 
         // then
         Assert.That(result.Value, Is.InstanceOf<PlayerNotInGivenLobby>());
+    }
+
+    [TestCaseSource(nameof(InGameLobbyTests))]
+    public async Task GivenLobbyInGame_WhenHandle_ThenReturnsLobbyInGameError(Lobby lobby)
+    {
+        // given
+        SetupHappyPath(lobby);
+
+        var command = new LeaveLobbyCommand(lobby.Id);
+
+        // when
+        var result = await handler.Handle(command, CancellationToken.None);
+
+        // then
+        Assert.That(result.Value, Is.InstanceOf<LobbyInGame>());
     }
 
     [TestCaseSource(nameof(LobbyWithMoreThanOnePlayerTests))]

@@ -75,7 +75,8 @@ public sealed partial class LobbiesController : ApiController
             _ => Ok(),
             _ => PlayerAlreadyInALobby(),
             lobbyNotFound => LobbyNotFound(lobbyNotFound.LobbyId),
-            lobbyFull => LobbyFull(lobbyFull.LobbyId)
+            lobbyFull => LobbyFull(lobbyFull.LobbyId),
+            lobbyInGame => LobbyInGame(lobbyInGame.LobbyId)
         );
     }
 
@@ -104,6 +105,7 @@ public sealed partial class LobbiesController : ApiController
     [HttpDelete("{Id:long}/Players/me")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
     [EndpointDescription("Removes the currently authenticated user from the provided lobby")]
     public async Task<IActionResult> LeaveLobby(long Id, CancellationToken cancellationToken)
     {
@@ -114,7 +116,8 @@ public sealed partial class LobbiesController : ApiController
         return result.Match<IActionResult>(
             _ => Ok(),
             _ => LobbyNotFound(Id),
-            _ => PlayerNotInGivenLobby(Id)
+            _ => PlayerNotInGivenLobby(Id),
+            _ => LobbyInGame(Id)
         );
     }
 

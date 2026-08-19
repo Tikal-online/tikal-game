@@ -77,6 +77,7 @@ internal sealed class GetLobbyTests : IntegrationTestFixture
             Assert.That(lobby.Id, Is.EqualTo(createdLobby.Id));
             Assert.That(lobby.Name, Is.EqualTo(createdLobby.Name));
             Assert.That(lobby.MaxPlayers, Is.EqualTo(createdLobby.MaxPlayers));
+            Assert.That(lobby.InGame, Is.EqualTo(createdLobby.InGame));
 
             Assert.That(lobby.Players, Is.EquivalentTo(createdLobby.Players));
         }

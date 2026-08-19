@@ -88,4 +88,28 @@ internal sealed class JoinLobbyTests : IntegrationTestFixture
         // then
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Conflict));
     }
+
+    [TestCaseSource(typeof(CreateLobbyDtoTestCases), nameof(CreateLobbyDtoTestCases.ValidCreateLobbyDtos))]
+    public async Task GivenLobbyInGame_WhenJoinLobby_ThenReturnsConflict(CreateLobbyDto createLobbyDto)
+    {
+        // given
+        await CreateUserAccount(TestUser.Default);
+
+        await CreateUserAccount(TestUser.TestUser1);
+        var lobby = await CreateAndGetLobby(createLobbyDto, TestUser.TestUser1);
+
+        await CreateUserAccount(TestUser.TestUser2);
+        await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.TestUser2, null);
+
+        await Client.PutAsyncWithUser(LobbyUrl.SetPlayerReady, TestUser.TestUser1, null);
+        await Client.PutAsyncWithUser(LobbyUrl.SetPlayerReady, TestUser.TestUser2, null);
+
+        await Client.PostAsyncWithUser(LobbyUrl.StartLobby(lobby.Id), TestUser.TestUser1, null);
+
+        // when
+        var response = await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.Default, null);
+
+        // then
+        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Conflict));
+    }
 }
