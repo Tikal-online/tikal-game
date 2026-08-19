@@ -25,15 +25,14 @@ internal sealed class LeaveLobbyCommandHandlerTests
 
     // test data
     public static IEnumerable<Lobby> LobbyWithMoreThanOnePlayerTests => LobbyTestCases.ValidLobbyTestCases
-        .Where(l => l.Players.Count > 1 && !l.InGame)
+        .Where(l => l.Players.Count > 1)
         .Select(l => l.DeepClone());
 
     public static IEnumerable<Lobby> LobbyWithOnePlayerTests => LobbyTestCases.ValidLobbyTestCases
-        .Where(l => l.Players.Count == 1 && !l.InGame)
+        .Where(l => l.Players.Count == 1)
         .Select(l => l.DeepClone());
 
-    public static IEnumerable<Lobby> InGameLobbyTests => LobbyTestCases.ValidLobbyTestCases
-        .Where(l => l.InGame)
+    public static IEnumerable<Lobby> InGameLobbyTests => LobbyTestCases.InGameLobbyTestCases
         .Select(l => l.DeepClone());
 
     [SetUp]

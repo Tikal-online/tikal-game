@@ -98,7 +98,11 @@ public static class LobbyTestCases
                     IsReady = true
                 }
             ]
-        },
+        }
+    ];
+
+    public static IEnumerable<Lobby> InGameLobbyTestCases =>
+    [
         new()
         {
             Id = 5,

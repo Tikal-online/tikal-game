@@ -25,15 +25,14 @@ internal sealed class JoinLobbyCommandHandlerTests
 
     // test data
     public static IEnumerable<Lobby> NotFullLobbyTestCases => LobbyTestCases.ValidLobbyTestCases
-        .Where(l => l is { IsFull: false, InGame: false })
+        .Where(l => !l.IsFull)
         .Select(l => l.DeepClone());
 
     public static IEnumerable<Lobby> FullLobbyTestCases => LobbyTestCases.ValidLobbyTestCases
-        .Where(l => l is { IsFull: true, InGame: false })
+        .Where(l => l.IsFull)
         .Select(l => l.DeepClone());
 
-    public static IEnumerable<Lobby> InGameLobbyTestCases => LobbyTestCases.ValidLobbyTestCases
-        .Where(l => l.InGame)
+    public static IEnumerable<Lobby> InGameLobbyTestCases => LobbyTestCases.InGameLobbyTestCases
         .Select(l => l.DeepClone());
 
     [SetUp]
