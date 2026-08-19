@@ -10,7 +10,7 @@ using Shared.Contracts.Messaging;
 namespace Lobbies.Application.UseCases.JoinLobby;
 
 internal sealed class JoinLobbyCommandHandler
-    : CommandHandler<JoinLobbyCommand, OneOf<Success, PlayerAlreadyInALobby, LobbyNotFound, LobbyFull>>
+    : CommandHandler<JoinLobbyCommand, OneOf<Success, PlayerAlreadyInALobby, LobbyNotFound, LobbyFull, LobbyInGame>>
 {
     private readonly LobbyRepository lobbyRepository;
 
@@ -33,7 +33,7 @@ internal sealed class JoinLobbyCommandHandler
         this.accountContext = accountContext;
     }
 
-    public async Task<OneOf<Success, PlayerAlreadyInALobby, LobbyNotFound, LobbyFull>> Handle(
+    public async Task<OneOf<Success, PlayerAlreadyInALobby, LobbyNotFound, LobbyFull, LobbyInGame>> Handle(
         JoinLobbyCommand request,
         CancellationToken cancellationToken
     )
@@ -50,6 +50,11 @@ internal sealed class JoinLobbyCommandHandler
         if (lobby is null)
         {
             return new LobbyNotFound(request.LobbyId);
+        }
+
+        if (lobby.InGame)
+        {
+            return new LobbyInGame(lobby.Id);
         }
 
         if (lobby.IsFull)

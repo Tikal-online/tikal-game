@@ -75,7 +75,8 @@ public sealed partial class LobbiesController : ApiController
             _ => Ok(),
             _ => PlayerAlreadyInALobby(),
             lobbyNotFound => LobbyNotFound(lobbyNotFound.LobbyId),
-            lobbyFull => LobbyFull(lobbyFull.LobbyId)
+            lobbyFull => LobbyFull(lobbyFull.LobbyId),
+            lobbyInGame => LobbyInGame(lobbyInGame.LobbyId)
         );
     }
 
