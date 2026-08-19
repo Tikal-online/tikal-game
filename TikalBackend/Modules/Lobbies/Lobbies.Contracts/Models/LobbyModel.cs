@@ -9,4 +9,6 @@ public sealed record LobbyModel
     public required int MaxPlayers { get; set; }
 
     public List<LobbyPlayerModel> Players { get; set; } = [];
+
+    public bool InGame { get; set; }
 }

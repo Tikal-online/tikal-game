@@ -14,4 +14,6 @@ public sealed record LobbyDto
     public required int MaxPlayers { get; set; }
 
     public List<LobbyPlayerDto> Players { get; set; } = [];
+
+    public bool InGame { get; set; }
 }

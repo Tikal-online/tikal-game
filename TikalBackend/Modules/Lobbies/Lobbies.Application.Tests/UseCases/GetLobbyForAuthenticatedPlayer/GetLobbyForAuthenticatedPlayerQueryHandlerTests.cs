@@ -84,6 +84,7 @@ internal sealed class GetLobbyForAuthenticatedPlayerQueryHandlerTests
             Assert.That(result.Name, Is.EqualTo(lobby.Name));
             Assert.That(result.MaxPlayers, Is.EqualTo(lobby.MaxPlayers));
             Assert.That(result.Players, Has.Count.EqualTo(lobby.Players.Count));
+            Assert.That(result.InGame, Is.EqualTo(lobby.InGame));
 
             for (var i = 0; i < lobby.Players.Count; i++)
             {
