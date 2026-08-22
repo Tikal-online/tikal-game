@@ -3,12 +3,23 @@ import { setCompodocJson } from '@storybook/addon-docs/angular';
 import { provideZonelessChangeDetection } from '@angular/core';
 import { providePrimeNG } from 'primeng/config';
 import docJson from '../documentation.json';
+import TikalTheme from '../src/lib/theme/tikal-theme';
 setCompodocJson(docJson);
 
 const preview: Preview = {
   decorators: [
     applicationConfig({
-      providers: [provideZonelessChangeDetection(), providePrimeNG()],
+      providers: [
+        provideZonelessChangeDetection(),
+        providePrimeNG({
+          theme: {
+            preset: TikalTheme,
+            options: {
+              darkModeSelector: '.app-dark',
+            },
+          },
+        }),
+      ],
     }),
   ],
 

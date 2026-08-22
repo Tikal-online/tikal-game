@@ -9,109 +9,27 @@
     "components": [
         {
             "name": "ButtonComponent",
-            "id": "component-ButtonComponent-e510529eb884f11c71d94a886cf4c4e465b22d97975400741793650a6fc92ea826a4e7c08262e622b04e517674b1656961d2f1143151a55a528bdcd97cdd4d62",
-            "file": "projects/tikal-ui-components/src/stories/button.component.ts",
+            "id": "component-ButtonComponent-73166ccd80ec68162665a4d9adac58544f1f5357a41e7919afcf02a28d07ec05ea5cd654fbe09ffb0b12fb755aabc73987f201a7a685ee5a38f0607c82cd01a6",
+            "file": "projects/tikal-ui-components/src/lib/components/button/button.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
             "entryComponents": [],
             "inputs": [],
             "outputs": [],
             "providers": [],
-            "selector": "storybook-button",
+            "selector": "tikal-button",
             "styleUrls": [
-                "./button.css"
+                "./button.scss"
             ],
             "styles": [],
-            "template": "<button\n  type=\"button\"\n  (click)=\"onClick.emit($event)\"\n  [ngClass]=\"classes\"\n  [ngStyle]=\"{ 'background-color': backgroundColor }\"\n>\n  {{ label }}\n</button>\n",
-            "templateUrl": [],
+            "templateUrl": [
+                "./button.html"
+            ],
             "templateVariables": [],
             "viewProviders": [],
             "hostDirectives": [],
-            "inputsClass": [
-                {
-                    "coverageIgnore": false,
-                    "name": "backgroundColor",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "rawdescription": "\nWhat background color to use",
-                    "description": "<p>What background color to use</p>\n",
-                    "line": 26,
-                    "type": "string",
-                    "decorators": []
-                },
-                {
-                    "coverageIgnore": false,
-                    "name": "label",
-                    "defaultValue": "'Button'",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "jsdoctags": [
-                        {
-                            "pos": 798,
-                            "end": 811,
-                            "kind": 328,
-                            "id": 0,
-                            "flags": 16842752,
-                            "modifierFlagsCache": 0,
-                            "transformFlags": 0,
-                            "tagName": {
-                                "pos": 799,
-                                "end": 807,
-                                "kind": 80,
-                                "id": 0,
-                                "flags": 16842752,
-                                "transformFlags": 0,
-                                "escapedText": "required"
-                            },
-                            "comment": ""
-                        }
-                    ],
-                    "rawdescription": "\n\nButton contents\n\n",
-                    "description": "<p>Button contents</p>\n",
-                    "line": 38,
-                    "type": "string",
-                    "decorators": []
-                },
-                {
-                    "coverageIgnore": false,
-                    "name": "size",
-                    "defaultValue": "'medium'",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "rawdescription": "\nHow large should the button be?",
-                    "description": "<p>How large should the button be?</p>\n",
-                    "line": 30,
-                    "type": "\"small\" | \"medium\" | \"large\"",
-                    "decorators": []
-                },
-                {
-                    "name": "primary",
-                    "coverageIgnore": false,
-                    "defaultValue": "false",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "boolean",
-                    "indexKey": "",
-                    "optional": false,
-                    "description": "<p>Is this the principal call to action on the page?</p>\n",
-                    "line": 22,
-                    "rawdescription": "\nIs this the principal call to action on the page?",
-                    "required": false
-                }
-            ],
-            "outputsClass": [
-                {
-                    "name": "onClick",
-                    "coverageIgnore": false,
-                    "defaultValue": "new EventEmitter<Event>()",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "rawdescription": "\nOptional click handler",
-                    "description": "<p>Optional click handler</p>\n",
-                    "line": 42,
-                    "type": "EventEmitter"
-                }
-            ],
+            "inputsClass": [],
+            "outputsClass": [],
             "propertiesClass": [],
             "methodsClass": [],
             "coverageIgnore": false,
@@ -122,61 +40,39 @@
             "standalone": true,
             "imports": [
                 {
-                    "name": "CommonModule",
+                    "name": "ButtonModule",
                     "type": "module"
                 }
             ],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { CommonModule } from '@angular/common';\nimport { Component, Input, Output, EventEmitter, input } from '@angular/core';\n\n@Component({\n  selector: 'storybook-button',\n  standalone: true,\n  imports: [CommonModule],\n  template: `\n    <button\n      type=\"button\"\n      (click)=\"onClick.emit($event)\"\n      [ngClass]=\"classes\"\n      [ngStyle]=\"{ 'background-color': backgroundColor }\"\n    >\n      {{ label }}\n    </button>\n  `,\n  styleUrls: ['./button.css'],\n})\nexport class ButtonComponent {\n  /** Is this the principal call to action on the page? */\n  primary = input(false);\n\n  /** What background color to use */\n  @Input()\n  backgroundColor?: string;\n\n  /** How large should the button be? */\n  @Input()\n  size: 'small' | 'medium' | 'large' = 'medium';\n\n  /**\n   * Button contents\n   *\n   * @required\n   */\n  @Input()\n  label = 'Button';\n\n  /** Optional click handler */\n  @Output()\n  onClick = new EventEmitter<Event>();\n\n  public get classes(): string[] {\n    const mode = this.primary() ? 'storybook-button--primary' : 'storybook-button--secondary';\n\n    return ['storybook-button', `storybook-button--${this.size}`, mode];\n  }\n}\n",
+            "sourceCode": "import { Component } from '@angular/core';\nimport { ButtonModule } from 'primeng/button';\n\n@Component({\n  selector: 'tikal-button',\n  imports: [ButtonModule],\n  templateUrl: './button.html',\n  styleUrl: './button.scss',\n})\nexport class ButtonComponent {}\n",
+            "styleUrl": "./button.scss",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": ".storybook-button {\n  display: inline-block;\n  cursor: pointer;\n  border: 0;\n  border-radius: 3em;\n  font-weight: 700;\n  line-height: 1;\n  font-family: 'Nunito Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;\n}\n.storybook-button--primary {\n  background-color: #555ab9;\n  color: white;\n}\n.storybook-button--secondary {\n  box-shadow: rgba(0, 0, 0, 0.15) 0px 0px 0px 1px inset;\n  background-color: transparent;\n  color: #333;\n}\n.storybook-button--small {\n  padding: 10px 16px;\n  font-size: 12px;\n}\n.storybook-button--medium {\n  padding: 11px 20px;\n  font-size: 14px;\n}\n.storybook-button--large {\n  padding: 12px 24px;\n  font-size: 16px;\n}\n",
-                    "styleUrl": "./button.css"
+                    "data": "",
+                    "styleUrl": "./button.scss"
                 }
             ],
             "stylesData": "",
             "extends": [],
-            "accessors": {
-                "classes": {
-                    "name": "classes",
-                    "getSignature": {
-                        "name": "classes",
-                        "type": "[]",
-                        "returnType": "string[]",
-                        "line": 44,
-                        "rawdescription": "\n",
-                        "description": ""
-                    }
-                }
-            },
             "relationships": {
                 "incoming": [],
                 "outgoing": [
                     {
-                        "name": "CommonModule",
+                        "name": "ButtonModule",
                         "type": "module"
                     }
                 ]
-            }
+            },
+            "templateData": "<button pButton type=\"button\">Test</button>\n"
         }
     ],
     "modules": [],
     "miscellaneous": {
         "variables": [
-            {
-                "name": "Large",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/tikal-ui-components/src/stories/button.stories.ts",
-                "coverageIgnore": false,
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story",
-                "defaultValue": "{\n  args: {\n    size: 'large',\n    label: 'Button',\n  },\n}"
-            },
             {
                 "name": "meta",
                 "ctype": "miscellaneous",
@@ -186,7 +82,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Meta<ButtonComponent>",
-                "defaultValue": "{\n  title: 'Example/Button',\n  component: ButtonComponent,\n  tags: ['autodocs'],\n  argTypes: {\n    backgroundColor: {\n      control: 'color',\n    },\n  },\n  // Use `fn` to spy on the onClick arg, which will appear in the actions panel once invoked: https://storybook.js.org/docs/essentials/actions#story-args\n  args: { onClick: fn() },\n}"
+                "defaultValue": "{\n  title: 'Atoms/Button',\n  component: ButtonComponent,\n  tags: ['autodocs'],\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n    moduleMetadata({\n      declarations: [],\n      imports: [],\n    }),\n  ],\n}"
             },
             {
                 "name": "preview",
@@ -197,7 +93,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Preview",
-                "defaultValue": "{\n  decorators: [\n    applicationConfig({\n      providers: [provideZonelessChangeDetection(), providePrimeNG()],\n    }),\n  ],\n\n  parameters: {\n    controls: {\n      matchers: {\n        color: /(background|color)$/i,\n        date: /Date$/i,\n      },\n    },\n\n    a11y: {\n      // 'todo' - show a11y violations in the test UI only\n      // 'error' - fail CI on a11y violations\n      // 'off' - skip a11y checks entirely\n      test: 'todo',\n    },\n  },\n}"
+                "defaultValue": "{\n  decorators: [\n    applicationConfig({\n      providers: [\n        provideZonelessChangeDetection(),\n        providePrimeNG({\n          theme: {\n            preset: TikalTheme,\n          },\n        }),\n      ],\n    }),\n  ],\n\n  parameters: {\n    controls: {\n      matchers: {\n        color: /(background|color)$/i,\n        date: /Date$/i,\n      },\n    },\n\n    a11y: {\n      // 'todo' - show a11y violations in the test UI only\n      // 'error' - fail CI on a11y violations\n      // 'off' - skip a11y checks entirely\n      test: 'todo',\n    },\n  },\n}"
             },
             {
                 "name": "Primary",
@@ -208,40 +104,18 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
-                "defaultValue": "{\n  args: {\n    primary: true,\n    label: 'Button',\n  },\n}"
+                "defaultValue": "{}"
             },
             {
-                "name": "Secondary",
+                "name": "TikalTheme",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/tikal-ui-components/src/stories/button.stories.ts",
+                "file": "projects/tikal-ui-components/src/lib/theme/tikal-theme.ts",
                 "coverageIgnore": false,
                 "deprecated": false,
                 "deprecationMessage": "",
-                "type": "Story",
-                "defaultValue": "{\n  args: {\n    label: 'Button',\n  },\n}"
-            },
-            {
-                "name": "Small",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/tikal-ui-components/src/stories/button.stories.ts",
-                "coverageIgnore": false,
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story",
-                "defaultValue": "{\n  args: {\n    size: 'small',\n    label: 'Button',\n  },\n}"
-            },
-            {
-                "name": "Test",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/tikal-ui-components/src/stories/button.stories.ts",
-                "coverageIgnore": false,
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story",
-                "defaultValue": "{\n  args: {\n    primary: false,\n    label: 'Button',\n  },\n}"
+                "type": "unknown",
+                "defaultValue": "definePreset(Aura, {\n  semantic: {\n    primary: {\n      50: '#ffffff',\n      100: '#ffffff',\n      200: '#ffffff',\n      300: '#ffffff',\n      400: '#ffffff',\n      500: '#ffffff',\n      600: '#ffffff',\n      700: '#ffffff',\n      800: '#ffffff',\n      900: '#ffffff',\n      950: '#ffffff',\n    },\n    colorScheme: {\n      light: {\n        primary: {\n          color: '#ffffff',\n          contrastColor: '#000000', // dark text on white bg\n          hoverColor: '#f5f5f5', // slightly off-white so hover is visible\n          activeColor: '#e5e5e5',\n        },\n      },\n      dark: {\n        primary: {\n          color: '#ffffff',\n          contrastColor: '#000000',\n          hoverColor: '#f0f0f0',\n          activeColor: '#e0e0e0',\n        },\n      },\n    },\n  },\n})"
             }
         ],
         "functions": [],
@@ -260,20 +134,34 @@
                 "kind": 184
             }
         ],
-        "enumerations": [],
+        "enumerations": [
+            {
+                "name": "ButtonColour",
+                "childs": [
+                    {
+                        "name": "Primary",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "value": "primary"
+                    },
+                    {
+                        "name": "Secondary",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "value": "secondary"
+                    }
+                ],
+                "ctype": "miscellaneous",
+                "subtype": "enum",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "rawdescription": "",
+                "description": "",
+                "file": "projects/tikal-ui-components/src/lib/enums/button-colour.ts"
+            }
+        ],
         "groupedVariables": {
             "projects/tikal-ui-components/src/stories/button.stories.ts": [
-                {
-                    "name": "Large",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/tikal-ui-components/src/stories/button.stories.ts",
-                    "coverageIgnore": false,
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Story",
-                    "defaultValue": "{\n  args: {\n    size: 'large',\n    label: 'Button',\n  },\n}"
-                },
                 {
                     "name": "meta",
                     "ctype": "miscellaneous",
@@ -283,7 +171,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Meta<ButtonComponent>",
-                    "defaultValue": "{\n  title: 'Example/Button',\n  component: ButtonComponent,\n  tags: ['autodocs'],\n  argTypes: {\n    backgroundColor: {\n      control: 'color',\n    },\n  },\n  // Use `fn` to spy on the onClick arg, which will appear in the actions panel once invoked: https://storybook.js.org/docs/essentials/actions#story-args\n  args: { onClick: fn() },\n}"
+                    "defaultValue": "{\n  title: 'Atoms/Button',\n  component: ButtonComponent,\n  tags: ['autodocs'],\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n    moduleMetadata({\n      declarations: [],\n      imports: [],\n    }),\n  ],\n}"
                 },
                 {
                     "name": "Primary",
@@ -294,40 +182,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
-                    "defaultValue": "{\n  args: {\n    primary: true,\n    label: 'Button',\n  },\n}"
-                },
-                {
-                    "name": "Secondary",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/tikal-ui-components/src/stories/button.stories.ts",
-                    "coverageIgnore": false,
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Story",
-                    "defaultValue": "{\n  args: {\n    label: 'Button',\n  },\n}"
-                },
-                {
-                    "name": "Small",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/tikal-ui-components/src/stories/button.stories.ts",
-                    "coverageIgnore": false,
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Story",
-                    "defaultValue": "{\n  args: {\n    size: 'small',\n    label: 'Button',\n  },\n}"
-                },
-                {
-                    "name": "Test",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/tikal-ui-components/src/stories/button.stories.ts",
-                    "coverageIgnore": false,
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Story",
-                    "defaultValue": "{\n  args: {\n    primary: false,\n    label: 'Button',\n  },\n}"
+                    "defaultValue": "{}"
                 }
             ],
             "projects/tikal-ui-components/.storybook/preview.ts": [
@@ -340,12 +195,52 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Preview",
-                    "defaultValue": "{\n  decorators: [\n    applicationConfig({\n      providers: [provideZonelessChangeDetection(), providePrimeNG()],\n    }),\n  ],\n\n  parameters: {\n    controls: {\n      matchers: {\n        color: /(background|color)$/i,\n        date: /Date$/i,\n      },\n    },\n\n    a11y: {\n      // 'todo' - show a11y violations in the test UI only\n      // 'error' - fail CI on a11y violations\n      // 'off' - skip a11y checks entirely\n      test: 'todo',\n    },\n  },\n}"
+                    "defaultValue": "{\n  decorators: [\n    applicationConfig({\n      providers: [\n        provideZonelessChangeDetection(),\n        providePrimeNG({\n          theme: {\n            preset: TikalTheme,\n          },\n        }),\n      ],\n    }),\n  ],\n\n  parameters: {\n    controls: {\n      matchers: {\n        color: /(background|color)$/i,\n        date: /Date$/i,\n      },\n    },\n\n    a11y: {\n      // 'todo' - show a11y violations in the test UI only\n      // 'error' - fail CI on a11y violations\n      // 'off' - skip a11y checks entirely\n      test: 'todo',\n    },\n  },\n}"
+                }
+            ],
+            "projects/tikal-ui-components/src/lib/theme/tikal-theme.ts": [
+                {
+                    "name": "TikalTheme",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/tikal-ui-components/src/lib/theme/tikal-theme.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "defaultValue": "definePreset(Aura, {\n  semantic: {\n    primary: {\n      50: '#ffffff',\n      100: '#ffffff',\n      200: '#ffffff',\n      300: '#ffffff',\n      400: '#ffffff',\n      500: '#ffffff',\n      600: '#ffffff',\n      700: '#ffffff',\n      800: '#ffffff',\n      900: '#ffffff',\n      950: '#ffffff',\n    },\n    colorScheme: {\n      light: {\n        primary: {\n          color: '#ffffff',\n          contrastColor: '#000000', // dark text on white bg\n          hoverColor: '#f5f5f5', // slightly off-white so hover is visible\n          activeColor: '#e5e5e5',\n        },\n      },\n      dark: {\n        primary: {\n          color: '#ffffff',\n          contrastColor: '#000000',\n          hoverColor: '#f0f0f0',\n          activeColor: '#e0e0e0',\n        },\n      },\n    },\n  },\n})"
                 }
             ]
         },
         "groupedFunctions": {},
-        "groupedEnumerations": {},
+        "groupedEnumerations": {
+            "projects/tikal-ui-components/src/lib/enums/button-colour.ts": [
+                {
+                    "name": "ButtonColour",
+                    "childs": [
+                        {
+                            "name": "Primary",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "value": "primary"
+                        },
+                        {
+                            "name": "Secondary",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "value": "secondary"
+                        }
+                    ],
+                    "ctype": "miscellaneous",
+                    "subtype": "enum",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "",
+                    "description": "",
+                    "file": "projects/tikal-ui-components/src/lib/enums/button-colour.ts"
+                }
+            ]
+        },
         "groupedTypeAliases": {
             "projects/tikal-ui-components/src/stories/button.stories.ts": [
                 {
@@ -370,7 +265,7 @@
         "children": []
     },
     "coverage": {
-        "count": 9,
+        "count": 0,
         "status": "low",
         "files": [
             {
@@ -384,20 +279,20 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/tikal-ui-components/src/stories/button.component.ts",
+                "filePath": "projects/tikal-ui-components/src/lib/components/button/button.ts",
                 "type": "component",
                 "linktype": "component",
                 "name": "ButtonComponent",
-                "coveragePercent": 83,
-                "coverageCount": "5/6",
-                "status": "very-good"
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
             },
             {
-                "filePath": "projects/tikal-ui-components/src/stories/button.stories.ts",
+                "filePath": "projects/tikal-ui-components/src/lib/theme/tikal-theme.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
-                "name": "Large",
+                "name": "TikalTheme",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
@@ -418,36 +313,6 @@
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
                 "name": "Primary",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "projects/tikal-ui-components/src/stories/button.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "Secondary",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "projects/tikal-ui-components/src/stories/button.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "Small",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "projects/tikal-ui-components/src/stories/button.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "Test",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
