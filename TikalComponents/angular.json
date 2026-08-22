@@ -37,7 +37,10 @@
             "configDir": "projects/tikal-ui-components/.storybook",
             "browserTarget": "tikal-ui-components:build",
             "port": 6006,
-            "styles": ["src/styles.css"]
+            "styles": ["src/styles.css"],
+            "https": true,
+            "sslKey": "/.aspnet/dev-certs/trust/key.key",
+            "sslCert": "/.aspnet/dev-certs/trust/cert.crt"
           }
         },
         "build-storybook": {
