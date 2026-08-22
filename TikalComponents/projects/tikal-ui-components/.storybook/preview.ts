@@ -1,9 +1,16 @@
-import type { Preview } from '@storybook/angular-vite';
+import { applicationConfig, type Preview } from '@storybook/angular-vite';
 import { setCompodocJson } from '@storybook/addon-docs/angular';
+import { provideZonelessChangeDetection } from '@angular/core';
 import docJson from '../documentation.json';
 setCompodocJson(docJson);
 
 const preview: Preview = {
+  decorators: [
+    applicationConfig({
+      providers: [provideZonelessChangeDetection()],
+    }),
+  ],
+
   parameters: {
     controls: {
       matchers: {
