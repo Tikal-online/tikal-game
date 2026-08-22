@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { PIcon, Spinner } from '@primeicons/angular';
 import { ButtonModule } from 'primeng/button';
 import { ButtonColour } from '../../enums/button-colour';
@@ -31,4 +31,10 @@ export class ButtonComponent {
 
   /** Is the action related to the button currently running? */
   readonly isLoading = input<boolean>(false);
+
+  /** Should the button have an outline? */
+  readonly outline = input<boolean>(false);
+
+  /** @ignore */
+  readonly clicked = output<void>();
 }

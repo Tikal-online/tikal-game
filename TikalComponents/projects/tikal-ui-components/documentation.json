@@ -109,7 +109,7 @@
     "components": [
         {
             "name": "ButtonComponent",
-            "id": "component-ButtonComponent-79fab4c77556fe88bd7d90fecc36bbe89eb874e6c99094072f22de425f59c5fd79dfe4b0d37c1273742139d33bf543777cfdebf1701618c9f5cd5b8b75d8a345",
+            "id": "component-ButtonComponent-acb630ca73577338fa8c54b21748f203f254acc54a52f7f54dcb743cbb1fd43dc1aafad96a70a9d1ecd6fa0bb49b35230fb547c9bdb8376856f531dea385dcf2",
             "file": "projects/tikal-ui-components/src/lib/components/button/button.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -197,6 +197,23 @@
                     "required": false
                 },
                 {
+                    "name": "outline",
+                    "coverageIgnore": false,
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "boolean",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>Should the button have an outline?</p>\n",
+                    "line": 36,
+                    "rawdescription": "\nShould the button have an outline?",
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                },
+                {
                     "name": "size",
                     "coverageIgnore": false,
                     "defaultValue": "ButtonSize.Normal",
@@ -242,7 +259,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, input } from '@angular/core';\nimport { PIcon, Spinner } from '@primeicons/angular';\nimport { ButtonModule } from 'primeng/button';\nimport { ButtonColour } from '../../enums/button-colour';\nimport { ButtonSize } from '../../enums/button-size';\nimport { EnumMapPipe } from '../../../pipes/enum-map';\n\n@Component({\n  selector: 'tikal-button',\n  imports: [ButtonModule, PIcon, EnumMapPipe, Spinner],\n  templateUrl: './button.html',\n  styleUrl: './button.scss',\n})\nexport class ButtonComponent {\n  /** What icon should the button display? */\n  readonly icon = input<string>('');\n\n  /** What colour should the button be? */\n  readonly colour = input<ButtonColour>(ButtonColour.Primary);\n\n  /** What size should the button be? */\n  readonly size = input<ButtonSize>(ButtonSize.Normal);\n\n  /** @ignore */\n  readonly sizeMap = {\n    normal: undefined,\n  };\n\n  /** What text should the button display? */\n  readonly label = input<string>();\n\n  /** Is the action related to the button currently running? */\n  readonly isLoading = input<boolean>(false);\n}\n",
+            "sourceCode": "import { Component, input, output } from '@angular/core';\nimport { PIcon, Spinner } from '@primeicons/angular';\nimport { ButtonModule } from 'primeng/button';\nimport { ButtonColour } from '../../enums/button-colour';\nimport { ButtonSize } from '../../enums/button-size';\nimport { EnumMapPipe } from '../../../pipes/enum-map';\n\n@Component({\n  selector: 'tikal-button',\n  imports: [ButtonModule, PIcon, EnumMapPipe, Spinner],\n  templateUrl: './button.html',\n  styleUrl: './button.scss',\n})\nexport class ButtonComponent {\n  /** What icon should the button display? */\n  readonly icon = input<string>('');\n\n  /** What colour should the button be? */\n  readonly colour = input<ButtonColour>(ButtonColour.Primary);\n\n  /** What size should the button be? */\n  readonly size = input<ButtonSize>(ButtonSize.Normal);\n\n  /** @ignore */\n  readonly sizeMap = {\n    normal: undefined,\n  };\n\n  /** What text should the button display? */\n  readonly label = input<string>();\n\n  /** Is the action related to the button currently running? */\n  readonly isLoading = input<boolean>(false);\n\n  /** Should the button have an outline? */\n  readonly outline = input<boolean>(false);\n\n  /** @ignore */\n  readonly clicked = output<void>();\n}\n",
             "styleUrl": "./button.scss",
             "assetsDirs": [],
             "styleUrlsData": [
@@ -274,12 +291,34 @@
                     }
                 ]
             },
-            "templateData": "<button\n  pButton\n  type=\"button\"\n  [iconOnly]=\"!label()\"\n  [severity]=\"colour()\"\n  [size]=\"size() | enumMap: sizeMap\"\n>\n  @if (isLoading()) {\n    <svg data-p-icon=\"spinner\" [spin]=\"true\"></svg>\n  } @else if (icon()) {\n    <svg [pIcon]=\"icon()\"></svg>\n  }\n  {{ label() }}\n</button>\n"
+            "templateData": "<button\n  pButton\n  type=\"button\"\n  [disabled]=\"isLoading()\"\n  [iconOnly]=\"!label()\"\n  [outlined]=\"outline()\"\n  [severity]=\"colour()\"\n  [size]=\"size() | enumMap: sizeMap\"\n  (click)=\"clicked.emit()\"\n>\n  @if (isLoading()) {\n    <svg data-p-icon=\"spinner\" [spin]=\"true\"></svg>\n  } @else if (icon()) {\n    <svg [pIcon]=\"icon()\"></svg>\n  }\n  {{ label() }}\n</button>\n"
         }
     ],
     "modules": [],
     "miscellaneous": {
         "variables": [
+            {
+                "name": "IconOnly",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/tikal-ui-components/src/stories/button.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n  name: 'Icon only',\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    label: '',\n    icon: 'check',\n    isLoading: false,\n    outline: false,\n  },\n}"
+            },
+            {
+                "name": "IconOnlyLoading",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/tikal-ui-components/src/stories/button.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n  name: 'Icon only loading',\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    label: '',\n    icon: 'check',\n    isLoading: true,\n    outline: false,\n  },\n}"
+            },
             {
                 "name": "meta",
                 "ctype": "miscellaneous",
@@ -289,7 +328,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Meta<ButtonComponent>",
-                "defaultValue": "{\n  title: 'Atoms/Button',\n  component: ButtonComponent,\n  tags: ['autodocs'],\n  argTypes: {\n    colour: {\n      control: { type: 'select' },\n    },\n    size: {\n      control: { type: 'select' },\n    },\n  },\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    label: 'Button',\n    icon: 'check',\n    isLoading: false,\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n    moduleMetadata({\n      declarations: [],\n      imports: [],\n    }),\n  ],\n}"
+                "defaultValue": "{\n  title: 'Atoms/Button',\n  component: ButtonComponent,\n  tags: ['autodocs'],\n  argTypes: {\n    colour: {\n      control: { type: 'select' },\n    },\n    size: {\n      control: { type: 'select' },\n    },\n  },\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    label: 'Button',\n    icon: 'check',\n    isLoading: false,\n    outline: false,\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n    moduleMetadata({\n      declarations: [],\n      imports: [],\n    }),\n  ],\n}"
             },
             {
                 "name": "preview",
@@ -303,7 +342,7 @@
                 "defaultValue": "{\n  decorators: [\n    applicationConfig({\n      providers: [\n        provideZonelessChangeDetection(),\n        providePrimeNG({\n          theme: {\n            preset: TikalTheme,\n            options: {\n              darkModeSelector: '.dark',\n            },\n          },\n        }),\n      ],\n    }),\n    withThemeByClassName<AngularRenderer>({\n      themes: {\n        light: '',\n        dark: 'dark',\n      },\n      defaultTheme: 'light',\n    }),\n  ],\n\n  parameters: {\n    controls: {\n      matchers: {\n        color: /(background|color)$/i,\n        date: /Date$/i,\n      },\n    },\n\n    a11y: {\n      // 'todo' - show a11y violations in the test UI only\n      // 'error' - fail CI on a11y violations\n      // 'off' - skip a11y checks entirely\n      test: 'todo',\n    },\n  },\n}"
             },
             {
-                "name": "Primary",
+                "name": "PrimaryWithIcon",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
                 "file": "projects/tikal-ui-components/src/stories/button.stories.ts",
@@ -311,7 +350,29 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
-                "defaultValue": "{}"
+                "defaultValue": "{\n  name: 'Icon and text',\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    label: 'Button',\n    icon: 'check',\n    isLoading: false,\n    outline: false,\n  },\n}"
+            },
+            {
+                "name": "Textoading",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/tikal-ui-components/src/stories/button.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n  name: 'Text loading',\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    label: 'Button',\n    icon: '',\n    isLoading: true,\n    outline: false,\n  },\n}"
+            },
+            {
+                "name": "TextOnly",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/tikal-ui-components/src/stories/button.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n  name: 'Text only',\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    label: 'Button',\n    icon: '',\n    isLoading: false,\n    outline: false,\n  },\n}"
             },
             {
                 "name": "TikalTheme",
@@ -400,6 +461,28 @@
         "groupedVariables": {
             "projects/tikal-ui-components/src/stories/button.stories.ts": [
                 {
+                    "name": "IconOnly",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/tikal-ui-components/src/stories/button.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n  name: 'Icon only',\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    label: '',\n    icon: 'check',\n    isLoading: false,\n    outline: false,\n  },\n}"
+                },
+                {
+                    "name": "IconOnlyLoading",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/tikal-ui-components/src/stories/button.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n  name: 'Icon only loading',\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    label: '',\n    icon: 'check',\n    isLoading: true,\n    outline: false,\n  },\n}"
+                },
+                {
                     "name": "meta",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
@@ -408,10 +491,10 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Meta<ButtonComponent>",
-                    "defaultValue": "{\n  title: 'Atoms/Button',\n  component: ButtonComponent,\n  tags: ['autodocs'],\n  argTypes: {\n    colour: {\n      control: { type: 'select' },\n    },\n    size: {\n      control: { type: 'select' },\n    },\n  },\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    label: 'Button',\n    icon: 'check',\n    isLoading: false,\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n    moduleMetadata({\n      declarations: [],\n      imports: [],\n    }),\n  ],\n}"
+                    "defaultValue": "{\n  title: 'Atoms/Button',\n  component: ButtonComponent,\n  tags: ['autodocs'],\n  argTypes: {\n    colour: {\n      control: { type: 'select' },\n    },\n    size: {\n      control: { type: 'select' },\n    },\n  },\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    label: 'Button',\n    icon: 'check',\n    isLoading: false,\n    outline: false,\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n    moduleMetadata({\n      declarations: [],\n      imports: [],\n    }),\n  ],\n}"
                 },
                 {
-                    "name": "Primary",
+                    "name": "PrimaryWithIcon",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
                     "file": "projects/tikal-ui-components/src/stories/button.stories.ts",
@@ -419,7 +502,29 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
-                    "defaultValue": "{}"
+                    "defaultValue": "{\n  name: 'Icon and text',\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    label: 'Button',\n    icon: 'check',\n    isLoading: false,\n    outline: false,\n  },\n}"
+                },
+                {
+                    "name": "Textoading",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/tikal-ui-components/src/stories/button.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n  name: 'Text loading',\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    label: 'Button',\n    icon: '',\n    isLoading: true,\n    outline: false,\n  },\n}"
+                },
+                {
+                    "name": "TextOnly",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/tikal-ui-components/src/stories/button.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n  name: 'Text only',\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    label: 'Button',\n    icon: '',\n    isLoading: false,\n    outline: false,\n  },\n}"
                 }
             ],
             "projects/tikal-ui-components/.storybook/preview.ts": [
@@ -534,7 +639,7 @@
         "children": []
     },
     "coverage": {
-        "count": 11,
+        "count": 7,
         "status": "low",
         "files": [
             {
@@ -552,8 +657,8 @@
                 "type": "component",
                 "linktype": "component",
                 "name": "ButtonComponent",
-                "coveragePercent": 83,
-                "coverageCount": "5/6",
+                "coveragePercent": 85,
+                "coverageCount": "6/7",
                 "status": "very-good"
             },
             {
@@ -580,6 +685,26 @@
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
+                "name": "IconOnly",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/stories/button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "IconOnlyLoading",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/stories/button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
                 "name": "meta",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
@@ -590,7 +715,27 @@
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
-                "name": "Primary",
+                "name": "PrimaryWithIcon",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/stories/button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Textoading",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/stories/button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "TextOnly",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"

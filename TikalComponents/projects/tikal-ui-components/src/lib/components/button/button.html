@@ -1,10 +1,12 @@
 <button
   pButton
   type="button"
+  [disabled]="isLoading()"
   [iconOnly]="!label()"
-  [outlined]="colour() && colour() === 'secondary'"
+  [outlined]="outline()"
   [severity]="colour()"
   [size]="size() | enumMap: sizeMap"
+  (click)="clicked.emit()"
 >
   @if (isLoading()) {
     <svg data-p-icon="spinner" [spin]="true"></svg>
