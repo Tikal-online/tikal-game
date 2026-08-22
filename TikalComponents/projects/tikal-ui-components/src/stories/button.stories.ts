@@ -20,6 +20,7 @@ const meta: Meta<ButtonComponent> = {
     size: ButtonSize.Normal,
     label: 'Button',
     icon: 'check',
+    isLoading: false,
   },
   decorators: [
     applicationConfig({

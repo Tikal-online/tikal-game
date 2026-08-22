@@ -109,7 +109,7 @@
     "components": [
         {
             "name": "ButtonComponent",
-            "id": "component-ButtonComponent-4aa0904e12e2bed67c7001dee5aacd995c5a198c387f8b50f485c771d87332b08218a49acd0ac184bf1909e4198ffe4dd65f4eb248f7c4d8ab1cc8dbd403c1ce",
+            "id": "component-ButtonComponent-79fab4c77556fe88bd7d90fecc36bbe89eb874e6c99094072f22de425f59c5fd79dfe4b0d37c1273742139d33bf543777cfdebf1701618c9f5cd5b8b75d8a345",
             "file": "projects/tikal-ui-components/src/lib/components/button/button.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -149,6 +149,7 @@
                 {
                     "name": "icon",
                     "coverageIgnore": false,
+                    "defaultValue": "''",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "string",
@@ -157,6 +158,23 @@
                     "description": "<p>What icon should the button display?</p>\n",
                     "line": 16,
                     "rawdescription": "\nWhat icon should the button display?",
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                },
+                {
+                    "name": "isLoading",
+                    "coverageIgnore": false,
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "boolean",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>Is the action related to the button currently running?</p>\n",
+                    "line": 33,
+                    "rawdescription": "\nIs the action related to the button currently running?",
                     "modifierKind": [
                         148
                     ],
@@ -216,12 +234,15 @@
                 {
                     "name": "EnumMapPipe",
                     "type": "pipe"
+                },
+                {
+                    "name": "Spinner"
                 }
             ],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, input } from '@angular/core';\nimport { PIcon } from '@primeicons/angular';\nimport { ButtonModule } from 'primeng/button';\nimport { ButtonColour } from '../../enums/button-colour';\nimport { ButtonSize } from '../../enums/button-size';\nimport { EnumMapPipe } from '../../../pipes/enum-map';\n\n@Component({\n  selector: 'tikal-button',\n  imports: [ButtonModule, PIcon, EnumMapPipe],\n  templateUrl: './button.html',\n  styleUrl: './button.scss',\n})\nexport class ButtonComponent {\n  /** What icon should the button display? */\n  readonly icon = input<string>();\n\n  /** What colour should the button be? */\n  readonly colour = input<ButtonColour>(ButtonColour.Primary);\n\n  /** What size should the button be? */\n  readonly size = input<ButtonSize>(ButtonSize.Normal);\n\n  /** @ignore */\n  readonly sizeMap = {\n    normal: undefined,\n  };\n\n  /** What text should the button display? */\n  readonly label = input<string>();\n}\n",
+            "sourceCode": "import { Component, input } from '@angular/core';\nimport { PIcon, Spinner } from '@primeicons/angular';\nimport { ButtonModule } from 'primeng/button';\nimport { ButtonColour } from '../../enums/button-colour';\nimport { ButtonSize } from '../../enums/button-size';\nimport { EnumMapPipe } from '../../../pipes/enum-map';\n\n@Component({\n  selector: 'tikal-button',\n  imports: [ButtonModule, PIcon, EnumMapPipe, Spinner],\n  templateUrl: './button.html',\n  styleUrl: './button.scss',\n})\nexport class ButtonComponent {\n  /** What icon should the button display? */\n  readonly icon = input<string>('');\n\n  /** What colour should the button be? */\n  readonly colour = input<ButtonColour>(ButtonColour.Primary);\n\n  /** What size should the button be? */\n  readonly size = input<ButtonSize>(ButtonSize.Normal);\n\n  /** @ignore */\n  readonly sizeMap = {\n    normal: undefined,\n  };\n\n  /** What text should the button display? */\n  readonly label = input<string>();\n\n  /** Is the action related to the button currently running? */\n  readonly isLoading = input<boolean>(false);\n}\n",
             "styleUrl": "./button.scss",
             "assetsDirs": [],
             "styleUrlsData": [
@@ -246,10 +267,14 @@
                     {
                         "name": "EnumMapPipe",
                         "type": "pipe"
+                    },
+                    {
+                        "name": "Spinner",
+                        "type": "module"
                     }
                 ]
             },
-            "templateData": "<button\n  pButton\n  type=\"button\"\n  [iconOnly]=\"!label()\"\n  [severity]=\"colour()\"\n  [size]=\"size() | enumMap: sizeMap\"\n>\n  @if (icon()) {\n    <svg [pIcon]=\"icon()\"></svg>\n  }\n  {{ label() }}\n</button>\n"
+            "templateData": "<button\n  pButton\n  type=\"button\"\n  [iconOnly]=\"!label()\"\n  [severity]=\"colour()\"\n  [size]=\"size() | enumMap: sizeMap\"\n>\n  @if (isLoading()) {\n    <svg data-p-icon=\"spinner\" [spin]=\"true\"></svg>\n  } @else if (icon()) {\n    <svg [pIcon]=\"icon()\"></svg>\n  }\n  {{ label() }}\n</button>\n"
         }
     ],
     "modules": [],
@@ -264,7 +289,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Meta<ButtonComponent>",
-                "defaultValue": "{\n  title: 'Atoms/Button',\n  component: ButtonComponent,\n  tags: ['autodocs'],\n  argTypes: {\n    colour: {\n      control: { type: 'select' },\n    },\n    size: {\n      control: { type: 'select' },\n    },\n  },\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    label: 'Button',\n    icon: 'check',\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n    moduleMetadata({\n      declarations: [],\n      imports: [],\n    }),\n  ],\n}"
+                "defaultValue": "{\n  title: 'Atoms/Button',\n  component: ButtonComponent,\n  tags: ['autodocs'],\n  argTypes: {\n    colour: {\n      control: { type: 'select' },\n    },\n    size: {\n      control: { type: 'select' },\n    },\n  },\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    label: 'Button',\n    icon: 'check',\n    isLoading: false,\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n    moduleMetadata({\n      declarations: [],\n      imports: [],\n    }),\n  ],\n}"
             },
             {
                 "name": "preview",
@@ -383,7 +408,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Meta<ButtonComponent>",
-                    "defaultValue": "{\n  title: 'Atoms/Button',\n  component: ButtonComponent,\n  tags: ['autodocs'],\n  argTypes: {\n    colour: {\n      control: { type: 'select' },\n    },\n    size: {\n      control: { type: 'select' },\n    },\n  },\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    label: 'Button',\n    icon: 'check',\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n    moduleMetadata({\n      declarations: [],\n      imports: [],\n    }),\n  ],\n}"
+                    "defaultValue": "{\n  title: 'Atoms/Button',\n  component: ButtonComponent,\n  tags: ['autodocs'],\n  argTypes: {\n    colour: {\n      control: { type: 'select' },\n    },\n    size: {\n      control: { type: 'select' },\n    },\n  },\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    label: 'Button',\n    icon: 'check',\n    isLoading: false,\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n    moduleMetadata({\n      declarations: [],\n      imports: [],\n    }),\n  ],\n}"
                 },
                 {
                     "name": "Primary",
@@ -527,8 +552,8 @@
                 "type": "component",
                 "linktype": "component",
                 "name": "ButtonComponent",
-                "coveragePercent": 80,
-                "coverageCount": "4/5",
+                "coveragePercent": 83,
+                "coverageCount": "5/6",
                 "status": "very-good"
             },
             {

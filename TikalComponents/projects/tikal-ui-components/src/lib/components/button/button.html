@@ -5,7 +5,9 @@
   [severity]="colour()"
   [size]="size() | enumMap: sizeMap"
 >
-  @if (icon()) {
+  @if (isLoading()) {
+    <svg data-p-icon="spinner" [spin]="true"></svg>
+  } @else if (icon()) {
     <svg [pIcon]="icon()"></svg>
   }
   {{ label() }}
