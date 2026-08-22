@@ -9,7 +9,7 @@
     "components": [
         {
             "name": "ButtonComponent",
-            "id": "component-ButtonComponent-73166ccd80ec68162665a4d9adac58544f1f5357a41e7919afcf02a28d07ec05ea5cd654fbe09ffb0b12fb755aabc73987f201a7a685ee5a38f0607c82cd01a6",
+            "id": "component-ButtonComponent-1bd6ad92ec73ca7668da6018a5217b557702c9332158c8ebb6323f6ac740e0948e97a316b51fed3b0ce3e1c8757ce0a32f9954d4bc5a923994bddb0322077c41",
             "file": "projects/tikal-ui-components/src/lib/components/button/button.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -28,7 +28,25 @@
             "templateVariables": [],
             "viewProviders": [],
             "hostDirectives": [],
-            "inputsClass": [],
+            "inputsClass": [
+                {
+                    "name": "icon",
+                    "coverageIgnore": false,
+                    "defaultValue": "''",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 13,
+                    "rawdescription": "\n",
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                }
+            ],
             "outputsClass": [],
             "propertiesClass": [],
             "methodsClass": [],
@@ -42,12 +60,15 @@
                 {
                     "name": "ButtonModule",
                     "type": "module"
+                },
+                {
+                    "name": "PIcon"
                 }
             ],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component } from '@angular/core';\nimport { ButtonModule } from 'primeng/button';\n\n@Component({\n  selector: 'tikal-button',\n  imports: [ButtonModule],\n  templateUrl: './button.html',\n  styleUrl: './button.scss',\n})\nexport class ButtonComponent {}\n",
+            "sourceCode": "import { Component, input } from '@angular/core';\nimport { PIcon } from '@primeicons/angular';\nimport { ButtonModule } from 'primeng/button';\n\n@Component({\n  selector: 'tikal-button',\n  imports: [ButtonModule, PIcon],\n  templateUrl: './button.html',\n  styleUrl: './button.scss',\n})\nexport class ButtonComponent {\n  // The icon to be displayed on the button\n  readonly icon = input<string>('');\n}\n",
             "styleUrl": "./button.scss",
             "assetsDirs": [],
             "styleUrlsData": [
@@ -64,10 +85,14 @@
                     {
                         "name": "ButtonModule",
                         "type": "module"
+                    },
+                    {
+                        "name": "PIcon",
+                        "type": "module"
                     }
                 ]
             },
-            "templateData": "<button pButton type=\"button\">Primary</button>\n<button pButton severity=\"secondary\" type=\"button\">Secondary</button>\n\n<div>Testing</div>\n"
+            "templateData": "<button pButton type=\"button\">\n  @if (icon()) {\n    <svg [pIcon]=\"icon()\"></svg>\n  }\n  Primary\n</button>\n"
         }
     ],
     "modules": [],
@@ -83,17 +108,6 @@
                 "deprecationMessage": "",
                 "type": "Meta<ButtonComponent>",
                 "defaultValue": "{\n  title: 'Atoms/Button',\n  component: ButtonComponent,\n  tags: ['autodocs'],\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n    moduleMetadata({\n      declarations: [],\n      imports: [],\n    }),\n  ],\n}"
-            },
-            {
-                "name": "parameters",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/tikal-ui-components/.storybook/preview.ts",
-                "coverageIgnore": false,
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "object",
-                "defaultValue": "{\n  backgrounds: {\n    default: 'light',\n    values: [\n      {\n        name: 'light',\n        value: '#ffffff',\n      },\n      {\n        name: 'dark',\n        value: '#1a1a1a',\n      },\n    ],\n  },\n}"
             },
             {
                 "name": "preview",
@@ -198,17 +212,6 @@
             ],
             "projects/tikal-ui-components/.storybook/preview.ts": [
                 {
-                    "name": "parameters",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/tikal-ui-components/.storybook/preview.ts",
-                    "coverageIgnore": false,
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "object",
-                    "defaultValue": "{\n  backgrounds: {\n    default: 'light',\n    values: [\n      {\n        name: 'light',\n        value: '#ffffff',\n      },\n      {\n        name: 'dark',\n        value: '#1a1a1a',\n      },\n    ],\n  },\n}"
-                },
-                {
                     "name": "preview",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
@@ -295,16 +298,6 @@
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
-                "name": "parameters",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "projects/tikal-ui-components/.storybook/preview.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
                 "name": "preview",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
@@ -316,7 +309,7 @@
                 "linktype": "component",
                 "name": "ButtonComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/1",
+                "coverageCount": "0/2",
                 "status": "low"
             },
             {
