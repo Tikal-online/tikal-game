@@ -1,6 +1,12 @@
-<button pButton type="button">
+<button
+  pButton
+  type="button"
+  [iconOnly]="!label()"
+  [severity]="colour()"
+  [size]="size() | enumMap: sizeMap"
+>
   @if (icon()) {
     <svg [pIcon]="icon()"></svg>
   }
-  Primary
+  {{ label() }}
 </button>

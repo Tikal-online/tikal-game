@@ -1,5 +1,105 @@
 {
-    "pipes": [],
+    "pipes": [
+        {
+            "name": "EnumMapPipe",
+            "id": "pipe-EnumMapPipe-ee472fe4420d39123254456003df7cc11778fc41b44303c35ede83da6a109757a030746c5649fe78af5d15bdda6dab6020ef09fbb58a9749bad3e7f50f2c5ba7",
+            "file": "projects/tikal-ui-components/src/pipes/enum-map.ts",
+            "type": "pipe",
+            "coverageIgnore": false,
+            "deprecated": false,
+            "deprecationMessage": "",
+            "description": "",
+            "rawdescription": "\n",
+            "properties": [],
+            "methods": [
+                {
+                    "name": "transform",
+                    "coverageIgnore": false,
+                    "args": [
+                        {
+                            "name": "value",
+                            "type": "unknown",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        },
+                        {
+                            "name": "enumMap",
+                            "type": "object",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        },
+                        {
+                            "name": "defaultValue",
+                            "type": "T",
+                            "optional": true,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "T",
+                    "typeParameters": [],
+                    "line": 7,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\n",
+                    "description": "",
+                    "jsdoctags": [
+                        {
+                            "name": "value",
+                            "type": "unknown",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        },
+                        {
+                            "name": "enumMap",
+                            "type": "object",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        },
+                        {
+                            "name": "defaultValue",
+                            "type": "T",
+                            "optional": true,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "standalone": true,
+            "ngname": "enumMap",
+            "sourceCode": "import { Pipe, PipeTransform } from '@angular/core';\n\n@Pipe({\n  name: 'enumMap',\n})\nexport class EnumMapPipe<T> implements PipeTransform {\n  transform(value: unknown, enumMap: object, defaultValue?: T): T {\n    return enumMap[value as keyof typeof enumMap] ?? defaultValue ?? value;\n  }\n}\n",
+            "relationships": {
+                "incoming": [
+                    {
+                        "name": "ButtonComponent",
+                        "type": "component"
+                    }
+                ],
+                "outgoing": []
+            }
+        }
+    ],
     "interfaces": [],
     "injectables": [],
     "guards": [],
@@ -9,7 +109,7 @@
     "components": [
         {
             "name": "ButtonComponent",
-            "id": "component-ButtonComponent-1bd6ad92ec73ca7668da6018a5217b557702c9332158c8ebb6323f6ac740e0948e97a316b51fed3b0ce3e1c8757ce0a32f9954d4bc5a923994bddb0322077c41",
+            "id": "component-ButtonComponent-4aa0904e12e2bed67c7001dee5aacd995c5a198c387f8b50f485c771d87332b08218a49acd0ac184bf1909e4198ffe4dd65f4eb248f7c4d8ab1cc8dbd403c1ce",
             "file": "projects/tikal-ui-components/src/lib/components/button/button.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -30,17 +130,66 @@
             "hostDirectives": [],
             "inputsClass": [
                 {
+                    "name": "colour",
+                    "coverageIgnore": false,
+                    "defaultValue": "ButtonColour.Primary",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "ButtonColour",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>What colour should the button be?</p>\n",
+                    "line": 19,
+                    "rawdescription": "\nWhat colour should the button be?",
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                },
+                {
                     "name": "icon",
                     "coverageIgnore": false,
-                    "defaultValue": "''",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "string",
                     "indexKey": "",
                     "optional": false,
-                    "description": "",
-                    "line": 13,
-                    "rawdescription": "\n",
+                    "description": "<p>What icon should the button display?</p>\n",
+                    "line": 16,
+                    "rawdescription": "\nWhat icon should the button display?",
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                },
+                {
+                    "name": "label",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>What text should the button display?</p>\n",
+                    "line": 30,
+                    "rawdescription": "\nWhat text should the button display?",
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                },
+                {
+                    "name": "size",
+                    "coverageIgnore": false,
+                    "defaultValue": "ButtonSize.Normal",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "ButtonSize",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>What size should the button be?</p>\n",
+                    "line": 22,
+                    "rawdescription": "\nWhat size should the button be?",
                     "modifierKind": [
                         148
                     ],
@@ -63,12 +212,16 @@
                 },
                 {
                     "name": "PIcon"
+                },
+                {
+                    "name": "EnumMapPipe",
+                    "type": "pipe"
                 }
             ],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, input } from '@angular/core';\nimport { PIcon } from '@primeicons/angular';\nimport { ButtonModule } from 'primeng/button';\n\n@Component({\n  selector: 'tikal-button',\n  imports: [ButtonModule, PIcon],\n  templateUrl: './button.html',\n  styleUrl: './button.scss',\n})\nexport class ButtonComponent {\n  // The icon to be displayed on the button\n  readonly icon = input<string>('');\n}\n",
+            "sourceCode": "import { Component, input } from '@angular/core';\nimport { PIcon } from '@primeicons/angular';\nimport { ButtonModule } from 'primeng/button';\nimport { ButtonColour } from '../../enums/button-colour';\nimport { ButtonSize } from '../../enums/button-size';\nimport { EnumMapPipe } from '../../../pipes/enum-map';\n\n@Component({\n  selector: 'tikal-button',\n  imports: [ButtonModule, PIcon, EnumMapPipe],\n  templateUrl: './button.html',\n  styleUrl: './button.scss',\n})\nexport class ButtonComponent {\n  /** What icon should the button display? */\n  readonly icon = input<string>();\n\n  /** What colour should the button be? */\n  readonly colour = input<ButtonColour>(ButtonColour.Primary);\n\n  /** What size should the button be? */\n  readonly size = input<ButtonSize>(ButtonSize.Normal);\n\n  /** @ignore */\n  readonly sizeMap = {\n    normal: undefined,\n  };\n\n  /** What text should the button display? */\n  readonly label = input<string>();\n}\n",
             "styleUrl": "./button.scss",
             "assetsDirs": [],
             "styleUrlsData": [
@@ -89,10 +242,14 @@
                     {
                         "name": "PIcon",
                         "type": "module"
+                    },
+                    {
+                        "name": "EnumMapPipe",
+                        "type": "pipe"
                     }
                 ]
             },
-            "templateData": "<button pButton type=\"button\">\n  @if (icon()) {\n    <svg [pIcon]=\"icon()\"></svg>\n  }\n  Primary\n</button>\n"
+            "templateData": "<button\n  pButton\n  type=\"button\"\n  [iconOnly]=\"!label()\"\n  [severity]=\"colour()\"\n  [size]=\"size() | enumMap: sizeMap\"\n>\n  @if (icon()) {\n    <svg [pIcon]=\"icon()\"></svg>\n  }\n  {{ label() }}\n</button>\n"
         }
     ],
     "modules": [],
@@ -107,7 +264,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Meta<ButtonComponent>",
-                "defaultValue": "{\n  title: 'Atoms/Button',\n  component: ButtonComponent,\n  tags: ['autodocs'],\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n    moduleMetadata({\n      declarations: [],\n      imports: [],\n    }),\n  ],\n}"
+                "defaultValue": "{\n  title: 'Atoms/Button',\n  component: ButtonComponent,\n  tags: ['autodocs'],\n  argTypes: {\n    colour: {\n      control: { type: 'select' },\n    },\n    size: {\n      control: { type: 'select' },\n    },\n  },\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    label: 'Button',\n    icon: 'check',\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n    moduleMetadata({\n      declarations: [],\n      imports: [],\n    }),\n  ],\n}"
             },
             {
                 "name": "preview",
@@ -183,6 +340,36 @@
                 "rawdescription": "",
                 "description": "",
                 "file": "projects/tikal-ui-components/src/lib/enums/button-colour.ts"
+            },
+            {
+                "name": "ButtonSize",
+                "childs": [
+                    {
+                        "name": "Small",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "value": "small"
+                    },
+                    {
+                        "name": "Normal",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "value": "normal"
+                    },
+                    {
+                        "name": "Large",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "value": "large"
+                    }
+                ],
+                "ctype": "miscellaneous",
+                "subtype": "enum",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "rawdescription": "",
+                "description": "",
+                "file": "projects/tikal-ui-components/src/lib/enums/button-size.ts"
             }
         ],
         "groupedVariables": {
@@ -196,7 +383,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Meta<ButtonComponent>",
-                    "defaultValue": "{\n  title: 'Atoms/Button',\n  component: ButtonComponent,\n  tags: ['autodocs'],\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n    moduleMetadata({\n      declarations: [],\n      imports: [],\n    }),\n  ],\n}"
+                    "defaultValue": "{\n  title: 'Atoms/Button',\n  component: ButtonComponent,\n  tags: ['autodocs'],\n  argTypes: {\n    colour: {\n      control: { type: 'select' },\n    },\n    size: {\n      control: { type: 'select' },\n    },\n  },\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    label: 'Button',\n    icon: 'check',\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n    moduleMetadata({\n      declarations: [],\n      imports: [],\n    }),\n  ],\n}"
                 },
                 {
                     "name": "Primary",
@@ -264,6 +451,38 @@
                     "description": "",
                     "file": "projects/tikal-ui-components/src/lib/enums/button-colour.ts"
                 }
+            ],
+            "projects/tikal-ui-components/src/lib/enums/button-size.ts": [
+                {
+                    "name": "ButtonSize",
+                    "childs": [
+                        {
+                            "name": "Small",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "value": "small"
+                        },
+                        {
+                            "name": "Normal",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "value": "normal"
+                        },
+                        {
+                            "name": "Large",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "value": "large"
+                        }
+                    ],
+                    "ctype": "miscellaneous",
+                    "subtype": "enum",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "",
+                    "description": "",
+                    "file": "projects/tikal-ui-components/src/lib/enums/button-size.ts"
+                }
             ]
         },
         "groupedTypeAliases": {
@@ -290,7 +509,7 @@
         "children": []
     },
     "coverage": {
-        "count": 0,
+        "count": 11,
         "status": "low",
         "files": [
             {
@@ -308,9 +527,9 @@
                 "type": "component",
                 "linktype": "component",
                 "name": "ButtonComponent",
-                "coveragePercent": 0,
-                "coverageCount": "0/2",
-                "status": "low"
+                "coveragePercent": 80,
+                "coverageCount": "4/5",
+                "status": "very-good"
             },
             {
                 "filePath": "projects/tikal-ui-components/src/lib/theme/tikal-theme.ts",
@@ -318,6 +537,15 @@
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
                 "name": "TikalTheme",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/pipes/enum-map.ts",
+                "type": "pipe",
+                "linktype": "pipe",
+                "name": "EnumMapPipe",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
