@@ -2,6 +2,7 @@
   pButton
   type="button"
   [iconOnly]="!label()"
+  [outlined]="colour() && colour() === 'secondary'"
   [severity]="colour()"
   [size]="size() | enumMap: sizeMap"
 >
