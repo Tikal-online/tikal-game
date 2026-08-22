@@ -31,6 +31,7 @@
     "@angular/compiler-cli": "^22.1.0",
     "@compodoc/compodoc": "latest",
     "@storybook/addon-docs": "^10.5.10",
+    "@storybook/addon-themes": "^10.5.10",
     "@storybook/angular-vite": "^10.5.10",
     "@types/node": "^20",
     "angular-eslint": "^22.1.0",

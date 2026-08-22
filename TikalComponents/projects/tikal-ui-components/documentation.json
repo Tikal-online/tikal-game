@@ -67,7 +67,7 @@
                     }
                 ]
             },
-            "templateData": "<button pButton type=\"button\">Test</button>\n"
+            "templateData": "<button pButton type=\"button\">Primary</button>\n<button pButton severity=\"secondary\" type=\"button\">Secondary</button>\n\n<div>Testing</div>\n"
         }
     ],
     "modules": [],
@@ -85,6 +85,17 @@
                 "defaultValue": "{\n  title: 'Atoms/Button',\n  component: ButtonComponent,\n  tags: ['autodocs'],\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n    moduleMetadata({\n      declarations: [],\n      imports: [],\n    }),\n  ],\n}"
             },
             {
+                "name": "parameters",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/tikal-ui-components/.storybook/preview.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "object",
+                "defaultValue": "{\n  backgrounds: {\n    default: 'light',\n    values: [\n      {\n        name: 'light',\n        value: '#ffffff',\n      },\n      {\n        name: 'dark',\n        value: '#1a1a1a',\n      },\n    ],\n  },\n}"
+            },
+            {
                 "name": "preview",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -93,7 +104,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Preview",
-                "defaultValue": "{\n  decorators: [\n    applicationConfig({\n      providers: [\n        provideZonelessChangeDetection(),\n        providePrimeNG({\n          theme: {\n            preset: TikalTheme,\n          },\n        }),\n      ],\n    }),\n  ],\n\n  parameters: {\n    controls: {\n      matchers: {\n        color: /(background|color)$/i,\n        date: /Date$/i,\n      },\n    },\n\n    a11y: {\n      // 'todo' - show a11y violations in the test UI only\n      // 'error' - fail CI on a11y violations\n      // 'off' - skip a11y checks entirely\n      test: 'todo',\n    },\n  },\n}"
+                "defaultValue": "{\n  decorators: [\n    applicationConfig({\n      providers: [\n        provideZonelessChangeDetection(),\n        providePrimeNG({\n          theme: {\n            preset: TikalTheme,\n            options: {\n              darkModeSelector: '.dark',\n            },\n          },\n        }),\n      ],\n    }),\n    withThemeByClassName<AngularRenderer>({\n      themes: {\n        light: '',\n        dark: 'dark',\n      },\n      defaultTheme: 'light',\n    }),\n  ],\n\n  parameters: {\n    controls: {\n      matchers: {\n        color: /(background|color)$/i,\n        date: /Date$/i,\n      },\n    },\n\n    a11y: {\n      // 'todo' - show a11y violations in the test UI only\n      // 'error' - fail CI on a11y violations\n      // 'off' - skip a11y checks entirely\n      test: 'todo',\n    },\n  },\n}"
             },
             {
                 "name": "Primary",
@@ -115,7 +126,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "unknown",
-                "defaultValue": "definePreset(Aura, {\n  semantic: {\n    primary: {\n      50: '#ffffff',\n      100: '#ffffff',\n      200: '#ffffff',\n      300: '#ffffff',\n      400: '#ffffff',\n      500: '#ffffff',\n      600: '#ffffff',\n      700: '#ffffff',\n      800: '#ffffff',\n      900: '#ffffff',\n      950: '#ffffff',\n    },\n    colorScheme: {\n      light: {\n        primary: {\n          color: '#ffffff',\n          contrastColor: '#000000', // dark text on white bg\n          hoverColor: '#f5f5f5', // slightly off-white so hover is visible\n          activeColor: '#e5e5e5',\n        },\n      },\n      dark: {\n        primary: {\n          color: '#ffffff',\n          contrastColor: '#000000',\n          hoverColor: '#f0f0f0',\n          activeColor: '#e0e0e0',\n        },\n      },\n    },\n  },\n})"
+                "defaultValue": "definePreset(Aura, {\n  semantic: {\n    primary: {\n      50: '{surface.50}',\n      100: '{surface.100}',\n      200: '{surface.200}',\n      300: '{surface.300}',\n      400: '{surface.400}',\n      500: '{surface.500}',\n      600: '{surface.600}',\n      700: '{surface.700}',\n      800: '{surface.800}',\n      900: '{surface.900}',\n      950: '{surface.950}',\n      color: 'light-dark({primary.950}, {primary.50})',\n      contrastColor: 'light-dark(#ffffff, {primary.950})',\n      hoverColor: 'light-dark({primary.800}, {primary.200})',\n      activeColor: 'light-dark({primary.700}, {primary.300})',\n    },\n    highlight: {\n      background: 'light-dark({primary.950}, {primary.50})',\n      focusBackground: 'light-dark({primary.700}, {primary.300})',\n      color: 'light-dark(#ffffff, {primary.950})',\n      focusColor: 'light-dark(#ffffff, {primary.950})',\n    },\n  },\n})"
             }
         ],
         "functions": [],
@@ -187,6 +198,17 @@
             ],
             "projects/tikal-ui-components/.storybook/preview.ts": [
                 {
+                    "name": "parameters",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/tikal-ui-components/.storybook/preview.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "object",
+                    "defaultValue": "{\n  backgrounds: {\n    default: 'light',\n    values: [\n      {\n        name: 'light',\n        value: '#ffffff',\n      },\n      {\n        name: 'dark',\n        value: '#1a1a1a',\n      },\n    ],\n  },\n}"
+                },
+                {
                     "name": "preview",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
@@ -195,7 +217,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Preview",
-                    "defaultValue": "{\n  decorators: [\n    applicationConfig({\n      providers: [\n        provideZonelessChangeDetection(),\n        providePrimeNG({\n          theme: {\n            preset: TikalTheme,\n          },\n        }),\n      ],\n    }),\n  ],\n\n  parameters: {\n    controls: {\n      matchers: {\n        color: /(background|color)$/i,\n        date: /Date$/i,\n      },\n    },\n\n    a11y: {\n      // 'todo' - show a11y violations in the test UI only\n      // 'error' - fail CI on a11y violations\n      // 'off' - skip a11y checks entirely\n      test: 'todo',\n    },\n  },\n}"
+                    "defaultValue": "{\n  decorators: [\n    applicationConfig({\n      providers: [\n        provideZonelessChangeDetection(),\n        providePrimeNG({\n          theme: {\n            preset: TikalTheme,\n            options: {\n              darkModeSelector: '.dark',\n            },\n          },\n        }),\n      ],\n    }),\n    withThemeByClassName<AngularRenderer>({\n      themes: {\n        light: '',\n        dark: 'dark',\n      },\n      defaultTheme: 'light',\n    }),\n  ],\n\n  parameters: {\n    controls: {\n      matchers: {\n        color: /(background|color)$/i,\n        date: /Date$/i,\n      },\n    },\n\n    a11y: {\n      // 'todo' - show a11y violations in the test UI only\n      // 'error' - fail CI on a11y violations\n      // 'off' - skip a11y checks entirely\n      test: 'todo',\n    },\n  },\n}"
                 }
             ],
             "projects/tikal-ui-components/src/lib/theme/tikal-theme.ts": [
@@ -208,7 +230,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "unknown",
-                    "defaultValue": "definePreset(Aura, {\n  semantic: {\n    primary: {\n      50: '#ffffff',\n      100: '#ffffff',\n      200: '#ffffff',\n      300: '#ffffff',\n      400: '#ffffff',\n      500: '#ffffff',\n      600: '#ffffff',\n      700: '#ffffff',\n      800: '#ffffff',\n      900: '#ffffff',\n      950: '#ffffff',\n    },\n    colorScheme: {\n      light: {\n        primary: {\n          color: '#ffffff',\n          contrastColor: '#000000', // dark text on white bg\n          hoverColor: '#f5f5f5', // slightly off-white so hover is visible\n          activeColor: '#e5e5e5',\n        },\n      },\n      dark: {\n        primary: {\n          color: '#ffffff',\n          contrastColor: '#000000',\n          hoverColor: '#f0f0f0',\n          activeColor: '#e0e0e0',\n        },\n      },\n    },\n  },\n})"
+                    "defaultValue": "definePreset(Aura, {\n  semantic: {\n    primary: {\n      50: '{surface.50}',\n      100: '{surface.100}',\n      200: '{surface.200}',\n      300: '{surface.300}',\n      400: '{surface.400}',\n      500: '{surface.500}',\n      600: '{surface.600}',\n      700: '{surface.700}',\n      800: '{surface.800}',\n      900: '{surface.900}',\n      950: '{surface.950}',\n      color: 'light-dark({primary.950}, {primary.50})',\n      contrastColor: 'light-dark(#ffffff, {primary.950})',\n      hoverColor: 'light-dark({primary.800}, {primary.200})',\n      activeColor: 'light-dark({primary.700}, {primary.300})',\n    },\n    highlight: {\n      background: 'light-dark({primary.950}, {primary.50})',\n      focusBackground: 'light-dark({primary.700}, {primary.300})',\n      color: 'light-dark(#ffffff, {primary.950})',\n      focusColor: 'light-dark(#ffffff, {primary.950})',\n    },\n  },\n})"
                 }
             ]
         },
@@ -268,6 +290,16 @@
         "count": 0,
         "status": "low",
         "files": [
+            {
+                "filePath": "projects/tikal-ui-components/.storybook/preview.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "parameters",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
             {
                 "filePath": "projects/tikal-ui-components/.storybook/preview.ts",
                 "type": "variable",

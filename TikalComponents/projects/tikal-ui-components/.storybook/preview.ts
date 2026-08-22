@@ -1,7 +1,8 @@
-import { applicationConfig, type Preview } from '@storybook/angular-vite';
+import { AngularRenderer, applicationConfig, type Preview } from '@storybook/angular-vite';
 import { setCompodocJson } from '@storybook/addon-docs/angular';
 import { provideZonelessChangeDetection } from '@angular/core';
 import { providePrimeNG } from 'primeng/config';
+import { withThemeByClassName } from '@storybook/addon-themes';
 import docJson from '../documentation.json';
 import TikalTheme from '../src/lib/theme/tikal-theme';
 setCompodocJson(docJson);
@@ -15,11 +16,18 @@ const preview: Preview = {
           theme: {
             preset: TikalTheme,
             options: {
-              darkModeSelector: '.app-dark',
+              darkModeSelector: '.dark',
             },
           },
         }),
       ],
+    }),
+    withThemeByClassName<AngularRenderer>({
+      themes: {
+        light: '',
+        dark: 'dark',
+      },
+      defaultTheme: 'light',
     }),
   ],
 

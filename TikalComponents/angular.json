@@ -36,7 +36,8 @@
           "options": {
             "configDir": "projects/tikal-ui-components/.storybook",
             "browserTarget": "tikal-ui-components:build",
-            "port": 6006
+            "port": 6006,
+            "styles": ["src/styles.css"]
           }
         },
         "build-storybook": {
@@ -44,7 +45,8 @@
           "options": {
             "configDir": "projects/tikal-ui-components/.storybook",
             "browserTarget": "tikal-ui-components:build",
-            "outputDir": "storybook-static"
+            "outputDir": "storybook-static",
+            "styles": ["src/styles.css"]
           }
         }
       }
