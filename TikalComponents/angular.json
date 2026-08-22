@@ -30,6 +30,22 @@
           "options": {
             "tsConfig": "projects/tikal-ui-components/tsconfig.spec.json"
           }
+        },
+        "storybook": {
+          "builder": "@storybook/angular-vite:start-storybook",
+          "options": {
+            "configDir": "projects/tikal-ui-components/.storybook",
+            "browserTarget": "tikal-ui-components:build",
+            "port": 6006
+          }
+        },
+        "build-storybook": {
+          "builder": "@storybook/angular-vite:build-storybook",
+          "options": {
+            "configDir": "projects/tikal-ui-components/.storybook",
+            "browserTarget": "tikal-ui-components:build",
+            "outputDir": "storybook-static"
+          }
         }
       }
     }
