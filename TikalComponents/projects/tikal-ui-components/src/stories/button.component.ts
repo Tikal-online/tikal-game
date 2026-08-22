@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, input } from '@angular/core';
 
 @Component({
   selector: 'storybook-button',
@@ -19,8 +19,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 })
 export class ButtonComponent {
   /** Is this the principal call to action on the page? */
-  @Input()
-  primary = false;
+  primary = input(false);
 
   /** What background color to use */
   @Input()
@@ -43,7 +42,7 @@ export class ButtonComponent {
   onClick = new EventEmitter<Event>();
 
   public get classes(): string[] {
-    const mode = this.primary ? 'storybook-button--primary' : 'storybook-button--secondary';
+    const mode = this.primary() ? 'storybook-button--primary' : 'storybook-button--secondary';
 
     return ['storybook-button', `storybook-button--${this.size}`, mode];
   }
