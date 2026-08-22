@@ -50,8 +50,15 @@ var bff = builder.AddProject<BFF>("tikal-bff")
 var frontend = builder.AddJavaScriptApp("tikal-frontend", "../TikalFrontend")
     .WithNpm(installCommand: "ci")
     .WithHttpsEndpoint(4200, isProxied: false)
+    .WithUrlForEndpoint("https", url => { url.DisplayText = "Frontend"; })
     .WithReference(bff)
     .WaitFor(bff);
+
+// story book
+builder.AddJavaScriptApp("tikal-storybook", "../TikalComponents", "storybook")
+    .WithNpm(installCommand: "ci")
+    .WithHttpsEndpoint(6006, isProxied: false)
+    .WithUrlForEndpoint("https", url => { url.DisplayText = "StoryBook"; });
 
 // ================================================
 // Configuration
