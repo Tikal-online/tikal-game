@@ -1,13 +1,14 @@
 import { applicationConfig, type Preview } from '@storybook/angular-vite';
 import { setCompodocJson } from '@storybook/addon-docs/angular';
 import { provideZonelessChangeDetection } from '@angular/core';
+import { providePrimeNG } from 'primeng/config';
 import docJson from '../documentation.json';
 setCompodocJson(docJson);
 
 const preview: Preview = {
   decorators: [
     applicationConfig({
-      providers: [provideZonelessChangeDetection()],
+      providers: [provideZonelessChangeDetection(), providePrimeNG()],
     }),
   ],
 
