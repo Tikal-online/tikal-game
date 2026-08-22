@@ -9,7 +9,7 @@
     "components": [
         {
             "name": "ButtonComponent",
-            "id": "component-ButtonComponent-62ffbed74d1add6583b3d1b20d26d6ebd6efcb843ce70ff641c82d722f48700435a44a72cf3c9424dc379b8759c8840a80cbd03f1b03472a10b2337026506f17",
+            "id": "component-ButtonComponent-e510529eb884f11c71d94a886cf4c4e465b22d97975400741793650a6fc92ea826a4e7c08262e622b04e517674b1656961d2f1143151a55a528bdcd97cdd4d62",
             "file": "projects/tikal-ui-components/src/stories/button.component.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -129,7 +129,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { CommonModule } from '@angular/common';\nimport { Component, Input, Output, EventEmitter, input } from '@angular/core';\n\n@Component({\n  selector: 'storybook-button',\n  standalone: true,\n  imports: [CommonModule],\n  template: `\n    <button\n      type=\"button\"\n      (click)=\"onClick.emit($event)\"\n      [ngClass]=\"classes\"\n      [ngStyle]=\"{ 'background-color': backgroundColor }\"\n    >\n      {{ label }}\n    </button>\n  `,\n  styleUrls: ['./button.css'],\n})\nexport class ButtonComponent {\n  /** Is this the principal call to action on the page? */\n  primary = input(false);\n\n  /** What background color to use */\n  @Input()\n  backgroundColor?: string;\n\n  /** How large should the button be? */\n  @Input()\n  size: 'small' | 'medium' | 'large' = 'medium';\n\n  /**\n   * Button contents\n   *\n   * @required\n   */\n  @Input()\n  label = 'Button';\n\n  /** Optional click handler */\n  @Output()\n  onClick = new EventEmitter<Event>();\n\n  public get classes(): string[] {\n    const mode = this.primary ? 'storybook-button--primary' : 'storybook-button--secondary';\n\n    return ['storybook-button', `storybook-button--${this.size}`, mode];\n  }\n}\n",
+            "sourceCode": "import { CommonModule } from '@angular/common';\nimport { Component, Input, Output, EventEmitter, input } from '@angular/core';\n\n@Component({\n  selector: 'storybook-button',\n  standalone: true,\n  imports: [CommonModule],\n  template: `\n    <button\n      type=\"button\"\n      (click)=\"onClick.emit($event)\"\n      [ngClass]=\"classes\"\n      [ngStyle]=\"{ 'background-color': backgroundColor }\"\n    >\n      {{ label }}\n    </button>\n  `,\n  styleUrls: ['./button.css'],\n})\nexport class ButtonComponent {\n  /** Is this the principal call to action on the page? */\n  primary = input(false);\n\n  /** What background color to use */\n  @Input()\n  backgroundColor?: string;\n\n  /** How large should the button be? */\n  @Input()\n  size: 'small' | 'medium' | 'large' = 'medium';\n\n  /**\n   * Button contents\n   *\n   * @required\n   */\n  @Input()\n  label = 'Button';\n\n  /** Optional click handler */\n  @Output()\n  onClick = new EventEmitter<Event>();\n\n  public get classes(): string[] {\n    const mode = this.primary() ? 'storybook-button--primary' : 'storybook-button--secondary';\n\n    return ['storybook-button', `storybook-button--${this.size}`, mode];\n  }\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
