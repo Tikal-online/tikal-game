@@ -31,7 +31,7 @@ jobs:
   unit-test:
     name: Unit Test
     needs: [ format, lint ]
-    uses: ./.github/workflows/node-unit-test.yaml
+    uses: ./.github/workflows/node-playwright-test.yaml
     with:
       project-directory: TikalComponents
       node-version: 24
