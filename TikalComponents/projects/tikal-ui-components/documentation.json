@@ -339,7 +339,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
-                "defaultValue": "{\n  name: 'Icon and text',\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    label: 'Button',\n    icon: 'check',\n    isLoading: false,\n    outline: false,\n    clicked: fn(),\n  },\n  play: async ({ args, canvas }) => {\n    await userEvent.click(canvas.getByRole('button', { name: 'Button' }));\n    await expect(args.clicked).toHaveBeenCalledOnce();\n  },\n}"
+                "defaultValue": "{\n  name: 'Icon and text',\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    label: 'Button',\n    icon: 'check',\n    isLoading: false,\n    outline: false,\n  },\n}"
             },
             {
                 "name": "Textoading",
@@ -491,7 +491,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
-                    "defaultValue": "{\n  name: 'Icon and text',\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    label: 'Button',\n    icon: 'check',\n    isLoading: false,\n    outline: false,\n    clicked: fn(),\n  },\n  play: async ({ args, canvas }) => {\n    await userEvent.click(canvas.getByRole('button', { name: 'Button' }));\n    await expect(args.clicked).toHaveBeenCalledOnce();\n  },\n}"
+                    "defaultValue": "{\n  name: 'Icon and text',\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    label: 'Button',\n    icon: 'check',\n    isLoading: false,\n    outline: false,\n  },\n}"
                 },
                 {
                     "name": "Textoading",
