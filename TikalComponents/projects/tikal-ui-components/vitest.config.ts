@@ -15,7 +15,9 @@ export default defineConfig({
         extends: true,
         plugins: [
           // Forwards Angular build options (styles, assets, zoneless, …) into standalone vitest runs
-          storybookAngularVitest({}),
+          storybookAngularVitest({
+            tsConfig: path.resolve(dirname, '.storybook/tsconfig.json'),
+          }),
           // The plugin will run tests for the stories defined in your Storybook config
           // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
           storybookTest({
