@@ -2,7 +2,7 @@ import type { StorybookConfig } from '@storybook/angular-vite';
 
 const config: StorybookConfig = {
   stories: ['../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
-  addons: ['@storybook/addon-docs', '@storybook/addon-themes'],
+  addons: ['@storybook/addon-docs', '@storybook/addon-themes', '@storybook/addon-vitest'],
   features: {
     sidebarOnboardingChecklist: false,
   },
