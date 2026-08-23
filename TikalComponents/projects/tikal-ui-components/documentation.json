@@ -331,17 +331,6 @@
                 "defaultValue": "{\n  title: 'Atoms/Button',\n  component: ButtonComponent,\n  tags: ['autodocs'],\n  argTypes: {\n    colour: {\n      control: { type: 'select' },\n    },\n    size: {\n      control: { type: 'select' },\n    },\n  },\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    label: 'Button',\n    icon: 'check',\n    isLoading: false,\n    outline: false,\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n    moduleMetadata({\n      declarations: [],\n      imports: [],\n    }),\n  ],\n}"
             },
             {
-                "name": "preview",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/tikal-ui-components/.storybook/preview.ts",
-                "coverageIgnore": false,
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Preview",
-                "defaultValue": "{\n  decorators: [\n    applicationConfig({\n      providers: [\n        provideZonelessChangeDetection(),\n        providePrimeNG({\n          theme: {\n            preset: TikalTheme,\n            options: {\n              darkModeSelector: '.dark',\n            },\n          },\n        }),\n      ],\n    }),\n    withThemeByClassName<AngularRenderer>({\n      themes: {\n        light: '',\n        dark: 'dark',\n      },\n      defaultTheme: 'light',\n    }),\n  ],\n\n  parameters: {\n    controls: {\n      matchers: {\n        color: /(background|color)$/i,\n        date: /Date$/i,\n      },\n    },\n\n    a11y: {\n      // 'todo' - show a11y violations in the test UI only\n      // 'error' - fail CI on a11y violations\n      // 'off' - skip a11y checks entirely\n      test: 'todo',\n    },\n  },\n}"
-            },
-            {
                 "name": "PrimaryWithIcon",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -527,19 +516,6 @@
                     "defaultValue": "{\n  name: 'Text only',\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    label: 'Button',\n    icon: '',\n    isLoading: false,\n    outline: false,\n  },\n}"
                 }
             ],
-            "projects/tikal-ui-components/.storybook/preview.ts": [
-                {
-                    "name": "preview",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/tikal-ui-components/.storybook/preview.ts",
-                    "coverageIgnore": false,
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Preview",
-                    "defaultValue": "{\n  decorators: [\n    applicationConfig({\n      providers: [\n        provideZonelessChangeDetection(),\n        providePrimeNG({\n          theme: {\n            preset: TikalTheme,\n            options: {\n              darkModeSelector: '.dark',\n            },\n          },\n        }),\n      ],\n    }),\n    withThemeByClassName<AngularRenderer>({\n      themes: {\n        light: '',\n        dark: 'dark',\n      },\n      defaultTheme: 'light',\n    }),\n  ],\n\n  parameters: {\n    controls: {\n      matchers: {\n        color: /(background|color)$/i,\n        date: /Date$/i,\n      },\n    },\n\n    a11y: {\n      // 'todo' - show a11y violations in the test UI only\n      // 'error' - fail CI on a11y violations\n      // 'off' - skip a11y checks entirely\n      test: 'todo',\n    },\n  },\n}"
-                }
-            ],
             "projects/tikal-ui-components/src/lib/theme/tikal-theme.ts": [
                 {
                     "name": "TikalTheme",
@@ -639,19 +615,9 @@
         "children": []
     },
     "coverage": {
-        "count": 7,
+        "count": 8,
         "status": "low",
         "files": [
-            {
-                "filePath": "projects/tikal-ui-components/.storybook/preview.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "preview",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
             {
                 "filePath": "projects/tikal-ui-components/src/lib/components/button/button.ts",
                 "type": "component",
