@@ -1,0 +1,57 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: Storybook CI/CD
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - TikalComponents/**
+  pull_request:
+    types: [ opened, synchronize, reopened ]
+    paths:
+      - TikalComponents/**
+
+jobs:
+  format:
+    name: Format
+    uses: ./.github/workflows/node-format.yaml
+    with:
+      project-directory: TikalComponents
+      node-version: 24
+
+  lint:
+    name: Lint
+    uses: ./.github/workflows/node-lint.yaml
+    with:
+      project-directory: TikalComponents
+      node-version: 24
+
+  unit-test:
+    name: Unit Test
+    needs: [ format, lint ]
+    uses: ./.github/workflows/node-playwright-test.yaml
+    with:
+      project-directory: TikalComponents
+      node-version: 24
+
+  sonar-scan:
+    name: SonarQube Scan
+    needs: unit-test
+    uses: ./.github/workflows/node-sonar-scan.yaml
+    with:
+      project-directory: TikalComponents
+    secrets:
+      SONAR_TOKEN: ${{ secrets.TIKAL_COMPONENTS_SONAR_TOKEN }}
+
+  release:
+    name: Release
+    needs: sonar-scan
+    permissions:
+      contents: write
+    if: github.ref == 'refs/heads/main'
+    uses: ./.github/workflows/shared-create-release.yaml
+    with:
+      project-directory: TikalComponents
+      project-name: tikal-components
