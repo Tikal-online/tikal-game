@@ -46,3 +46,4 @@ Thumbs.db
 public/
 .editorconfig
 .env.*
+**/documentation.json

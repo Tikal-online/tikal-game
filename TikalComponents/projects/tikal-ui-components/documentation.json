@@ -1,739 +1,755 @@
 {
-  "pipes": [
-    {
-      "name": "EnumMapPipe",
-      "id": "pipe-EnumMapPipe-ee472fe4420d39123254456003df7cc11778fc41b44303c35ede83da6a109757a030746c5649fe78af5d15bdda6dab6020ef09fbb58a9749bad3e7f50f2c5ba7",
-      "file": "projects/tikal-ui-components/src/pipes/enum-map.ts",
-      "type": "pipe",
-      "coverageIgnore": false,
-      "deprecated": false,
-      "deprecationMessage": "",
-      "description": "",
-      "rawdescription": "\n",
-      "properties": [],
-      "methods": [
+    "pipes": [
         {
-          "name": "transform",
-          "coverageIgnore": false,
-          "args": [
-            {
-              "name": "value",
-              "type": "unknown",
-              "optional": false,
-              "dotDotDotToken": false,
-              "deprecated": false,
-              "deprecationMessage": ""
-            },
-            {
-              "name": "enumMap",
-              "type": "object",
-              "optional": false,
-              "dotDotDotToken": false,
-              "deprecated": false,
-              "deprecationMessage": ""
-            },
-            {
-              "name": "defaultValue",
-              "type": "T",
-              "optional": true,
-              "dotDotDotToken": false,
-              "deprecated": false,
-              "deprecationMessage": ""
-            }
-          ],
-          "optional": false,
-          "returnType": "T",
-          "typeParameters": [],
-          "line": 7,
-          "deprecated": false,
-          "deprecationMessage": "",
-          "rawdescription": "\n",
-          "description": "",
-          "jsdoctags": [
-            {
-              "name": "value",
-              "type": "unknown",
-              "optional": false,
-              "dotDotDotToken": false,
-              "deprecated": false,
-              "deprecationMessage": "",
-              "tagName": {
-                "text": "param"
-              }
-            },
-            {
-              "name": "enumMap",
-              "type": "object",
-              "optional": false,
-              "dotDotDotToken": false,
-              "deprecated": false,
-              "deprecationMessage": "",
-              "tagName": {
-                "text": "param"
-              }
-            },
-            {
-              "name": "defaultValue",
-              "type": "T",
-              "optional": true,
-              "dotDotDotToken": false,
-              "deprecated": false,
-              "deprecationMessage": "",
-              "tagName": {
-                "text": "param"
-              }
-            }
-          ]
-        }
-      ],
-      "standalone": true,
-      "ngname": "enumMap",
-      "sourceCode": "import { Pipe, PipeTransform } from '@angular/core';\n\n@Pipe({\n  name: 'enumMap',\n})\nexport class EnumMapPipe<T> implements PipeTransform {\n  transform(value: unknown, enumMap: object, defaultValue?: T): T {\n    return enumMap[value as keyof typeof enumMap] ?? defaultValue ?? value;\n  }\n}\n",
-      "relationships": {
-        "incoming": [
-          {
-            "name": "ButtonComponent",
-            "type": "component"
-          }
-        ],
-        "outgoing": []
-      }
-    }
-  ],
-  "interfaces": [],
-  "injectables": [],
-  "guards": [],
-  "interceptors": [],
-  "classes": [],
-  "directives": [],
-  "components": [
-    {
-      "name": "ButtonComponent",
-      "id": "component-ButtonComponent-acb630ca73577338fa8c54b21748f203f254acc54a52f7f54dcb743cbb1fd43dc1aafad96a70a9d1ecd6fa0bb49b35230fb547c9bdb8376856f531dea385dcf2",
-      "file": "projects/tikal-ui-components/src/lib/components/button/button.ts",
-      "changeDetection": "ChangeDetectionStrategy.OnPush",
-      "encapsulation": [],
-      "entryComponents": [],
-      "inputs": [],
-      "outputs": [],
-      "providers": [],
-      "selector": "tikal-button",
-      "styleUrls": ["./button.scss"],
-      "styles": [],
-      "templateUrl": ["./button.html"],
-      "templateVariables": [],
-      "viewProviders": [],
-      "hostDirectives": [],
-      "inputsClass": [
-        {
-          "name": "colour",
-          "coverageIgnore": false,
-          "defaultValue": "ButtonColour.Primary",
-          "deprecated": false,
-          "deprecationMessage": "",
-          "type": "ButtonColour",
-          "indexKey": "",
-          "optional": false,
-          "description": "<p>What colour should the button be?</p>\n",
-          "line": 19,
-          "rawdescription": "\nWhat colour should the button be?",
-          "modifierKind": [148],
-          "required": false
-        },
-        {
-          "name": "icon",
-          "coverageIgnore": false,
-          "defaultValue": "''",
-          "deprecated": false,
-          "deprecationMessage": "",
-          "type": "string",
-          "indexKey": "",
-          "optional": false,
-          "description": "<p>What icon should the button display?</p>\n",
-          "line": 16,
-          "rawdescription": "\nWhat icon should the button display?",
-          "modifierKind": [148],
-          "required": false
-        },
-        {
-          "name": "isLoading",
-          "coverageIgnore": false,
-          "defaultValue": "false",
-          "deprecated": false,
-          "deprecationMessage": "",
-          "type": "boolean",
-          "indexKey": "",
-          "optional": false,
-          "description": "<p>Is the action related to the button currently running?</p>\n",
-          "line": 33,
-          "rawdescription": "\nIs the action related to the button currently running?",
-          "modifierKind": [148],
-          "required": false
-        },
-        {
-          "name": "label",
-          "coverageIgnore": false,
-          "deprecated": false,
-          "deprecationMessage": "",
-          "type": "string",
-          "indexKey": "",
-          "optional": false,
-          "description": "<p>What text should the button display?</p>\n",
-          "line": 30,
-          "rawdescription": "\nWhat text should the button display?",
-          "modifierKind": [148],
-          "required": false
-        },
-        {
-          "name": "outline",
-          "coverageIgnore": false,
-          "defaultValue": "false",
-          "deprecated": false,
-          "deprecationMessage": "",
-          "type": "boolean",
-          "indexKey": "",
-          "optional": false,
-          "description": "<p>Should the button have an outline?</p>\n",
-          "line": 36,
-          "rawdescription": "\nShould the button have an outline?",
-          "modifierKind": [148],
-          "required": false
-        },
-        {
-          "name": "size",
-          "coverageIgnore": false,
-          "defaultValue": "ButtonSize.Normal",
-          "deprecated": false,
-          "deprecationMessage": "",
-          "type": "ButtonSize",
-          "indexKey": "",
-          "optional": false,
-          "description": "<p>What size should the button be?</p>\n",
-          "line": 22,
-          "rawdescription": "\nWhat size should the button be?",
-          "modifierKind": [148],
-          "required": false
-        }
-      ],
-      "outputsClass": [],
-      "propertiesClass": [],
-      "methodsClass": [],
-      "coverageIgnore": false,
-      "deprecated": false,
-      "deprecationMessage": "",
-      "hostBindings": [],
-      "hostListeners": [],
-      "standalone": true,
-      "imports": [
-        {
-          "name": "ButtonModule",
-          "type": "module"
-        },
-        {
-          "name": "PIcon"
-        },
-        {
-          "name": "EnumMapPipe",
-          "type": "pipe"
-        },
-        {
-          "name": "Spinner"
-        }
-      ],
-      "description": "",
-      "rawdescription": "\n",
-      "type": "component",
-      "sourceCode": "import { Component, input, output } from '@angular/core';\nimport { PIcon, Spinner } from '@primeicons/angular';\nimport { ButtonModule } from 'primeng/button';\nimport { ButtonColour } from '../../enums/button-colour';\nimport { ButtonSize } from '../../enums/button-size';\nimport { EnumMapPipe } from '../../../pipes/enum-map';\n\n@Component({\n  selector: 'tikal-button',\n  imports: [ButtonModule, PIcon, EnumMapPipe, Spinner],\n  templateUrl: './button.html',\n  styleUrl: './button.scss',\n})\nexport class ButtonComponent {\n  /** What icon should the button display? */\n  readonly icon = input<string>('');\n\n  /** What colour should the button be? */\n  readonly colour = input<ButtonColour>(ButtonColour.Primary);\n\n  /** What size should the button be? */\n  readonly size = input<ButtonSize>(ButtonSize.Normal);\n\n  /** @ignore */\n  readonly sizeMap = {\n    normal: undefined,\n  };\n\n  /** What text should the button display? */\n  readonly label = input<string>();\n\n  /** Is the action related to the button currently running? */\n  readonly isLoading = input<boolean>(false);\n\n  /** Should the button have an outline? */\n  readonly outline = input<boolean>(false);\n\n  /** @ignore */\n  readonly clicked = output<void>();\n}\n",
-      "styleUrl": "./button.scss",
-      "assetsDirs": [],
-      "styleUrlsData": [
-        {
-          "data": "",
-          "styleUrl": "./button.scss"
-        }
-      ],
-      "stylesData": "",
-      "extends": [],
-      "relationships": {
-        "incoming": [],
-        "outgoing": [
-          {
-            "name": "ButtonModule",
-            "type": "module"
-          },
-          {
-            "name": "PIcon",
-            "type": "module"
-          },
-          {
             "name": "EnumMapPipe",
-            "type": "pipe"
-          },
-          {
-            "name": "Spinner",
-            "type": "module"
-          }
+            "id": "pipe-EnumMapPipe-ee472fe4420d39123254456003df7cc11778fc41b44303c35ede83da6a109757a030746c5649fe78af5d15bdda6dab6020ef09fbb58a9749bad3e7f50f2c5ba7",
+            "file": "projects/tikal-ui-components/src/pipes/enum-map.ts",
+            "type": "pipe",
+            "coverageIgnore": false,
+            "deprecated": false,
+            "deprecationMessage": "",
+            "description": "",
+            "rawdescription": "\n",
+            "properties": [],
+            "methods": [
+                {
+                    "name": "transform",
+                    "coverageIgnore": false,
+                    "args": [
+                        {
+                            "name": "value",
+                            "type": "unknown",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        },
+                        {
+                            "name": "enumMap",
+                            "type": "object",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        },
+                        {
+                            "name": "defaultValue",
+                            "type": "T",
+                            "optional": true,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "T",
+                    "typeParameters": [],
+                    "line": 7,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\n",
+                    "description": "",
+                    "jsdoctags": [
+                        {
+                            "name": "value",
+                            "type": "unknown",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        },
+                        {
+                            "name": "enumMap",
+                            "type": "object",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        },
+                        {
+                            "name": "defaultValue",
+                            "type": "T",
+                            "optional": true,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "standalone": true,
+            "ngname": "enumMap",
+            "sourceCode": "import { Pipe, PipeTransform } from '@angular/core';\n\n@Pipe({\n  name: 'enumMap',\n})\nexport class EnumMapPipe<T> implements PipeTransform {\n  transform(value: unknown, enumMap: object, defaultValue?: T): T {\n    return enumMap[value as keyof typeof enumMap] ?? defaultValue ?? value;\n  }\n}\n",
+            "relationships": {
+                "incoming": [
+                    {
+                        "name": "ButtonComponent",
+                        "type": "component"
+                    }
+                ],
+                "outgoing": []
+            }
+        }
+    ],
+    "interfaces": [],
+    "injectables": [],
+    "guards": [],
+    "interceptors": [],
+    "classes": [],
+    "directives": [],
+    "components": [
+        {
+            "name": "ButtonComponent",
+            "id": "component-ButtonComponent-acb630ca73577338fa8c54b21748f203f254acc54a52f7f54dcb743cbb1fd43dc1aafad96a70a9d1ecd6fa0bb49b35230fb547c9bdb8376856f531dea385dcf2",
+            "file": "projects/tikal-ui-components/src/lib/components/button/button.ts",
+            "changeDetection": "ChangeDetectionStrategy.OnPush",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "tikal-button",
+            "styleUrls": [
+                "./button.scss"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./button.html"
+            ],
+            "templateVariables": [],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [
+                {
+                    "name": "colour",
+                    "coverageIgnore": false,
+                    "defaultValue": "ButtonColour.Primary",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "ButtonColour",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>What colour should the button be?</p>\n",
+                    "line": 19,
+                    "rawdescription": "\nWhat colour should the button be?",
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                },
+                {
+                    "name": "icon",
+                    "coverageIgnore": false,
+                    "defaultValue": "''",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>What icon should the button display?</p>\n",
+                    "line": 16,
+                    "rawdescription": "\nWhat icon should the button display?",
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                },
+                {
+                    "name": "isLoading",
+                    "coverageIgnore": false,
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "boolean",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>Is the action related to the button currently running?</p>\n",
+                    "line": 33,
+                    "rawdescription": "\nIs the action related to the button currently running?",
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                },
+                {
+                    "name": "label",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>What text should the button display?</p>\n",
+                    "line": 30,
+                    "rawdescription": "\nWhat text should the button display?",
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                },
+                {
+                    "name": "outline",
+                    "coverageIgnore": false,
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "boolean",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>Should the button have an outline?</p>\n",
+                    "line": 36,
+                    "rawdescription": "\nShould the button have an outline?",
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                },
+                {
+                    "name": "size",
+                    "coverageIgnore": false,
+                    "defaultValue": "ButtonSize.Normal",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "ButtonSize",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>What size should the button be?</p>\n",
+                    "line": 22,
+                    "rawdescription": "\nWhat size should the button be?",
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                }
+            ],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [],
+            "coverageIgnore": false,
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [
+                {
+                    "name": "ButtonModule",
+                    "type": "module"
+                },
+                {
+                    "name": "PIcon"
+                },
+                {
+                    "name": "EnumMapPipe",
+                    "type": "pipe"
+                },
+                {
+                    "name": "Spinner"
+                }
+            ],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component, input, output } from '@angular/core';\nimport { PIcon, Spinner } from '@primeicons/angular';\nimport { ButtonModule } from 'primeng/button';\nimport { ButtonColour } from '../../enums/button-colour';\nimport { ButtonSize } from '../../enums/button-size';\nimport { EnumMapPipe } from '../../../pipes/enum-map';\n\n@Component({\n  selector: 'tikal-button',\n  imports: [ButtonModule, PIcon, EnumMapPipe, Spinner],\n  templateUrl: './button.html',\n  styleUrl: './button.scss',\n})\nexport class ButtonComponent {\n  /** What icon should the button display? */\n  readonly icon = input<string>('');\n\n  /** What colour should the button be? */\n  readonly colour = input<ButtonColour>(ButtonColour.Primary);\n\n  /** What size should the button be? */\n  readonly size = input<ButtonSize>(ButtonSize.Normal);\n\n  /** @ignore */\n  readonly sizeMap = {\n    normal: undefined,\n  };\n\n  /** What text should the button display? */\n  readonly label = input<string>();\n\n  /** Is the action related to the button currently running? */\n  readonly isLoading = input<boolean>(false);\n\n  /** Should the button have an outline? */\n  readonly outline = input<boolean>(false);\n\n  /** @ignore */\n  readonly clicked = output<void>();\n}\n",
+            "styleUrl": "./button.scss",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": "",
+                    "styleUrl": "./button.scss"
+                }
+            ],
+            "stylesData": "",
+            "extends": [],
+            "relationships": {
+                "incoming": [],
+                "outgoing": [
+                    {
+                        "name": "ButtonModule",
+                        "type": "module"
+                    },
+                    {
+                        "name": "PIcon",
+                        "type": "module"
+                    },
+                    {
+                        "name": "EnumMapPipe",
+                        "type": "pipe"
+                    },
+                    {
+                        "name": "Spinner",
+                        "type": "module"
+                    }
+                ]
+            },
+            "templateData": "<button\n  pButton\n  type=\"button\"\n  [disabled]=\"isLoading()\"\n  [iconOnly]=\"!label()\"\n  [outlined]=\"outline()\"\n  [severity]=\"colour()\"\n  [size]=\"size() | enumMap: sizeMap\"\n  (click)=\"clicked.emit()\"\n>\n  @if (isLoading()) {\n    <svg data-p-icon=\"spinner\" [spin]=\"true\"></svg>\n  } @else if (icon()) {\n    <svg [pIcon]=\"icon()\"></svg>\n  }\n  {{ label() }}\n</button>\n"
+        }
+    ],
+    "modules": [],
+    "miscellaneous": {
+        "variables": [
+            {
+                "name": "IconOnly",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/tikal-ui-components/src/stories/button.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n  name: 'Icon only',\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    label: '',\n    icon: 'check',\n    isLoading: false,\n    outline: false,\n  },\n}"
+            },
+            {
+                "name": "IconOnlyLoading",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/tikal-ui-components/src/stories/button.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n  name: 'Icon only loading',\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    label: '',\n    icon: 'check',\n    isLoading: true,\n    outline: false,\n  },\n}"
+            },
+            {
+                "name": "meta",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/tikal-ui-components/src/stories/button.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Meta<ButtonComponent>",
+                "defaultValue": "{\n  title: 'Atoms/Button',\n  component: ButtonComponent,\n  tags: ['autodocs'],\n  argTypes: {\n    colour: {\n      control: { type: 'select' },\n    },\n    size: {\n      control: { type: 'select' },\n    },\n  },\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    label: 'Button',\n    icon: 'check',\n    isLoading: false,\n    outline: false,\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n    moduleMetadata({\n      declarations: [],\n      imports: [],\n    }),\n  ],\n}"
+            },
+            {
+                "name": "preview",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/tikal-ui-components/.storybook/preview.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Preview",
+                "defaultValue": "{\n  decorators: [\n    applicationConfig({\n      providers: [\n        provideZonelessChangeDetection(),\n        providePrimeNG({\n          license: import.meta.env['STORYBOOK_PRIMENG_LICENSE'],\n          theme: {\n            preset: TikalTheme,\n            options: {\n              darkModeSelector: '.dark',\n            },\n          },\n        }),\n      ],\n    }),\n    withThemeByClassName<AngularRenderer>({\n      themes: {\n        light: '',\n        dark: 'dark',\n      },\n      defaultTheme: 'light',\n    }),\n  ],\n\n  parameters: {\n    controls: {\n      matchers: {\n        color: /(background|color)$/i,\n        date: /Date$/i,\n      },\n    },\n\n    a11y: {\n      // 'todo' - show a11y violations in the test UI only\n      // 'error' - fail CI on a11y violations\n      // 'off' - skip a11y checks entirely\n      test: 'todo',\n    },\n  },\n}"
+            },
+            {
+                "name": "PrimaryWithIcon",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/tikal-ui-components/src/stories/button.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n  name: 'Icon and text',\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    label: 'Button',\n    icon: 'check',\n    isLoading: false,\n    outline: false,\n  },\n}"
+            },
+            {
+                "name": "Textoading",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/tikal-ui-components/src/stories/button.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n  name: 'Text loading',\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    label: 'Button',\n    icon: '',\n    isLoading: true,\n    outline: false,\n  },\n}"
+            },
+            {
+                "name": "TextOnly",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/tikal-ui-components/src/stories/button.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n  name: 'Text only',\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    label: 'Button',\n    icon: '',\n    isLoading: false,\n    outline: false,\n  },\n}"
+            },
+            {
+                "name": "TikalTheme",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/tikal-ui-components/src/lib/theme/tikal-theme.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "unknown",
+                "defaultValue": "definePreset(Aura, {\n  semantic: {\n    primary: {\n      50: '{surface.50}',\n      100: '{surface.100}',\n      200: '{surface.200}',\n      300: '{surface.300}',\n      400: '{surface.400}',\n      500: '{surface.500}',\n      600: '{surface.600}',\n      700: '{surface.700}',\n      800: '{surface.800}',\n      900: '{surface.900}',\n      950: '{surface.950}',\n      color: 'light-dark({primary.950}, {primary.50})',\n      contrastColor: 'light-dark(#ffffff, {primary.950})',\n      hoverColor: 'light-dark({primary.800}, {primary.200})',\n      activeColor: 'light-dark({primary.700}, {primary.300})',\n    },\n    highlight: {\n      background: 'light-dark({primary.950}, {primary.50})',\n      focusBackground: 'light-dark({primary.700}, {primary.300})',\n      color: 'light-dark(#ffffff, {primary.950})',\n      focusColor: 'light-dark(#ffffff, {primary.950})',\n    },\n  },\n})"
+            }
+        ],
+        "functions": [],
+        "typealiases": [
+            {
+                "name": "Story",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "coverageIgnore": false,
+                "rawtype": "StoryObj<ButtonComponent>",
+                "file": "projects/tikal-ui-components/src/stories/button.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "rawdescription": "",
+                "description": "",
+                "kind": 184
+            }
+        ],
+        "enumerations": [
+            {
+                "name": "ButtonColour",
+                "childs": [
+                    {
+                        "name": "Primary",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "value": "primary"
+                    },
+                    {
+                        "name": "Secondary",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "value": "secondary"
+                    }
+                ],
+                "ctype": "miscellaneous",
+                "subtype": "enum",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "rawdescription": "",
+                "description": "",
+                "file": "projects/tikal-ui-components/src/lib/enums/button-colour.ts"
+            },
+            {
+                "name": "ButtonSize",
+                "childs": [
+                    {
+                        "name": "Small",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "value": "small"
+                    },
+                    {
+                        "name": "Normal",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "value": "normal"
+                    },
+                    {
+                        "name": "Large",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "value": "large"
+                    }
+                ],
+                "ctype": "miscellaneous",
+                "subtype": "enum",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "rawdescription": "",
+                "description": "",
+                "file": "projects/tikal-ui-components/src/lib/enums/button-size.ts"
+            }
+        ],
+        "groupedVariables": {
+            "projects/tikal-ui-components/src/stories/button.stories.ts": [
+                {
+                    "name": "IconOnly",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/tikal-ui-components/src/stories/button.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n  name: 'Icon only',\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    label: '',\n    icon: 'check',\n    isLoading: false,\n    outline: false,\n  },\n}"
+                },
+                {
+                    "name": "IconOnlyLoading",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/tikal-ui-components/src/stories/button.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n  name: 'Icon only loading',\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    label: '',\n    icon: 'check',\n    isLoading: true,\n    outline: false,\n  },\n}"
+                },
+                {
+                    "name": "meta",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/tikal-ui-components/src/stories/button.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Meta<ButtonComponent>",
+                    "defaultValue": "{\n  title: 'Atoms/Button',\n  component: ButtonComponent,\n  tags: ['autodocs'],\n  argTypes: {\n    colour: {\n      control: { type: 'select' },\n    },\n    size: {\n      control: { type: 'select' },\n    },\n  },\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    label: 'Button',\n    icon: 'check',\n    isLoading: false,\n    outline: false,\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n    moduleMetadata({\n      declarations: [],\n      imports: [],\n    }),\n  ],\n}"
+                },
+                {
+                    "name": "PrimaryWithIcon",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/tikal-ui-components/src/stories/button.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n  name: 'Icon and text',\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    label: 'Button',\n    icon: 'check',\n    isLoading: false,\n    outline: false,\n  },\n}"
+                },
+                {
+                    "name": "Textoading",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/tikal-ui-components/src/stories/button.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n  name: 'Text loading',\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    label: 'Button',\n    icon: '',\n    isLoading: true,\n    outline: false,\n  },\n}"
+                },
+                {
+                    "name": "TextOnly",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/tikal-ui-components/src/stories/button.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n  name: 'Text only',\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    label: 'Button',\n    icon: '',\n    isLoading: false,\n    outline: false,\n  },\n}"
+                }
+            ],
+            "projects/tikal-ui-components/.storybook/preview.ts": [
+                {
+                    "name": "preview",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/tikal-ui-components/.storybook/preview.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Preview",
+                    "defaultValue": "{\n  decorators: [\n    applicationConfig({\n      providers: [\n        provideZonelessChangeDetection(),\n        providePrimeNG({\n          license: import.meta.env['STORYBOOK_PRIMENG_LICENSE'],\n          theme: {\n            preset: TikalTheme,\n            options: {\n              darkModeSelector: '.dark',\n            },\n          },\n        }),\n      ],\n    }),\n    withThemeByClassName<AngularRenderer>({\n      themes: {\n        light: '',\n        dark: 'dark',\n      },\n      defaultTheme: 'light',\n    }),\n  ],\n\n  parameters: {\n    controls: {\n      matchers: {\n        color: /(background|color)$/i,\n        date: /Date$/i,\n      },\n    },\n\n    a11y: {\n      // 'todo' - show a11y violations in the test UI only\n      // 'error' - fail CI on a11y violations\n      // 'off' - skip a11y checks entirely\n      test: 'todo',\n    },\n  },\n}"
+                }
+            ],
+            "projects/tikal-ui-components/src/lib/theme/tikal-theme.ts": [
+                {
+                    "name": "TikalTheme",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/tikal-ui-components/src/lib/theme/tikal-theme.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "defaultValue": "definePreset(Aura, {\n  semantic: {\n    primary: {\n      50: '{surface.50}',\n      100: '{surface.100}',\n      200: '{surface.200}',\n      300: '{surface.300}',\n      400: '{surface.400}',\n      500: '{surface.500}',\n      600: '{surface.600}',\n      700: '{surface.700}',\n      800: '{surface.800}',\n      900: '{surface.900}',\n      950: '{surface.950}',\n      color: 'light-dark({primary.950}, {primary.50})',\n      contrastColor: 'light-dark(#ffffff, {primary.950})',\n      hoverColor: 'light-dark({primary.800}, {primary.200})',\n      activeColor: 'light-dark({primary.700}, {primary.300})',\n    },\n    highlight: {\n      background: 'light-dark({primary.950}, {primary.50})',\n      focusBackground: 'light-dark({primary.700}, {primary.300})',\n      color: 'light-dark(#ffffff, {primary.950})',\n      focusColor: 'light-dark(#ffffff, {primary.950})',\n    },\n  },\n})"
+                }
+            ]
+        },
+        "groupedFunctions": {},
+        "groupedEnumerations": {
+            "projects/tikal-ui-components/src/lib/enums/button-colour.ts": [
+                {
+                    "name": "ButtonColour",
+                    "childs": [
+                        {
+                            "name": "Primary",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "value": "primary"
+                        },
+                        {
+                            "name": "Secondary",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "value": "secondary"
+                        }
+                    ],
+                    "ctype": "miscellaneous",
+                    "subtype": "enum",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "",
+                    "description": "",
+                    "file": "projects/tikal-ui-components/src/lib/enums/button-colour.ts"
+                }
+            ],
+            "projects/tikal-ui-components/src/lib/enums/button-size.ts": [
+                {
+                    "name": "ButtonSize",
+                    "childs": [
+                        {
+                            "name": "Small",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "value": "small"
+                        },
+                        {
+                            "name": "Normal",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "value": "normal"
+                        },
+                        {
+                            "name": "Large",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "value": "large"
+                        }
+                    ],
+                    "ctype": "miscellaneous",
+                    "subtype": "enum",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "",
+                    "description": "",
+                    "file": "projects/tikal-ui-components/src/lib/enums/button-size.ts"
+                }
+            ]
+        },
+        "groupedTypeAliases": {
+            "projects/tikal-ui-components/src/stories/button.stories.ts": [
+                {
+                    "name": "Story",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "coverageIgnore": false,
+                    "rawtype": "StoryObj<ButtonComponent>",
+                    "file": "projects/tikal-ui-components/src/stories/button.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "",
+                    "description": "",
+                    "kind": 184
+                }
+            ]
+        }
+    },
+    "routes": {
+        "name": "<root>",
+        "kind": "module",
+        "children": []
+    },
+    "coverage": {
+        "count": 7,
+        "status": "low",
+        "files": [
+            {
+                "filePath": "projects/tikal-ui-components/.storybook/preview.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "preview",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/lib/components/button/button.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "ButtonComponent",
+                "coveragePercent": 85,
+                "coverageCount": "6/7",
+                "status": "very-good"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/lib/theme/tikal-theme.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "TikalTheme",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/pipes/enum-map.ts",
+                "type": "pipe",
+                "linktype": "pipe",
+                "name": "EnumMapPipe",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/stories/button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "IconOnly",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/stories/button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "IconOnlyLoading",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/stories/button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "meta",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/stories/button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "PrimaryWithIcon",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/stories/button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Textoading",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/stories/button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "TextOnly",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/stories/button.stories.ts",
+                "type": "type alias",
+                "linktype": "miscellaneous",
+                "linksubtype": "typealias",
+                "name": "Story",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            }
         ]
-      },
-      "templateData": "<button\n  pButton\n  type=\"button\"\n  [disabled]=\"isLoading()\"\n  [iconOnly]=\"!label()\"\n  [outlined]=\"outline()\"\n  [severity]=\"colour()\"\n  [size]=\"size() | enumMap: sizeMap\"\n  (click)=\"clicked.emit()\"\n>\n  @if (isLoading()) {\n    <svg data-p-icon=\"spinner\" [spin]=\"true\"></svg>\n  } @else if (icon()) {\n    <svg [pIcon]=\"icon()\"></svg>\n  }\n  {{ label() }}\n</button>\n"
     }
-  ],
-  "modules": [],
-  "miscellaneous": {
-    "variables": [
-      {
-        "name": "IconOnly",
-        "ctype": "miscellaneous",
-        "subtype": "variable",
-        "file": "projects/tikal-ui-components/src/stories/button.stories.ts",
-        "coverageIgnore": false,
-        "deprecated": false,
-        "deprecationMessage": "",
-        "type": "Story",
-        "defaultValue": "{\n  name: 'Icon only',\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    label: '',\n    icon: 'check',\n    isLoading: false,\n    outline: false,\n  },\n}"
-      },
-      {
-        "name": "IconOnlyLoading",
-        "ctype": "miscellaneous",
-        "subtype": "variable",
-        "file": "projects/tikal-ui-components/src/stories/button.stories.ts",
-        "coverageIgnore": false,
-        "deprecated": false,
-        "deprecationMessage": "",
-        "type": "Story",
-        "defaultValue": "{\n  name: 'Icon only loading',\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    label: '',\n    icon: 'check',\n    isLoading: true,\n    outline: false,\n  },\n}"
-      },
-      {
-        "name": "meta",
-        "ctype": "miscellaneous",
-        "subtype": "variable",
-        "file": "projects/tikal-ui-components/src/stories/button.stories.ts",
-        "coverageIgnore": false,
-        "deprecated": false,
-        "deprecationMessage": "",
-        "type": "Meta<ButtonComponent>",
-        "defaultValue": "{\n  title: 'Atoms/Button',\n  component: ButtonComponent,\n  tags: ['autodocs'],\n  argTypes: {\n    colour: {\n      control: { type: 'select' },\n    },\n    size: {\n      control: { type: 'select' },\n    },\n  },\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    label: 'Button',\n    icon: 'check',\n    isLoading: false,\n    outline: false,\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n    moduleMetadata({\n      declarations: [],\n      imports: [],\n    }),\n  ],\n}"
-      },
-      {
-        "name": "preview",
-        "ctype": "miscellaneous",
-        "subtype": "variable",
-        "file": "projects/tikal-ui-components/.storybook/preview.ts",
-        "coverageIgnore": false,
-        "deprecated": false,
-        "deprecationMessage": "",
-        "type": "Preview",
-        "defaultValue": "{\n  decorators: [\n    applicationConfig({\n      providers: [\n        provideZonelessChangeDetection(),\n        providePrimeNG({\n          license: import.meta.env['STORYBOOK_PRIMENG_LICENSE'],\n          theme: {\n            preset: TikalTheme,\n            options: {\n              darkModeSelector: '.dark',\n            },\n          },\n        }),\n      ],\n    }),\n    withThemeByClassName<AngularRenderer>({\n      themes: {\n        light: '',\n        dark: 'dark',\n      },\n      defaultTheme: 'light',\n    }),\n  ],\n\n  parameters: {\n    controls: {\n      matchers: {\n        color: /(background|color)$/i,\n        date: /Date$/i,\n      },\n    },\n\n    a11y: {\n      // 'todo' - show a11y violations in the test UI only\n      // 'error' - fail CI on a11y violations\n      // 'off' - skip a11y checks entirely\n      test: 'todo',\n    },\n  },\n}"
-      },
-      {
-        "name": "PrimaryWithIcon",
-        "ctype": "miscellaneous",
-        "subtype": "variable",
-        "file": "projects/tikal-ui-components/src/stories/button.stories.ts",
-        "coverageIgnore": false,
-        "deprecated": false,
-        "deprecationMessage": "",
-        "type": "Story",
-        "defaultValue": "{\n  name: 'Icon and text',\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    label: 'Button',\n    icon: 'check',\n    isLoading: false,\n    outline: false,\n  },\n}"
-      },
-      {
-        "name": "Textoading",
-        "ctype": "miscellaneous",
-        "subtype": "variable",
-        "file": "projects/tikal-ui-components/src/stories/button.stories.ts",
-        "coverageIgnore": false,
-        "deprecated": false,
-        "deprecationMessage": "",
-        "type": "Story",
-        "defaultValue": "{\n  name: 'Text loading',\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    label: 'Button',\n    icon: '',\n    isLoading: true,\n    outline: false,\n  },\n}"
-      },
-      {
-        "name": "TextOnly",
-        "ctype": "miscellaneous",
-        "subtype": "variable",
-        "file": "projects/tikal-ui-components/src/stories/button.stories.ts",
-        "coverageIgnore": false,
-        "deprecated": false,
-        "deprecationMessage": "",
-        "type": "Story",
-        "defaultValue": "{\n  name: 'Text only',\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    label: 'Button',\n    icon: '',\n    isLoading: false,\n    outline: false,\n  },\n}"
-      },
-      {
-        "name": "TikalTheme",
-        "ctype": "miscellaneous",
-        "subtype": "variable",
-        "file": "projects/tikal-ui-components/src/lib/theme/tikal-theme.ts",
-        "coverageIgnore": false,
-        "deprecated": false,
-        "deprecationMessage": "",
-        "type": "unknown",
-        "defaultValue": "definePreset(Aura, {\n  semantic: {\n    primary: {\n      50: '{surface.50}',\n      100: '{surface.100}',\n      200: '{surface.200}',\n      300: '{surface.300}',\n      400: '{surface.400}',\n      500: '{surface.500}',\n      600: '{surface.600}',\n      700: '{surface.700}',\n      800: '{surface.800}',\n      900: '{surface.900}',\n      950: '{surface.950}',\n      color: 'light-dark({primary.950}, {primary.50})',\n      contrastColor: 'light-dark(#ffffff, {primary.950})',\n      hoverColor: 'light-dark({primary.800}, {primary.200})',\n      activeColor: 'light-dark({primary.700}, {primary.300})',\n    },\n    highlight: {\n      background: 'light-dark({primary.950}, {primary.50})',\n      focusBackground: 'light-dark({primary.700}, {primary.300})',\n      color: 'light-dark(#ffffff, {primary.950})',\n      focusColor: 'light-dark(#ffffff, {primary.950})',\n    },\n  },\n})"
-      }
-    ],
-    "functions": [],
-    "typealiases": [
-      {
-        "name": "Story",
-        "ctype": "miscellaneous",
-        "subtype": "typealias",
-        "coverageIgnore": false,
-        "rawtype": "StoryObj<ButtonComponent>",
-        "file": "projects/tikal-ui-components/src/stories/button.stories.ts",
-        "deprecated": false,
-        "deprecationMessage": "",
-        "rawdescription": "",
-        "description": "",
-        "kind": 184
-      }
-    ],
-    "enumerations": [
-      {
-        "name": "ButtonColour",
-        "childs": [
-          {
-            "name": "Primary",
-            "deprecated": false,
-            "deprecationMessage": "",
-            "value": "primary"
-          },
-          {
-            "name": "Secondary",
-            "deprecated": false,
-            "deprecationMessage": "",
-            "value": "secondary"
-          }
-        ],
-        "ctype": "miscellaneous",
-        "subtype": "enum",
-        "deprecated": false,
-        "deprecationMessage": "",
-        "rawdescription": "",
-        "description": "",
-        "file": "projects/tikal-ui-components/src/lib/enums/button-colour.ts"
-      },
-      {
-        "name": "ButtonSize",
-        "childs": [
-          {
-            "name": "Small",
-            "deprecated": false,
-            "deprecationMessage": "",
-            "value": "small"
-          },
-          {
-            "name": "Normal",
-            "deprecated": false,
-            "deprecationMessage": "",
-            "value": "normal"
-          },
-          {
-            "name": "Large",
-            "deprecated": false,
-            "deprecationMessage": "",
-            "value": "large"
-          }
-        ],
-        "ctype": "miscellaneous",
-        "subtype": "enum",
-        "deprecated": false,
-        "deprecationMessage": "",
-        "rawdescription": "",
-        "description": "",
-        "file": "projects/tikal-ui-components/src/lib/enums/button-size.ts"
-      }
-    ],
-    "groupedVariables": {
-      "projects/tikal-ui-components/src/stories/button.stories.ts": [
-        {
-          "name": "IconOnly",
-          "ctype": "miscellaneous",
-          "subtype": "variable",
-          "file": "projects/tikal-ui-components/src/stories/button.stories.ts",
-          "coverageIgnore": false,
-          "deprecated": false,
-          "deprecationMessage": "",
-          "type": "Story",
-          "defaultValue": "{\n  name: 'Icon only',\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    label: '',\n    icon: 'check',\n    isLoading: false,\n    outline: false,\n  },\n}"
-        },
-        {
-          "name": "IconOnlyLoading",
-          "ctype": "miscellaneous",
-          "subtype": "variable",
-          "file": "projects/tikal-ui-components/src/stories/button.stories.ts",
-          "coverageIgnore": false,
-          "deprecated": false,
-          "deprecationMessage": "",
-          "type": "Story",
-          "defaultValue": "{\n  name: 'Icon only loading',\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    label: '',\n    icon: 'check',\n    isLoading: true,\n    outline: false,\n  },\n}"
-        },
-        {
-          "name": "meta",
-          "ctype": "miscellaneous",
-          "subtype": "variable",
-          "file": "projects/tikal-ui-components/src/stories/button.stories.ts",
-          "coverageIgnore": false,
-          "deprecated": false,
-          "deprecationMessage": "",
-          "type": "Meta<ButtonComponent>",
-          "defaultValue": "{\n  title: 'Atoms/Button',\n  component: ButtonComponent,\n  tags: ['autodocs'],\n  argTypes: {\n    colour: {\n      control: { type: 'select' },\n    },\n    size: {\n      control: { type: 'select' },\n    },\n  },\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    label: 'Button',\n    icon: 'check',\n    isLoading: false,\n    outline: false,\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n    moduleMetadata({\n      declarations: [],\n      imports: [],\n    }),\n  ],\n}"
-        },
-        {
-          "name": "PrimaryWithIcon",
-          "ctype": "miscellaneous",
-          "subtype": "variable",
-          "file": "projects/tikal-ui-components/src/stories/button.stories.ts",
-          "coverageIgnore": false,
-          "deprecated": false,
-          "deprecationMessage": "",
-          "type": "Story",
-          "defaultValue": "{\n  name: 'Icon and text',\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    label: 'Button',\n    icon: 'check',\n    isLoading: false,\n    outline: false,\n  },\n}"
-        },
-        {
-          "name": "Textoading",
-          "ctype": "miscellaneous",
-          "subtype": "variable",
-          "file": "projects/tikal-ui-components/src/stories/button.stories.ts",
-          "coverageIgnore": false,
-          "deprecated": false,
-          "deprecationMessage": "",
-          "type": "Story",
-          "defaultValue": "{\n  name: 'Text loading',\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    label: 'Button',\n    icon: '',\n    isLoading: true,\n    outline: false,\n  },\n}"
-        },
-        {
-          "name": "TextOnly",
-          "ctype": "miscellaneous",
-          "subtype": "variable",
-          "file": "projects/tikal-ui-components/src/stories/button.stories.ts",
-          "coverageIgnore": false,
-          "deprecated": false,
-          "deprecationMessage": "",
-          "type": "Story",
-          "defaultValue": "{\n  name: 'Text only',\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    label: 'Button',\n    icon: '',\n    isLoading: false,\n    outline: false,\n  },\n}"
-        }
-      ],
-      "projects/tikal-ui-components/.storybook/preview.ts": [
-        {
-          "name": "preview",
-          "ctype": "miscellaneous",
-          "subtype": "variable",
-          "file": "projects/tikal-ui-components/.storybook/preview.ts",
-          "coverageIgnore": false,
-          "deprecated": false,
-          "deprecationMessage": "",
-          "type": "Preview",
-          "defaultValue": "{\n  decorators: [\n    applicationConfig({\n      providers: [\n        provideZonelessChangeDetection(),\n        providePrimeNG({\n          license: import.meta.env['STORYBOOK_PRIMENG_LICENSE'],\n          theme: {\n            preset: TikalTheme,\n            options: {\n              darkModeSelector: '.dark',\n            },\n          },\n        }),\n      ],\n    }),\n    withThemeByClassName<AngularRenderer>({\n      themes: {\n        light: '',\n        dark: 'dark',\n      },\n      defaultTheme: 'light',\n    }),\n  ],\n\n  parameters: {\n    controls: {\n      matchers: {\n        color: /(background|color)$/i,\n        date: /Date$/i,\n      },\n    },\n\n    a11y: {\n      // 'todo' - show a11y violations in the test UI only\n      // 'error' - fail CI on a11y violations\n      // 'off' - skip a11y checks entirely\n      test: 'todo',\n    },\n  },\n}"
-        }
-      ],
-      "projects/tikal-ui-components/src/lib/theme/tikal-theme.ts": [
-        {
-          "name": "TikalTheme",
-          "ctype": "miscellaneous",
-          "subtype": "variable",
-          "file": "projects/tikal-ui-components/src/lib/theme/tikal-theme.ts",
-          "coverageIgnore": false,
-          "deprecated": false,
-          "deprecationMessage": "",
-          "type": "unknown",
-          "defaultValue": "definePreset(Aura, {\n  semantic: {\n    primary: {\n      50: '{surface.50}',\n      100: '{surface.100}',\n      200: '{surface.200}',\n      300: '{surface.300}',\n      400: '{surface.400}',\n      500: '{surface.500}',\n      600: '{surface.600}',\n      700: '{surface.700}',\n      800: '{surface.800}',\n      900: '{surface.900}',\n      950: '{surface.950}',\n      color: 'light-dark({primary.950}, {primary.50})',\n      contrastColor: 'light-dark(#ffffff, {primary.950})',\n      hoverColor: 'light-dark({primary.800}, {primary.200})',\n      activeColor: 'light-dark({primary.700}, {primary.300})',\n    },\n    highlight: {\n      background: 'light-dark({primary.950}, {primary.50})',\n      focusBackground: 'light-dark({primary.700}, {primary.300})',\n      color: 'light-dark(#ffffff, {primary.950})',\n      focusColor: 'light-dark(#ffffff, {primary.950})',\n    },\n  },\n})"
-        }
-      ]
-    },
-    "groupedFunctions": {},
-    "groupedEnumerations": {
-      "projects/tikal-ui-components/src/lib/enums/button-colour.ts": [
-        {
-          "name": "ButtonColour",
-          "childs": [
-            {
-              "name": "Primary",
-              "deprecated": false,
-              "deprecationMessage": "",
-              "value": "primary"
-            },
-            {
-              "name": "Secondary",
-              "deprecated": false,
-              "deprecationMessage": "",
-              "value": "secondary"
-            }
-          ],
-          "ctype": "miscellaneous",
-          "subtype": "enum",
-          "deprecated": false,
-          "deprecationMessage": "",
-          "rawdescription": "",
-          "description": "",
-          "file": "projects/tikal-ui-components/src/lib/enums/button-colour.ts"
-        }
-      ],
-      "projects/tikal-ui-components/src/lib/enums/button-size.ts": [
-        {
-          "name": "ButtonSize",
-          "childs": [
-            {
-              "name": "Small",
-              "deprecated": false,
-              "deprecationMessage": "",
-              "value": "small"
-            },
-            {
-              "name": "Normal",
-              "deprecated": false,
-              "deprecationMessage": "",
-              "value": "normal"
-            },
-            {
-              "name": "Large",
-              "deprecated": false,
-              "deprecationMessage": "",
-              "value": "large"
-            }
-          ],
-          "ctype": "miscellaneous",
-          "subtype": "enum",
-          "deprecated": false,
-          "deprecationMessage": "",
-          "rawdescription": "",
-          "description": "",
-          "file": "projects/tikal-ui-components/src/lib/enums/button-size.ts"
-        }
-      ]
-    },
-    "groupedTypeAliases": {
-      "projects/tikal-ui-components/src/stories/button.stories.ts": [
-        {
-          "name": "Story",
-          "ctype": "miscellaneous",
-          "subtype": "typealias",
-          "coverageIgnore": false,
-          "rawtype": "StoryObj<ButtonComponent>",
-          "file": "projects/tikal-ui-components/src/stories/button.stories.ts",
-          "deprecated": false,
-          "deprecationMessage": "",
-          "rawdescription": "",
-          "description": "",
-          "kind": 184
-        }
-      ]
-    }
-  },
-  "routes": {
-    "name": "<root>",
-    "kind": "module",
-    "children": []
-  },
-  "coverage": {
-    "count": 7,
-    "status": "low",
-    "files": [
-      {
-        "filePath": "projects/tikal-ui-components/.storybook/preview.ts",
-        "type": "variable",
-        "linktype": "miscellaneous",
-        "linksubtype": "variable",
-        "name": "preview",
-        "coveragePercent": 0,
-        "coverageCount": "0/1",
-        "status": "low"
-      },
-      {
-        "filePath": "projects/tikal-ui-components/src/lib/components/button/button.ts",
-        "type": "component",
-        "linktype": "component",
-        "name": "ButtonComponent",
-        "coveragePercent": 85,
-        "coverageCount": "6/7",
-        "status": "very-good"
-      },
-      {
-        "filePath": "projects/tikal-ui-components/src/lib/theme/tikal-theme.ts",
-        "type": "variable",
-        "linktype": "miscellaneous",
-        "linksubtype": "variable",
-        "name": "TikalTheme",
-        "coveragePercent": 0,
-        "coverageCount": "0/1",
-        "status": "low"
-      },
-      {
-        "filePath": "projects/tikal-ui-components/src/pipes/enum-map.ts",
-        "type": "pipe",
-        "linktype": "pipe",
-        "name": "EnumMapPipe",
-        "coveragePercent": 0,
-        "coverageCount": "0/1",
-        "status": "low"
-      },
-      {
-        "filePath": "projects/tikal-ui-components/src/stories/button.stories.ts",
-        "type": "variable",
-        "linktype": "miscellaneous",
-        "linksubtype": "variable",
-        "name": "IconOnly",
-        "coveragePercent": 0,
-        "coverageCount": "0/1",
-        "status": "low"
-      },
-      {
-        "filePath": "projects/tikal-ui-components/src/stories/button.stories.ts",
-        "type": "variable",
-        "linktype": "miscellaneous",
-        "linksubtype": "variable",
-        "name": "IconOnlyLoading",
-        "coveragePercent": 0,
-        "coverageCount": "0/1",
-        "status": "low"
-      },
-      {
-        "filePath": "projects/tikal-ui-components/src/stories/button.stories.ts",
-        "type": "variable",
-        "linktype": "miscellaneous",
-        "linksubtype": "variable",
-        "name": "meta",
-        "coveragePercent": 0,
-        "coverageCount": "0/1",
-        "status": "low"
-      },
-      {
-        "filePath": "projects/tikal-ui-components/src/stories/button.stories.ts",
-        "type": "variable",
-        "linktype": "miscellaneous",
-        "linksubtype": "variable",
-        "name": "PrimaryWithIcon",
-        "coveragePercent": 0,
-        "coverageCount": "0/1",
-        "status": "low"
-      },
-      {
-        "filePath": "projects/tikal-ui-components/src/stories/button.stories.ts",
-        "type": "variable",
-        "linktype": "miscellaneous",
-        "linksubtype": "variable",
-        "name": "Textoading",
-        "coveragePercent": 0,
-        "coverageCount": "0/1",
-        "status": "low"
-      },
-      {
-        "filePath": "projects/tikal-ui-components/src/stories/button.stories.ts",
-        "type": "variable",
-        "linktype": "miscellaneous",
-        "linksubtype": "variable",
-        "name": "TextOnly",
-        "coveragePercent": 0,
-        "coverageCount": "0/1",
-        "status": "low"
-      },
-      {
-        "filePath": "projects/tikal-ui-components/src/stories/button.stories.ts",
-        "type": "type alias",
-        "linktype": "miscellaneous",
-        "linksubtype": "typealias",
-        "name": "Story",
-        "coveragePercent": 0,
-        "coverageCount": "0/1",
-        "status": "low"
-      }
-    ]
-  }
 }
