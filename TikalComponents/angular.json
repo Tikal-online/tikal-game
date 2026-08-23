@@ -3,7 +3,8 @@
   "version": 1,
   "cli": {
     "packageManager": "npm",
-    "analytics": false
+    "analytics": false,
+    "schematicCollections": ["angular-eslint"]
   },
   "newProjectRoot": "projects",
   "projects": {
@@ -50,6 +51,15 @@
             "browserTarget": "tikal-ui-components:build",
             "outputDir": "storybook-static",
             "styles": ["src/styles.css"]
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/tikal-ui-components/**/*.ts",
+              "projects/tikal-ui-components/**/*.html"
+            ]
           }
         }
       }
