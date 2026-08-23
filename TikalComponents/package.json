@@ -8,6 +8,7 @@
     "lint": "ng lint --fix",
     "lint-verify": "ng lint",
     "test": "vitest --config=projects/tikal-ui-components/vitest.config.ts --project=storybook",
+    "test-ci": "vitest run --config=projects/tikal-ui-components/vitest.config.ts --project=storybook",
     "storybook": "ng run tikal-ui-components:storybook",
     "build-storybook": "ng run tikal-ui-components:build-storybook"
   },
