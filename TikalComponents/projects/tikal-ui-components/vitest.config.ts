@@ -26,6 +26,7 @@ export default defineConfig({
         ],
         test: {
           name: 'storybook',
+          dir: path.resolve(dirname, '../..'),
           browser: {
             enabled: true,
             headless: true,

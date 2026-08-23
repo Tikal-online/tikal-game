@@ -1,4 +1,5 @@
 import { applicationConfig, Meta, moduleMetadata, StoryObj } from '@storybook/angular-vite';
+import { expect, fn, userEvent } from 'storybook/test';
 import { ButtonComponent } from '../lib/components/button/button';
 import { ButtonColour } from '../lib/enums/button-colour';
 import { ButtonSize } from '../lib/enums/button-size';
@@ -46,6 +47,11 @@ export const PrimaryWithIcon: Story = {
     icon: 'check',
     isLoading: false,
     outline: false,
+    clicked: fn(),
+  },
+  play: async ({ args, canvas }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Button' }));
+    await expect(args.clicked).toHaveBeenCalledOnce();
   },
 };
 
