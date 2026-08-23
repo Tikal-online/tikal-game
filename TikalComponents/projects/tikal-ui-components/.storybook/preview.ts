@@ -13,6 +13,7 @@ const preview: Preview = {
       providers: [
         provideZonelessChangeDetection(),
         providePrimeNG({
+          license: import.meta.env['STORYBOOK_PRIMENG_LICENSE'],
           theme: {
             preset: TikalTheme,
             options: {
