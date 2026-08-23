@@ -11,6 +11,8 @@ var databasePassword = builder.AddParameter("DatabasePassword", true);
 
 var duendeLicense = builder.AddParameter("DuendeLicense", true);
 
+var primeNgLicense = builder.AddParameter("PrimeNgLicense", true);
+
 // ================================================
 // Services
 // ================================================
@@ -55,7 +57,7 @@ var frontend = builder.AddJavaScriptApp("tikal-frontend", "../TikalFrontend")
     .WaitFor(bff);
 
 // story book
-builder.AddJavaScriptApp("tikal-storybook", "../TikalComponents", "storybook")
+var storybook = builder.AddJavaScriptApp("tikal-storybook", "../TikalComponents", "storybook")
     .WithNpm(installCommand: "ci")
     .WithHttpsEndpoint(6006, isProxied: false)
     .WithUrlForEndpoint("https", url => { url.DisplayText = "StoryBook"; });
@@ -80,5 +82,8 @@ bff.WithEnvironment("Identity__Authority", identity.GetEndpoint("https"));
 bff.WithEnvironment("Frontend__Url", frontend.GetEndpoint("https"));
 bff.WithEnvironment("Backend__Url", backend.GetEndpoint("https"));
 bff.WithEnvironment("Duende__LicenseKey", duendeLicense);
+
+// storybook
+storybook.WithEnvironment("STORYBOOK_PRIMENG_LICENSE", primeNgLicense);
 
 await builder.Build().RunAsync();
