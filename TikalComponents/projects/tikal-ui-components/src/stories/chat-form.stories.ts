@@ -7,6 +7,7 @@ const meta: Meta<ChatFormComponent> = {
   tags: ['autodocs'],
   args: {
     placeholder: 'Say something...',
+    maxLength: 100,
     onSubmission: async () => {
       return new Promise((resolve) => setTimeout(resolve, 5000));
     },
@@ -25,5 +26,6 @@ export const WaitingForInput: Story = {
   name: 'Waiting for input',
   args: {
     placeholder: 'Say something...',
+    maxLength: 100,
   },
 };

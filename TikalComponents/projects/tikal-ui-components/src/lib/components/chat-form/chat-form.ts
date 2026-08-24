@@ -1,5 +1,5 @@
 import { Component, input, signal } from '@angular/core';
-import { disabled, form, required, FormRoot, FormField } from '@angular/forms/signals';
+import { disabled, form, required, FormRoot, FormField, maxLength } from '@angular/forms/signals';
 import { InputComponent } from '../input/input';
 import { ButtonComponent } from '../button/button';
 import { ButtonType } from '../../enums/button-type';
@@ -24,6 +24,9 @@ export class ChatFormComponent {
   /** What placeholder should be displayed on the input? */
   readonly placeholder = input<string>();
 
+  /** What is the max input length? */
+  readonly maxLength = input.required<number>();
+
   /** @ignore */
   readonly buttonTypeSubmit = ButtonType.Submit;
 
@@ -32,6 +35,7 @@ export class ChatFormComponent {
     this.chatFormData,
     (schemaPath) => {
       required(schemaPath.message);
+      maxLength(schemaPath.message, this.maxLength());
       disabled(schemaPath, { when: () => this.chatForm().submitting() });
     },
     {
