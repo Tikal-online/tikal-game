@@ -21,6 +21,9 @@ export class ChatFormComponent {
   /** What should happen when the form is submitted? */
   readonly onSubmission = input.required<(message: string) => Promise<void>>();
 
+  /** What placeholder should be displayed on the input? */
+  readonly placeholder = input<string>();
+
   /** @ignore */
   readonly buttonTypeSubmit = ButtonType.Submit;
 

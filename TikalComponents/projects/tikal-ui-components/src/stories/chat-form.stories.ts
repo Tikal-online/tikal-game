@@ -6,6 +6,7 @@ const meta: Meta<ChatFormComponent> = {
   component: ChatFormComponent,
   tags: ['autodocs'],
   args: {
+    placeholder: 'Say something...',
     onSubmission: async () => {
       return new Promise((resolve) => setTimeout(resolve, 5000));
     },
@@ -22,5 +23,7 @@ type Story = StoryObj<ChatFormComponent>;
 
 export const WaitingForInput: Story = {
   name: 'Waiting for input',
-  args: {},
+  args: {
+    placeholder: 'Say something...',
+  },
 };
