@@ -1,0 +1,9 @@
+<input
+  pInputText
+  [disabled]="disabled()"
+  [invalid]="invalid()"
+  [placeholder]="placeholder()"
+  [required]="required()"
+  [value]="value()"
+  (input)="value.set($event.target.value)"
+/>

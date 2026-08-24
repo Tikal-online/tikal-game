@@ -312,7 +312,7 @@
         },
         {
             "name": "LabelComponent",
-            "id": "component-LabelComponent-623ea6f050cf11d0d2f32ce952417d1fa02540e4f866bcd408943794dd09f30fa1d74cf1f46b979070bd908e6cd03c816d60a960502cd76a34d5d39e564b2ad8",
+            "id": "component-LabelComponent-f03182b6e9dea9a682d01db35dc66ebaa4129f9f1dff7fae298ed5a65a7a6a2ed740c8179b4ec465cb8471b3dc2d07986511592e603ffc299b3862cd2b4825e5",
             "file": "projects/tikal-ui-components/src/lib/components/label/label.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -331,8 +331,111 @@
             "templateVariables": [],
             "viewProviders": [],
             "hostDirectives": [],
-            "inputsClass": [],
-            "outputsClass": [],
+            "inputsClass": [
+                {
+                    "name": "disabled",
+                    "coverageIgnore": false,
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "boolean",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>Should the input be disabled</p>\n",
+                    "line": 28,
+                    "rawdescription": "\nShould the input be disabled",
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                },
+                {
+                    "name": "invalid",
+                    "coverageIgnore": false,
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "boolean",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>Is the content of the input invalid?</p>\n",
+                    "line": 31,
+                    "rawdescription": "\nIs the content of the input invalid?",
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                },
+                {
+                    "name": "placeholder",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 48,
+                    "rawdescription": "\n",
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                },
+                {
+                    "name": "required",
+                    "coverageIgnore": false,
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "boolean",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>Is the input required?</p>\n",
+                    "line": 34,
+                    "rawdescription": "\nIs the input required?",
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                },
+                {
+                    "name": "value",
+                    "coverageIgnore": false,
+                    "defaultValue": "''",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>What value should the input have</p>\n",
+                    "line": 25,
+                    "rawdescription": "\nWhat value should the input have",
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                }
+            ],
+            "outputsClass": [
+                {
+                    "name": "value",
+                    "coverageIgnore": false,
+                    "defaultValue": "''",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>What value should the input have</p>\n",
+                    "line": 25,
+                    "rawdescription": "\nWhat value should the input have",
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                }
+            ],
             "propertiesClass": [],
             "methodsClass": [],
             "coverageIgnore": false,
@@ -350,7 +453,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component } from '@angular/core';\nimport { InputTextModule } from 'primeng/inputtext';\n\n@Component({\n  selector: 'tikal-label',\n  imports: [InputTextModule],\n  templateUrl: './label.html',\n  styleUrl: './label.scss',\n})\nexport class LabelComponent {}\n",
+            "sourceCode": "import {\n  Component,\n  model,\n  input,\n  InputSignal,\n  InputSignalWithTransform,\n  OutputRef,\n} from '@angular/core';\nimport {\n  DisabledReason,\n  FormValueControl,\n  ValidationError,\n  WithOptionalFieldTree,\n} from '@angular/forms/signals';\nimport { InputTextModule } from 'primeng/inputtext';\n\n@Component({\n  selector: 'tikal-label',\n  imports: [InputTextModule],\n  templateUrl: './label.html',\n  styleUrl: './label.scss',\n})\nexport class LabelComponent implements FormValueControl<string> {\n  /** What value should the input have */\n  readonly value = model('');\n\n  /** Should the input be disabled */\n  readonly disabled = input<boolean>(false);\n\n  /** Is the content of the input invalid? */\n  readonly invalid = input<boolean>(false);\n\n  /** Is the input required? */\n  readonly required = input<boolean>(false);\n\n  /*\n  pending?: InputSignal<boolean> | InputSignalWithTransform<boolean, unknown> | undefined;\n  name?: InputSignal<string> | InputSignalWithTransform<string, unknown> | undefined;\n  minLength?:\n    | InputSignal<number | undefined>\n    | InputSignalWithTransform<number | undefined, unknown>\n    | undefined;\n  maxLength?:\n    | InputSignal<number | undefined>\n    | InputSignalWithTransform<number | undefined, unknown>\n    | undefined;\n  /** What placeholder should the input display? */\n  readonly placeholder = input<string>();\n}\n",
             "styleUrl": "./label.scss",
             "assetsDirs": [],
             "styleUrlsData": [
@@ -361,21 +464,39 @@
             ],
             "stylesData": "",
             "extends": [],
+            "implements": [
+                "FormValueControl"
+            ],
             "relationships": {
                 "incoming": [],
                 "outgoing": [
                     {
                         "name": "InputTextModule",
                         "type": "module"
+                    },
+                    {
+                        "name": "FormValueControl",
+                        "type": "interface"
                     }
                 ]
             },
-            "templateData": ""
+            "templateData": "<input\n  pInputText\n  [disabled]=\"disabled()\"\n  [invalid]=\"invalid()\"\n  [placeholder]=\"placeholder()\"\n  [required]=\"required()\"\n  [value]=\"value()\"\n  (input)=\"value.set($event.target.value)\"\n/>\n"
         }
     ],
     "modules": [],
     "miscellaneous": {
         "variables": [
+            {
+                "name": "EmptyWithPlaceholder",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/tikal-ui-components/src/stories/label.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n  name: 'Empty with placeholder',\n  args: {\n    value: '',\n    disabled: false,\n    invalid: false,\n    required: false,\n    placeholder: 'Type something...',\n  },\n}"
+            },
             {
                 "name": "IconOnly",
                 "ctype": "miscellaneous",
@@ -408,6 +529,17 @@
                 "deprecationMessage": "",
                 "type": "Meta<ButtonComponent>",
                 "defaultValue": "{\n  title: 'Atoms/Button',\n  component: ButtonComponent,\n  tags: ['autodocs'],\n  argTypes: {\n    colour: {\n      control: { type: 'select' },\n    },\n    size: {\n      control: { type: 'select' },\n    },\n    type: {\n      control: { type: 'select' },\n    },\n  },\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    type: ButtonType.Button,\n    label: 'Button',\n    icon: 'check',\n    isLoading: false,\n    outline: false,\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n    moduleMetadata({\n      declarations: [],\n      imports: [],\n    }),\n  ],\n}"
+            },
+            {
+                "name": "meta",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/tikal-ui-components/src/stories/label.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Meta<LabelComponent>",
+                "defaultValue": "{\n  title: 'Atoms/Label',\n  component: LabelComponent,\n  tags: ['autodocs'],\n  args: {\n    value: '',\n    disabled: false,\n    invalid: false,\n    required: false,\n    placeholder: 'Placeholder...',\n  },\n}"
             },
             {
                 "name": "preview",
@@ -474,6 +606,19 @@
                 "coverageIgnore": false,
                 "rawtype": "StoryObj<ButtonComponent>",
                 "file": "projects/tikal-ui-components/src/stories/button.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "rawdescription": "",
+                "description": "",
+                "kind": 184
+            },
+            {
+                "name": "Story",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "coverageIgnore": false,
+                "rawtype": "StoryObj<LabelComponent>",
+                "file": "projects/tikal-ui-components/src/stories/label.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "rawdescription": "",
@@ -568,6 +713,30 @@
             }
         ],
         "groupedVariables": {
+            "projects/tikal-ui-components/src/stories/label.stories.ts": [
+                {
+                    "name": "EmptyWithPlaceholder",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/tikal-ui-components/src/stories/label.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n  name: 'Empty with placeholder',\n  args: {\n    value: '',\n    disabled: false,\n    invalid: false,\n    required: false,\n    placeholder: 'Type something...',\n  },\n}"
+                },
+                {
+                    "name": "meta",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/tikal-ui-components/src/stories/label.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Meta<LabelComponent>",
+                    "defaultValue": "{\n  title: 'Atoms/Label',\n  component: LabelComponent,\n  tags: ['autodocs'],\n  args: {\n    value: '',\n    disabled: false,\n    invalid: false,\n    required: false,\n    placeholder: 'Placeholder...',\n  },\n}"
+                }
+            ],
             "projects/tikal-ui-components/src/stories/button.stories.ts": [
                 {
                     "name": "IconOnly",
@@ -771,6 +940,21 @@
                     "description": "",
                     "kind": 184
                 }
+            ],
+            "projects/tikal-ui-components/src/stories/label.stories.ts": [
+                {
+                    "name": "Story",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "coverageIgnore": false,
+                    "rawtype": "StoryObj<LabelComponent>",
+                    "file": "projects/tikal-ui-components/src/stories/label.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "",
+                    "description": "",
+                    "kind": 184
+                }
             ]
         }
     },
@@ -780,7 +964,7 @@
         "children": []
     },
     "coverage": {
-        "count": 7,
+        "count": 10,
         "status": "low",
         "files": [
             {
@@ -807,9 +991,9 @@
                 "type": "component",
                 "linktype": "component",
                 "name": "LabelComponent",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
+                "coveragePercent": 71,
+                "coverageCount": "5/7",
+                "status": "good"
             },
             {
                 "filePath": "projects/tikal-ui-components/src/lib/theme/tikal-theme.ts",
@@ -892,6 +1076,36 @@
             },
             {
                 "filePath": "projects/tikal-ui-components/src/stories/button.stories.ts",
+                "type": "type alias",
+                "linktype": "miscellaneous",
+                "linksubtype": "typealias",
+                "name": "Story",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/stories/label.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "EmptyWithPlaceholder",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/stories/label.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "meta",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/stories/label.stories.ts",
                 "type": "type alias",
                 "linktype": "miscellaneous",
                 "linksubtype": "typealias",
