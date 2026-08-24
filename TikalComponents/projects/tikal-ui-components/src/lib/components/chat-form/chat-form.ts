@@ -27,6 +27,9 @@ export class ChatFormComponent {
   /** What is the max input length? */
   readonly maxLength = input<number>(50);
 
+  /** What is the label of the input element? */
+  readonly label = input<string>();
+
   /** @ignore */
   readonly buttonTypeSubmit = ButtonType.Submit;
 
