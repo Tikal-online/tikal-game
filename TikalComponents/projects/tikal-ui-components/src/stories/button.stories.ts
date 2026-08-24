@@ -1,4 +1,4 @@
-import { applicationConfig, Meta, moduleMetadata, StoryObj } from '@storybook/angular-vite';
+import { applicationConfig, Meta, StoryObj } from '@storybook/angular-vite';
 import { ButtonComponent } from '../lib/components/button/button';
 import { ButtonColour } from '../lib/enums/button-colour';
 import { ButtonSize } from '../lib/enums/button-size';
@@ -31,10 +31,6 @@ const meta: Meta<ButtonComponent> = {
   decorators: [
     applicationConfig({
       providers: [],
-    }),
-    moduleMetadata({
-      declarations: [],
-      imports: [],
     }),
   ],
 };
