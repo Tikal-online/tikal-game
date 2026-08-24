@@ -288,7 +288,12 @@
             "stylesData": "",
             "extends": [],
             "relationships": {
-                "incoming": [],
+                "incoming": [
+                    {
+                        "name": "ChatFormComponent",
+                        "type": "component"
+                    }
+                ],
                 "outgoing": [
                     {
                         "name": "ButtonModule",
@@ -309,6 +314,125 @@
                 ]
             },
             "templateData": "<button\n  pButton\n  [disabled]=\"isLoading()\"\n  [iconOnly]=\"!label()\"\n  [outlined]=\"outline()\"\n  [severity]=\"colour()\"\n  [size]=\"size() | enumMap: sizeMap\"\n  [type]=\"type()\"\n  (click)=\"clicked.emit()\"\n>\n  @if (isLoading()) {\n    <svg data-p-icon=\"spinner\" [spin]=\"true\"></svg>\n  } @else if (icon()) {\n    <svg [pIcon]=\"icon()\"></svg>\n  }\n  {{ label() }}\n</button>\n"
+        },
+        {
+            "name": "ChatFormComponent",
+            "id": "component-ChatFormComponent-53116f45ba1492652f6257f62e1df831ba31a5b91faca69039a2a937c887e12e4f01ced63030965c209ff7d856307fe64e786a20a5d77e8b0d30c12435d200a6",
+            "file": "projects/tikal-ui-components/src/lib/components/chat-form/chat-form.ts",
+            "changeDetection": "ChangeDetectionStrategy.OnPush",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "tikal-chat-form",
+            "styleUrls": [
+                "./chat-form.scss"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./chat-form.html"
+            ],
+            "templateVariables": [],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [
+                {
+                    "name": "onSubmission",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "(message: string) => Promise<void>",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>What should happen when the form is submitted?</p>\n",
+                    "line": 21,
+                    "rawdescription": "\nWhat should happen when the form is submitted?",
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": true
+                }
+            ],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "chatFormData",
+                    "coverageIgnore": false,
+                    "defaultValue": "signal<ChatFormData>({ message: '' })",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 18,
+                    "rawdescription": "\n",
+                    "modifierKind": [
+                        123,
+                        148
+                    ]
+                }
+            ],
+            "methodsClass": [],
+            "coverageIgnore": false,
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [
+                {
+                    "name": "FormRoot"
+                },
+                {
+                    "name": "FormField"
+                },
+                {
+                    "name": "InputComponent",
+                    "type": "component"
+                },
+                {
+                    "name": "ButtonComponent",
+                    "type": "component"
+                }
+            ],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component, input, signal } from '@angular/core';\nimport { disabled, form, required, FormRoot, FormField } from '@angular/forms/signals';\nimport { InputComponent } from '../input/input';\nimport { ButtonComponent } from '../button/button';\nimport { ButtonType } from '../../enums/button-type';\n\ntype ChatFormData = {\n  message: string;\n};\n\n@Component({\n  selector: 'tikal-chat-form',\n  imports: [FormRoot, FormField, InputComponent, ButtonComponent],\n  templateUrl: './chat-form.html',\n  styleUrl: './chat-form.scss',\n})\nexport class ChatFormComponent {\n  private readonly chatFormData = signal<ChatFormData>({ message: '' });\n\n  /** What should happen when the form is submitted? */\n  readonly onSubmission = input.required<(message: string) => Promise<void>>();\n\n  /** @ignore */\n  readonly buttonTypeSubmit = ButtonType.Submit;\n\n  /** @ignore */\n  readonly chatForm = form(\n    this.chatFormData,\n    (schemaPath) => {\n      required(schemaPath.message);\n      disabled(schemaPath, { when: () => this.chatForm().submitting() });\n    },\n    {\n      submission: {\n        action: async (field) => {\n          const message = field().value().message;\n\n          await this.onSubmission()(message);\n\n          field.message().reset('');\n        },\n      },\n    },\n  );\n}\n",
+            "styleUrl": "./chat-form.scss",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": "",
+                    "styleUrl": "./chat-form.scss"
+                }
+            ],
+            "stylesData": "",
+            "extends": [],
+            "relationships": {
+                "incoming": [],
+                "outgoing": [
+                    {
+                        "name": "FormRoot",
+                        "type": "module"
+                    },
+                    {
+                        "name": "FormField",
+                        "type": "module"
+                    },
+                    {
+                        "name": "InputComponent",
+                        "type": "component"
+                    },
+                    {
+                        "name": "ButtonComponent",
+                        "type": "component"
+                    }
+                ]
+            },
+            "templateData": "<form [formRoot]=\"chatForm\">\n  <tikal-input [formField]=\"chatForm.message\" />\n  <tikal-button icon=\"check\" [type]=\"buttonTypeSubmit\" />\n</form>\n"
         },
         {
             "name": "InputComponent",
@@ -468,7 +592,12 @@
                 "FormValueControl"
             ],
             "relationships": {
-                "incoming": [],
+                "incoming": [
+                    {
+                        "name": "ChatFormComponent",
+                        "type": "component"
+                    }
+                ],
                 "outgoing": [
                     {
                         "name": "InputTextModule",
@@ -550,7 +679,18 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
-                "defaultValue": "{\n  name: 'Invalid with value',\n  args: {\n    value: 'This is invalid',\n    disabled: true,\n    invalid: false,\n    required: false,\n    placeholder: 'Type something...',\n  },\n}"
+                "defaultValue": "{\n  name: 'Invalid with value',\n  args: {\n    value: 'This is invalid',\n    disabled: false,\n    invalid: true,\n    required: false,\n    placeholder: 'Type something...',\n  },\n}"
+            },
+            {
+                "name": "InvalidWithPlaceholder",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/tikal-ui-components/src/stories/input.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n  name: 'Invalid with placeholder',\n  args: {\n    value: '',\n    disabled: false,\n    invalid: true,\n    required: false,\n    placeholder: 'Type something...',\n  },\n}"
             },
             {
                 "name": "meta",
@@ -561,7 +701,18 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Meta<ButtonComponent>",
-                "defaultValue": "{\n  title: 'Atoms/Button',\n  component: ButtonComponent,\n  tags: ['autodocs'],\n  argTypes: {\n    colour: {\n      control: { type: 'select' },\n    },\n    size: {\n      control: { type: 'select' },\n    },\n    type: {\n      control: { type: 'select' },\n    },\n  },\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    type: ButtonType.Button,\n    label: 'Button',\n    icon: 'check',\n    isLoading: false,\n    outline: false,\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n    moduleMetadata({\n      declarations: [],\n      imports: [],\n    }),\n  ],\n}"
+                "defaultValue": "{\n  title: 'Atoms/Button',\n  component: ButtonComponent,\n  tags: ['autodocs'],\n  argTypes: {\n    colour: {\n      control: { type: 'select' },\n    },\n    size: {\n      control: { type: 'select' },\n    },\n    type: {\n      control: { type: 'select' },\n    },\n  },\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    type: ButtonType.Button,\n    label: 'Button',\n    icon: 'check',\n    isLoading: false,\n    outline: false,\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
+            },
+            {
+                "name": "meta",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/tikal-ui-components/src/stories/chat-form.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Meta<ChatFormComponent>",
+                "defaultValue": "{\n  title: 'Molecules/Chat-Form',\n  component: ChatFormComponent,\n  tags: ['autodocs'],\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
             },
             {
                 "name": "meta",
@@ -572,7 +723,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Meta<InputComponent>",
-                "defaultValue": "{\n  title: 'Atoms/Input',\n  component: InputComponent,\n  tags: ['autodocs'],\n  args: {\n    value: '',\n    disabled: false,\n    invalid: false,\n    required: false,\n    placeholder: 'Placeholder...',\n  },\n}"
+                "defaultValue": "{\n  title: 'Atoms/Input',\n  component: InputComponent,\n  tags: ['autodocs'],\n  args: {\n    value: '',\n    disabled: false,\n    invalid: false,\n    required: false,\n    placeholder: 'Placeholder...',\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
             },
             {
                 "name": "preview",
@@ -630,6 +781,17 @@
                 "defaultValue": "definePreset(Aura, {\n  semantic: {\n    primary: {\n      50: '{surface.50}',\n      100: '{surface.100}',\n      200: '{surface.200}',\n      300: '{surface.300}',\n      400: '{surface.400}',\n      500: '{surface.500}',\n      600: '{surface.600}',\n      700: '{surface.700}',\n      800: '{surface.800}',\n      900: '{surface.900}',\n      950: '{surface.950}',\n      color: 'light-dark({primary.950}, {primary.50})',\n      contrastColor: 'light-dark(#ffffff, {primary.950})',\n      hoverColor: 'light-dark({primary.800}, {primary.200})',\n      activeColor: 'light-dark({primary.700}, {primary.300})',\n    },\n    highlight: {\n      background: 'light-dark({primary.950}, {primary.50})',\n      focusBackground: 'light-dark({primary.700}, {primary.300})',\n      color: 'light-dark(#ffffff, {primary.950})',\n      focusColor: 'light-dark(#ffffff, {primary.950})',\n    },\n  },\n})"
             },
             {
+                "name": "WaitingForInput",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/tikal-ui-components/src/stories/chat-form.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n  name: 'Waiting for input',\n  args: {},\n}"
+            },
+            {
                 "name": "WithContent",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -644,12 +806,38 @@
         "functions": [],
         "typealiases": [
             {
+                "name": "ChatFormData",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "coverageIgnore": false,
+                "rawtype": "{ message: string }",
+                "file": "projects/tikal-ui-components/src/lib/components/chat-form/chat-form.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "rawdescription": "",
+                "description": "",
+                "kind": 188
+            },
+            {
                 "name": "Story",
                 "ctype": "miscellaneous",
                 "subtype": "typealias",
                 "coverageIgnore": false,
                 "rawtype": "StoryObj<ButtonComponent>",
                 "file": "projects/tikal-ui-components/src/stories/button.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "rawdescription": "",
+                "description": "",
+                "kind": 184
+            },
+            {
+                "name": "Story",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "coverageIgnore": false,
+                "rawtype": "StoryObj<ChatFormComponent>",
+                "file": "projects/tikal-ui-components/src/stories/chat-form.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "rawdescription": "",
@@ -800,7 +988,18 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
-                    "defaultValue": "{\n  name: 'Invalid with value',\n  args: {\n    value: 'This is invalid',\n    disabled: true,\n    invalid: false,\n    required: false,\n    placeholder: 'Type something...',\n  },\n}"
+                    "defaultValue": "{\n  name: 'Invalid with value',\n  args: {\n    value: 'This is invalid',\n    disabled: false,\n    invalid: true,\n    required: false,\n    placeholder: 'Type something...',\n  },\n}"
+                },
+                {
+                    "name": "InvalidWithPlaceholder",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/tikal-ui-components/src/stories/input.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n  name: 'Invalid with placeholder',\n  args: {\n    value: '',\n    disabled: false,\n    invalid: true,\n    required: false,\n    placeholder: 'Type something...',\n  },\n}"
                 },
                 {
                     "name": "meta",
@@ -811,7 +1010,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Meta<InputComponent>",
-                    "defaultValue": "{\n  title: 'Atoms/Input',\n  component: InputComponent,\n  tags: ['autodocs'],\n  args: {\n    value: '',\n    disabled: false,\n    invalid: false,\n    required: false,\n    placeholder: 'Placeholder...',\n  },\n}"
+                    "defaultValue": "{\n  title: 'Atoms/Input',\n  component: InputComponent,\n  tags: ['autodocs'],\n  args: {\n    value: '',\n    disabled: false,\n    invalid: false,\n    required: false,\n    placeholder: 'Placeholder...',\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
                 },
                 {
                     "name": "WithContent",
@@ -857,7 +1056,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Meta<ButtonComponent>",
-                    "defaultValue": "{\n  title: 'Atoms/Button',\n  component: ButtonComponent,\n  tags: ['autodocs'],\n  argTypes: {\n    colour: {\n      control: { type: 'select' },\n    },\n    size: {\n      control: { type: 'select' },\n    },\n    type: {\n      control: { type: 'select' },\n    },\n  },\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    type: ButtonType.Button,\n    label: 'Button',\n    icon: 'check',\n    isLoading: false,\n    outline: false,\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n    moduleMetadata({\n      declarations: [],\n      imports: [],\n    }),\n  ],\n}"
+                    "defaultValue": "{\n  title: 'Atoms/Button',\n  component: ButtonComponent,\n  tags: ['autodocs'],\n  argTypes: {\n    colour: {\n      control: { type: 'select' },\n    },\n    size: {\n      control: { type: 'select' },\n    },\n    type: {\n      control: { type: 'select' },\n    },\n  },\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    type: ButtonType.Button,\n    label: 'Button',\n    icon: 'check',\n    isLoading: false,\n    outline: false,\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
                 },
                 {
                     "name": "PrimaryWithIcon",
@@ -891,6 +1090,30 @@
                     "deprecationMessage": "",
                     "type": "Story",
                     "defaultValue": "{\n  name: 'Text only',\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    type: ButtonType.Button,\n    label: 'Button',\n    icon: '',\n    isLoading: false,\n    outline: false,\n  },\n}"
+                }
+            ],
+            "projects/tikal-ui-components/src/stories/chat-form.stories.ts": [
+                {
+                    "name": "meta",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/tikal-ui-components/src/stories/chat-form.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Meta<ChatFormComponent>",
+                    "defaultValue": "{\n  title: 'Molecules/Chat-Form',\n  component: ChatFormComponent,\n  tags: ['autodocs'],\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
+                },
+                {
+                    "name": "WaitingForInput",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/tikal-ui-components/src/stories/chat-form.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n  name: 'Waiting for input',\n  args: {},\n}"
                 }
             ],
             "projects/tikal-ui-components/.storybook/preview.ts": [
@@ -1014,6 +1237,21 @@
             ]
         },
         "groupedTypeAliases": {
+            "projects/tikal-ui-components/src/lib/components/chat-form/chat-form.ts": [
+                {
+                    "name": "ChatFormData",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "coverageIgnore": false,
+                    "rawtype": "{ message: string }",
+                    "file": "projects/tikal-ui-components/src/lib/components/chat-form/chat-form.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "",
+                    "description": "",
+                    "kind": 188
+                }
+            ],
             "projects/tikal-ui-components/src/stories/button.stories.ts": [
                 {
                     "name": "Story",
@@ -1022,6 +1260,21 @@
                     "coverageIgnore": false,
                     "rawtype": "StoryObj<ButtonComponent>",
                     "file": "projects/tikal-ui-components/src/stories/button.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "",
+                    "description": "",
+                    "kind": 184
+                }
+            ],
+            "projects/tikal-ui-components/src/stories/chat-form.stories.ts": [
+                {
+                    "name": "Story",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "coverageIgnore": false,
+                    "rawtype": "StoryObj<ChatFormComponent>",
+                    "file": "projects/tikal-ui-components/src/stories/chat-form.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "rawdescription": "",
@@ -1052,7 +1305,7 @@
         "children": []
     },
     "coverage": {
-        "count": 8,
+        "count": 7,
         "status": "low",
         "files": [
             {
@@ -1073,6 +1326,25 @@
                 "coveragePercent": 87,
                 "coverageCount": "7/8",
                 "status": "very-good"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/lib/components/chat-form/chat-form.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "ChatFormComponent",
+                "coveragePercent": 33,
+                "coverageCount": "1/3",
+                "status": "medium"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/lib/components/chat-form/chat-form.ts",
+                "type": "type alias",
+                "linktype": "miscellaneous",
+                "linksubtype": "typealias",
+                "name": "ChatFormData",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
             },
             {
                 "filePath": "projects/tikal-ui-components/src/lib/components/input/input.ts",
@@ -1173,6 +1445,36 @@
                 "status": "low"
             },
             {
+                "filePath": "projects/tikal-ui-components/src/stories/chat-form.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "meta",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/stories/chat-form.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "WaitingForInput",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/stories/chat-form.stories.ts",
+                "type": "type alias",
+                "linktype": "miscellaneous",
+                "linksubtype": "typealias",
+                "name": "Story",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
                 "filePath": "projects/tikal-ui-components/src/stories/input.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
@@ -1208,6 +1510,16 @@
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
                 "name": "Invalid",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/stories/input.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "InvalidWithPlaceholder",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"

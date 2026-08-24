@@ -1,17 +1,5 @@
-import {
-  Component,
-  model,
-  input,
-  InputSignal,
-  InputSignalWithTransform,
-  OutputRef,
-} from '@angular/core';
-import {
-  DisabledReason,
-  FormValueControl,
-  ValidationError,
-  WithOptionalFieldTree,
-} from '@angular/forms/signals';
+import { Component, model, input } from '@angular/core';
+import { FormValueControl } from '@angular/forms/signals';
 import { InputTextModule } from 'primeng/inputtext';
 
 @Component({
@@ -32,6 +20,9 @@ export class InputComponent implements FormValueControl<string> {
 
   /** Is the input required? */
   readonly required = input<boolean>(false);
+
+  /** Was the input touched */
+  readonly touched = input<boolean>(false);
 
   /*
   pending?: InputSignal<boolean> | InputSignalWithTransform<boolean, unknown> | undefined;

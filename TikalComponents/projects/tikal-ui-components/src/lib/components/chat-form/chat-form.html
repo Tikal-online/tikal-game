@@ -1,0 +1,4 @@
+<form [formRoot]="chatForm">
+  <tikal-input placeholder="testing" [formField]="chatForm.message" />
+  <tikal-button icon="check" [isLoading]="chatForm().submitting()" [type]="buttonTypeSubmit" />
+</form>
