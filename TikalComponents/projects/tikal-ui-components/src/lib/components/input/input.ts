@@ -27,6 +27,9 @@ export class InputComponent implements FormValueControl<string> {
   /** What is the max input length? */
   readonly maxLength = input<number>();
 
+  /** What is the id of the input element? */
+  readonly id = input<string>();
+
   /** What placeholder should the input display? */
   readonly placeholder = input<string>();
 }
