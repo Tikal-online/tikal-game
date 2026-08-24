@@ -1,0 +1,11 @@
+<input
+  pInputText
+  [ariaLabel]="label()"
+  [disabled]="disabled()"
+  [invalid]="invalid() && touched()"
+  [maxLength]="maxLength()"
+  [placeholder]="placeholder()"
+  [required]="required()"
+  [value]="value()"
+  (input)="value.set($event.target.value)"
+/>

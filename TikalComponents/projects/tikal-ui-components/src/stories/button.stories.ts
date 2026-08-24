@@ -1,7 +1,8 @@
-import { applicationConfig, Meta, moduleMetadata, StoryObj } from '@storybook/angular-vite';
+import { applicationConfig, Meta, StoryObj } from '@storybook/angular-vite';
 import { ButtonComponent } from '../lib/components/button/button';
 import { ButtonColour } from '../lib/enums/button-colour';
 import { ButtonSize } from '../lib/enums/button-size';
+import { ButtonType } from '../lib/enums/button-type';
 
 const meta: Meta<ButtonComponent> = {
   title: 'Atoms/Button',
@@ -14,10 +15,14 @@ const meta: Meta<ButtonComponent> = {
     size: {
       control: { type: 'select' },
     },
+    type: {
+      control: { type: 'select' },
+    },
   },
   args: {
     colour: ButtonColour.Primary,
     size: ButtonSize.Normal,
+    type: ButtonType.Button,
     label: 'Button',
     icon: 'check',
     isLoading: false,
@@ -26,10 +31,6 @@ const meta: Meta<ButtonComponent> = {
   decorators: [
     applicationConfig({
       providers: [],
-    }),
-    moduleMetadata({
-      declarations: [],
-      imports: [],
     }),
   ],
 };
@@ -42,6 +43,7 @@ export const PrimaryWithIcon: Story = {
   args: {
     colour: ButtonColour.Primary,
     size: ButtonSize.Normal,
+    type: ButtonType.Button,
     label: 'Button',
     icon: 'check',
     isLoading: false,
@@ -54,6 +56,7 @@ export const TextOnly: Story = {
   args: {
     colour: ButtonColour.Primary,
     size: ButtonSize.Normal,
+    type: ButtonType.Button,
     label: 'Button',
     icon: '',
     isLoading: false,
@@ -66,6 +69,7 @@ export const IconOnly: Story = {
   args: {
     colour: ButtonColour.Primary,
     size: ButtonSize.Normal,
+    type: ButtonType.Button,
     label: '',
     icon: 'check',
     isLoading: false,
@@ -78,6 +82,7 @@ export const Textoading: Story = {
   args: {
     colour: ButtonColour.Primary,
     size: ButtonSize.Normal,
+    type: ButtonType.Button,
     label: 'Button',
     icon: '',
     isLoading: true,
@@ -90,6 +95,7 @@ export const IconOnlyLoading: Story = {
   args: {
     colour: ButtonColour.Primary,
     size: ButtonSize.Normal,
+    type: ButtonType.Button,
     label: '',
     icon: 'check',
     isLoading: true,

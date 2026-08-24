@@ -4,6 +4,7 @@ import { ButtonModule } from 'primeng/button';
 import { ButtonColour } from '../../enums/button-colour';
 import { ButtonSize } from '../../enums/button-size';
 import { EnumMapPipe } from '../../../pipes/enum-map';
+import { ButtonType } from '../../enums/button-type';
 
 @Component({
   selector: 'tikal-button',
@@ -34,6 +35,9 @@ export class ButtonComponent {
 
   /** Should the button have an outline? */
   readonly outline = input<boolean>(false);
+
+  /** What type should the button be? */
+  readonly type = input<ButtonType>(ButtonType.Button);
 
   /** @ignore */
   readonly clicked = output<void>();
