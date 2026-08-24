@@ -41,7 +41,7 @@ jobs:
         working-directory: ${{ inputs.project-directory }}
 
       - name: Set version
-        run: npm version 2.4.1 --prefix projects/tikal-ui-components
+        run: npm version "${{ inputs.version }}" --prefix projects/tikal-ui-components
         working-directory: ${{ inputs.project-directory }}
 
       - name: Build package
