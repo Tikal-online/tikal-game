@@ -1,11 +1,11 @@
 <button
   pButton
-  type="button"
   [disabled]="isLoading()"
   [iconOnly]="!label()"
   [outlined]="outline()"
   [severity]="colour()"
   [size]="size() | enumMap: sizeMap"
+  [type]="type()"
   (click)="clicked.emit()"
 >
   @if (isLoading()) {

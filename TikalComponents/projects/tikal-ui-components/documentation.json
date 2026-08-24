@@ -109,7 +109,7 @@
     "components": [
         {
             "name": "ButtonComponent",
-            "id": "component-ButtonComponent-acb630ca73577338fa8c54b21748f203f254acc54a52f7f54dcb743cbb1fd43dc1aafad96a70a9d1ecd6fa0bb49b35230fb547c9bdb8376856f531dea385dcf2",
+            "id": "component-ButtonComponent-69622374548b5e586fdaec779c2d18d812dc6a776fb904107ddbe7f003cb4cdef8f726fb818247c6cd9acbad462773f104aadf9da2f228ed7635004806a237b3",
             "file": "projects/tikal-ui-components/src/lib/components/button/button.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -139,7 +139,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "<p>What colour should the button be?</p>\n",
-                    "line": 19,
+                    "line": 20,
                     "rawdescription": "\nWhat colour should the button be?",
                     "modifierKind": [
                         148
@@ -156,7 +156,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "<p>What icon should the button display?</p>\n",
-                    "line": 16,
+                    "line": 17,
                     "rawdescription": "\nWhat icon should the button display?",
                     "modifierKind": [
                         148
@@ -173,7 +173,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "<p>Is the action related to the button currently running?</p>\n",
-                    "line": 33,
+                    "line": 34,
                     "rawdescription": "\nIs the action related to the button currently running?",
                     "modifierKind": [
                         148
@@ -189,7 +189,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "<p>What text should the button display?</p>\n",
-                    "line": 30,
+                    "line": 31,
                     "rawdescription": "\nWhat text should the button display?",
                     "modifierKind": [
                         148
@@ -206,7 +206,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "<p>Should the button have an outline?</p>\n",
-                    "line": 36,
+                    "line": 37,
                     "rawdescription": "\nShould the button have an outline?",
                     "modifierKind": [
                         148
@@ -223,8 +223,25 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "<p>What size should the button be?</p>\n",
-                    "line": 22,
+                    "line": 23,
                     "rawdescription": "\nWhat size should the button be?",
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                },
+                {
+                    "name": "type",
+                    "coverageIgnore": false,
+                    "defaultValue": "ButtonType.Button",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "ButtonType",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>What type should the button be?</p>\n",
+                    "line": 40,
+                    "rawdescription": "\nWhat type should the button be?",
                     "modifierKind": [
                         148
                     ],
@@ -259,7 +276,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, input, output } from '@angular/core';\nimport { PIcon, Spinner } from '@primeicons/angular';\nimport { ButtonModule } from 'primeng/button';\nimport { ButtonColour } from '../../enums/button-colour';\nimport { ButtonSize } from '../../enums/button-size';\nimport { EnumMapPipe } from '../../../pipes/enum-map';\n\n@Component({\n  selector: 'tikal-button',\n  imports: [ButtonModule, PIcon, EnumMapPipe, Spinner],\n  templateUrl: './button.html',\n  styleUrl: './button.scss',\n})\nexport class ButtonComponent {\n  /** What icon should the button display? */\n  readonly icon = input<string>('');\n\n  /** What colour should the button be? */\n  readonly colour = input<ButtonColour>(ButtonColour.Primary);\n\n  /** What size should the button be? */\n  readonly size = input<ButtonSize>(ButtonSize.Normal);\n\n  /** @ignore */\n  readonly sizeMap = {\n    normal: undefined,\n  };\n\n  /** What text should the button display? */\n  readonly label = input<string>();\n\n  /** Is the action related to the button currently running? */\n  readonly isLoading = input<boolean>(false);\n\n  /** Should the button have an outline? */\n  readonly outline = input<boolean>(false);\n\n  /** @ignore */\n  readonly clicked = output<void>();\n}\n",
+            "sourceCode": "import { Component, input, output } from '@angular/core';\nimport { PIcon, Spinner } from '@primeicons/angular';\nimport { ButtonModule } from 'primeng/button';\nimport { ButtonColour } from '../../enums/button-colour';\nimport { ButtonSize } from '../../enums/button-size';\nimport { EnumMapPipe } from '../../../pipes/enum-map';\nimport { ButtonType } from '../../enums/button-type';\n\n@Component({\n  selector: 'tikal-button',\n  imports: [ButtonModule, PIcon, EnumMapPipe, Spinner],\n  templateUrl: './button.html',\n  styleUrl: './button.scss',\n})\nexport class ButtonComponent {\n  /** What icon should the button display? */\n  readonly icon = input<string>('');\n\n  /** What colour should the button be? */\n  readonly colour = input<ButtonColour>(ButtonColour.Primary);\n\n  /** What size should the button be? */\n  readonly size = input<ButtonSize>(ButtonSize.Normal);\n\n  /** @ignore */\n  readonly sizeMap = {\n    normal: undefined,\n  };\n\n  /** What text should the button display? */\n  readonly label = input<string>();\n\n  /** Is the action related to the button currently running? */\n  readonly isLoading = input<boolean>(false);\n\n  /** Should the button have an outline? */\n  readonly outline = input<boolean>(false);\n\n  /** What type should the button be? */\n  readonly type = input<ButtonType>(ButtonType.Button);\n\n  /** @ignore */\n  readonly clicked = output<void>();\n}\n",
             "styleUrl": "./button.scss",
             "assetsDirs": [],
             "styleUrlsData": [
@@ -291,7 +308,69 @@
                     }
                 ]
             },
-            "templateData": "<button\n  pButton\n  type=\"button\"\n  [disabled]=\"isLoading()\"\n  [iconOnly]=\"!label()\"\n  [outlined]=\"outline()\"\n  [severity]=\"colour()\"\n  [size]=\"size() | enumMap: sizeMap\"\n  (click)=\"clicked.emit()\"\n>\n  @if (isLoading()) {\n    <svg data-p-icon=\"spinner\" [spin]=\"true\"></svg>\n  } @else if (icon()) {\n    <svg [pIcon]=\"icon()\"></svg>\n  }\n  {{ label() }}\n</button>\n"
+            "templateData": "<button\n  pButton\n  [disabled]=\"isLoading()\"\n  [iconOnly]=\"!label()\"\n  [outlined]=\"outline()\"\n  [severity]=\"colour()\"\n  [size]=\"size() | enumMap: sizeMap\"\n  [type]=\"type()\"\n  (click)=\"clicked.emit()\"\n>\n  @if (isLoading()) {\n    <svg data-p-icon=\"spinner\" [spin]=\"true\"></svg>\n  } @else if (icon()) {\n    <svg [pIcon]=\"icon()\"></svg>\n  }\n  {{ label() }}\n</button>\n"
+        },
+        {
+            "name": "LabelComponent",
+            "id": "component-LabelComponent-623ea6f050cf11d0d2f32ce952417d1fa02540e4f866bcd408943794dd09f30fa1d74cf1f46b979070bd908e6cd03c816d60a960502cd76a34d5d39e564b2ad8",
+            "file": "projects/tikal-ui-components/src/lib/components/label/label.ts",
+            "changeDetection": "ChangeDetectionStrategy.OnPush",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "tikal-label",
+            "styleUrls": [
+                "./label.scss"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./label.html"
+            ],
+            "templateVariables": [],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [],
+            "coverageIgnore": false,
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [
+                {
+                    "name": "InputTextModule",
+                    "type": "module"
+                }
+            ],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component } from '@angular/core';\nimport { InputTextModule } from 'primeng/inputtext';\n\n@Component({\n  selector: 'tikal-label',\n  imports: [InputTextModule],\n  templateUrl: './label.html',\n  styleUrl: './label.scss',\n})\nexport class LabelComponent {}\n",
+            "styleUrl": "./label.scss",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": "",
+                    "styleUrl": "./label.scss"
+                }
+            ],
+            "stylesData": "",
+            "extends": [],
+            "relationships": {
+                "incoming": [],
+                "outgoing": [
+                    {
+                        "name": "InputTextModule",
+                        "type": "module"
+                    }
+                ]
+            },
+            "templateData": ""
         }
     ],
     "modules": [],
@@ -306,7 +385,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
-                "defaultValue": "{\n  name: 'Icon only',\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    label: '',\n    icon: 'check',\n    isLoading: false,\n    outline: false,\n  },\n}"
+                "defaultValue": "{\n  name: 'Icon only',\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    type: ButtonType.Button,\n    label: '',\n    icon: 'check',\n    isLoading: false,\n    outline: false,\n  },\n}"
             },
             {
                 "name": "IconOnlyLoading",
@@ -317,7 +396,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
-                "defaultValue": "{\n  name: 'Icon only loading',\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    label: '',\n    icon: 'check',\n    isLoading: true,\n    outline: false,\n  },\n}"
+                "defaultValue": "{\n  name: 'Icon only loading',\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    type: ButtonType.Button,\n    label: '',\n    icon: 'check',\n    isLoading: true,\n    outline: false,\n  },\n}"
             },
             {
                 "name": "meta",
@@ -328,7 +407,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Meta<ButtonComponent>",
-                "defaultValue": "{\n  title: 'Atoms/Button',\n  component: ButtonComponent,\n  tags: ['autodocs'],\n  argTypes: {\n    colour: {\n      control: { type: 'select' },\n    },\n    size: {\n      control: { type: 'select' },\n    },\n  },\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    label: 'Button',\n    icon: 'check',\n    isLoading: false,\n    outline: false,\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n    moduleMetadata({\n      declarations: [],\n      imports: [],\n    }),\n  ],\n}"
+                "defaultValue": "{\n  title: 'Atoms/Button',\n  component: ButtonComponent,\n  tags: ['autodocs'],\n  argTypes: {\n    colour: {\n      control: { type: 'select' },\n    },\n    size: {\n      control: { type: 'select' },\n    },\n    type: {\n      control: { type: 'select' },\n    },\n  },\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    type: ButtonType.Button,\n    label: 'Button',\n    icon: 'check',\n    isLoading: false,\n    outline: false,\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n    moduleMetadata({\n      declarations: [],\n      imports: [],\n    }),\n  ],\n}"
             },
             {
                 "name": "preview",
@@ -350,7 +429,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
-                "defaultValue": "{\n  name: 'Icon and text',\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    label: 'Button',\n    icon: 'check',\n    isLoading: false,\n    outline: false,\n  },\n}"
+                "defaultValue": "{\n  name: 'Icon and text',\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    type: ButtonType.Button,\n    label: 'Button',\n    icon: 'check',\n    isLoading: false,\n    outline: false,\n  },\n}"
             },
             {
                 "name": "Textoading",
@@ -361,7 +440,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
-                "defaultValue": "{\n  name: 'Text loading',\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    label: 'Button',\n    icon: '',\n    isLoading: true,\n    outline: false,\n  },\n}"
+                "defaultValue": "{\n  name: 'Text loading',\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    type: ButtonType.Button,\n    label: 'Button',\n    icon: '',\n    isLoading: true,\n    outline: false,\n  },\n}"
             },
             {
                 "name": "TextOnly",
@@ -372,7 +451,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
-                "defaultValue": "{\n  name: 'Text only',\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    label: 'Button',\n    icon: '',\n    isLoading: false,\n    outline: false,\n  },\n}"
+                "defaultValue": "{\n  name: 'Text only',\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    type: ButtonType.Button,\n    label: 'Button',\n    icon: '',\n    isLoading: false,\n    outline: false,\n  },\n}"
             },
             {
                 "name": "TikalTheme",
@@ -456,6 +535,36 @@
                 "rawdescription": "",
                 "description": "",
                 "file": "projects/tikal-ui-components/src/lib/enums/button-size.ts"
+            },
+            {
+                "name": "ButtonType",
+                "childs": [
+                    {
+                        "name": "Button",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "value": "button"
+                    },
+                    {
+                        "name": "Submit",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "value": "submit"
+                    },
+                    {
+                        "name": "Reset",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "value": "reset"
+                    }
+                ],
+                "ctype": "miscellaneous",
+                "subtype": "enum",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "rawdescription": "",
+                "description": "",
+                "file": "projects/tikal-ui-components/src/lib/enums/button-type.ts"
             }
         ],
         "groupedVariables": {
@@ -469,7 +578,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
-                    "defaultValue": "{\n  name: 'Icon only',\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    label: '',\n    icon: 'check',\n    isLoading: false,\n    outline: false,\n  },\n}"
+                    "defaultValue": "{\n  name: 'Icon only',\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    type: ButtonType.Button,\n    label: '',\n    icon: 'check',\n    isLoading: false,\n    outline: false,\n  },\n}"
                 },
                 {
                     "name": "IconOnlyLoading",
@@ -480,7 +589,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
-                    "defaultValue": "{\n  name: 'Icon only loading',\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    label: '',\n    icon: 'check',\n    isLoading: true,\n    outline: false,\n  },\n}"
+                    "defaultValue": "{\n  name: 'Icon only loading',\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    type: ButtonType.Button,\n    label: '',\n    icon: 'check',\n    isLoading: true,\n    outline: false,\n  },\n}"
                 },
                 {
                     "name": "meta",
@@ -491,7 +600,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Meta<ButtonComponent>",
-                    "defaultValue": "{\n  title: 'Atoms/Button',\n  component: ButtonComponent,\n  tags: ['autodocs'],\n  argTypes: {\n    colour: {\n      control: { type: 'select' },\n    },\n    size: {\n      control: { type: 'select' },\n    },\n  },\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    label: 'Button',\n    icon: 'check',\n    isLoading: false,\n    outline: false,\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n    moduleMetadata({\n      declarations: [],\n      imports: [],\n    }),\n  ],\n}"
+                    "defaultValue": "{\n  title: 'Atoms/Button',\n  component: ButtonComponent,\n  tags: ['autodocs'],\n  argTypes: {\n    colour: {\n      control: { type: 'select' },\n    },\n    size: {\n      control: { type: 'select' },\n    },\n    type: {\n      control: { type: 'select' },\n    },\n  },\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    type: ButtonType.Button,\n    label: 'Button',\n    icon: 'check',\n    isLoading: false,\n    outline: false,\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n    moduleMetadata({\n      declarations: [],\n      imports: [],\n    }),\n  ],\n}"
                 },
                 {
                     "name": "PrimaryWithIcon",
@@ -502,7 +611,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
-                    "defaultValue": "{\n  name: 'Icon and text',\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    label: 'Button',\n    icon: 'check',\n    isLoading: false,\n    outline: false,\n  },\n}"
+                    "defaultValue": "{\n  name: 'Icon and text',\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    type: ButtonType.Button,\n    label: 'Button',\n    icon: 'check',\n    isLoading: false,\n    outline: false,\n  },\n}"
                 },
                 {
                     "name": "Textoading",
@@ -513,7 +622,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
-                    "defaultValue": "{\n  name: 'Text loading',\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    label: 'Button',\n    icon: '',\n    isLoading: true,\n    outline: false,\n  },\n}"
+                    "defaultValue": "{\n  name: 'Text loading',\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    type: ButtonType.Button,\n    label: 'Button',\n    icon: '',\n    isLoading: true,\n    outline: false,\n  },\n}"
                 },
                 {
                     "name": "TextOnly",
@@ -524,7 +633,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
-                    "defaultValue": "{\n  name: 'Text only',\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    label: 'Button',\n    icon: '',\n    isLoading: false,\n    outline: false,\n  },\n}"
+                    "defaultValue": "{\n  name: 'Text only',\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    type: ButtonType.Button,\n    label: 'Button',\n    icon: '',\n    isLoading: false,\n    outline: false,\n  },\n}"
                 }
             ],
             "projects/tikal-ui-components/.storybook/preview.ts": [
@@ -613,6 +722,38 @@
                     "description": "",
                     "file": "projects/tikal-ui-components/src/lib/enums/button-size.ts"
                 }
+            ],
+            "projects/tikal-ui-components/src/lib/enums/button-type.ts": [
+                {
+                    "name": "ButtonType",
+                    "childs": [
+                        {
+                            "name": "Button",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "value": "button"
+                        },
+                        {
+                            "name": "Submit",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "value": "submit"
+                        },
+                        {
+                            "name": "Reset",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "value": "reset"
+                        }
+                    ],
+                    "ctype": "miscellaneous",
+                    "subtype": "enum",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "",
+                    "description": "",
+                    "file": "projects/tikal-ui-components/src/lib/enums/button-type.ts"
+                }
             ]
         },
         "groupedTypeAliases": {
@@ -657,9 +798,18 @@
                 "type": "component",
                 "linktype": "component",
                 "name": "ButtonComponent",
-                "coveragePercent": 85,
-                "coverageCount": "6/7",
+                "coveragePercent": 87,
+                "coverageCount": "7/8",
                 "status": "very-good"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/lib/components/label/label.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "LabelComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
             },
             {
                 "filePath": "projects/tikal-ui-components/src/lib/theme/tikal-theme.ts",
