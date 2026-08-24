@@ -1,6 +1,10 @@
 {
   "name": "tikal-ui-components",
   "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Tikal-online/tikal-game.git"
+  },
   "peerDependencies": {
     "@angular/common": "^22.1.0",
     "@angular/core": "^22.1.0",
