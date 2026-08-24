@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "build": "ng build tikal-ui-components",
     "format": "prettier --write \"./**/*.*\"",
     "format-verify": "prettier --check \"./**/*.*\"",
     "lint": "ng lint --fix",
