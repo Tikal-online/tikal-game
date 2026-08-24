@@ -1,0 +1,53 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: Publish Package
+
+permissions:
+  id-token: write
+  contents: read
+
+on:
+  workflow_call:
+    inputs:
+      project-directory:
+        required: true
+        type: string
+      version:
+        required: true
+        type: string
+      node-version:
+        required: true
+        type: string
+
+jobs:
+  format:
+    name: Publish Package
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          lfs: true
+
+      - name: Setup node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: ${{ inputs.node-version }}
+          package-manager-cache: false
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: ${{ inputs.project-directory }}
+
+      - name: Set version
+        run: npm version 2.4.1 --prefix projects/tikal-ui-components
+        working-directory: ${{ inputs.project-directory }}
+
+      - name: Build package
+        run: npm run build
+        working-directory: ${{ inputs.project-directory }}
+
+      - name: Publish npm package
+        run: npm publish --access public --provenance
+        working-directory: ${{ inputs.project-directory }}/dist/tikal-ui-components

@@ -55,3 +55,13 @@ jobs:
     with:
       project-directory: TikalComponents
       project-name: tikal-components
+
+  push:
+    name: Publish Package
+    needs: release
+    if: github.ref == 'refs/heads/main'
+    uses: ./.github/workflows/node-publish-package.yaml
+    with:
+      project-directory: TikalComponents
+      version: ${{ needs.release.outputs.version }}
+      node-version: 24
