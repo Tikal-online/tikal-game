@@ -15,12 +15,12 @@ import {
 import { InputTextModule } from 'primeng/inputtext';
 
 @Component({
-  selector: 'tikal-label',
+  selector: 'tikal-input',
   imports: [InputTextModule],
-  templateUrl: './label.html',
-  styleUrl: './label.scss',
+  templateUrl: './input.html',
+  styleUrl: './input.scss',
 })
-export class LabelComponent implements FormValueControl<string> {
+export class InputComponent implements FormValueControl<string> {
   /** What value should the input have */
   readonly value = model('');
 
