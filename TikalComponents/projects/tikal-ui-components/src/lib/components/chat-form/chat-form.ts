@@ -25,7 +25,7 @@ export class ChatFormComponent {
   readonly placeholder = input<string>();
 
   /** What is the max input length? */
-  readonly maxLength = input.required<number>();
+  readonly maxLength = input<number>(50);
 
   /** @ignore */
   readonly buttonTypeSubmit = ButtonType.Submit;
@@ -35,7 +35,7 @@ export class ChatFormComponent {
     this.chatFormData,
     (schemaPath) => {
       required(schemaPath.message);
-      maxLength(schemaPath.message, this.maxLength());
+      maxLength(schemaPath.message, () => this.maxLength());
       disabled(schemaPath, { when: () => this.chatForm().submitting() });
     },
     {
