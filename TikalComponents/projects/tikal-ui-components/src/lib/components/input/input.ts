@@ -24,17 +24,9 @@ export class InputComponent implements FormValueControl<string> {
   /** Was the input touched */
   readonly touched = input<boolean>(false);
 
-  /*
-  pending?: InputSignal<boolean> | InputSignalWithTransform<boolean, unknown> | undefined;
-  name?: InputSignal<string> | InputSignalWithTransform<string, unknown> | undefined;
-  minLength?:
-    | InputSignal<number | undefined>
-    | InputSignalWithTransform<number | undefined, unknown>
-    | undefined;
-  maxLength?:
-    | InputSignal<number | undefined>
-    | InputSignalWithTransform<number | undefined, unknown>
-    | undefined;
+  /** What is the max input length? */
+  readonly maxLength = input<number>();
+
   /** What placeholder should the input display? */
   readonly placeholder = input<string>();
 }

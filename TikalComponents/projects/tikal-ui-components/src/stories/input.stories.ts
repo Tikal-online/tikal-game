@@ -12,6 +12,7 @@ const meta: Meta<InputComponent> = {
     required: false,
     touched: false,
     placeholder: 'Placeholder...',
+    maxLength: 100,
   },
   decorators: [
     applicationConfig({
@@ -32,6 +33,7 @@ export const EmptyWithPlaceholder: Story = {
     required: false,
     touched: false,
     placeholder: 'Type something...',
+    maxLength: 100,
   },
 };
 
@@ -44,6 +46,7 @@ export const EmptyWithoutPlaceholder: Story = {
     required: false,
     touched: false,
     placeholder: '',
+    maxLength: 100,
   },
 };
 
@@ -56,6 +59,7 @@ export const WithContent: Story = {
     required: false,
     touched: false,
     placeholder: 'Type something...',
+    maxLength: 100,
   },
 };
 
@@ -68,6 +72,7 @@ export const Disabled: Story = {
     required: false,
     touched: false,
     placeholder: 'Type something...',
+    maxLength: 100,
   },
 };
 
@@ -80,6 +85,7 @@ export const Invalid: Story = {
     required: false,
     touched: true,
     placeholder: 'Type something...',
+    maxLength: 100,
   },
 };
 
@@ -92,5 +98,6 @@ export const InvalidWithPlaceholder: Story = {
     required: false,
     touched: true,
     placeholder: 'Type something...',
+    maxLength: 100,
   },
 };
