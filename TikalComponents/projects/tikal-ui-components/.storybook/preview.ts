@@ -7,6 +7,16 @@ import docJson from '../documentation.json';
 import TikalTheme from '../src/lib/theme/tikal-theme';
 setCompodocJson(docJson);
 
+if (typeof window !== 'undefined') {
+  // Prevent play-function interactions (userEvent.click/type call .focus()
+  // internally, which scrolls by default) from moving the Docs page.
+  console.log('[preview.ts] patching focus');
+  const originalFocus = HTMLElement.prototype.focus;
+  HTMLElement.prototype.focus = function (options): void {
+    return originalFocus.call(this, { ...options, preventScroll: true });
+  };
+}
+
 const preview: Preview = {
   decorators: [
     applicationConfig({
@@ -33,6 +43,11 @@ const preview: Preview = {
   ],
 
   parameters: {
+    docs: {
+      story: {
+        autoplay: true,
+      },
+    },
     controls: {
       matchers: {
         color: /(background|color)$/i,

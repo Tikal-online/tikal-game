@@ -29,3 +29,21 @@ export const WaitingForInput: Story = {
     maxLength: 100,
   },
 };
+
+export const Invalid: Story = {
+  name: 'Submitted with empty content',
+  args: {
+    placeholder: 'Say something...',
+    maxLength: 100,
+    onSubmission: async () => {
+      return new Promise(() => {
+        /* never resolves */
+      });
+    },
+  },
+  play: async ({ canvas, userEvent }) => {
+    const submitButton = canvas.getByRole('button');
+
+    await userEvent.click(submitButton);
+  },
+};

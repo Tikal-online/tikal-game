@@ -317,7 +317,7 @@
         },
         {
             "name": "ChatFormComponent",
-            "id": "component-ChatFormComponent-9c602d67f4537574651c476490b790102fda5c74c00810a8df70ff2883f6bea2c8764243cc08ad87a061e93149d6cf528068f76610c43beb7cc8679a67c7d50d",
+            "id": "component-ChatFormComponent-48715805f43ac5dfc0c6edc8e836e628f7ded563d7bb225ef19e63b89b90f0d6a4dfe18e7b24759366fe972531587dac4e2ac435ce7914d20b5426a99c2257f6",
             "file": "projects/tikal-ui-components/src/lib/components/chat-form/chat-form.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -340,6 +340,7 @@
                 {
                     "name": "maxLength",
                     "coverageIgnore": false,
+                    "defaultValue": "50",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "number",
@@ -351,7 +352,7 @@
                     "modifierKind": [
                         148
                     ],
-                    "required": true
+                    "required": false
                 },
                 {
                     "name": "onSubmission",
@@ -414,7 +415,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, input, signal } from '@angular/core';\nimport { disabled, form, required, FormRoot, FormField, maxLength } from '@angular/forms/signals';\nimport { InputComponent } from '../input/input';\nimport { ButtonComponent } from '../button/button';\nimport { ButtonType } from '../../enums/button-type';\n\ntype ChatFormData = {\n  message: string;\n};\n\n@Component({\n  selector: 'tikal-chat-form',\n  imports: [FormRoot, FormField, InputComponent, ButtonComponent],\n  templateUrl: './chat-form.html',\n  styleUrl: './chat-form.scss',\n})\nexport class ChatFormComponent {\n  /** @ignore */\n  private readonly chatFormData = signal<ChatFormData>({ message: '' });\n\n  /** What should happen when the form is submitted? */\n  readonly onSubmission = input.required<(message: string) => Promise<void>>();\n\n  /** What placeholder should be displayed on the input? */\n  readonly placeholder = input<string>();\n\n  /** What is the max input length? */\n  readonly maxLength = input.required<number>();\n\n  /** @ignore */\n  readonly buttonTypeSubmit = ButtonType.Submit;\n\n  /** @ignore */\n  readonly chatForm = form(\n    this.chatFormData,\n    (schemaPath) => {\n      required(schemaPath.message);\n      maxLength(schemaPath.message, this.maxLength());\n      disabled(schemaPath, { when: () => this.chatForm().submitting() });\n    },\n    {\n      submission: {\n        action: async (field) => {\n          const message = field().value().message;\n\n          await this.onSubmission()(message);\n\n          field.message().reset('');\n        },\n      },\n    },\n  );\n}\n",
+            "sourceCode": "import { Component, input, signal } from '@angular/core';\nimport { disabled, form, required, FormRoot, FormField, maxLength } from '@angular/forms/signals';\nimport { InputComponent } from '../input/input';\nimport { ButtonComponent } from '../button/button';\nimport { ButtonType } from '../../enums/button-type';\n\ntype ChatFormData = {\n  message: string;\n};\n\n@Component({\n  selector: 'tikal-chat-form',\n  imports: [FormRoot, FormField, InputComponent, ButtonComponent],\n  templateUrl: './chat-form.html',\n  styleUrl: './chat-form.scss',\n})\nexport class ChatFormComponent {\n  /** @ignore */\n  private readonly chatFormData = signal<ChatFormData>({ message: '' });\n\n  /** What should happen when the form is submitted? */\n  readonly onSubmission = input.required<(message: string) => Promise<void>>();\n\n  /** What placeholder should be displayed on the input? */\n  readonly placeholder = input<string>();\n\n  /** What is the max input length? */\n  readonly maxLength = input<number>(50);\n\n  /** @ignore */\n  readonly buttonTypeSubmit = ButtonType.Submit;\n\n  /** @ignore */\n  readonly chatForm = form(\n    this.chatFormData,\n    (schemaPath) => {\n      required(schemaPath.message);\n      maxLength(schemaPath.message, () => this.maxLength());\n      disabled(schemaPath, { when: () => this.chatForm().submitting() });\n    },\n    {\n      submission: {\n        action: async (field) => {\n          const message = field().value().message;\n\n          await this.onSubmission()(message);\n\n          field.message().reset('');\n        },\n      },\n    },\n  );\n}\n",
             "styleUrl": "./chat-form.scss",
             "assetsDirs": [],
             "styleUrlsData": [
@@ -716,6 +717,17 @@
                 "deprecationMessage": "",
                 "type": "Story",
                 "defaultValue": "{\n  name: 'Icon only loading',\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    type: ButtonType.Button,\n    label: '',\n    icon: 'check',\n    isLoading: true,\n    outline: false,\n  },\n}"
+            },
+            {
+                "name": "Invalid",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/tikal-ui-components/src/stories/chat-form.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n  name: 'Submitted with empty content',\n  args: {\n    placeholder: 'Say something...',\n    maxLength: 100,\n    onSubmission: async () => {\n      return new Promise(() => {\n        /* never resolves */\n      });\n    },\n  },\n  play: async ({ canvas, userEvent }) => {\n    const submitButton = canvas.getByRole('button');\n\n    await userEvent.click(submitButton);\n  },\n}"
             },
             {
                 "name": "Invalid",
@@ -1141,6 +1153,17 @@
             ],
             "projects/tikal-ui-components/src/stories/chat-form.stories.ts": [
                 {
+                    "name": "Invalid",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/tikal-ui-components/src/stories/chat-form.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n  name: 'Submitted with empty content',\n  args: {\n    placeholder: 'Say something...',\n    maxLength: 100,\n    onSubmission: async () => {\n      return new Promise(() => {\n        /* never resolves */\n      });\n    },\n  },\n  play: async ({ canvas, userEvent }) => {\n    const submitButton = canvas.getByRole('button');\n\n    await userEvent.click(submitButton);\n  },\n}"
+                },
+                {
                     "name": "meta",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
@@ -1352,7 +1375,7 @@
         "children": []
     },
     "coverage": {
-        "count": 10,
+        "count": 9,
         "status": "low",
         "files": [
             {
@@ -1487,6 +1510,16 @@
                 "linktype": "miscellaneous",
                 "linksubtype": "typealias",
                 "name": "Story",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/stories/chat-form.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Invalid",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
