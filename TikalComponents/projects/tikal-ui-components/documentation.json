@@ -317,7 +317,7 @@
         },
         {
             "name": "ChatFormComponent",
-            "id": "component-ChatFormComponent-48715805f43ac5dfc0c6edc8e836e628f7ded563d7bb225ef19e63b89b90f0d6a4dfe18e7b24759366fe972531587dac4e2ac435ce7914d20b5426a99c2257f6",
+            "id": "component-ChatFormComponent-fc402817b6db2d01f5fac6bcd549181337127faaf87b018d5f7ba20ca87a70cdc9dda7bbdf9b0f051591acbe4a6582b862f3f4c3405275353dec1ae78e01deee",
             "file": "projects/tikal-ui-components/src/lib/components/chat-form/chat-form.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -337,6 +337,22 @@
             "viewProviders": [],
             "hostDirectives": [],
             "inputsClass": [
+                {
+                    "name": "label",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>What is the label of the input element?</p>\n",
+                    "line": 31,
+                    "rawdescription": "\nWhat is the label of the input element?",
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                },
                 {
                     "name": "maxLength",
                     "coverageIgnore": false,
@@ -415,12 +431,12 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, input, signal } from '@angular/core';\nimport { disabled, form, required, FormRoot, FormField, maxLength } from '@angular/forms/signals';\nimport { InputComponent } from '../input/input';\nimport { ButtonComponent } from '../button/button';\nimport { ButtonType } from '../../enums/button-type';\n\ntype ChatFormData = {\n  message: string;\n};\n\n@Component({\n  selector: 'tikal-chat-form',\n  imports: [FormRoot, FormField, InputComponent, ButtonComponent],\n  templateUrl: './chat-form.html',\n  styleUrl: './chat-form.scss',\n})\nexport class ChatFormComponent {\n  /** @ignore */\n  private readonly chatFormData = signal<ChatFormData>({ message: '' });\n\n  /** What should happen when the form is submitted? */\n  readonly onSubmission = input.required<(message: string) => Promise<void>>();\n\n  /** What placeholder should be displayed on the input? */\n  readonly placeholder = input<string>();\n\n  /** What is the max input length? */\n  readonly maxLength = input<number>(50);\n\n  /** @ignore */\n  readonly buttonTypeSubmit = ButtonType.Submit;\n\n  /** @ignore */\n  readonly chatForm = form(\n    this.chatFormData,\n    (schemaPath) => {\n      required(schemaPath.message);\n      maxLength(schemaPath.message, () => this.maxLength());\n      disabled(schemaPath, { when: () => this.chatForm().submitting() });\n    },\n    {\n      submission: {\n        action: async (field) => {\n          const message = field().value().message;\n\n          await this.onSubmission()(message);\n\n          field.message().reset('');\n        },\n      },\n    },\n  );\n}\n",
+            "sourceCode": "import { Component, input, signal } from '@angular/core';\nimport { disabled, form, required, FormRoot, FormField, maxLength } from '@angular/forms/signals';\nimport { InputComponent } from '../input/input';\nimport { ButtonComponent } from '../button/button';\nimport { ButtonType } from '../../enums/button-type';\n\ntype ChatFormData = {\n  message: string;\n};\n\n@Component({\n  selector: 'tikal-chat-form',\n  imports: [FormRoot, FormField, InputComponent, ButtonComponent],\n  templateUrl: './chat-form.html',\n  styleUrl: './chat-form.scss',\n})\nexport class ChatFormComponent {\n  /** @ignore */\n  private readonly chatFormData = signal<ChatFormData>({ message: '' });\n\n  /** What should happen when the form is submitted? */\n  readonly onSubmission = input.required<(message: string) => Promise<void>>();\n\n  /** What placeholder should be displayed on the input? */\n  readonly placeholder = input<string>();\n\n  /** What is the max input length? */\n  readonly maxLength = input<number>(50);\n\n  /** What is the label of the input element? */\n  readonly label = input<string>();\n\n  /** @ignore */\n  readonly buttonTypeSubmit = ButtonType.Submit;\n\n  /** @ignore */\n  readonly chatForm = form(\n    this.chatFormData,\n    (schemaPath) => {\n      required(schemaPath.message);\n      maxLength(schemaPath.message, () => this.maxLength());\n      disabled(schemaPath, { when: () => this.chatForm().submitting() });\n    },\n    {\n      submission: {\n        action: async (field) => {\n          const message = field().value().message;\n\n          await this.onSubmission()(message);\n\n          field.message().reset('');\n        },\n      },\n    },\n  );\n}\n",
             "styleUrl": "./chat-form.scss",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": "",
+                    "data": "form {\n  display: flex;\n  gap: 0.5rem;\n}\n",
                     "styleUrl": "./chat-form.scss"
                 }
             ],
@@ -447,11 +463,11 @@
                     }
                 ]
             },
-            "templateData": "<form [formRoot]=\"chatForm\">\n  <tikal-input [formField]=\"chatForm.message\" [placeholder]=\"placeholder()\" />\n  <tikal-button icon=\"check\" [isLoading]=\"chatForm().submitting()\" [type]=\"buttonTypeSubmit\" />\n</form>\n"
+            "templateData": "<form [formRoot]=\"chatForm\">\n  <tikal-input [formField]=\"chatForm.message\" [label]=\"label()\" [placeholder]=\"placeholder()\" />\n  <tikal-button icon=\"send\" [isLoading]=\"chatForm().submitting()\" [type]=\"buttonTypeSubmit\" />\n</form>\n"
         },
         {
             "name": "InputComponent",
-            "id": "component-InputComponent-2e04b486acae522373f37553735d2aabb049271ec68305d29527e8d6e595c03035be0e14a2233ded09cdc5438b347cbf41a4b8bfd9783d2ecc5476bdc162354c",
+            "id": "component-InputComponent-4b1c4e0a013b9a1e33db48cb3e73aec1e8352887c36bd26b9c3cfeac35d32669df5bf28cbfc3ba910f19d01984609da88d279fbd4decdaaf86cb6d7ef5909bc3",
             "file": "projects/tikal-ui-components/src/lib/components/input/input.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -506,6 +522,22 @@
                     "required": false
                 },
                 {
+                    "name": "label",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>What is the label of the input element?</p>\n",
+                    "line": 31,
+                    "rawdescription": "\nWhat is the label of the input element?",
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                },
+                {
                     "name": "maxLength",
                     "coverageIgnore": false,
                     "deprecated": false,
@@ -530,7 +562,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "<p>What placeholder should the input display?</p>\n",
-                    "line": 31,
+                    "line": 34,
                     "rawdescription": "\nWhat placeholder should the input display?",
                     "modifierKind": [
                         148
@@ -625,7 +657,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, model, input } from '@angular/core';\nimport { FormValueControl } from '@angular/forms/signals';\nimport { InputTextModule } from 'primeng/inputtext';\n\n@Component({\n  selector: 'tikal-input',\n  imports: [InputTextModule],\n  templateUrl: './input.html',\n  styleUrl: './input.scss',\n})\nexport class InputComponent implements FormValueControl<string> {\n  /** What value should the input have */\n  readonly value = model('');\n\n  /** Should the input be disabled */\n  readonly disabled = input<boolean>(false);\n\n  /** Is the content of the input invalid? */\n  readonly invalid = input<boolean>(false);\n\n  /** Is the input required? */\n  readonly required = input<boolean>(false);\n\n  /** Was the input touched */\n  readonly touched = input<boolean>(false);\n\n  /** What is the max input length? */\n  readonly maxLength = input<number>();\n\n  /** What placeholder should the input display? */\n  readonly placeholder = input<string>();\n}\n",
+            "sourceCode": "import { Component, model, input } from '@angular/core';\nimport { FormValueControl } from '@angular/forms/signals';\nimport { InputTextModule } from 'primeng/inputtext';\n\n@Component({\n  selector: 'tikal-input',\n  imports: [InputTextModule],\n  templateUrl: './input.html',\n  styleUrl: './input.scss',\n})\nexport class InputComponent implements FormValueControl<string> {\n  /** What value should the input have */\n  readonly value = model('');\n\n  /** Should the input be disabled */\n  readonly disabled = input<boolean>(false);\n\n  /** Is the content of the input invalid? */\n  readonly invalid = input<boolean>(false);\n\n  /** Is the input required? */\n  readonly required = input<boolean>(false);\n\n  /** Was the input touched */\n  readonly touched = input<boolean>(false);\n\n  /** What is the max input length? */\n  readonly maxLength = input<number>();\n\n  /** What is the label of the input element? */\n  readonly label = input<string>();\n\n  /** What placeholder should the input display? */\n  readonly placeholder = input<string>();\n}\n",
             "styleUrl": "./input.scss",
             "assetsDirs": [],
             "styleUrlsData": [
@@ -657,7 +689,7 @@
                     }
                 ]
             },
-            "templateData": "<input\n  pInputText\n  [disabled]=\"disabled()\"\n  [invalid]=\"invalid() && touched()\"\n  [maxLength]=\"maxLength()\"\n  [placeholder]=\"placeholder()\"\n  [required]=\"required()\"\n  [value]=\"value()\"\n  (input)=\"value.set($event.target.value)\"\n/>\n"
+            "templateData": "<input\n  pInputText\n  [ariaLabel]=\"label()\"\n  [disabled]=\"disabled()\"\n  [invalid]=\"invalid() && touched()\"\n  [maxLength]=\"maxLength()\"\n  [placeholder]=\"placeholder()\"\n  [required]=\"required()\"\n  [value]=\"value()\"\n  (input)=\"value.set($event.target.value)\"\n/>\n"
         }
     ],
     "modules": [],
@@ -727,7 +759,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
-                "defaultValue": "{\n  name: 'Submitted with empty content',\n  args: {\n    placeholder: 'Say something...',\n    maxLength: 100,\n    onSubmission: async () => {\n      return new Promise(() => {\n        /* never resolves */\n      });\n    },\n  },\n  play: async ({ canvas, userEvent }) => {\n    const submitButton = canvas.getByRole('button');\n\n    await userEvent.click(submitButton);\n  },\n}"
+                "defaultValue": "{\n  name: 'Submitted with empty content',\n  args: {\n    label: 'message',\n    placeholder: 'Say something...',\n    maxLength: 100,\n  },\n  play: async ({ canvas, userEvent }) => {\n    const submitButton = canvas.getByRole('button');\n\n    await userEvent.click(submitButton);\n  },\n}"
             },
             {
                 "name": "Invalid",
@@ -752,6 +784,17 @@
                 "defaultValue": "{\n  name: 'Invalid with placeholder',\n  args: {\n    value: '',\n    disabled: false,\n    invalid: true,\n    required: false,\n    touched: true,\n    placeholder: 'Type something...',\n    maxLength: 100,\n  },\n}"
             },
             {
+                "name": "Loading",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/tikal-ui-components/src/stories/chat-form.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n  name: 'Loading',\n  args: {\n    label: 'message',\n    placeholder: 'Say something...',\n    maxLength: 100,\n    onSubmission: async () => {\n      return new Promise(() => {\n        /* never resolves */\n      });\n    },\n  },\n  play: async ({ canvas, userEvent }) => {\n    const messageInput = canvas.getByLabelText('message', {\n      selector: 'input',\n    });\n\n    await userEvent.type(messageInput, 'This is my message');\n\n    const submitButton = canvas.getByRole('button');\n\n    await userEvent.click(submitButton);\n  },\n}"
+            },
+            {
                 "name": "meta",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -771,7 +814,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Meta<ChatFormComponent>",
-                "defaultValue": "{\n  title: 'Molecules/Chat-Form',\n  component: ChatFormComponent,\n  tags: ['autodocs'],\n  args: {\n    placeholder: 'Say something...',\n    maxLength: 100,\n    onSubmission: async () => {\n      return new Promise((resolve) => setTimeout(resolve, 5000));\n    },\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
+                "defaultValue": "{\n  title: 'Molecules/Chat-Form',\n  component: ChatFormComponent,\n  tags: ['autodocs'],\n  args: {\n    label: 'message',\n    placeholder: 'Say something...',\n    maxLength: 100,\n    onSubmission: async () => {\n      return new Promise((resolve) => setTimeout(resolve, 5000));\n    },\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
             },
             {
                 "name": "meta",
@@ -840,6 +883,17 @@
                 "defaultValue": "definePreset(Aura, {\n  semantic: {\n    primary: {\n      50: '{surface.50}',\n      100: '{surface.100}',\n      200: '{surface.200}',\n      300: '{surface.300}',\n      400: '{surface.400}',\n      500: '{surface.500}',\n      600: '{surface.600}',\n      700: '{surface.700}',\n      800: '{surface.800}',\n      900: '{surface.900}',\n      950: '{surface.950}',\n      color: 'light-dark({primary.950}, {primary.50})',\n      contrastColor: 'light-dark(#ffffff, {primary.950})',\n      hoverColor: 'light-dark({primary.800}, {primary.200})',\n      activeColor: 'light-dark({primary.700}, {primary.300})',\n    },\n    highlight: {\n      background: 'light-dark({primary.950}, {primary.50})',\n      focusBackground: 'light-dark({primary.700}, {primary.300})',\n      color: 'light-dark(#ffffff, {primary.950})',\n      focusColor: 'light-dark(#ffffff, {primary.950})',\n    },\n  },\n})"
             },
             {
+                "name": "TypedContent",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/tikal-ui-components/src/stories/chat-form.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n  name: 'User typed content',\n  args: {\n    label: 'message',\n    placeholder: 'Say something...',\n    maxLength: 100,\n  },\n  play: async ({ canvas, userEvent }) => {\n    const messageInput = canvas.getByLabelText('message', {\n      selector: 'input',\n    });\n\n    await userEvent.type(messageInput, 'This is my message');\n  },\n}"
+            },
+            {
                 "name": "WaitingForInput",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -848,7 +902,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
-                "defaultValue": "{\n  name: 'Waiting for input',\n  args: {\n    placeholder: 'Say something...',\n    maxLength: 100,\n  },\n}"
+                "defaultValue": "{\n  name: 'Waiting for input',\n  args: {\n    label: 'message',\n    placeholder: 'Say something...',\n    maxLength: 100,\n  },\n}"
             },
             {
                 "name": "WithContent",
@@ -1161,7 +1215,18 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
-                    "defaultValue": "{\n  name: 'Submitted with empty content',\n  args: {\n    placeholder: 'Say something...',\n    maxLength: 100,\n    onSubmission: async () => {\n      return new Promise(() => {\n        /* never resolves */\n      });\n    },\n  },\n  play: async ({ canvas, userEvent }) => {\n    const submitButton = canvas.getByRole('button');\n\n    await userEvent.click(submitButton);\n  },\n}"
+                    "defaultValue": "{\n  name: 'Submitted with empty content',\n  args: {\n    label: 'message',\n    placeholder: 'Say something...',\n    maxLength: 100,\n  },\n  play: async ({ canvas, userEvent }) => {\n    const submitButton = canvas.getByRole('button');\n\n    await userEvent.click(submitButton);\n  },\n}"
+                },
+                {
+                    "name": "Loading",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/tikal-ui-components/src/stories/chat-form.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n  name: 'Loading',\n  args: {\n    label: 'message',\n    placeholder: 'Say something...',\n    maxLength: 100,\n    onSubmission: async () => {\n      return new Promise(() => {\n        /* never resolves */\n      });\n    },\n  },\n  play: async ({ canvas, userEvent }) => {\n    const messageInput = canvas.getByLabelText('message', {\n      selector: 'input',\n    });\n\n    await userEvent.type(messageInput, 'This is my message');\n\n    const submitButton = canvas.getByRole('button');\n\n    await userEvent.click(submitButton);\n  },\n}"
                 },
                 {
                     "name": "meta",
@@ -1172,7 +1237,18 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Meta<ChatFormComponent>",
-                    "defaultValue": "{\n  title: 'Molecules/Chat-Form',\n  component: ChatFormComponent,\n  tags: ['autodocs'],\n  args: {\n    placeholder: 'Say something...',\n    maxLength: 100,\n    onSubmission: async () => {\n      return new Promise((resolve) => setTimeout(resolve, 5000));\n    },\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
+                    "defaultValue": "{\n  title: 'Molecules/Chat-Form',\n  component: ChatFormComponent,\n  tags: ['autodocs'],\n  args: {\n    label: 'message',\n    placeholder: 'Say something...',\n    maxLength: 100,\n    onSubmission: async () => {\n      return new Promise((resolve) => setTimeout(resolve, 5000));\n    },\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
+                },
+                {
+                    "name": "TypedContent",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/tikal-ui-components/src/stories/chat-form.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n  name: 'User typed content',\n  args: {\n    label: 'message',\n    placeholder: 'Say something...',\n    maxLength: 100,\n  },\n  play: async ({ canvas, userEvent }) => {\n    const messageInput = canvas.getByLabelText('message', {\n      selector: 'input',\n    });\n\n    await userEvent.type(messageInput, 'This is my message');\n  },\n}"
                 },
                 {
                     "name": "WaitingForInput",
@@ -1183,7 +1259,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
-                    "defaultValue": "{\n  name: 'Waiting for input',\n  args: {\n    placeholder: 'Say something...',\n    maxLength: 100,\n  },\n}"
+                    "defaultValue": "{\n  name: 'Waiting for input',\n  args: {\n    label: 'message',\n    placeholder: 'Say something...',\n    maxLength: 100,\n  },\n}"
                 }
             ],
             "projects/tikal-ui-components/.storybook/preview.ts": [
@@ -1402,9 +1478,9 @@
                 "type": "component",
                 "linktype": "component",
                 "name": "ChatFormComponent",
-                "coveragePercent": 75,
-                "coverageCount": "3/4",
-                "status": "good"
+                "coveragePercent": 80,
+                "coverageCount": "4/5",
+                "status": "very-good"
             },
             {
                 "filePath": "projects/tikal-ui-components/src/lib/components/chat-form/chat-form.ts",
@@ -1421,8 +1497,8 @@
                 "type": "component",
                 "linktype": "component",
                 "name": "InputComponent",
-                "coveragePercent": 88,
-                "coverageCount": "8/9",
+                "coveragePercent": 90,
+                "coverageCount": "9/10",
                 "status": "very-good"
             },
             {
@@ -1529,7 +1605,27 @@
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
+                "name": "Loading",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/stories/chat-form.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
                 "name": "meta",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/stories/chat-form.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "TypedContent",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
