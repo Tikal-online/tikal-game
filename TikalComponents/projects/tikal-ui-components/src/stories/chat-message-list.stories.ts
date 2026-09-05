@@ -9,6 +9,7 @@ const meta: Meta<ChatMessageListComponent> = {
     applicationConfig({
       providers: [],
     }),
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     (story) => {
       const s = story();
       return {
