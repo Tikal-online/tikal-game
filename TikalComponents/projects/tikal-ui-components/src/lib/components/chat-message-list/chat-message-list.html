@@ -1,0 +1,7 @@
+<p-scroller [itemSize]="50" [items]="messages()">
+  <ng-template #item let-item let-options="options">
+    <div class="row" [class.me]="item.origin === 'Me'">
+      <tikal-chat-message class="message" [message]="item.message" [sender]="item.origin" />
+    </div>
+  </ng-template>
+</p-scroller>

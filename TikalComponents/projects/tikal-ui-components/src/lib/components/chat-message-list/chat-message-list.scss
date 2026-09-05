@@ -1,0 +1,28 @@
+:host {
+  display: flex;
+  flex-direction: column-reverse;
+  flex: 1;
+
+  padding: 1rem;
+
+  overflow-y: auto;
+}
+
+.row {
+  display: flex;
+}
+
+.me {
+  justify-content: flex-end;
+}
+
+p-scroller {
+  width: 100%;
+  height: 100%;
+}
+
+.message {
+  display: flex;
+  max-width: 90%;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+}

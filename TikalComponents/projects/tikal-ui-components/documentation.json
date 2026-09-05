@@ -94,6 +94,10 @@
                     {
                         "name": "ButtonComponent",
                         "type": "component"
+                    },
+                    {
+                        "name": "ChatMessageComponent",
+                        "type": "component"
                     }
                 ],
                 "outgoing": []
@@ -466,6 +470,203 @@
             "templateData": "<form [formRoot]=\"chatForm\">\n  <tikal-input [formField]=\"chatForm.message\" [label]=\"label()\" [placeholder]=\"placeholder()\" />\n  <tikal-button icon=\"send\" [isLoading]=\"chatForm().submitting()\" [type]=\"buttonTypeSubmit\" />\n</form>\n"
         },
         {
+            "name": "ChatMessageComponent",
+            "id": "component-ChatMessageComponent-af124d092f32225d78cdc66f0bb68d6993ee87e10277d4304c4b89a13186856a9be8ada602095363ed0610ed695674db2f93a8950af02032502fe446f5cf6713",
+            "file": "projects/tikal-ui-components/src/lib/components/chat-message/chat-message.ts",
+            "changeDetection": "ChangeDetectionStrategy.OnPush",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "tikal-chat-message",
+            "styleUrls": [
+                "./chat-message.scss"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./chat-message.html"
+            ],
+            "templateVariables": [],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [
+                {
+                    "name": "message",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>What is the message that should be displayed?</p>\n",
+                    "line": 15,
+                    "rawdescription": "\nWhat is the message that should be displayed?",
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": true
+                },
+                {
+                    "name": "sender",
+                    "coverageIgnore": false,
+                    "defaultValue": "'Opponent'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "ChatMessageOrigin",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>Who sent the message?</p>\n",
+                    "line": 18,
+                    "rawdescription": "\nWho sent the message?",
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                }
+            ],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [],
+            "coverageIgnore": false,
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [
+                {
+                    "name": "MessageModule",
+                    "type": "module"
+                },
+                {
+                    "name": "EnumMapPipe",
+                    "type": "pipe"
+                }
+            ],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component, input } from '@angular/core';\nimport { MessageModule } from 'primeng/message';\nimport { EnumMapPipe } from '../../../pipes/enum-map';\n\nexport type ChatMessageOrigin = 'Me' | 'Opponent';\n\n@Component({\n  selector: 'tikal-chat-message',\n  imports: [MessageModule, EnumMapPipe],\n  templateUrl: './chat-message.html',\n  styleUrl: './chat-message.scss',\n})\nexport class ChatMessageComponent {\n  /** What is the message that should be displayed? */\n  readonly message = input.required<string>();\n\n  /** Who sent the message? */\n  readonly sender = input<ChatMessageOrigin>('Opponent');\n\n  /** @ignore */\n  readonly typeMap = {\n    Me: 'contrast',\n    Opponent: 'secondary',\n  };\n}\n",
+            "styleUrl": "./chat-message.scss",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": "",
+                    "styleUrl": "./chat-message.scss"
+                }
+            ],
+            "stylesData": "",
+            "extends": [],
+            "relationships": {
+                "incoming": [
+                    {
+                        "name": "ChatMessageListComponent",
+                        "type": "component"
+                    }
+                ],
+                "outgoing": [
+                    {
+                        "name": "MessageModule",
+                        "type": "module"
+                    },
+                    {
+                        "name": "EnumMapPipe",
+                        "type": "pipe"
+                    }
+                ]
+            },
+            "templateData": "<p-message [severity]=\"sender() | enumMap: typeMap\">{{ message() }}</p-message>\n"
+        },
+        {
+            "name": "ChatMessageListComponent",
+            "id": "component-ChatMessageListComponent-fad5673b1d3e106474937f6ca874c94c810565e25a6a27fdf8beeb88127350283b87fb1d64cfdaa9a02e3392a4c44452fc561263f82ce077ce0de6a4e2f190d1",
+            "file": "projects/tikal-ui-components/src/lib/components/chat-message-list/chat-message-list.ts",
+            "changeDetection": "ChangeDetectionStrategy.OnPush",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "tikal-chat-message-list",
+            "styleUrls": [
+                "./chat-message-list.scss"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./chat-message-list.html"
+            ],
+            "templateVariables": [],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [
+                {
+                    "name": "messages",
+                    "coverageIgnore": false,
+                    "defaultValue": "[]",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "ChatMessageData[]",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>What messages have been sent?</p>\n",
+                    "line": 18,
+                    "rawdescription": "\nWhat messages have been sent?",
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                }
+            ],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [],
+            "coverageIgnore": false,
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [
+                {
+                    "name": "ScrollerModule",
+                    "type": "module"
+                },
+                {
+                    "name": "ChatMessageComponent",
+                    "type": "component"
+                }
+            ],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component, input } from '@angular/core';\nimport { ScrollerModule } from 'primeng/scroller';\nimport { ChatMessageOrigin, ChatMessageComponent } from '../chat-message/chat-message';\n\nexport type ChatMessageData = {\n  message: string;\n  origin: ChatMessageOrigin;\n};\n\n@Component({\n  selector: 'tikal-chat-message-list',\n  imports: [ScrollerModule, ChatMessageComponent],\n  templateUrl: './chat-message-list.html',\n  styleUrl: './chat-message-list.scss',\n})\nexport class ChatMessageListComponent {\n  /** What messages have been sent? */\n  readonly messages = input<ChatMessageData[]>([]);\n}\n",
+            "styleUrl": "./chat-message-list.scss",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": ":host {\n  display: flex;\n  flex-direction: column-reverse;\n  flex: 1;\n\n  padding: 1rem;\n\n  overflow-y: auto;\n}\n\n.row {\n  display: flex;\n}\n\n.me {\n  justify-content: flex-end;\n}\n\np-scroller {\n  width: 100%;\n  height: 100%;\n}\n\n.message {\n  display: flex;\n  max-width: 90%;\n  padding: 0.5rem 1rem 0.5rem 1rem;\n}\n",
+                    "styleUrl": "./chat-message-list.scss"
+                }
+            ],
+            "stylesData": "",
+            "extends": [],
+            "relationships": {
+                "incoming": [],
+                "outgoing": [
+                    {
+                        "name": "ScrollerModule",
+                        "type": "module"
+                    },
+                    {
+                        "name": "ChatMessageComponent",
+                        "type": "component"
+                    }
+                ]
+            },
+            "templateData": "<p-scroller [itemSize]=\"50\" [items]=\"messages()\">\n  <ng-template #item let-item let-options=\"options\">\n    <div class=\"row\" [class.me]=\"item.origin === 'Me'\">\n      <tikal-chat-message class=\"message\" [message]=\"item.message\" [sender]=\"item.origin\" />\n    </div>\n  </ng-template>\n</p-scroller>\n"
+        },
+        {
             "name": "InputComponent",
             "id": "component-InputComponent-4b1c4e0a013b9a1e33db48cb3e73aec1e8352887c36bd26b9c3cfeac35d32669df5bf28cbfc3ba910f19d01984609da88d279fbd4decdaaf86cb6d7ef5909bc3",
             "file": "projects/tikal-ui-components/src/lib/components/input/input.ts",
@@ -820,12 +1021,67 @@
                 "name": "meta",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
+                "file": "projects/tikal-ui-components/src/stories/chat-message-list.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Meta<ChatMessageListComponent>",
+                "defaultValue": "{\n  title: 'Molecules/Chat-Message-List',\n  component: ChatMessageListComponent,\n  tags: ['autodocs'],\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type\n    (story) => {\n      const s = story();\n      return {\n        ...s,\n        template: `<div style=\"display: flex; height: 500px; width: 400px;\">${s.template}</div>`,\n      };\n    },\n  ],\n}"
+            },
+            {
+                "name": "meta",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/tikal-ui-components/src/stories/chat-message.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Meta<ChatMessageComponent>",
+                "defaultValue": "{\n  title: 'Atoms/Chat-Message',\n  component: ChatMessageComponent,\n  tags: ['autodocs'],\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
+            },
+            {
+                "name": "meta",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
                 "file": "projects/tikal-ui-components/src/stories/input.stories.ts",
                 "coverageIgnore": false,
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Meta<InputComponent>",
                 "defaultValue": "{\n  title: 'Atoms/Input',\n  component: InputComponent,\n  tags: ['autodocs'],\n  args: {\n    value: '',\n    disabled: false,\n    invalid: false,\n    required: false,\n    touched: false,\n    placeholder: 'Placeholder...',\n    maxLength: 100,\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
+            },
+            {
+                "name": "multipleMessages",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/tikal-ui-components/src/stories/chat-message-list.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n  name: 'Multiple messages from different users',\n  args: {\n    messages: [\n      { message: 'This is a message from another user', origin: 'Opponent' },\n      { message: 'This is a message from me', origin: 'Me' },\n      {\n        message: 'This is a much much loooooooooooonger message from another user',\n        origin: 'Opponent',\n      },\n      { message: 'Short', origin: 'Opponent' },\n      { message: 'Me again :)', origin: 'Me' },\n    ],\n  },\n}"
+            },
+            {
+                "name": "myMessage",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/tikal-ui-components/src/stories/chat-message.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n  name: 'My Message',\n  args: {\n    sender: 'Me',\n    message: 'This was sent by me :)',\n  },\n}"
+            },
+            {
+                "name": "opponentMessage",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/tikal-ui-components/src/stories/chat-message.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n  name: 'Opponent Message',\n  args: {\n    sender: 'Opponent',\n    message: 'This was sent by my opponent',\n  },\n}"
             },
             {
                 "name": "preview",
@@ -932,6 +1188,32 @@
                 "kind": 188
             },
             {
+                "name": "ChatMessageData",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "coverageIgnore": false,
+                "rawtype": "{ message: string; origin: ChatMessageOrigin }",
+                "file": "projects/tikal-ui-components/src/lib/components/chat-message-list/chat-message-list.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "rawdescription": "",
+                "description": "",
+                "kind": 188
+            },
+            {
+                "name": "ChatMessageOrigin",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "coverageIgnore": false,
+                "rawtype": "\"Me\" | \"Opponent\"",
+                "file": "projects/tikal-ui-components/src/lib/components/chat-message/chat-message.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "rawdescription": "",
+                "description": "",
+                "kind": 193
+            },
+            {
                 "name": "Story",
                 "ctype": "miscellaneous",
                 "subtype": "typealias",
@@ -951,6 +1233,32 @@
                 "coverageIgnore": false,
                 "rawtype": "StoryObj<ChatFormComponent>",
                 "file": "projects/tikal-ui-components/src/stories/chat-form.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "rawdescription": "",
+                "description": "",
+                "kind": 184
+            },
+            {
+                "name": "Story",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "coverageIgnore": false,
+                "rawtype": "StoryObj<ChatMessageListComponent>",
+                "file": "projects/tikal-ui-components/src/stories/chat-message-list.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "rawdescription": "",
+                "description": "",
+                "kind": 184
+            },
+            {
+                "name": "Story",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "coverageIgnore": false,
+                "rawtype": "StoryObj<ChatMessageComponent>",
+                "file": "projects/tikal-ui-components/src/stories/chat-message.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "rawdescription": "",
@@ -1262,6 +1570,65 @@
                     "defaultValue": "{\n  name: 'Waiting for input',\n  args: {\n    label: 'message',\n    placeholder: 'Say something...',\n    maxLength: 100,\n  },\n}"
                 }
             ],
+            "projects/tikal-ui-components/src/stories/chat-message-list.stories.ts": [
+                {
+                    "name": "meta",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/tikal-ui-components/src/stories/chat-message-list.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Meta<ChatMessageListComponent>",
+                    "defaultValue": "{\n  title: 'Molecules/Chat-Message-List',\n  component: ChatMessageListComponent,\n  tags: ['autodocs'],\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type\n    (story) => {\n      const s = story();\n      return {\n        ...s,\n        template: `<div style=\"display: flex; height: 500px; width: 400px;\">${s.template}</div>`,\n      };\n    },\n  ],\n}"
+                },
+                {
+                    "name": "multipleMessages",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/tikal-ui-components/src/stories/chat-message-list.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n  name: 'Multiple messages from different users',\n  args: {\n    messages: [\n      { message: 'This is a message from another user', origin: 'Opponent' },\n      { message: 'This is a message from me', origin: 'Me' },\n      {\n        message: 'This is a much much loooooooooooonger message from another user',\n        origin: 'Opponent',\n      },\n      { message: 'Short', origin: 'Opponent' },\n      { message: 'Me again :)', origin: 'Me' },\n    ],\n  },\n}"
+                }
+            ],
+            "projects/tikal-ui-components/src/stories/chat-message.stories.ts": [
+                {
+                    "name": "meta",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/tikal-ui-components/src/stories/chat-message.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Meta<ChatMessageComponent>",
+                    "defaultValue": "{\n  title: 'Atoms/Chat-Message',\n  component: ChatMessageComponent,\n  tags: ['autodocs'],\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
+                },
+                {
+                    "name": "myMessage",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/tikal-ui-components/src/stories/chat-message.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n  name: 'My Message',\n  args: {\n    sender: 'Me',\n    message: 'This was sent by me :)',\n  },\n}"
+                },
+                {
+                    "name": "opponentMessage",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/tikal-ui-components/src/stories/chat-message.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n  name: 'Opponent Message',\n  args: {\n    sender: 'Opponent',\n    message: 'This was sent by my opponent',\n  },\n}"
+                }
+            ],
             "projects/tikal-ui-components/.storybook/preview.ts": [
                 {
                     "name": "preview",
@@ -1398,6 +1765,36 @@
                     "kind": 188
                 }
             ],
+            "projects/tikal-ui-components/src/lib/components/chat-message-list/chat-message-list.ts": [
+                {
+                    "name": "ChatMessageData",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "coverageIgnore": false,
+                    "rawtype": "{ message: string; origin: ChatMessageOrigin }",
+                    "file": "projects/tikal-ui-components/src/lib/components/chat-message-list/chat-message-list.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "",
+                    "description": "",
+                    "kind": 188
+                }
+            ],
+            "projects/tikal-ui-components/src/lib/components/chat-message/chat-message.ts": [
+                {
+                    "name": "ChatMessageOrigin",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "coverageIgnore": false,
+                    "rawtype": "\"Me\" | \"Opponent\"",
+                    "file": "projects/tikal-ui-components/src/lib/components/chat-message/chat-message.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "",
+                    "description": "",
+                    "kind": 193
+                }
+            ],
             "projects/tikal-ui-components/src/stories/button.stories.ts": [
                 {
                     "name": "Story",
@@ -1421,6 +1818,36 @@
                     "coverageIgnore": false,
                     "rawtype": "StoryObj<ChatFormComponent>",
                     "file": "projects/tikal-ui-components/src/stories/chat-form.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "",
+                    "description": "",
+                    "kind": 184
+                }
+            ],
+            "projects/tikal-ui-components/src/stories/chat-message-list.stories.ts": [
+                {
+                    "name": "Story",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "coverageIgnore": false,
+                    "rawtype": "StoryObj<ChatMessageListComponent>",
+                    "file": "projects/tikal-ui-components/src/stories/chat-message-list.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "",
+                    "description": "",
+                    "kind": 184
+                }
+            ],
+            "projects/tikal-ui-components/src/stories/chat-message.stories.ts": [
+                {
+                    "name": "Story",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "coverageIgnore": false,
+                    "rawtype": "StoryObj<ChatMessageComponent>",
+                    "file": "projects/tikal-ui-components/src/stories/chat-message.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "rawdescription": "",
@@ -1488,6 +1915,44 @@
                 "linktype": "miscellaneous",
                 "linksubtype": "typealias",
                 "name": "ChatFormData",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/lib/components/chat-message-list/chat-message-list.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "ChatMessageListComponent",
+                "coveragePercent": 50,
+                "coverageCount": "1/2",
+                "status": "medium"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/lib/components/chat-message-list/chat-message-list.ts",
+                "type": "type alias",
+                "linktype": "miscellaneous",
+                "linksubtype": "typealias",
+                "name": "ChatMessageData",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/lib/components/chat-message/chat-message.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "ChatMessageComponent",
+                "coveragePercent": 66,
+                "coverageCount": "2/3",
+                "status": "good"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/lib/components/chat-message/chat-message.ts",
+                "type": "type alias",
+                "linktype": "miscellaneous",
+                "linksubtype": "typealias",
+                "name": "ChatMessageOrigin",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
@@ -1642,6 +2107,76 @@
             },
             {
                 "filePath": "projects/tikal-ui-components/src/stories/chat-form.stories.ts",
+                "type": "type alias",
+                "linktype": "miscellaneous",
+                "linksubtype": "typealias",
+                "name": "Story",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/stories/chat-message-list.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "meta",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/stories/chat-message-list.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "multipleMessages",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/stories/chat-message-list.stories.ts",
+                "type": "type alias",
+                "linktype": "miscellaneous",
+                "linksubtype": "typealias",
+                "name": "Story",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/stories/chat-message.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "meta",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/stories/chat-message.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "myMessage",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/stories/chat-message.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "opponentMessage",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/stories/chat-message.stories.ts",
                 "type": "type alias",
                 "linktype": "miscellaneous",
                 "linksubtype": "typealias",
