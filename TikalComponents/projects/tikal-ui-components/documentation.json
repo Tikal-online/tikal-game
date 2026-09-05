@@ -466,6 +466,102 @@
             "templateData": "<form [formRoot]=\"chatForm\">\n  <tikal-input [formField]=\"chatForm.message\" [label]=\"label()\" [placeholder]=\"placeholder()\" />\n  <tikal-button icon=\"send\" [isLoading]=\"chatForm().submitting()\" [type]=\"buttonTypeSubmit\" />\n</form>\n"
         },
         {
+            "name": "ChatMessageComponent",
+            "id": "component-ChatMessageComponent-61d1e727fe6aa943841bef764c047b33f220ed4f0b42f0d1a30986ba1dfaa140368c949d61980f9d9045e54cb6ffda8ad67cdcf12d729b3dc9b33d0e6b16e3ac",
+            "file": "projects/tikal-ui-components/src/lib/components/chat-message/chat-message.ts",
+            "changeDetection": "ChangeDetectionStrategy.OnPush",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "tikal-chat-message",
+            "styleUrls": [
+                "./chat-message.scss"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./chat-message.html"
+            ],
+            "templateVariables": [],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [
+                {
+                    "name": "message",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>What is the message that should be displayed?</p>\n",
+                    "line": 14,
+                    "rawdescription": "\nWhat is the message that should be displayed?",
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": true
+                },
+                {
+                    "name": "sender",
+                    "coverageIgnore": false,
+                    "defaultValue": "'Opponent'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "ChatMessageOrigin",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>Who sent the message?</p>\n",
+                    "line": 17,
+                    "rawdescription": "\nWho sent the message?",
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                }
+            ],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [],
+            "coverageIgnore": false,
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [
+                {
+                    "name": "MessageModule",
+                    "type": "module"
+                }
+            ],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component, input } from '@angular/core';\nimport { MessageModule } from 'primeng/message';\n\nexport type ChatMessageOrigin = 'Me' | 'Opponent';\n\n@Component({\n  selector: 'tikal-chat-message',\n  imports: [MessageModule],\n  templateUrl: './chat-message.html',\n  styleUrl: './chat-message.scss',\n})\nexport class ChatMessageComponent {\n  /** What is the message that should be displayed? */\n  readonly message = input.required<string>();\n\n  /** Who sent the message? */\n  readonly sender = input<ChatMessageOrigin>('Opponent');\n}\n",
+            "styleUrl": "./chat-message.scss",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": "",
+                    "styleUrl": "./chat-message.scss"
+                }
+            ],
+            "stylesData": "",
+            "extends": [],
+            "relationships": {
+                "incoming": [],
+                "outgoing": [
+                    {
+                        "name": "MessageModule",
+                        "type": "module"
+                    }
+                ]
+            },
+            "templateData": "<p-message severity=\"secondary\">{{ message() }}</p-message>\n"
+        },
+        {
             "name": "InputComponent",
             "id": "component-InputComponent-4b1c4e0a013b9a1e33db48cb3e73aec1e8352887c36bd26b9c3cfeac35d32669df5bf28cbfc3ba910f19d01984609da88d279fbd4decdaaf86cb6d7ef5909bc3",
             "file": "projects/tikal-ui-components/src/lib/components/input/input.ts",
@@ -820,12 +916,34 @@
                 "name": "meta",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
+                "file": "projects/tikal-ui-components/src/stories/chat-message.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Meta<ChatMessageComponent>",
+                "defaultValue": "{\n  title: 'Atoms/Chat-Message',\n  component: ChatMessageComponent,\n  tags: ['autodocs'],\n  args: {\n    message: 'This is my test message',\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
+            },
+            {
+                "name": "meta",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
                 "file": "projects/tikal-ui-components/src/stories/input.stories.ts",
                 "coverageIgnore": false,
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Meta<InputComponent>",
                 "defaultValue": "{\n  title: 'Atoms/Input',\n  component: InputComponent,\n  tags: ['autodocs'],\n  args: {\n    value: '',\n    disabled: false,\n    invalid: false,\n    required: false,\n    touched: false,\n    placeholder: 'Placeholder...',\n    maxLength: 100,\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
+            },
+            {
+                "name": "oponentMessage",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/tikal-ui-components/src/stories/chat-message.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n  name: 'Opponent Message',\n}"
             },
             {
                 "name": "preview",
@@ -932,6 +1050,19 @@
                 "kind": 188
             },
             {
+                "name": "ChatMessageOrigin",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "coverageIgnore": false,
+                "rawtype": "\"Me\" | \"Opponent\"",
+                "file": "projects/tikal-ui-components/src/lib/components/chat-message/chat-message.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "rawdescription": "",
+                "description": "",
+                "kind": 193
+            },
+            {
                 "name": "Story",
                 "ctype": "miscellaneous",
                 "subtype": "typealias",
@@ -951,6 +1082,19 @@
                 "coverageIgnore": false,
                 "rawtype": "StoryObj<ChatFormComponent>",
                 "file": "projects/tikal-ui-components/src/stories/chat-form.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "rawdescription": "",
+                "description": "",
+                "kind": 184
+            },
+            {
+                "name": "Story",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "coverageIgnore": false,
+                "rawtype": "StoryObj<ChatMessageComponent>",
+                "file": "projects/tikal-ui-components/src/stories/chat-message.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "rawdescription": "",
@@ -1262,6 +1406,30 @@
                     "defaultValue": "{\n  name: 'Waiting for input',\n  args: {\n    label: 'message',\n    placeholder: 'Say something...',\n    maxLength: 100,\n  },\n}"
                 }
             ],
+            "projects/tikal-ui-components/src/stories/chat-message.stories.ts": [
+                {
+                    "name": "meta",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/tikal-ui-components/src/stories/chat-message.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Meta<ChatMessageComponent>",
+                    "defaultValue": "{\n  title: 'Atoms/Chat-Message',\n  component: ChatMessageComponent,\n  tags: ['autodocs'],\n  args: {\n    message: 'This is my test message',\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
+                },
+                {
+                    "name": "oponentMessage",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/tikal-ui-components/src/stories/chat-message.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n  name: 'Opponent Message',\n}"
+                }
+            ],
             "projects/tikal-ui-components/.storybook/preview.ts": [
                 {
                     "name": "preview",
@@ -1398,6 +1566,21 @@
                     "kind": 188
                 }
             ],
+            "projects/tikal-ui-components/src/lib/components/chat-message/chat-message.ts": [
+                {
+                    "name": "ChatMessageOrigin",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "coverageIgnore": false,
+                    "rawtype": "\"Me\" | \"Opponent\"",
+                    "file": "projects/tikal-ui-components/src/lib/components/chat-message/chat-message.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "",
+                    "description": "",
+                    "kind": 193
+                }
+            ],
             "projects/tikal-ui-components/src/stories/button.stories.ts": [
                 {
                     "name": "Story",
@@ -1421,6 +1604,21 @@
                     "coverageIgnore": false,
                     "rawtype": "StoryObj<ChatFormComponent>",
                     "file": "projects/tikal-ui-components/src/stories/chat-form.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "",
+                    "description": "",
+                    "kind": 184
+                }
+            ],
+            "projects/tikal-ui-components/src/stories/chat-message.stories.ts": [
+                {
+                    "name": "Story",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "coverageIgnore": false,
+                    "rawtype": "StoryObj<ChatMessageComponent>",
+                    "file": "projects/tikal-ui-components/src/stories/chat-message.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "rawdescription": "",
@@ -1488,6 +1686,25 @@
                 "linktype": "miscellaneous",
                 "linksubtype": "typealias",
                 "name": "ChatFormData",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/lib/components/chat-message/chat-message.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "ChatMessageComponent",
+                "coveragePercent": 66,
+                "coverageCount": "2/3",
+                "status": "good"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/lib/components/chat-message/chat-message.ts",
+                "type": "type alias",
+                "linktype": "miscellaneous",
+                "linksubtype": "typealias",
+                "name": "ChatMessageOrigin",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
@@ -1642,6 +1859,36 @@
             },
             {
                 "filePath": "projects/tikal-ui-components/src/stories/chat-form.stories.ts",
+                "type": "type alias",
+                "linktype": "miscellaneous",
+                "linksubtype": "typealias",
+                "name": "Story",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/stories/chat-message.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "meta",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/stories/chat-message.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "oponentMessage",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/stories/chat-message.stories.ts",
                 "type": "type alias",
                 "linktype": "miscellaneous",
                 "linksubtype": "typealias",
