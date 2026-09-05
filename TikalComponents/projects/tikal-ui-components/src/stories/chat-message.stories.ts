@@ -5,9 +5,6 @@ const meta: Meta<ChatMessageComponent> = {
   title: 'Atoms/Chat-Message',
   component: ChatMessageComponent,
   tags: ['autodocs'],
-  args: {
-    message: 'This is my test message',
-  },
   decorators: [
     applicationConfig({
       providers: [],
@@ -18,6 +15,18 @@ const meta: Meta<ChatMessageComponent> = {
 export default meta;
 type Story = StoryObj<ChatMessageComponent>;
 
-export const oponentMessage: Story = {
+export const myMessage: Story = {
+  name: 'My Message',
+  args: {
+    sender: 'Me',
+    message: 'This was sent by me :)',
+  },
+};
+
+export const opponentMessage: Story = {
   name: 'Opponent Message',
+  args: {
+    sender: 'Opponent',
+    message: 'This was sent by my opponent',
+  },
 };
