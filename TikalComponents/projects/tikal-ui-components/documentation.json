@@ -580,7 +580,7 @@
         },
         {
             "name": "ChatMessageListComponent",
-            "id": "component-ChatMessageListComponent-0d8dfdca5aa04f9a3efacef16482b7d9d8268cdc9a02578b6d81bcd8b698f004811a1280da7aabb19c4ca8487f9d3aced39897734ce85174598ada7a44530859",
+            "id": "component-ChatMessageListComponent-fad5673b1d3e106474937f6ca874c94c810565e25a6a27fdf8beeb88127350283b87fb1d64cfdaa9a02e3392a4c44452fc561263f82ce077ce0de6a4e2f190d1",
             "file": "projects/tikal-ui-components/src/lib/components/chat-message-list/chat-message-list.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -603,7 +603,7 @@
                 {
                     "name": "messages",
                     "coverageIgnore": false,
-                    "defaultValue": "[    { message: 'Message 1', origin: 'Opponent' },    { message: 'Message 2', origin: 'Me' },  ]",
+                    "defaultValue": "[]",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "ChatMessageData[]",
@@ -640,12 +640,12 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, input } from '@angular/core';\nimport { ScrollerModule } from 'primeng/scroller';\nimport { ChatMessageOrigin, ChatMessageComponent } from '../chat-message/chat-message';\n\nexport type ChatMessageData = {\n  message: string;\n  origin: ChatMessageOrigin;\n};\n\n@Component({\n  selector: 'tikal-chat-message-list',\n  imports: [ScrollerModule, ChatMessageComponent],\n  templateUrl: './chat-message-list.html',\n  styleUrl: './chat-message-list.scss',\n})\nexport class ChatMessageListComponent {\n  /** What messages have been sent? */\n  readonly messages = input<ChatMessageData[]>([\n    { message: 'Message 1', origin: 'Opponent' },\n    { message: 'Message 2', origin: 'Me' },\n  ]);\n}\n",
+            "sourceCode": "import { Component, input } from '@angular/core';\nimport { ScrollerModule } from 'primeng/scroller';\nimport { ChatMessageOrigin, ChatMessageComponent } from '../chat-message/chat-message';\n\nexport type ChatMessageData = {\n  message: string;\n  origin: ChatMessageOrigin;\n};\n\n@Component({\n  selector: 'tikal-chat-message-list',\n  imports: [ScrollerModule, ChatMessageComponent],\n  templateUrl: './chat-message-list.html',\n  styleUrl: './chat-message-list.scss',\n})\nexport class ChatMessageListComponent {\n  /** What messages have been sent? */\n  readonly messages = input<ChatMessageData[]>([]);\n}\n",
             "styleUrl": "./chat-message-list.scss",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": "",
+                    "data": ":host {\n  display: flex;\n  flex-direction: column-reverse;\n  flex: 1;\n\n  padding: 1rem;\n\n  overflow-y: auto;\n}\n\n.row {\n  display: flex;\n}\n\n.me {\n  justify-content: flex-end;\n}\n\np-scroller {\n  width: 100%;\n  height: 100%;\n}\n\n.message {\n  display: flex;\n  max-width: 90%;\n  padding: 0.5rem 1rem 0.5rem 1rem;\n}\n",
                     "styleUrl": "./chat-message-list.scss"
                 }
             ],
@@ -664,7 +664,7 @@
                     }
                 ]
             },
-            "templateData": "<p-scroller scrollHeight=\"200px\" [itemSize]=\"50\" [items]=\"messages()\">\n  <ng-template #item let-item let-options=\"options\">\n    <tikal-chat-message [message]=\"item.message\" [sender]=\"item.origin\" />\n  </ng-template>\n</p-scroller>\n"
+            "templateData": "<p-scroller [itemSize]=\"50\" [items]=\"messages()\">\n  <ng-template #item let-item let-options=\"options\">\n    <div class=\"row\" [class.me]=\"item.origin === 'Me'\">\n      <tikal-chat-message class=\"message\" [message]=\"item.message\" [sender]=\"item.origin\" />\n    </div>\n  </ng-template>\n</p-scroller>\n"
         },
         {
             "name": "InputComponent",
@@ -1026,7 +1026,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Meta<ChatMessageListComponent>",
-                "defaultValue": "{\n  title: 'Molecules/Chat-Message-List',\n  component: ChatMessageListComponent,\n  tags: ['autodocs'],\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
+                "defaultValue": "{\n  title: 'Molecules/Chat-Message-List',\n  component: ChatMessageListComponent,\n  tags: ['autodocs'],\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type\n    (story) => {\n      const s = story();\n      return {\n        ...s,\n        template: `<div style=\"display: flex; height: 500px; width: 400px;\">${s.template}</div>`,\n      };\n    },\n  ],\n}"
             },
             {
                 "name": "meta",
@@ -1059,7 +1059,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
-                "defaultValue": "{\n  name: 'Multiple messages from different users',\n}"
+                "defaultValue": "{\n  name: 'Multiple messages from different users',\n  args: {\n    messages: [\n      { message: 'This is a message from another user', origin: 'Opponent' },\n      { message: 'This is a message from me', origin: 'Me' },\n      {\n        message: 'This is a much much loooooooooooonger message from another user',\n        origin: 'Opponent',\n      },\n      { message: 'Short', origin: 'Opponent' },\n      { message: 'Me again :)', origin: 'Me' },\n    ],\n  },\n}"
             },
             {
                 "name": "myMessage",
@@ -1580,7 +1580,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Meta<ChatMessageListComponent>",
-                    "defaultValue": "{\n  title: 'Molecules/Chat-Message-List',\n  component: ChatMessageListComponent,\n  tags: ['autodocs'],\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
+                    "defaultValue": "{\n  title: 'Molecules/Chat-Message-List',\n  component: ChatMessageListComponent,\n  tags: ['autodocs'],\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type\n    (story) => {\n      const s = story();\n      return {\n        ...s,\n        template: `<div style=\"display: flex; height: 500px; width: 400px;\">${s.template}</div>`,\n      };\n    },\n  ],\n}"
                 },
                 {
                     "name": "multipleMessages",
@@ -1591,7 +1591,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
-                    "defaultValue": "{\n  name: 'Multiple messages from different users',\n}"
+                    "defaultValue": "{\n  name: 'Multiple messages from different users',\n  args: {\n    messages: [\n      { message: 'This is a message from another user', origin: 'Opponent' },\n      { message: 'This is a message from me', origin: 'Me' },\n      {\n        message: 'This is a much much loooooooooooonger message from another user',\n        origin: 'Opponent',\n      },\n      { message: 'Short', origin: 'Opponent' },\n      { message: 'Me again :)', origin: 'Me' },\n    ],\n  },\n}"
                 }
             ],
             "projects/tikal-ui-components/src/stories/chat-message.stories.ts": [
