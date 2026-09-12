@@ -1,8 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { inject, Service } from '@angular/core';
-import { err, ok, Result } from 'neverthrow';
-import { catchError, map, Observable, throwError } from 'rxjs';
-import { Unauthorized } from '../../dtos/errors';
+import { catchError, map, Observable, of, throwError } from 'rxjs';
 
 export type Claim = {
   type: string;
@@ -17,12 +15,12 @@ export class AuthService {
 
   private readonly http = inject(HttpClient);
 
-  getSession(): Observable<Result<Session, Unauthorized>> {
+  getSession(): Observable<Session | null> {
     return this.http.get<Session>(this.url).pipe(
-      map((session: Session) => ok(session)),
+      map((session: Session) => session),
       catchError((error: HttpErrorResponse) => {
         if (error.status == 401) {
-          return err({ type: 'Unauthorized' } as const);
+          return of(null);
         }
 
         return throwError(() => error);

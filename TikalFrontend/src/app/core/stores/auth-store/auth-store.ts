@@ -9,9 +9,7 @@ import {
 import { AuthService, Session } from '../../services/auth-service/auth-service';
 import { computed, inject } from '@angular/core';
 import { catchError, Observable, tap, throwError } from 'rxjs';
-import { Result } from 'neverthrow';
 import { environment } from '../../../../environments/environment';
-import { Unauthorized } from '../../dtos/errors';
 
 export type AuthState = {
   initializationFailed: boolean;
@@ -47,11 +45,11 @@ export const AuthStore = signalStore(
 
   withMethods((store) => ({
     // this method returns an observable because it needs to run during app initialization
-    loadSession(): Observable<Result<Session, Unauthorized>> {
+    loadSession(): Observable<Session | null> {
       return store._authService.getSession().pipe(
-        tap((result: Result<Session, Unauthorized>) => {
-          if (result.isOk()) {
-            patchState(store, { session: result.value });
+        tap((result: Session | null) => {
+          if (result !== null) {
+            patchState(store, { session: result });
           }
         }),
         catchError((error) => {

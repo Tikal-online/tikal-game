@@ -24,7 +24,7 @@ describe('AuthService', () => {
     service = TestBed.inject(AuthService);
   });
 
-  test('getSession returns Unauthorized when GET /bff/user returns 401', async () => {
+  test('getSession returns null when GET /bff/user returns 401', async () => {
     const promise = firstValueFrom(service.getSession());
 
     const req = http.expectOne({ method: 'GET', url: '/bff/user' });
@@ -32,10 +32,7 @@ describe('AuthService', () => {
 
     const result = await promise;
 
-    expect(result.isErr()).toBeTruthy();
-    if (result.isErr()) {
-      expect(result.error).toEqual({ type: 'Unauthorized' });
-    }
+    expect(result).toBeNull();
   });
 
   test('getSession returns Session when GET /bff/user returns Success', async () => {
@@ -46,10 +43,7 @@ describe('AuthService', () => {
 
     const result = await promise;
 
-    expect(result.isOk()).toBeTruthy();
-    if (result.isOk()) {
-      expect(result.value).toEqual(DEFAULT_SESSION);
-    }
+    expect(result).toEqual(DEFAULT_SESSION);
   });
 
   test.for<HttpResponseData>(ERROR_RESPONSES.filter((error) => error.status !== 401))(
