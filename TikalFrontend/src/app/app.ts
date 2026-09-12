@@ -2,12 +2,11 @@ import { Component, computed, inject, ChangeDetectionStrategy } from '@angular/c
 import { RouterOutlet } from '@angular/router';
 import { AccountStore } from './core/stores/account-store/account-store';
 import { AuthStore } from './core/stores/auth-store/auth-store';
-import { Navbar } from './core/components/navbar/navbar';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-root',
-  imports: [RouterOutlet, Navbar],
+  imports: [RouterOutlet],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
