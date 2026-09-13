@@ -6,6 +6,23 @@
       <p-sidebar-spacer />
       <p-sidebar-aside>
         <p-sidebar-panel>
+          <p-sidebar-header>
+            <p-sidebar-menu>
+              <p-sidebar-menu-item>
+                <button
+                  class="header-button"
+                  pSidebarMenuButton
+                  routerLink="/Lobbies"
+                  type="button"
+                >
+                  <div class="header-icon">
+                    <svg class="header-icon-content" data-p-icon="crown" [size]="12"></svg>
+                  </div>
+                  <span class="header-icon-label">Tikal Online</span>
+                </button>
+              </p-sidebar-menu-item>
+            </p-sidebar-menu>
+          </p-sidebar-header>
           <p-sidebar-content>
             <p-sidebar-group>
               <p-sidebar-group-label>Navigation</p-sidebar-group-label>

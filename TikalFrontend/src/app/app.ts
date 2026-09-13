@@ -7,6 +7,7 @@ import { ButtonModule } from 'primeng/button';
 import { User } from '@primeicons/angular/user';
 import { Home } from '@primeicons/angular/home';
 import { Sidebar } from '@primeicons/angular/sidebar';
+import { Crown } from '@primeicons/angular/crown';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -17,6 +18,7 @@ import { Sidebar } from '@primeicons/angular/sidebar';
     ButtonModule,
     Home,
     User,
+    Crown,
     Sidebar,
     RouterLinkWithHref,
     RouterLinkActive,
