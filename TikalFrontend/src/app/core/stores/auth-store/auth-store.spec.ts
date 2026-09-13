@@ -1,9 +1,7 @@
 import { catchError, firstValueFrom, Observable, of, throwError } from 'rxjs';
 import { AuthService, Claim, Session } from '../../services/auth-service/auth-service';
-import { err, ok, Result } from 'neverthrow';
 import { AuthStore } from './auth-store';
 import { TestBed } from '@angular/core/testing';
-import { Unauthorized } from '../../dtos/errors';
 
 const DEFAULT_SESSION: Claim[] = [
   { type: 'sub', value: 'userId' },
@@ -13,16 +11,15 @@ const DEFAULT_SESSION: Claim[] = [
 describe('AuthStore', () => {
   // dependencies
   const successAuthService = {
-    getSession: (): Observable<Result<Session, Unauthorized>> => of(ok(DEFAULT_SESSION)),
+    getSession: (): Observable<Session | null> => of(DEFAULT_SESSION),
   };
 
   const unauthorizedAuthService = {
-    getSession: (): Observable<Result<Session, Unauthorized>> =>
-      of(err({ type: 'Unauthorized' } as const)),
+    getSession: (): Observable<Session | null> => of(null),
   };
 
   const throwingAuthService = {
-    getSession: (): Observable<Result<Session, Unauthorized>> => throwError(() => ok()),
+    getSession: (): Observable<Session | null> => throwError(() => of(null)),
   };
 
   test('loadSession does not set session if session retrieval is unauthorized', async () => {
@@ -49,7 +46,7 @@ describe('AuthStore', () => {
     const store = TestBed.inject(AuthStore);
 
     // when
-    await firstValueFrom(store.loadSession().pipe(catchError(err)));
+    await firstValueFrom(store.loadSession().pipe(catchError(() => of(null))));
 
     // then
     expect(store.initializationFailed()).toBeTruthy();

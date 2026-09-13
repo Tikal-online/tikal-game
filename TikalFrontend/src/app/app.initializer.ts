@@ -9,7 +9,7 @@ export const appInitializer = provideAppInitializer(() => {
 
   return authStore.loadSession().pipe(
     // only attempt to load the game account if we have an active session and are authenticated
-    switchMap((result) => iif(() => result.isOk(), accountStore.loadAccount(), of(null))),
+    switchMap((session) => iif(() => session !== null, accountStore.loadAccount(), of(null))),
     catchError(() => of(null)),
   );
 });

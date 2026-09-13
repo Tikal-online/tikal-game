@@ -1,6 +1,73 @@
 @if (initializationFailed()) {
   <p>Initialization Failed</p>
 } @else {
-  <app-navbar />
-  <router-outlet />
+  <p-sidebar-layout>
+    <p-sidebar id="sidebar">
+      <p-sidebar-spacer />
+      <p-sidebar-aside>
+        <p-sidebar-panel>
+          <p-sidebar-header>
+            <p-sidebar-menu>
+              <p-sidebar-menu-item>
+                <button
+                  class="header-button"
+                  pSidebarMenuButton
+                  routerLink="/Lobbies"
+                  type="button"
+                >
+                  <div class="header-icon">
+                    <svg class="header-icon-content" data-p-icon="crown" [size]="12"></svg>
+                  </div>
+                  <span class="header-icon-label">Tikal Online</span>
+                </button>
+              </p-sidebar-menu-item>
+            </p-sidebar-menu>
+          </p-sidebar-header>
+          <p-sidebar-content>
+            <p-sidebar-group>
+              <p-sidebar-group-label>Navigation</p-sidebar-group-label>
+              <p-sidebar-group-content>
+                <p-sidebar-menu>
+                  <p-sidebar-menu-item>
+                    <button
+                      #lobbiesLink="routerLinkActive"
+                      pSidebarMenuButton
+                      routerLink="/Lobbies"
+                      routerLinkActive
+                      type="button"
+                      [isActive]="lobbiesLink.isActive"
+                    >
+                      <svg data-p-icon="home"></svg>
+                      <span>Lobbies</span>
+                    </button>
+                  </p-sidebar-menu-item>
+                  <p-sidebar-menu-item>
+                    <button
+                      #profileLink="routerLinkActive"
+                      pSidebarMenuButton
+                      routerLink="/Profile"
+                      routerLinkActive
+                      type="button"
+                      [isActive]="profileLink.isActive"
+                    >
+                      <svg data-p-icon="user"></svg>
+                      <span>Profile</span>
+                    </button>
+                  </p-sidebar-menu-item>
+                </p-sidebar-menu>
+              </p-sidebar-group-content>
+            </p-sidebar-group>
+          </p-sidebar-content>
+        </p-sidebar-panel>
+      </p-sidebar-aside>
+    </p-sidebar>
+    <p-sidebar-main>
+      <header>
+        <button pButton pSidebarTrigger severity="secondary" target="sidebar" text type="button">
+          <svg data-p-icon="sidebar"></svg>
+        </button>
+      </header>
+      <router-outlet />
+    </p-sidebar-main>
+  </p-sidebar-layout>
 }
