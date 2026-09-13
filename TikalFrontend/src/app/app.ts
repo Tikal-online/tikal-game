@@ -2,11 +2,13 @@ import { Component, computed, inject, ChangeDetectionStrategy } from '@angular/c
 import { RouterOutlet } from '@angular/router';
 import { AccountStore } from './core/stores/account-store/account-store';
 import { AuthStore } from './core/stores/auth-store/auth-store';
+import { SidebarModule } from 'primeng/sidebar';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, SidebarModule, ButtonModule],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })

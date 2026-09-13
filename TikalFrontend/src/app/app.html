@@ -1,5 +1,33 @@
 @if (initializationFailed()) {
   <p>Initialization Failed</p>
 } @else {
-  <router-outlet />
+  <p-sidebar-layout>
+    <p-sidebar>
+      <p-sidebar-spacer />
+      <p-sidebar-aside>
+        <p-sidebar-panel>
+          <p-sidebar-header>
+            <p-sidebar-menu-item>
+              <span>Tikal</span>
+            </p-sidebar-menu-item>
+          </p-sidebar-header>
+          <p-sidebar-content>
+            <p-sidebar-group>
+              <p-sidebar-group-label>Navigation</p-sidebar-group-label>
+              <p-sidebar-group-content>
+                <p-sidebar-menu>
+                  <p-sidebar-menu-item>
+                    <button pSidebarMenuButton type="button" [isActive]="false">
+                      <span>Lobbies</span>
+                    </button>
+                  </p-sidebar-menu-item>
+                </p-sidebar-menu>
+              </p-sidebar-group-content>
+            </p-sidebar-group>
+          </p-sidebar-content>
+        </p-sidebar-panel>
+      </p-sidebar-aside>
+    </p-sidebar>
+    <p-sidebar-main />
+  </p-sidebar-layout>
 }
