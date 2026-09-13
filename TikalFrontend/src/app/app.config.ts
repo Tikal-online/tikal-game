@@ -7,6 +7,7 @@ import { TranslocoHttpLoader } from './transloco-loader';
 import { provideTransloco } from '@jsverse/transloco';
 import { baseUrlInterceptor } from './core/interceptors/base-url/base-url.interceptor';
 import { csrfHeaderInterceptor } from './core/interceptors/csrf-header/csrf-header.interceptor';
+import { providePrimeNG } from 'primeng/config';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -25,5 +26,6 @@ export const appConfig: ApplicationConfig = {
       },
       loader: TranslocoHttpLoader,
     }),
+    providePrimeNG(),
   ],
 };
