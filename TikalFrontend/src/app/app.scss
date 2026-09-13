@@ -1,6 +1,11 @@
-:host {
+header {
   display: flex;
-  flex-direction: column;
+  align-items: center;
 
-  height: 100vh;
+  height: 3rem;
+  gap: 0.5rem;
+
+  padding: 0 0.5rem;
+
+  border-bottom: 1px solid var(--p-sidebar-border-color);
 }
