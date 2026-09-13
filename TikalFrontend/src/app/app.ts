@@ -1,5 +1,5 @@
 import { Component, computed, inject, ChangeDetectionStrategy } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterOutlet, RouterLinkWithHref, RouterLinkActive } from '@angular/router';
 import { AccountStore } from './core/stores/account-store/account-store';
 import { AuthStore } from './core/stores/auth-store/auth-store';
 import { SidebarModule } from 'primeng/sidebar';
@@ -11,7 +11,16 @@ import { Sidebar } from '@primeicons/angular/sidebar';
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-root',
-  imports: [RouterOutlet, SidebarModule, ButtonModule, Home, User, Sidebar],
+  imports: [
+    RouterOutlet,
+    SidebarModule,
+    ButtonModule,
+    Home,
+    User,
+    Sidebar,
+    RouterLinkWithHref,
+    RouterLinkActive,
+  ],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
