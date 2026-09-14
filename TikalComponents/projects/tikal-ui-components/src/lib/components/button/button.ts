@@ -1,10 +1,13 @@
 import { Component, input, output } from '@angular/core';
 import { PIcon, Spinner } from '@primeicons/angular';
 import { ButtonModule } from 'primeng/button';
-import { ButtonColour } from '../../enums/button-colour';
-import { ButtonSize } from '../../enums/button-size';
 import { EnumMapPipe } from '../../../pipes/enum-map';
-import { ButtonType } from '../../enums/button-type';
+
+export type ButtonColour = 'primary' | 'secondary';
+
+export type ButtonSize = 'small' | 'normal' | 'large';
+
+export type ButtonType = 'button' | 'submit' | 'reset';
 
 @Component({
   selector: 'tikal-button',
@@ -17,10 +20,10 @@ export class ButtonComponent {
   readonly icon = input<string>('');
 
   /** What colour should the button be? */
-  readonly colour = input<ButtonColour>(ButtonColour.Primary);
+  readonly colour = input<ButtonColour>('primary');
 
   /** What size should the button be? */
-  readonly size = input<ButtonSize>(ButtonSize.Normal);
+  readonly size = input<ButtonSize>('normal');
 
   /** @ignore */
   readonly sizeMap = {
@@ -37,7 +40,7 @@ export class ButtonComponent {
   readonly outline = input<boolean>(false);
 
   /** What type should the button be? */
-  readonly type = input<ButtonType>(ButtonType.Button);
+  readonly type = input<ButtonType>('button');
 
   /** Should the button only appear as text? */
   readonly text = input<boolean>(false);
