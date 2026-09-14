@@ -27,6 +27,7 @@ const meta: Meta<ButtonComponent> = {
     icon: 'check',
     isLoading: false,
     outline: false,
+    text: false,
   },
   decorators: [
     applicationConfig({
@@ -100,5 +101,19 @@ export const IconOnlyLoading: Story = {
     icon: 'check',
     isLoading: true,
     outline: false,
+  },
+};
+
+export const TextButton: Story = {
+  name: 'Text mode',
+  args: {
+    colour: ButtonColour.Primary,
+    size: ButtonSize.Normal,
+    type: ButtonType.Button,
+    label: 'Button',
+    icon: 'check',
+    isLoading: false,
+    outline: false,
+    text: true,
   },
 };

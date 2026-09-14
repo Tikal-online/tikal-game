@@ -39,6 +39,9 @@ export class ButtonComponent {
   /** What type should the button be? */
   readonly type = input<ButtonType>(ButtonType.Button);
 
+  /** Should the button only appear as text? */
+  readonly text = input<boolean>(false);
+
   /** @ignore */
   readonly clicked = output<void>();
 }

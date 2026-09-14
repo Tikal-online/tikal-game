@@ -6,6 +6,7 @@
   [severity]="colour()"
   [size]="size() | enumMap: sizeMap"
   [type]="type()"
+  [variant]="text() ? 'text' : undefined"
   (click)="clicked.emit()"
 >
   @if (isLoading()) {
