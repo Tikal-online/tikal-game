@@ -2,7 +2,6 @@ import { Component, input, signal } from '@angular/core';
 import { disabled, form, required, FormRoot, FormField, maxLength } from '@angular/forms/signals';
 import { InputComponent } from '../input/input';
 import { ButtonComponent } from '../button/button';
-import { ButtonType } from '../../enums/button-type';
 
 type ChatFormData = {
   message: string;
@@ -29,9 +28,6 @@ export class ChatFormComponent {
 
   /** What is the label of the input element? */
   readonly label = input<string>();
-
-  /** @ignore */
-  readonly buttonTypeSubmit = ButtonType.Submit;
 
   /** @ignore */
   readonly chatForm = form(
