@@ -113,7 +113,7 @@
     "components": [
         {
             "name": "ButtonComponent",
-            "id": "component-ButtonComponent-eede4102d55008de190998f1e1408bdacb1f8456af46b8f2cc35da1e9cc2714d8cf69ecd02e2a9e57513084b10043ac5c0ed7252434795203a1db6bf15790725",
+            "id": "component-ButtonComponent-ba76657af388b2a3c7ed3654e72f4c90d38c23a0b17f2d790978dc8d0387dc7d119d109cab092083c8edf49fd6285d14bd0a1ebc7b5ece70155ffdbd97e3d9b8",
             "file": "projects/tikal-ui-components/src/lib/components/button/button.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -136,14 +136,14 @@
                 {
                     "name": "colour",
                     "coverageIgnore": false,
-                    "defaultValue": "ButtonColour.Primary",
+                    "defaultValue": "'primary'",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "ButtonColour",
                     "indexKey": "",
                     "optional": false,
                     "description": "<p>What colour should the button be?</p>\n",
-                    "line": 20,
+                    "line": 23,
                     "rawdescription": "\nWhat colour should the button be?",
                     "modifierKind": [
                         148
@@ -160,7 +160,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "<p>What icon should the button display?</p>\n",
-                    "line": 17,
+                    "line": 20,
                     "rawdescription": "\nWhat icon should the button display?",
                     "modifierKind": [
                         148
@@ -177,7 +177,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "<p>Is the action related to the button currently running?</p>\n",
-                    "line": 34,
+                    "line": 37,
                     "rawdescription": "\nIs the action related to the button currently running?",
                     "modifierKind": [
                         148
@@ -193,7 +193,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "<p>What text should the button display?</p>\n",
-                    "line": 31,
+                    "line": 34,
                     "rawdescription": "\nWhat text should the button display?",
                     "modifierKind": [
                         148
@@ -210,7 +210,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "<p>Should the button have an outline?</p>\n",
-                    "line": 37,
+                    "line": 40,
                     "rawdescription": "\nShould the button have an outline?",
                     "modifierKind": [
                         148
@@ -220,14 +220,14 @@
                 {
                     "name": "size",
                     "coverageIgnore": false,
-                    "defaultValue": "ButtonSize.Normal",
+                    "defaultValue": "'normal'",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "ButtonSize",
                     "indexKey": "",
                     "optional": false,
                     "description": "<p>What size should the button be?</p>\n",
-                    "line": 23,
+                    "line": 26,
                     "rawdescription": "\nWhat size should the button be?",
                     "modifierKind": [
                         148
@@ -244,7 +244,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "<p>Should the button only appear as text?</p>\n",
-                    "line": 43,
+                    "line": 46,
                     "rawdescription": "\nShould the button only appear as text?",
                     "modifierKind": [
                         148
@@ -254,14 +254,14 @@
                 {
                     "name": "type",
                     "coverageIgnore": false,
-                    "defaultValue": "ButtonType.Button",
+                    "defaultValue": "'button'",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "ButtonType",
                     "indexKey": "",
                     "optional": false,
                     "description": "<p>What type should the button be?</p>\n",
-                    "line": 40,
+                    "line": 43,
                     "rawdescription": "\nWhat type should the button be?",
                     "modifierKind": [
                         148
@@ -297,7 +297,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, input, output } from '@angular/core';\nimport { PIcon, Spinner } from '@primeicons/angular';\nimport { ButtonModule } from 'primeng/button';\nimport { ButtonColour } from '../../enums/button-colour';\nimport { ButtonSize } from '../../enums/button-size';\nimport { EnumMapPipe } from '../../../pipes/enum-map';\nimport { ButtonType } from '../../enums/button-type';\n\n@Component({\n  selector: 'tikal-button',\n  imports: [ButtonModule, PIcon, EnumMapPipe, Spinner],\n  templateUrl: './button.html',\n  styleUrl: './button.scss',\n})\nexport class ButtonComponent {\n  /** What icon should the button display? */\n  readonly icon = input<string>('');\n\n  /** What colour should the button be? */\n  readonly colour = input<ButtonColour>(ButtonColour.Primary);\n\n  /** What size should the button be? */\n  readonly size = input<ButtonSize>(ButtonSize.Normal);\n\n  /** @ignore */\n  readonly sizeMap = {\n    normal: undefined,\n  };\n\n  /** What text should the button display? */\n  readonly label = input<string>();\n\n  /** Is the action related to the button currently running? */\n  readonly isLoading = input<boolean>(false);\n\n  /** Should the button have an outline? */\n  readonly outline = input<boolean>(false);\n\n  /** What type should the button be? */\n  readonly type = input<ButtonType>(ButtonType.Button);\n\n  /** Should the button only appear as text? */\n  readonly text = input<boolean>(false);\n\n  /** @ignore */\n  readonly clicked = output<void>();\n}\n",
+            "sourceCode": "import { Component, input, output } from '@angular/core';\nimport { PIcon, Spinner } from '@primeicons/angular';\nimport { ButtonModule } from 'primeng/button';\nimport { EnumMapPipe } from '../../../pipes/enum-map';\n\nexport type ButtonColour = 'primary' | 'secondary';\n\nexport type ButtonSize = 'small' | 'normal' | 'large';\n\nexport type ButtonType = 'button' | 'submit' | 'reset';\n\n@Component({\n  selector: 'tikal-button',\n  imports: [ButtonModule, PIcon, EnumMapPipe, Spinner],\n  templateUrl: './button.html',\n  styleUrl: './button.scss',\n})\nexport class ButtonComponent {\n  /** What icon should the button display? */\n  readonly icon = input<string>('');\n\n  /** What colour should the button be? */\n  readonly colour = input<ButtonColour>('primary');\n\n  /** What size should the button be? */\n  readonly size = input<ButtonSize>('normal');\n\n  /** @ignore */\n  readonly sizeMap = {\n    normal: undefined,\n  };\n\n  /** What text should the button display? */\n  readonly label = input<string>();\n\n  /** Is the action related to the button currently running? */\n  readonly isLoading = input<boolean>(false);\n\n  /** Should the button have an outline? */\n  readonly outline = input<boolean>(false);\n\n  /** What type should the button be? */\n  readonly type = input<ButtonType>('button');\n\n  /** Should the button only appear as text? */\n  readonly text = input<boolean>(false);\n\n  /** @ignore */\n  readonly clicked = output<void>();\n}\n",
             "styleUrl": "./button.scss",
             "assetsDirs": [],
             "styleUrlsData": [
@@ -955,7 +955,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
-                "defaultValue": "{\n  name: 'Icon only',\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    type: ButtonType.Button,\n    label: '',\n    icon: 'check',\n    isLoading: false,\n    outline: false,\n  },\n}"
+                "defaultValue": "{\n  name: 'Icon only',\n  args: {\n    colour: 'primary',\n    size: 'normal',\n    type: 'button',\n    label: '',\n    icon: 'check',\n    isLoading: false,\n    outline: false,\n  },\n}"
             },
             {
                 "name": "IconOnlyLoading",
@@ -966,7 +966,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
-                "defaultValue": "{\n  name: 'Icon only loading',\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    type: ButtonType.Button,\n    label: '',\n    icon: 'check',\n    isLoading: true,\n    outline: false,\n  },\n}"
+                "defaultValue": "{\n  name: 'Icon only loading',\n  args: {\n    colour: 'primary',\n    size: 'normal',\n    type: 'button',\n    label: '',\n    icon: 'check',\n    isLoading: true,\n    outline: false,\n  },\n}"
             },
             {
                 "name": "Invalid",
@@ -1021,7 +1021,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Meta<ButtonComponent>",
-                "defaultValue": "{\n  title: 'Atoms/Button',\n  component: ButtonComponent,\n  tags: ['autodocs'],\n  argTypes: {\n    colour: {\n      control: { type: 'select' },\n    },\n    size: {\n      control: { type: 'select' },\n    },\n    type: {\n      control: { type: 'select' },\n    },\n  },\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    type: ButtonType.Button,\n    label: 'Button',\n    icon: 'check',\n    isLoading: false,\n    outline: false,\n    text: false,\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
+                "defaultValue": "{\n  title: 'Atoms/Button',\n  component: ButtonComponent,\n  tags: ['autodocs'],\n  argTypes: {\n    colour: {\n      control: { type: 'select' },\n    },\n    size: {\n      control: { type: 'select' },\n    },\n    type: {\n      control: { type: 'select' },\n    },\n  },\n  args: {\n    colour: 'primary',\n    size: 'normal',\n    type: 'button',\n    label: 'Button',\n    icon: 'check',\n    isLoading: false,\n    outline: false,\n    text: false,\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
             },
             {
                 "name": "meta",
@@ -1120,7 +1120,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
-                "defaultValue": "{\n  name: 'Icon and text',\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    type: ButtonType.Button,\n    label: 'Button',\n    icon: 'check',\n    isLoading: false,\n    outline: false,\n  },\n}"
+                "defaultValue": "{\n  name: 'Icon and text',\n  args: {\n    colour: 'primary',\n    size: 'normal',\n    type: 'button',\n    label: 'Button',\n    icon: 'check',\n    isLoading: false,\n    outline: false,\n  },\n}"
             },
             {
                 "name": "TextButton",
@@ -1131,7 +1131,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
-                "defaultValue": "{\n  name: 'Text mode',\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    type: ButtonType.Button,\n    label: 'Button',\n    icon: 'check',\n    isLoading: false,\n    outline: false,\n    text: true,\n  },\n}"
+                "defaultValue": "{\n  name: 'Text mode',\n  args: {\n    colour: 'primary',\n    size: 'normal',\n    type: 'button',\n    label: 'Button',\n    icon: 'check',\n    isLoading: false,\n    outline: false,\n    text: true,\n  },\n}"
             },
             {
                 "name": "Textoading",
@@ -1142,7 +1142,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
-                "defaultValue": "{\n  name: 'Text loading',\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    type: ButtonType.Button,\n    label: 'Button',\n    icon: '',\n    isLoading: true,\n    outline: false,\n  },\n}"
+                "defaultValue": "{\n  name: 'Text loading',\n  args: {\n    colour: 'primary',\n    size: 'normal',\n    type: 'button',\n    label: 'Button',\n    icon: '',\n    isLoading: true,\n    outline: false,\n  },\n}"
             },
             {
                 "name": "TextOnly",
@@ -1153,7 +1153,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
-                "defaultValue": "{\n  name: 'Text only',\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    type: ButtonType.Button,\n    label: 'Button',\n    icon: '',\n    isLoading: false,\n    outline: false,\n  },\n}"
+                "defaultValue": "{\n  name: 'Text only',\n  args: {\n    colour: 'primary',\n    size: 'normal',\n    type: 'button',\n    label: 'Button',\n    icon: '',\n    isLoading: false,\n    outline: false,\n  },\n}"
             },
             {
                 "name": "TikalTheme",
@@ -1202,6 +1202,45 @@
         ],
         "functions": [],
         "typealiases": [
+            {
+                "name": "ButtonColour",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "coverageIgnore": false,
+                "rawtype": "\"primary\" | \"secondary\"",
+                "file": "projects/tikal-ui-components/src/lib/components/button/button.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "rawdescription": "",
+                "description": "",
+                "kind": 193
+            },
+            {
+                "name": "ButtonSize",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "coverageIgnore": false,
+                "rawtype": "\"small\" | \"normal\" | \"large\"",
+                "file": "projects/tikal-ui-components/src/lib/components/button/button.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "rawdescription": "",
+                "description": "",
+                "kind": 193
+            },
+            {
+                "name": "ButtonType",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "coverageIgnore": false,
+                "rawtype": "\"button\" | \"submit\" | \"reset\"",
+                "file": "projects/tikal-ui-components/src/lib/components/button/button.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "rawdescription": "",
+                "description": "",
+                "kind": 193
+            },
             {
                 "name": "ChatFormData",
                 "ctype": "miscellaneous",
@@ -1307,92 +1346,7 @@
                 "kind": 184
             }
         ],
-        "enumerations": [
-            {
-                "name": "ButtonColour",
-                "childs": [
-                    {
-                        "name": "Primary",
-                        "deprecated": false,
-                        "deprecationMessage": "",
-                        "value": "primary"
-                    },
-                    {
-                        "name": "Secondary",
-                        "deprecated": false,
-                        "deprecationMessage": "",
-                        "value": "secondary"
-                    }
-                ],
-                "ctype": "miscellaneous",
-                "subtype": "enum",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "rawdescription": "",
-                "description": "",
-                "file": "projects/tikal-ui-components/src/lib/enums/button-colour.ts"
-            },
-            {
-                "name": "ButtonSize",
-                "childs": [
-                    {
-                        "name": "Small",
-                        "deprecated": false,
-                        "deprecationMessage": "",
-                        "value": "small"
-                    },
-                    {
-                        "name": "Normal",
-                        "deprecated": false,
-                        "deprecationMessage": "",
-                        "value": "normal"
-                    },
-                    {
-                        "name": "Large",
-                        "deprecated": false,
-                        "deprecationMessage": "",
-                        "value": "large"
-                    }
-                ],
-                "ctype": "miscellaneous",
-                "subtype": "enum",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "rawdescription": "",
-                "description": "",
-                "file": "projects/tikal-ui-components/src/lib/enums/button-size.ts"
-            },
-            {
-                "name": "ButtonType",
-                "childs": [
-                    {
-                        "name": "Button",
-                        "deprecated": false,
-                        "deprecationMessage": "",
-                        "value": "button"
-                    },
-                    {
-                        "name": "Submit",
-                        "deprecated": false,
-                        "deprecationMessage": "",
-                        "value": "submit"
-                    },
-                    {
-                        "name": "Reset",
-                        "deprecated": false,
-                        "deprecationMessage": "",
-                        "value": "reset"
-                    }
-                ],
-                "ctype": "miscellaneous",
-                "subtype": "enum",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "rawdescription": "",
-                "description": "",
-                "file": "projects/tikal-ui-components/src/lib/enums/button-type.ts"
-            }
-        ],
+        "enumerations": [],
         "groupedVariables": {
             "projects/tikal-ui-components/src/stories/input.stories.ts": [
                 {
@@ -1483,7 +1437,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
-                    "defaultValue": "{\n  name: 'Icon only',\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    type: ButtonType.Button,\n    label: '',\n    icon: 'check',\n    isLoading: false,\n    outline: false,\n  },\n}"
+                    "defaultValue": "{\n  name: 'Icon only',\n  args: {\n    colour: 'primary',\n    size: 'normal',\n    type: 'button',\n    label: '',\n    icon: 'check',\n    isLoading: false,\n    outline: false,\n  },\n}"
                 },
                 {
                     "name": "IconOnlyLoading",
@@ -1494,7 +1448,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
-                    "defaultValue": "{\n  name: 'Icon only loading',\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    type: ButtonType.Button,\n    label: '',\n    icon: 'check',\n    isLoading: true,\n    outline: false,\n  },\n}"
+                    "defaultValue": "{\n  name: 'Icon only loading',\n  args: {\n    colour: 'primary',\n    size: 'normal',\n    type: 'button',\n    label: '',\n    icon: 'check',\n    isLoading: true,\n    outline: false,\n  },\n}"
                 },
                 {
                     "name": "meta",
@@ -1505,7 +1459,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Meta<ButtonComponent>",
-                    "defaultValue": "{\n  title: 'Atoms/Button',\n  component: ButtonComponent,\n  tags: ['autodocs'],\n  argTypes: {\n    colour: {\n      control: { type: 'select' },\n    },\n    size: {\n      control: { type: 'select' },\n    },\n    type: {\n      control: { type: 'select' },\n    },\n  },\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    type: ButtonType.Button,\n    label: 'Button',\n    icon: 'check',\n    isLoading: false,\n    outline: false,\n    text: false,\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
+                    "defaultValue": "{\n  title: 'Atoms/Button',\n  component: ButtonComponent,\n  tags: ['autodocs'],\n  argTypes: {\n    colour: {\n      control: { type: 'select' },\n    },\n    size: {\n      control: { type: 'select' },\n    },\n    type: {\n      control: { type: 'select' },\n    },\n  },\n  args: {\n    colour: 'primary',\n    size: 'normal',\n    type: 'button',\n    label: 'Button',\n    icon: 'check',\n    isLoading: false,\n    outline: false,\n    text: false,\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
                 },
                 {
                     "name": "PrimaryWithIcon",
@@ -1516,7 +1470,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
-                    "defaultValue": "{\n  name: 'Icon and text',\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    type: ButtonType.Button,\n    label: 'Button',\n    icon: 'check',\n    isLoading: false,\n    outline: false,\n  },\n}"
+                    "defaultValue": "{\n  name: 'Icon and text',\n  args: {\n    colour: 'primary',\n    size: 'normal',\n    type: 'button',\n    label: 'Button',\n    icon: 'check',\n    isLoading: false,\n    outline: false,\n  },\n}"
                 },
                 {
                     "name": "TextButton",
@@ -1527,7 +1481,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
-                    "defaultValue": "{\n  name: 'Text mode',\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    type: ButtonType.Button,\n    label: 'Button',\n    icon: 'check',\n    isLoading: false,\n    outline: false,\n    text: true,\n  },\n}"
+                    "defaultValue": "{\n  name: 'Text mode',\n  args: {\n    colour: 'primary',\n    size: 'normal',\n    type: 'button',\n    label: 'Button',\n    icon: 'check',\n    isLoading: false,\n    outline: false,\n    text: true,\n  },\n}"
                 },
                 {
                     "name": "Textoading",
@@ -1538,7 +1492,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
-                    "defaultValue": "{\n  name: 'Text loading',\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    type: ButtonType.Button,\n    label: 'Button',\n    icon: '',\n    isLoading: true,\n    outline: false,\n  },\n}"
+                    "defaultValue": "{\n  name: 'Text loading',\n  args: {\n    colour: 'primary',\n    size: 'normal',\n    type: 'button',\n    label: 'Button',\n    icon: '',\n    isLoading: true,\n    outline: false,\n  },\n}"
                 },
                 {
                     "name": "TextOnly",
@@ -1549,7 +1503,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
-                    "defaultValue": "{\n  name: 'Text only',\n  args: {\n    colour: ButtonColour.Primary,\n    size: ButtonSize.Normal,\n    type: ButtonType.Button,\n    label: 'Button',\n    icon: '',\n    isLoading: false,\n    outline: false,\n  },\n}"
+                    "defaultValue": "{\n  name: 'Text only',\n  args: {\n    colour: 'primary',\n    size: 'normal',\n    type: 'button',\n    label: 'Button',\n    icon: '',\n    isLoading: false,\n    outline: false,\n  },\n}"
                 }
             ],
             "projects/tikal-ui-components/src/stories/chat-form.stories.ts": [
@@ -1696,99 +1650,49 @@
             ]
         },
         "groupedFunctions": {},
-        "groupedEnumerations": {
-            "projects/tikal-ui-components/src/lib/enums/button-colour.ts": [
+        "groupedEnumerations": {},
+        "groupedTypeAliases": {
+            "projects/tikal-ui-components/src/lib/components/button/button.ts": [
                 {
                     "name": "ButtonColour",
-                    "childs": [
-                        {
-                            "name": "Primary",
-                            "deprecated": false,
-                            "deprecationMessage": "",
-                            "value": "primary"
-                        },
-                        {
-                            "name": "Secondary",
-                            "deprecated": false,
-                            "deprecationMessage": "",
-                            "value": "secondary"
-                        }
-                    ],
                     "ctype": "miscellaneous",
-                    "subtype": "enum",
+                    "subtype": "typealias",
+                    "coverageIgnore": false,
+                    "rawtype": "\"primary\" | \"secondary\"",
+                    "file": "projects/tikal-ui-components/src/lib/components/button/button.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "rawdescription": "",
                     "description": "",
-                    "file": "projects/tikal-ui-components/src/lib/enums/button-colour.ts"
-                }
-            ],
-            "projects/tikal-ui-components/src/lib/enums/button-size.ts": [
+                    "kind": 193
+                },
                 {
                     "name": "ButtonSize",
-                    "childs": [
-                        {
-                            "name": "Small",
-                            "deprecated": false,
-                            "deprecationMessage": "",
-                            "value": "small"
-                        },
-                        {
-                            "name": "Normal",
-                            "deprecated": false,
-                            "deprecationMessage": "",
-                            "value": "normal"
-                        },
-                        {
-                            "name": "Large",
-                            "deprecated": false,
-                            "deprecationMessage": "",
-                            "value": "large"
-                        }
-                    ],
                     "ctype": "miscellaneous",
-                    "subtype": "enum",
+                    "subtype": "typealias",
+                    "coverageIgnore": false,
+                    "rawtype": "\"small\" | \"normal\" | \"large\"",
+                    "file": "projects/tikal-ui-components/src/lib/components/button/button.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "rawdescription": "",
                     "description": "",
-                    "file": "projects/tikal-ui-components/src/lib/enums/button-size.ts"
-                }
-            ],
-            "projects/tikal-ui-components/src/lib/enums/button-type.ts": [
+                    "kind": 193
+                },
                 {
                     "name": "ButtonType",
-                    "childs": [
-                        {
-                            "name": "Button",
-                            "deprecated": false,
-                            "deprecationMessage": "",
-                            "value": "button"
-                        },
-                        {
-                            "name": "Submit",
-                            "deprecated": false,
-                            "deprecationMessage": "",
-                            "value": "submit"
-                        },
-                        {
-                            "name": "Reset",
-                            "deprecated": false,
-                            "deprecationMessage": "",
-                            "value": "reset"
-                        }
-                    ],
                     "ctype": "miscellaneous",
-                    "subtype": "enum",
+                    "subtype": "typealias",
+                    "coverageIgnore": false,
+                    "rawtype": "\"button\" | \"submit\" | \"reset\"",
+                    "file": "projects/tikal-ui-components/src/lib/components/button/button.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "rawdescription": "",
                     "description": "",
-                    "file": "projects/tikal-ui-components/src/lib/enums/button-type.ts"
+                    "kind": 193
                 }
-            ]
-        },
-        "groupedTypeAliases": {
+            ],
             "projects/tikal-ui-components/src/lib/components/chat-form/chat-form.ts": [
                 {
                     "name": "ChatFormData",
@@ -1917,7 +1821,7 @@
         "children": []
     },
     "coverage": {
-        "count": 9,
+        "count": 8,
         "status": "low",
         "files": [
             {
@@ -1938,6 +1842,36 @@
                 "coveragePercent": 88,
                 "coverageCount": "8/9",
                 "status": "very-good"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/lib/components/button/button.ts",
+                "type": "type alias",
+                "linktype": "miscellaneous",
+                "linksubtype": "typealias",
+                "name": "ButtonColour",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/lib/components/button/button.ts",
+                "type": "type alias",
+                "linktype": "miscellaneous",
+                "linksubtype": "typealias",
+                "name": "ButtonSize",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/lib/components/button/button.ts",
+                "type": "type alias",
+                "linktype": "miscellaneous",
+                "linksubtype": "typealias",
+                "name": "ButtonType",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
             },
             {
                 "filePath": "projects/tikal-ui-components/src/lib/components/chat-form/chat-form.ts",
