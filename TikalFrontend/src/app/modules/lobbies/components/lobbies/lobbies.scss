@@ -4,3 +4,18 @@
 
   padding: 1rem;
 }
+
+header {
+  display: flex;
+  flex-direction: row;
+
+  justify-content: space-between;
+}
+
+.search-items {
+  display: flex;
+
+  align-items: center;
+
+  gap: 1rem;
+}
