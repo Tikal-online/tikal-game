@@ -66,6 +66,11 @@
         <button pButton pSidebarTrigger severity="secondary" target="sidebar" text type="button">
           <svg data-p-icon="sidebar"></svg>
         </button>
+        <tikal-button
+          [icon]="usesDarkMode() ? 'moon' : 'sun'"
+          [text]="true"
+          (clicked)="toggleDarkMode()"
+        />
       </header>
       <router-outlet />
     </p-sidebar-main>
