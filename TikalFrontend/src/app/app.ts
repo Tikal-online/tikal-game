@@ -9,6 +9,7 @@ import { Home } from '@primeicons/angular/home';
 import { Sidebar } from '@primeicons/angular/sidebar';
 import { Crown } from '@primeicons/angular/crown';
 import { ButtonComponent } from 'tikal-ui-components';
+import { ThemeStore } from './core/stores/theme-store/theme-store';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -33,12 +34,13 @@ export class App {
 
   private readonly authStore = inject(AuthStore);
 
+  private readonly themeStore = inject(ThemeStore);
+
   readonly initializationFailed = computed(
     () => this.accountStore.initializationFailed() || this.authStore.initializationFailed(),
   );
 
   toggleDarkMode(): void {
-    const element = document.querySelector('html');
-    element?.classList.toggle('dark');
+    this.themeStore.toggleDarkMode();
   }
 }
