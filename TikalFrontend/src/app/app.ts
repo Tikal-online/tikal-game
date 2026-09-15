@@ -8,6 +8,7 @@ import { User } from '@primeicons/angular/user';
 import { Home } from '@primeicons/angular/home';
 import { Sidebar } from '@primeicons/angular/sidebar';
 import { Crown } from '@primeicons/angular/crown';
+import { ButtonComponent } from 'tikal-ui-components';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -16,6 +17,7 @@ import { Crown } from '@primeicons/angular/crown';
     RouterOutlet,
     SidebarModule,
     ButtonModule,
+    ButtonComponent,
     Home,
     User,
     Crown,
@@ -34,4 +36,9 @@ export class App {
   readonly initializationFailed = computed(
     () => this.accountStore.initializationFailed() || this.authStore.initializationFailed(),
   );
+
+  toggleDarkMode(): void {
+    const element = document.querySelector('html');
+    element?.classList.toggle('dark');
+  }
 }
