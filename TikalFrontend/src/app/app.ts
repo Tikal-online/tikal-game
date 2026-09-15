@@ -43,4 +43,8 @@ export class App {
   toggleDarkMode(): void {
     this.themeStore.toggleDarkMode();
   }
+
+  usesDarkMode(): boolean {
+    return this.themeStore.isDarkMode();
+  }
 }
