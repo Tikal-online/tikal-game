@@ -28,6 +28,7 @@
     "@primeuix/themes": "^3.0.0",
     "primeng": "^22.1.0",
     "rxjs": "~7.8.0",
+    "tikal-ui-components": "^0.5.1",
     "tslib": "~2.3.0"
   },
   "devDependencies": {
