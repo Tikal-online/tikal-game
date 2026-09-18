@@ -1,0 +1,45 @@
+<header>
+  <h1>Lobbies</h1>
+  <div class="search-items">
+    <tikal-input
+      label="lobby-name"
+      placeholder="Search by name..."
+      [maxLength]="200"
+      [value]="lobbiesSummaryStore.filter.searchText()"
+      (valueChange)="lobbiesSummaryStore.updateSearchText($event)"
+    />
+    <tikal-button
+      icon="refresh"
+      [isLoading]="lobbiesSummaryStore.isLoading()"
+      [outline]="true"
+      (clicked)="lobbiesSummaryStore.refresh()"
+    />
+  </div>
+</header>
+<p-table
+  scrollHeight="flex"
+  [lazy]="true"
+  [paginator]="lobbiesSummaryStore.hasMultiplePages()"
+  [rows]="lobbiesSummaryStore.filter.pageSize()"
+  [rowsPerPageOptions]="[10, 15, 25, 50]"
+  [scrollable]="true"
+  [showCurrentPageReport]="true"
+  [totalRecords]="lobbiesSummaryStore.totalCount()"
+  [value]="lobbiesSummaryStore.lobbies()"
+  (onLazyLoad)="onPageChanged($event)"
+>
+  <ng-template #header>
+    <tr>
+      <th scope="col" style="width: 30%">Name</th>
+      <th scope="col" style="width: 30%">Players</th>
+      <th scope="col" style="width: 20%">Game Mode</th>
+    </tr>
+  </ng-template>
+  <ng-template #body let-lobby>
+    <tr>
+      <td>{{ lobby.name }}</td>
+      <td>{{ lobby.maxPlayers }}</td>
+      <td>-</td>
+    </tr>
+  </ng-template>
+</p-table>

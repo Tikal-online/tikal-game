@@ -6,7 +6,7 @@ header {
   height: 3rem;
   gap: 0.5rem;
 
-  padding: 0 0.5rem;
+  padding: 0 1rem 0 0.5rem;
 
   border-bottom: 1px solid var(--p-sidebar-border-color);
 }
@@ -38,4 +38,8 @@ header {
   font-weight: 600;
   font-size: 0.875rem;
   line-height: 1.25rem;
+}
+
+p-sidebar-main {
+  height: 100vh;
 }
