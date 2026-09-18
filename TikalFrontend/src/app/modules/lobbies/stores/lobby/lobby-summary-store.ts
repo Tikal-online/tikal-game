@@ -25,6 +25,13 @@ type LobbySummaryState = {
   };
 };
 
+const placeHolderLobby: LobbySummary = {
+  name: '',
+  maxPlayers: 0,
+  currentPlayers: 0,
+  id: '',
+};
+
 const initialState: LobbySummaryState = {
   lobbies: [],
   status: 'initial',
@@ -52,6 +59,15 @@ export const LobbySummaryStore = signalStore(
     noLobbiesFound: computed(() => status() === 'loaded' && lobbies().length === 0),
 
     hasMultiplePages: computed(() => totalCount() > filter.pageSize()),
+
+    // while loading we want to provide placeholders to render skeletons
+    displayLobbies: computed(() =>
+      status() === 'loading'
+        ? Array.from({ length: filter.pageSize() }, (_, i) => {
+            return { ...placeHolderLobby, id: `${i}` };
+          })
+        : lobbies(),
+    ),
   })),
 
   withMethods((store) => ({
