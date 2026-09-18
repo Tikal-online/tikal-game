@@ -1,0 +1,33 @@
+:host {
+  display: flex;
+  flex-direction: row;
+
+  gap: 0.5rem;
+}
+
+p {
+  margin: 0;
+}
+
+.bar {
+  align-self: center;
+
+  height: 0.45rem;
+  width: 4rem;
+
+  border-radius: 9999px;
+
+  background-color: var(--p-surface-300);
+}
+
+.bar-fill {
+  height: 100%;
+
+  border-radius: 9999px;
+
+  background-color: var(--p-green-600);
+}
+
+.full {
+  background-color: var(--p-red-600);
+}

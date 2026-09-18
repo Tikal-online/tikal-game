@@ -982,7 +982,7 @@
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": "",
+                    "data": ":host {\n  display: flex;\n  flex-direction: row;\n\n  gap: 0.5rem;\n}\n\np {\n  margin: 0;\n}\n\n.bar {\n  align-self: center;\n\n  height: 0.45rem;\n  width: 4rem;\n\n  border-radius: 9999px;\n\n  background-color: var(--p-surface-300);\n}\n\n.bar-fill {\n  height: 100%;\n\n  border-radius: 9999px;\n\n  background-color: var(--p-green-600);\n}\n\n.full {\n  background-color: var(--p-red-600);\n}\n",
                     "styleUrl": "./player-count.scss"
                 }
             ],
@@ -992,7 +992,7 @@
                 "incoming": [],
                 "outgoing": []
             },
-            "templateData": "<p>{{ currentPlayers() }}/{{ maxPlayers() }}</p>\n"
+            "templateData": "<p>{{ currentPlayers() }}/{{ maxPlayers() }}</p>\n<div class=\"bar\">\n  <div\n    class=\"bar-fill\"\n    [class.full]=\"currentPlayers() >= maxPlayers()\"\n    [style.width]=\"(currentPlayers() / maxPlayers()) * 100 + '%'\"\n  ></div>\n</div>\n"
         },
         {
             "name": "SkeletonComponent",

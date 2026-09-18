@@ -13,3 +13,6 @@ export * from './lib/components/chat-form/chat-form';
 
 // Skeleton
 export * from './lib/components/skeleton/skeleton';
+
+// Player count
+export * from './lib/components/player-count/player-count';
