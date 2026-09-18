@@ -1,0 +1,8 @@
+<p>{{ currentPlayers() }}/{{ maxPlayers() }}</p>
+<div class="bar">
+  <div
+    class="bar-fill"
+    [class.full]="currentPlayers() >= maxPlayers()"
+    [style.width]="(currentPlayers() / maxPlayers()) * 100 + '%'"
+  ></div>
+</div>
