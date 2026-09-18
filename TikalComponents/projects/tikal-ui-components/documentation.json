@@ -910,6 +910,91 @@
             "templateData": "<input\n  pInputText\n  [ariaLabel]=\"label()\"\n  [disabled]=\"disabled()\"\n  [invalid]=\"invalid() && touched()\"\n  [maxLength]=\"maxLength()\"\n  [placeholder]=\"placeholder()\"\n  [required]=\"required()\"\n  [value]=\"value()\"\n  (input)=\"value.set($event.target.value)\"\n/>\n"
         },
         {
+            "name": "PlayerCountComponent",
+            "id": "component-PlayerCountComponent-fa065c90b127f7c4b5e262594d754cda6861b4e6594caa3334966cd67a3adea5358e2176444989d58ad65a01cc9df9b287db195ff1008f6ab5a79725c07cefb8",
+            "file": "projects/tikal-ui-components/src/lib/components/player-count/player-count.ts",
+            "changeDetection": "ChangeDetectionStrategy.OnPush",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "tikal-player-count",
+            "styleUrls": [
+                "./player-count.scss"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./player-count.html"
+            ],
+            "templateVariables": [],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [
+                {
+                    "name": "currentPlayers",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "number",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>How many players are currently in the lobby?</p>\n",
+                    "line": 11,
+                    "rawdescription": "\nHow many players are currently in the lobby?",
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": true
+                },
+                {
+                    "name": "maxPlayers",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "number",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>How many players fit in the lobby?</p>\n",
+                    "line": 14,
+                    "rawdescription": "\nHow many players fit in the lobby?",
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": true
+                }
+            ],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [],
+            "coverageIgnore": false,
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component, input } from '@angular/core';\n\n@Component({\n  selector: 'tikal-player-count',\n  imports: [],\n  templateUrl: './player-count.html',\n  styleUrl: './player-count.scss',\n})\nexport class PlayerCountComponent {\n  /** How many players are currently in the lobby? */\n  readonly currentPlayers = input.required<number>();\n\n  /** How many players fit in the lobby? */\n  readonly maxPlayers = input.required<number>();\n}\n",
+            "styleUrl": "./player-count.scss",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": "",
+                    "styleUrl": "./player-count.scss"
+                }
+            ],
+            "stylesData": "",
+            "extends": [],
+            "relationships": {
+                "incoming": [],
+                "outgoing": []
+            },
+            "templateData": "<p>{{ currentPlayers() }}/{{ maxPlayers() }}</p>\n"
+        },
+        {
             "name": "SkeletonComponent",
             "id": "component-SkeletonComponent-7e4194cfbc866f6e7b4fc845568a3631304570004b21157845db764cc134440c073c5dba388126d9b512292bb61115ff99302180ac009b537b78f5f30afa32b0",
             "file": "projects/tikal-ui-components/src/lib/components/skeleton/skeleton.ts",
@@ -976,6 +1061,17 @@
     "miscellaneous": {
         "variables": [
             {
+                "name": "AlmostEmpty",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/tikal-ui-components/src/stories/player-count.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n  name: 'Almost empty',\n  args: {\n    currentPlayers: 1,\n    maxPlayers: 4,\n  },\n}"
+            },
+            {
                 "name": "BaseSkeleton",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -1018,6 +1114,28 @@
                 "deprecationMessage": "",
                 "type": "Story",
                 "defaultValue": "{\n  name: 'Empty with placeholder',\n  args: {\n    value: '',\n    disabled: false,\n    invalid: false,\n    required: false,\n    touched: false,\n    placeholder: 'Type something...',\n    maxLength: 100,\n  },\n}"
+            },
+            {
+                "name": "Full",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/tikal-ui-components/src/stories/player-count.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n  name: 'Full',\n  args: {\n    currentPlayers: 3,\n    maxPlayers: 3,\n  },\n}"
+            },
+            {
+                "name": "HalfwayFull",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/tikal-ui-components/src/stories/player-count.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n  name: 'Half full',\n  args: {\n    currentPlayers: 2,\n    maxPlayers: 4,\n  },\n}"
             },
             {
                 "name": "IconOnly",
@@ -1139,6 +1257,17 @@
                 "deprecationMessage": "",
                 "type": "Meta<InputComponent>",
                 "defaultValue": "{\n  title: 'Atoms/Input',\n  component: InputComponent,\n  tags: ['autodocs'],\n  args: {\n    value: '',\n    disabled: false,\n    invalid: false,\n    required: false,\n    touched: false,\n    placeholder: 'Placeholder...',\n    maxLength: 100,\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
+            },
+            {
+                "name": "meta",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/tikal-ui-components/src/stories/player-count.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Meta<PlayerCountComponent>",
+                "defaultValue": "{\n  title: 'Atoms/Player-Count',\n  component: PlayerCountComponent,\n  tags: ['autodocs'],\n  args: {\n    currentPlayers: 2,\n    maxPlayers: 4,\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
             },
             {
                 "name": "meta",
@@ -1434,6 +1563,19 @@
                 "ctype": "miscellaneous",
                 "subtype": "typealias",
                 "coverageIgnore": false,
+                "rawtype": "StoryObj<PlayerCountComponent>",
+                "file": "projects/tikal-ui-components/src/stories/player-count.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "rawdescription": "",
+                "description": "",
+                "kind": 184
+            },
+            {
+                "name": "Story",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "coverageIgnore": false,
                 "rawtype": "StoryObj<SkeletonComponent>",
                 "file": "projects/tikal-ui-components/src/stories/skeleton.stories.ts",
                 "deprecated": false,
@@ -1445,6 +1587,52 @@
         ],
         "enumerations": [],
         "groupedVariables": {
+            "projects/tikal-ui-components/src/stories/player-count.stories.ts": [
+                {
+                    "name": "AlmostEmpty",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/tikal-ui-components/src/stories/player-count.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n  name: 'Almost empty',\n  args: {\n    currentPlayers: 1,\n    maxPlayers: 4,\n  },\n}"
+                },
+                {
+                    "name": "Full",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/tikal-ui-components/src/stories/player-count.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n  name: 'Full',\n  args: {\n    currentPlayers: 3,\n    maxPlayers: 3,\n  },\n}"
+                },
+                {
+                    "name": "HalfwayFull",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/tikal-ui-components/src/stories/player-count.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n  name: 'Half full',\n  args: {\n    currentPlayers: 2,\n    maxPlayers: 4,\n  },\n}"
+                },
+                {
+                    "name": "meta",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/tikal-ui-components/src/stories/player-count.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Meta<PlayerCountComponent>",
+                    "defaultValue": "{\n  title: 'Atoms/Player-Count',\n  component: PlayerCountComponent,\n  tags: ['autodocs'],\n  args: {\n    currentPlayers: 2,\n    maxPlayers: 4,\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
+                }
+            ],
             "projects/tikal-ui-components/src/stories/skeleton.stories.ts": [
                 {
                     "name": "BaseSkeleton",
@@ -1934,6 +2122,21 @@
                     "kind": 184
                 }
             ],
+            "projects/tikal-ui-components/src/stories/player-count.stories.ts": [
+                {
+                    "name": "Story",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "coverageIgnore": false,
+                    "rawtype": "StoryObj<PlayerCountComponent>",
+                    "file": "projects/tikal-ui-components/src/stories/player-count.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "",
+                    "description": "",
+                    "kind": 184
+                }
+            ],
             "projects/tikal-ui-components/src/stories/skeleton.stories.ts": [
                 {
                     "name": "Story",
@@ -1957,7 +2160,7 @@
         "children": []
     },
     "coverage": {
-        "count": 7,
+        "count": 8,
         "status": "low",
         "files": [
             {
@@ -2074,6 +2277,15 @@
                 "coveragePercent": 90,
                 "coverageCount": "9/10",
                 "status": "very-good"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/lib/components/player-count/player-count.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "PlayerCountComponent",
+                "coveragePercent": 66,
+                "coverageCount": "2/3",
+                "status": "good"
             },
             {
                 "filePath": "projects/tikal-ui-components/src/lib/components/skeleton/skeleton.ts",
@@ -2385,6 +2597,56 @@
             },
             {
                 "filePath": "projects/tikal-ui-components/src/stories/input.stories.ts",
+                "type": "type alias",
+                "linktype": "miscellaneous",
+                "linksubtype": "typealias",
+                "name": "Story",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/stories/player-count.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "AlmostEmpty",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/stories/player-count.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Full",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/stories/player-count.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "HalfwayFull",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/stories/player-count.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "meta",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/stories/player-count.stories.ts",
                 "type": "type alias",
                 "linktype": "miscellaneous",
                 "linksubtype": "typealias",
