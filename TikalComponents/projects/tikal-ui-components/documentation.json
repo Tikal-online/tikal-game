@@ -685,7 +685,7 @@
         },
         {
             "name": "ChipComponent",
-            "id": "component-ChipComponent-8730beb841749671bd078821035f87ed57c8f29d07e7cd0840375b48446c4419b884f512294ee5e5bcf0c9dc81ecd7ca4a93415196a8457c314bbcaf8ce43c91",
+            "id": "component-ChipComponent-076944e5961c759b0ab4e15f15b0af8f82e5d064b47cdb8ddff911cd1a46314565416a9bd3b226445dce42aace637b084135c3da46f0b294dbffe1577618cbcc",
             "file": "projects/tikal-ui-components/src/lib/components/chip/chip.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -708,6 +708,7 @@
                 {
                     "name": "icon",
                     "coverageIgnore": false,
+                    "defaultValue": "''",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "string",
@@ -759,7 +760,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, input } from '@angular/core';\nimport { ChipModule } from 'primeng/chip';\nimport { PIcon } from '@primeicons/angular';\n\n@Component({\n  selector: 'tikal-chip',\n  imports: [ChipModule, PIcon],\n  templateUrl: './chip.html',\n  styleUrl: './chip.scss',\n})\nexport class ChipComponent {\n  /** What icon should the chip display? */\n  readonly icon = input<string>();\n\n  /** What text should the chip display? */\n  readonly label = input.required<string>();\n}\n",
+            "sourceCode": "import { Component, input } from '@angular/core';\nimport { ChipModule } from 'primeng/chip';\nimport { PIcon } from '@primeicons/angular';\n\n@Component({\n  selector: 'tikal-chip',\n  imports: [ChipModule, PIcon],\n  templateUrl: './chip.html',\n  styleUrl: './chip.scss',\n})\nexport class ChipComponent {\n  /** What icon should the chip display? */\n  readonly icon = input<string>('');\n\n  /** What text should the chip display? */\n  readonly label = input.required<string>();\n}\n",
             "styleUrl": "./chip.scss",
             "assetsDirs": [],
             "styleUrlsData": [
