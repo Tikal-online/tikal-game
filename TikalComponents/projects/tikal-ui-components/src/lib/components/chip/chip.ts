@@ -10,7 +10,7 @@ import { PIcon } from '@primeicons/angular';
 })
 export class ChipComponent {
   /** What icon should the chip display? */
-  readonly icon = input<string>();
+  readonly icon = input<string>('');
 
   /** What text should the chip display? */
   readonly label = input.required<string>();
