@@ -30,7 +30,7 @@ const initialState: LobbySummaryState = {
   status: 'initial',
   totalCount: 0,
   filter: {
-    pageSize: 50,
+    pageSize: 15,
     pageNumber: 1,
     searchText: '',
     refreshTrigger: false,
@@ -59,6 +59,10 @@ export const LobbySummaryStore = signalStore(
       patchState(store, (state) => ({ filter: { ...state.filter, pageNumber } }));
     },
 
+    updatePageSize(pageSize: number): void {
+      patchState(store, (state) => ({ filter: { ...state.filter, pageSize } }));
+    },
+
     updateSearchText(searchText: string): void {
       patchState(store, (state) => ({ filter: { ...state.filter, pageNumber: 1, searchText } }));
     },
@@ -80,7 +84,7 @@ export const LobbySummaryStore = signalStore(
         debounceTime(300),
         switchMap((query) => {
           return store._lobbyService
-            .getMockedLobbiesSummary(query.pageSize, query.pageNumber, query.searchText)
+            .getLobbiesSummary(query.pageSize, query.pageNumber, query.searchText)
             .pipe(
               tapResponse({
                 next: (paginatedResult) =>

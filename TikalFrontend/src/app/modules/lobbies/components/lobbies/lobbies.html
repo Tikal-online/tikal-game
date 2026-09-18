@@ -21,6 +21,7 @@
   [lazy]="true"
   [paginator]="lobbiesSummaryStore.hasMultiplePages()"
   [rows]="lobbiesSummaryStore.filter.pageSize()"
+  [rowsPerPageOptions]="[10, 15, 25, 50]"
   [scrollable]="true"
   [showCurrentPageReport]="true"
   [totalRecords]="lobbiesSummaryStore.totalCount()"

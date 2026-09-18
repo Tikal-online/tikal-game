@@ -20,11 +20,12 @@ export class LobbiesComponent {
 
   onPageChanged(event: TableLazyLoadEvent): void {
     const first = event.first ?? 0;
-    const rows = this.lobbiesSummaryStore.filter.pageSize();
+    const rows = event.rows ?? this.lobbiesSummaryStore.filter.pageSize();
 
     const pageIndex = Math.floor(first / rows);
     const pageNumber = pageIndex + 1;
 
     this.lobbiesSummaryStore.updatePageNumber(pageNumber);
+    this.lobbiesSummaryStore.updatePageSize(rows);
   }
 }
