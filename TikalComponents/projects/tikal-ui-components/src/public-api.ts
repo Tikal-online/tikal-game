@@ -16,3 +16,6 @@ export * from './lib/components/skeleton/skeleton';
 
 // Player count
 export * from './lib/components/player-count/player-count';
+
+// Chip
+export * from './lib/components/chip/chip';
