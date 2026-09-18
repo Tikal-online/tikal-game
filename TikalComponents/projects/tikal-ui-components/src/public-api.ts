@@ -10,3 +10,6 @@ export * from './lib/components/input/input';
 
 // Chat form
 export * from './lib/components/chat-form/chat-form';
+
+// Skeleton
+export * from './lib/components/skeleton/skeleton';
