@@ -908,11 +908,84 @@
                 ]
             },
             "templateData": "<input\n  pInputText\n  [ariaLabel]=\"label()\"\n  [disabled]=\"disabled()\"\n  [invalid]=\"invalid() && touched()\"\n  [maxLength]=\"maxLength()\"\n  [placeholder]=\"placeholder()\"\n  [required]=\"required()\"\n  [value]=\"value()\"\n  (input)=\"value.set($event.target.value)\"\n/>\n"
+        },
+        {
+            "name": "SkeletonComponent",
+            "id": "component-SkeletonComponent-7e4194cfbc866f6e7b4fc845568a3631304570004b21157845db764cc134440c073c5dba388126d9b512292bb61115ff99302180ac009b537b78f5f30afa32b0",
+            "file": "projects/tikal-ui-components/src/lib/components/skeleton/skeleton.ts",
+            "changeDetection": "ChangeDetectionStrategy.OnPush",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "tikal-skeleton",
+            "styleUrls": [
+                "./skeleton.scss"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./skeleton.html"
+            ],
+            "templateVariables": [],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [],
+            "coverageIgnore": false,
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [
+                {
+                    "name": "SkeletonModule",
+                    "type": "module"
+                }
+            ],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component } from '@angular/core';\nimport { SkeletonModule } from 'primeng/skeleton';\n\n@Component({\n  selector: 'tikal-skeleton',\n  imports: [SkeletonModule],\n  templateUrl: './skeleton.html',\n  styleUrl: './skeleton.scss',\n})\nexport class SkeletonComponent {}\n",
+            "styleUrl": "./skeleton.scss",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": "",
+                    "styleUrl": "./skeleton.scss"
+                }
+            ],
+            "stylesData": "",
+            "extends": [],
+            "relationships": {
+                "incoming": [],
+                "outgoing": [
+                    {
+                        "name": "SkeletonModule",
+                        "type": "module"
+                    }
+                ]
+            },
+            "templateData": "<p-skeleton />\n"
         }
     ],
     "modules": [],
     "miscellaneous": {
         "variables": [
+            {
+                "name": "BaseSkeleton",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/tikal-ui-components/src/stories/skeleton.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n  name: 'Skeleton',\n}"
+            },
             {
                 "name": "Disabled",
                 "ctype": "miscellaneous",
@@ -1066,6 +1139,17 @@
                 "deprecationMessage": "",
                 "type": "Meta<InputComponent>",
                 "defaultValue": "{\n  title: 'Atoms/Input',\n  component: InputComponent,\n  tags: ['autodocs'],\n  args: {\n    value: '',\n    disabled: false,\n    invalid: false,\n    required: false,\n    touched: false,\n    placeholder: 'Placeholder...',\n    maxLength: 100,\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
+            },
+            {
+                "name": "meta",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/tikal-ui-components/src/stories/skeleton.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Meta<SkeletonComponent>",
+                "defaultValue": "{\n  title: 'Atoms/Skeleton',\n  component: SkeletonComponent,\n  tags: ['autodocs'],\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
             },
             {
                 "name": "multipleMessages",
@@ -1344,10 +1428,47 @@
                 "rawdescription": "",
                 "description": "",
                 "kind": 184
+            },
+            {
+                "name": "Story",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "coverageIgnore": false,
+                "rawtype": "StoryObj<SkeletonComponent>",
+                "file": "projects/tikal-ui-components/src/stories/skeleton.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "rawdescription": "",
+                "description": "",
+                "kind": 184
             }
         ],
         "enumerations": [],
         "groupedVariables": {
+            "projects/tikal-ui-components/src/stories/skeleton.stories.ts": [
+                {
+                    "name": "BaseSkeleton",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/tikal-ui-components/src/stories/skeleton.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n  name: 'Skeleton',\n}"
+                },
+                {
+                    "name": "meta",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/tikal-ui-components/src/stories/skeleton.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Meta<SkeletonComponent>",
+                    "defaultValue": "{\n  title: 'Atoms/Skeleton',\n  component: SkeletonComponent,\n  tags: ['autodocs'],\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
+                }
+            ],
             "projects/tikal-ui-components/src/stories/input.stories.ts": [
                 {
                     "name": "Disabled",
@@ -1812,6 +1933,21 @@
                     "description": "",
                     "kind": 184
                 }
+            ],
+            "projects/tikal-ui-components/src/stories/skeleton.stories.ts": [
+                {
+                    "name": "Story",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "coverageIgnore": false,
+                    "rawtype": "StoryObj<SkeletonComponent>",
+                    "file": "projects/tikal-ui-components/src/stories/skeleton.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "",
+                    "description": "",
+                    "kind": 184
+                }
             ]
         }
     },
@@ -1821,7 +1957,7 @@
         "children": []
     },
     "coverage": {
-        "count": 8,
+        "count": 7,
         "status": "low",
         "files": [
             {
@@ -1938,6 +2074,15 @@
                 "coveragePercent": 90,
                 "coverageCount": "9/10",
                 "status": "very-good"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/lib/components/skeleton/skeleton.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "SkeletonComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
             },
             {
                 "filePath": "projects/tikal-ui-components/src/lib/theme/tikal-theme.ts",
@@ -2240,6 +2385,36 @@
             },
             {
                 "filePath": "projects/tikal-ui-components/src/stories/input.stories.ts",
+                "type": "type alias",
+                "linktype": "miscellaneous",
+                "linksubtype": "typealias",
+                "name": "Story",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/stories/skeleton.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "BaseSkeleton",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/stories/skeleton.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "meta",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/stories/skeleton.stories.ts",
                 "type": "type alias",
                 "linktype": "miscellaneous",
                 "linksubtype": "typealias",
