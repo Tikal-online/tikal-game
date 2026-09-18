@@ -46,10 +46,12 @@ export const LobbySummaryStore = signalStore(
     _lobbyService: inject(LobbyService),
   })),
 
-  withComputed(({ lobbies, status }) => ({
+  withComputed(({ lobbies, status, totalCount, filter }) => ({
     isLoading: computed(() => status() === 'loading'),
 
     noLobbiesFound: computed(() => status() === 'loaded' && lobbies().length === 0),
+
+    hasMultiplePages: computed(() => totalCount() > filter.pageSize()),
   })),
 
   withMethods((store) => ({
@@ -78,7 +80,7 @@ export const LobbySummaryStore = signalStore(
         debounceTime(300),
         switchMap((query) => {
           return store._lobbyService
-            .getMockedLobbiesSummary(query.pageSize, query.pageNumber, query.searchText)
+            .getLobbiesSummary(query.pageSize, query.pageNumber, query.searchText)
             .pipe(
               tapResponse({
                 next: (paginatedResult) =>

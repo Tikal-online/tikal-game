@@ -18,7 +18,7 @@
 </header>
 <p-table
   [lazy]="true"
-  [paginator]="true"
+  [paginator]="lobbiesSummaryStore.hasMultiplePages()"
   [rows]="lobbiesSummaryStore.filter.pageSize()"
   [showCurrentPageReport]="true"
   [totalRecords]="lobbiesSummaryStore.totalCount()"
