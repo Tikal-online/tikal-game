@@ -1,12 +1,13 @@
 import { Component, inject } from '@angular/core';
 import { ButtonComponent, InputComponent } from 'tikal-ui-components';
 import { LobbySummaryStore } from '../../stores/lobby/lobby-summary-store';
+import { TableLazyLoadEvent, TableModule } from 'primeng/table';
 
 @Component({
   selector: 'tikal-lobbies',
   templateUrl: './lobbies.html',
   styleUrl: './lobbies.scss',
-  imports: [ButtonComponent, InputComponent],
+  imports: [ButtonComponent, InputComponent, TableModule],
 })
 export class LobbiesComponent {
   readonly lobbiesSummaryStore = inject(LobbySummaryStore);
@@ -15,5 +16,15 @@ export class LobbiesComponent {
     const filter = this.lobbiesSummaryStore.filter;
 
     this.lobbiesSummaryStore.loadLobbies(filter);
+  }
+
+  onPageChanged(event: TableLazyLoadEvent): void {
+    const first = event.first ?? 0;
+    const rows = this.lobbiesSummaryStore.filter.pageSize();
+
+    const pageIndex = Math.floor(first / rows);
+    const pageNumber = pageIndex + 1;
+
+    this.lobbiesSummaryStore.updatePageNumber(pageNumber);
   }
 }

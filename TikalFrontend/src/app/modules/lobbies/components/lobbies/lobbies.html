@@ -16,3 +16,27 @@
     />
   </div>
 </header>
+<p-table
+  [lazy]="true"
+  [paginator]="true"
+  [rows]="lobbiesSummaryStore.filter.pageSize()"
+  [showCurrentPageReport]="true"
+  [totalRecords]="lobbiesSummaryStore.totalCount()"
+  [value]="lobbiesSummaryStore.lobbies()"
+  (onLazyLoad)="onPageChanged($event)"
+>
+  <ng-template #header>
+    <tr>
+      <th style="width: 30%">Name</th>
+      <th style="width: 30%">Players</th>
+      <th style="width: 20%">Game Mode</th>
+    </tr>
+  </ng-template>
+  <ng-template #body let-lobby>
+    <tr>
+      <td>{{ lobby.name }}</td>
+      <td>{{ lobby.maxPlayers }}</td>
+      <td>-</td>
+    </tr>
+  </ng-template>
+</p-table>
