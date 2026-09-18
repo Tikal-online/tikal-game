@@ -23,7 +23,7 @@
     "@angular/router": "^22.1.1",
     "@jsverse/transloco": "~8.4.0",
     "@microsoft/signalr": "~10.0.11",
-    "@ngrx/operators": "^21.1.1",
+    "@ngrx/operators": "^22.0.1",
     "@ngrx/signals": "~21.1.0",
     "@primeuix/themes": "^3.0.0",
     "primeng": "^22.1.0",
