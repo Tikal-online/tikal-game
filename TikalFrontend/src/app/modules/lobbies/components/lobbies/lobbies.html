@@ -17,9 +17,11 @@
   </div>
 </header>
 <p-table
+  scrollHeight="flex"
   [lazy]="true"
   [paginator]="lobbiesSummaryStore.hasMultiplePages()"
   [rows]="lobbiesSummaryStore.filter.pageSize()"
+  [scrollable]="true"
   [showCurrentPageReport]="true"
   [totalRecords]="lobbiesSummaryStore.totalCount()"
   [value]="lobbiesSummaryStore.lobbies()"
