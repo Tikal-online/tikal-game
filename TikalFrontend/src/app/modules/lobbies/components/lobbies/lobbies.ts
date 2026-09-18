@@ -1,5 +1,10 @@
 import { Component, inject } from '@angular/core';
-import { ButtonComponent, InputComponent, SkeletonComponent } from 'tikal-ui-components';
+import {
+  ButtonComponent,
+  InputComponent,
+  SkeletonComponent,
+  PlayerCountComponent,
+} from 'tikal-ui-components';
 import { LobbySummaryStore } from '../../stores/lobby/lobby-summary-store';
 import { TableLazyLoadEvent, TableModule } from 'primeng/table';
 
@@ -7,7 +12,7 @@ import { TableLazyLoadEvent, TableModule } from 'primeng/table';
   selector: 'tikal-lobbies',
   templateUrl: './lobbies.html',
   styleUrl: './lobbies.scss',
-  imports: [ButtonComponent, InputComponent, TableModule, SkeletonComponent],
+  imports: [ButtonComponent, InputComponent, TableModule, SkeletonComponent, PlayerCountComponent],
 })
 export class LobbiesComponent {
   readonly lobbiesSummaryStore = inject(LobbySummaryStore);

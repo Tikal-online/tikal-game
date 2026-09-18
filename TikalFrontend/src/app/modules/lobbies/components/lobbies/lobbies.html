@@ -45,7 +45,12 @@
     } @else {
       <tr>
         <td>{{ lobby.name }}</td>
-        <td>{{ lobby.maxPlayers }}</td>
+        <td>
+          <tikal-player-count
+            [currentPlayers]="lobby.currentPlayers"
+            [maxPlayers]="lobby.maxPlayers"
+          />
+        </td>
         <td>-</td>
       </tr>
     }
