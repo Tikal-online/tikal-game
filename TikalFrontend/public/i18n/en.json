@@ -11,6 +11,11 @@
       },
       "game-modes": {
         "standard": "Standard"
+      },
+      "empty": {
+        "header": "No lobbies found",
+        "detail": "There are no active lobbies matching your search criteria",
+        "button": "Create Lobby"
       }
     }
   }

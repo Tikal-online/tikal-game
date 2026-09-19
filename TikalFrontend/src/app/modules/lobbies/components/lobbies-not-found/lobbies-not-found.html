@@ -1,10 +1,12 @@
-<div class="icon-wrapper">
-  <svg data-p-icon="inbox" [size]="25"></svg>
-</div>
-<div>
-  <p class="title">No lobbies found</p>
-  <p class="detail">There are no active lobbies matching your search criteria</p>
-</div>
-<div>
-  <tikal-button icon="plus" label="Create Lobby" type="button" />
-</div>
+<ng-container *transloco="let t; prefix: 'lobbies.list.empty'">
+  <div class="icon-wrapper">
+    <svg data-p-icon="inbox" [size]="25"></svg>
+  </div>
+  <div>
+    <p class="title">{{ t('header') }}</p>
+    <p class="detail">{{ t('detail') }}</p>
+  </div>
+  <div>
+    <tikal-button icon="plus" type="button" [label]="t('button')" />
+  </div>
+</ng-container>
