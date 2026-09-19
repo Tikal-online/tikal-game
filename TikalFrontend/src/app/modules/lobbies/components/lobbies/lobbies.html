@@ -19,6 +19,13 @@
         <th scope="col" style="width: 20%">{{ t('columns.game-mode') }}</th>
       </tr>
     </ng-template>
+    <ng-template #emptymessage>
+      <tr>
+        <td colspan="3">
+          <tikal-lobbies-not-found />
+        </td>
+      </tr>
+    </ng-template>
     <ng-template #body let-lobby>
       @if (lobbiesSummaryStore.isLoading()) {
         <tr>
