@@ -3,7 +3,15 @@
     "list": {
       "header": "Lobbies",
       "searchtext-input-label": "lobby-name",
-      "searchtext-input-placeholder": "Search by name..."
+      "searchtext-input-placeholder": "Search by name...",
+      "columns": {
+        "name": "Name",
+        "players": "Players",
+        "game-mode": "Game Mode"
+      },
+      "game-modes": {
+        "standard": "Standard"
+      }
     }
   }
 }

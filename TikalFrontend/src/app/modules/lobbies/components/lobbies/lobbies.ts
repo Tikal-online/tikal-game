@@ -3,6 +3,7 @@ import { SkeletonComponent, PlayerCountComponent, ChipComponent } from 'tikal-ui
 import { LobbySummaryStore } from '../../stores/lobby/lobby-summary-store';
 import { TableLazyLoadEvent, TableModule } from 'primeng/table';
 import { LobbiesHeaderComponent } from '../lobbies-header/lobbies-header';
+import { TranslocoDirective } from '@jsverse/transloco';
 
 @Component({
   selector: 'tikal-lobbies',
@@ -14,6 +15,7 @@ import { LobbiesHeaderComponent } from '../lobbies-header/lobbies-header';
     PlayerCountComponent,
     ChipComponent,
     LobbiesHeaderComponent,
+    TranslocoDirective,
   ],
 })
 export class LobbiesComponent {
