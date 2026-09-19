@@ -10,25 +10,8 @@
   max-height: 100%;
 }
 
-header {
-  display: flex;
-  flex-direction: row;
-
-  justify-content: space-between;
-
-  margin-bottom: 2rem;
-}
-
 td {
   height: 2.5rem;
-}
-
-.search-items {
-  display: flex;
-
-  align-items: center;
-
-  gap: 1rem;
 }
 
 /* Fix to make the table not take more space than it is given by its parent */

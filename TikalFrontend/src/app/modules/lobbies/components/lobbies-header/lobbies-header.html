@@ -1,0 +1,16 @@
+<h1>Lobbies</h1>
+<div class="search-items">
+  <tikal-input
+    label="lobby-name"
+    placeholder="Search by name..."
+    [maxLength]="200"
+    [value]="lobbiesSummaryStore.filter.searchText()"
+    (valueChange)="lobbiesSummaryStore.updateSearchText($event)"
+  />
+  <tikal-button
+    icon="refresh"
+    [isLoading]="lobbiesSummaryStore.isLoading()"
+    [outline]="true"
+    (clicked)="lobbiesSummaryStore.refresh()"
+  />
+</div>

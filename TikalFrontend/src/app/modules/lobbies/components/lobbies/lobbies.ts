@@ -1,25 +1,19 @@
 import { Component, inject } from '@angular/core';
-import {
-  ButtonComponent,
-  InputComponent,
-  SkeletonComponent,
-  PlayerCountComponent,
-  ChipComponent,
-} from 'tikal-ui-components';
+import { SkeletonComponent, PlayerCountComponent, ChipComponent } from 'tikal-ui-components';
 import { LobbySummaryStore } from '../../stores/lobby/lobby-summary-store';
 import { TableLazyLoadEvent, TableModule } from 'primeng/table';
+import { LobbiesHeaderComponent } from '../lobbies-header/lobbies-header';
 
 @Component({
   selector: 'tikal-lobbies',
   templateUrl: './lobbies.html',
   styleUrl: './lobbies.scss',
   imports: [
-    ButtonComponent,
-    InputComponent,
     TableModule,
     SkeletonComponent,
     PlayerCountComponent,
     ChipComponent,
+    LobbiesHeaderComponent,
   ],
 })
 export class LobbiesComponent {
