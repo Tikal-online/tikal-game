@@ -25,12 +25,20 @@ header {
   width: 1.5rem;
   height: 1.5rem;
 
-  background-color: var(--p-surface-0);
+  background-color: var(--p-surface-900);
 
   border-radius: 9999px;
 }
 
+:host-context(.dark) .header-icon {
+  background-color: var(--p-surface-0);
+}
+
 .header-icon-content {
+  color: var(--p-surface-0);
+}
+
+:host-context(.dark) .header-icon-content {
   color: var(--p-surface-900);
 }
 
