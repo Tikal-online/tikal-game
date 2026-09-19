@@ -1,18 +1,24 @@
 import { Component, inject } from '@angular/core';
-import {
-  ButtonComponent,
-  InputComponent,
-  SkeletonComponent,
-  PlayerCountComponent,
-} from 'tikal-ui-components';
+import { SkeletonComponent, PlayerCountComponent, ChipComponent } from 'tikal-ui-components';
 import { LobbySummaryStore } from '../../stores/lobby/lobby-summary-store';
 import { TableLazyLoadEvent, TableModule } from 'primeng/table';
+import { LobbiesHeaderComponent } from '../lobbies-header/lobbies-header';
+import { TranslocoDirective } from '@jsverse/transloco';
+import { LobbiesNotFoundComponent } from '../lobbies-not-found/lobbies-not-found';
 
 @Component({
   selector: 'tikal-lobbies',
   templateUrl: './lobbies.html',
   styleUrl: './lobbies.scss',
-  imports: [ButtonComponent, InputComponent, TableModule, SkeletonComponent, PlayerCountComponent],
+  imports: [
+    TableModule,
+    SkeletonComponent,
+    PlayerCountComponent,
+    ChipComponent,
+    LobbiesHeaderComponent,
+    TranslocoDirective,
+    LobbiesNotFoundComponent,
+  ],
 })
 export class LobbiesComponent {
   readonly lobbiesSummaryStore = inject(LobbySummaryStore);

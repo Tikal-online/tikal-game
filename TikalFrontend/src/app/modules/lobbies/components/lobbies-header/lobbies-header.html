@@ -1,0 +1,18 @@
+<ng-container *transloco="let t; prefix: 'lobbies.list'">
+  <h1>{{ t('header') }}</h1>
+  <div class="search-items">
+    <tikal-input
+      [label]="t('searchtext-input-label')"
+      [maxLength]="200"
+      [placeholder]="t('searchtext-input-placeholder')"
+      [value]="lobbiesSummaryStore.filter.searchText()"
+      (valueChange)="lobbiesSummaryStore.updateSearchText($event)"
+    />
+    <tikal-button
+      icon="refresh"
+      [isLoading]="lobbiesSummaryStore.isLoading()"
+      [outline]="true"
+      (clicked)="lobbiesSummaryStore.refresh()"
+    />
+  </div>
+</ng-container>

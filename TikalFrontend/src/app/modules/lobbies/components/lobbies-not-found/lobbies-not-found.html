@@ -1,0 +1,12 @@
+<ng-container *transloco="let t; prefix: 'lobbies.list.empty'">
+  <div class="icon-wrapper">
+    <svg data-p-icon="inbox" [size]="25"></svg>
+  </div>
+  <div>
+    <p class="title">{{ t('title') }}</p>
+    <p class="detail">{{ t('detail') }}</p>
+  </div>
+  <div>
+    <tikal-button icon="plus" type="button" [label]="t('button')" />
+  </div>
+</ng-container>

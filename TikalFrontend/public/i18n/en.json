@@ -1,1 +1,22 @@
-{}
+{
+  "lobbies": {
+    "list": {
+      "header": "Lobbies",
+      "searchtext-input-label": "lobby-name",
+      "searchtext-input-placeholder": "Search by name...",
+      "columns": {
+        "name": "Name",
+        "players": "Players",
+        "game-mode": "Game Mode"
+      },
+      "game-modes": {
+        "standard": "Standard"
+      },
+      "empty": {
+        "title": "No lobbies found",
+        "detail": "There are no active lobbies matching your search criteria",
+        "button": "Create Lobby"
+      }
+    }
+  }
+}
