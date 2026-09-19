@@ -1,1 +1,9 @@
-{}
+{
+  "lobbies": {
+    "list": {
+      "header": "Lobbies",
+      "searchtext-input-label": "lobby-name",
+      "searchtext-input-placeholder": "Search by name..."
+    }
+  }
+}
