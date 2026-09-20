@@ -1,0 +1,22 @@
+<ng-container *transloco="let t; prefix: 'createAccount'">
+  <p-dialog
+    [closable]="false"
+    [header]="t('header')"
+    [modal]="true"
+    [style]="{ width: '24rem' }"
+    [visible]="true"
+  >
+    <p>{{ t('detail') }}</p>
+    <form [formRoot]="accountForm">
+      <tikal-input [formField]="accountForm.name" [placeholder]="t('placeholder')" />
+    </form>
+    <ng-template #footer>
+      <tikal-button
+        icon="send"
+        type="submit"
+        [isLoading]="accountForm().submitting()"
+        [label]="t('button')"
+      />
+    </ng-template>
+  </p-dialog>
+</ng-container>

@@ -1,0 +1,16 @@
+p-dialog {
+  display: inline-block;
+  max-width: 10rem;
+}
+
+p {
+  margin: 0 0 1rem 0;
+
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: var(--p-surface-500);
+}
+
+:host-context(.dark) p {
+  color: var(--p-surface-400);
+}
