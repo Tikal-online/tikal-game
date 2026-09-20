@@ -1,4 +1,10 @@
 {
+  "createAccount": {
+    "header": "Choose a name",
+    "detail": "This name will be displayed to other players. It can be changed later",
+    "placeholder": "Type your name here...",
+    "button": "Submit"
+  },
   "lobbies": {
     "list": {
       "header": "Lobbies",

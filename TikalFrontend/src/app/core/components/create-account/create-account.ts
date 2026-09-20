@@ -4,6 +4,7 @@ import { DialogModule } from 'primeng/dialog';
 import { InputComponent, ButtonComponent } from 'tikal-ui-components';
 import { AccountStore } from '../../stores/account-store/account-store';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TranslocoDirective } from '@jsverse/transloco';
 
 type AccountData = {
   name: string;
@@ -11,7 +12,7 @@ type AccountData = {
 
 @Component({
   selector: 'tikal-create-account',
-  imports: [DialogModule, InputComponent, ButtonComponent, FormRoot, FormField],
+  imports: [DialogModule, InputComponent, ButtonComponent, FormRoot, FormField, TranslocoDirective],
   templateUrl: './create-account.html',
   styleUrl: './create-account.scss',
 })
