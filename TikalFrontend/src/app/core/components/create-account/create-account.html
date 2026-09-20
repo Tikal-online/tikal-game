@@ -10,6 +10,11 @@
     <tikal-input placeholder="Type your name here..." [formField]="accountForm.name" />
   </form>
   <ng-template #footer>
-    <tikal-button label="Submit" type="submit" [isLoading]="accountForm().submitting()" />
+    <tikal-button
+      icon="send"
+      label="Submit"
+      type="submit"
+      [isLoading]="accountForm().submitting()"
+    />
   </ng-template>
 </p-dialog>
