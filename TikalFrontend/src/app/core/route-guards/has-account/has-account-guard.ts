@@ -11,7 +11,7 @@ export const hasAccount: CanActivateFn = (state) => {
 
   const router = inject(Router);
 
-  return router.createUrlTree(['/createAccount'], {
+  return router.createUrlTree(['/CreateAccount'], {
     queryParams: { returnUrl: state.url },
   });
 };

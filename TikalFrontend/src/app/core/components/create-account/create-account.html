@@ -1,0 +1,15 @@
+<p-dialog
+  header="Choose a name"
+  [closable]="false"
+  [modal]="true"
+  [style]="{ width: '24rem' }"
+  [visible]="true"
+>
+  <p>This name will be displayed to other players. It can be changed later</p>
+  <form>
+    <tikal-input placeholder="Type your name here..." [maxLength]="30" />
+  </form>
+  <ng-template #footer>
+    <tikal-button label="Submit" type="submit" />
+  </ng-template>
+</p-dialog>
