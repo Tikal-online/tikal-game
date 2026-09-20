@@ -6,10 +6,10 @@
   [visible]="true"
 >
   <p>This name will be displayed to other players. It can be changed later</p>
-  <form>
-    <tikal-input placeholder="Type your name here..." [maxLength]="30" />
+  <form [formRoot]="accountForm">
+    <tikal-input placeholder="Type your name here..." [formField]="accountForm.name" />
   </form>
   <ng-template #footer>
-    <tikal-button label="Submit" type="submit" />
+    <tikal-button label="Submit" type="submit" [isLoading]="accountForm().submitting()" />
   </ng-template>
 </p-dialog>
