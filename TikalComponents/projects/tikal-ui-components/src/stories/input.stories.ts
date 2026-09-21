@@ -8,6 +8,7 @@ const meta: Meta<InputComponent> = {
   args: {
     value: '',
     disabled: false,
+    expand: false,
     invalid: false,
     required: false,
     touched: false,
@@ -29,6 +30,7 @@ export const EmptyWithPlaceholder: Story = {
   args: {
     value: '',
     disabled: false,
+    expand: false,
     invalid: false,
     required: false,
     touched: false,
@@ -42,6 +44,7 @@ export const EmptyWithoutPlaceholder: Story = {
   args: {
     value: '',
     disabled: false,
+    expand: false,
     invalid: false,
     required: false,
     touched: false,
@@ -55,6 +58,7 @@ export const WithContent: Story = {
   args: {
     value: 'I typed this',
     disabled: false,
+    expand: false,
     invalid: false,
     required: false,
     touched: false,
@@ -68,6 +72,7 @@ export const Disabled: Story = {
   args: {
     value: '',
     disabled: true,
+    expand: false,
     invalid: false,
     required: false,
     touched: false,
@@ -81,6 +86,7 @@ export const Invalid: Story = {
   args: {
     value: 'This is invalid',
     disabled: false,
+    expand: false,
     invalid: true,
     required: false,
     touched: true,
@@ -94,6 +100,7 @@ export const InvalidWithPlaceholder: Story = {
   args: {
     value: '',
     disabled: false,
+    expand: false,
     invalid: true,
     required: false,
     touched: true,

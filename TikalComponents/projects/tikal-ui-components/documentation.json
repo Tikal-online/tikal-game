@@ -788,7 +788,7 @@
         },
         {
             "name": "InputComponent",
-            "id": "component-InputComponent-4b1c4e0a013b9a1e33db48cb3e73aec1e8352887c36bd26b9c3cfeac35d32669df5bf28cbfc3ba910f19d01984609da88d279fbd4decdaaf86cb6d7ef5909bc3",
+            "id": "component-InputComponent-e86616864ec305657e1d914c4e126a2dcfb3a09ee3da3f8d87b094151a3e5c8d2d3a4c89997d47cf7e68d6c2e5a0e0e062c47e2db1091c0b4e0798f4c2a6fdf2",
             "file": "projects/tikal-ui-components/src/lib/components/input/input.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -820,6 +820,23 @@
                     "description": "<p>Should the input be disabled</p>\n",
                     "line": 16,
                     "rawdescription": "\nShould the input be disabled",
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                },
+                {
+                    "name": "expand",
+                    "coverageIgnore": false,
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "boolean",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>Should the input take the full widht?</p>\n",
+                    "line": 37,
+                    "rawdescription": "\nShould the input take the full widht?",
                     "modifierKind": [
                         148
                     ],
@@ -978,12 +995,12 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, model, input } from '@angular/core';\nimport { FormValueControl } from '@angular/forms/signals';\nimport { InputTextModule } from 'primeng/inputtext';\n\n@Component({\n  selector: 'tikal-input',\n  imports: [InputTextModule],\n  templateUrl: './input.html',\n  styleUrl: './input.scss',\n})\nexport class InputComponent implements FormValueControl<string> {\n  /** What value should the input have */\n  readonly value = model('');\n\n  /** Should the input be disabled */\n  readonly disabled = input<boolean>(false);\n\n  /** Is the content of the input invalid? */\n  readonly invalid = input<boolean>(false);\n\n  /** Is the input required? */\n  readonly required = input<boolean>(false);\n\n  /** Was the input touched */\n  readonly touched = input<boolean>(false);\n\n  /** What is the max input length? */\n  readonly maxLength = input<number>();\n\n  /** What is the label of the input element? */\n  readonly label = input<string>();\n\n  /** What placeholder should the input display? */\n  readonly placeholder = input<string>();\n}\n",
+            "sourceCode": "import { Component, model, input } from '@angular/core';\nimport { FormValueControl } from '@angular/forms/signals';\nimport { InputTextModule } from 'primeng/inputtext';\n\n@Component({\n  selector: 'tikal-input',\n  imports: [InputTextModule],\n  templateUrl: './input.html',\n  styleUrl: './input.scss',\n})\nexport class InputComponent implements FormValueControl<string> {\n  /** What value should the input have */\n  readonly value = model('');\n\n  /** Should the input be disabled */\n  readonly disabled = input<boolean>(false);\n\n  /** Is the content of the input invalid? */\n  readonly invalid = input<boolean>(false);\n\n  /** Is the input required? */\n  readonly required = input<boolean>(false);\n\n  /** Was the input touched */\n  readonly touched = input<boolean>(false);\n\n  /** What is the max input length? */\n  readonly maxLength = input<number>();\n\n  /** What is the label of the input element? */\n  readonly label = input<string>();\n\n  /** What placeholder should the input display? */\n  readonly placeholder = input<string>();\n\n  /** Should the input take the full widht? */\n  readonly expand = input<boolean>(false);\n}\n",
             "styleUrl": "./input.scss",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": "",
+                    "data": ".full-length {\n  width: 100%;\n}\n",
                     "styleUrl": "./input.scss"
                 }
             ],
@@ -1010,7 +1027,7 @@
                     }
                 ]
             },
-            "templateData": "<input\n  pInputText\n  [ariaLabel]=\"label()\"\n  [disabled]=\"disabled()\"\n  [invalid]=\"invalid() && touched()\"\n  [maxLength]=\"maxLength()\"\n  [placeholder]=\"placeholder()\"\n  [required]=\"required()\"\n  [value]=\"value()\"\n  (input)=\"value.set($event.target.value)\"\n/>\n"
+            "templateData": "<input\n  pInputText\n  [ariaLabel]=\"label()\"\n  [class.full-length]=\"expand()\"\n  [disabled]=\"disabled()\"\n  [invalid]=\"invalid() && touched()\"\n  [maxLength]=\"maxLength()\"\n  [placeholder]=\"placeholder()\"\n  [required]=\"required()\"\n  [value]=\"value()\"\n  (input)=\"value.set($event.target.value)\"\n/>\n"
         },
         {
             "name": "PlayerCountComponent",
@@ -1194,7 +1211,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
-                "defaultValue": "{\n  name: 'Disabled',\n  args: {\n    value: '',\n    disabled: true,\n    invalid: false,\n    required: false,\n    touched: false,\n    placeholder: 'Type something...',\n    maxLength: 100,\n  },\n}"
+                "defaultValue": "{\n  name: 'Disabled',\n  args: {\n    value: '',\n    disabled: true,\n    expand: false,\n    invalid: false,\n    required: false,\n    touched: false,\n    placeholder: 'Type something...',\n    maxLength: 100,\n  },\n}"
             },
             {
                 "name": "EmptyWithoutPlaceholder",
@@ -1205,7 +1222,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
-                "defaultValue": "{\n  name: 'Empty without placeholder',\n  args: {\n    value: '',\n    disabled: false,\n    invalid: false,\n    required: false,\n    touched: false,\n    placeholder: '',\n    maxLength: 100,\n  },\n}"
+                "defaultValue": "{\n  name: 'Empty without placeholder',\n  args: {\n    value: '',\n    disabled: false,\n    expand: false,\n    invalid: false,\n    required: false,\n    touched: false,\n    placeholder: '',\n    maxLength: 100,\n  },\n}"
             },
             {
                 "name": "EmptyWithPlaceholder",
@@ -1216,7 +1233,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
-                "defaultValue": "{\n  name: 'Empty with placeholder',\n  args: {\n    value: '',\n    disabled: false,\n    invalid: false,\n    required: false,\n    touched: false,\n    placeholder: 'Type something...',\n    maxLength: 100,\n  },\n}"
+                "defaultValue": "{\n  name: 'Empty with placeholder',\n  args: {\n    value: '',\n    disabled: false,\n    expand: false,\n    invalid: false,\n    required: false,\n    touched: false,\n    placeholder: 'Type something...',\n    maxLength: 100,\n  },\n}"
             },
             {
                 "name": "Full",
@@ -1282,7 +1299,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
-                "defaultValue": "{\n  name: 'Invalid with value',\n  args: {\n    value: 'This is invalid',\n    disabled: false,\n    invalid: true,\n    required: false,\n    touched: true,\n    placeholder: 'Type something...',\n    maxLength: 100,\n  },\n}"
+                "defaultValue": "{\n  name: 'Invalid with value',\n  args: {\n    value: 'This is invalid',\n    disabled: false,\n    expand: false,\n    invalid: true,\n    required: false,\n    touched: true,\n    placeholder: 'Type something...',\n    maxLength: 100,\n  },\n}"
             },
             {
                 "name": "InvalidWithPlaceholder",
@@ -1293,7 +1310,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
-                "defaultValue": "{\n  name: 'Invalid with placeholder',\n  args: {\n    value: '',\n    disabled: false,\n    invalid: true,\n    required: false,\n    touched: true,\n    placeholder: 'Type something...',\n    maxLength: 100,\n  },\n}"
+                "defaultValue": "{\n  name: 'Invalid with placeholder',\n  args: {\n    value: '',\n    disabled: false,\n    expand: false,\n    invalid: true,\n    required: false,\n    touched: true,\n    placeholder: 'Type something...',\n    maxLength: 100,\n  },\n}"
             },
             {
                 "name": "Loading",
@@ -1370,7 +1387,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Meta<InputComponent>",
-                "defaultValue": "{\n  title: 'Atoms/Input',\n  component: InputComponent,\n  tags: ['autodocs'],\n  args: {\n    value: '',\n    disabled: false,\n    invalid: false,\n    required: false,\n    touched: false,\n    placeholder: 'Placeholder...',\n    maxLength: 100,\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
+                "defaultValue": "{\n  title: 'Atoms/Input',\n  component: InputComponent,\n  tags: ['autodocs'],\n  args: {\n    value: '',\n    disabled: false,\n    expand: false,\n    invalid: false,\n    required: false,\n    touched: false,\n    placeholder: 'Placeholder...',\n    maxLength: 100,\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
             },
             {
                 "name": "meta",
@@ -1535,7 +1552,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
-                "defaultValue": "{\n  name: 'Holding value',\n  args: {\n    value: 'I typed this',\n    disabled: false,\n    invalid: false,\n    required: false,\n    touched: false,\n    placeholder: 'Type something...',\n    maxLength: 100,\n  },\n}"
+                "defaultValue": "{\n  name: 'Holding value',\n  args: {\n    value: 'I typed this',\n    disabled: false,\n    expand: false,\n    invalid: false,\n    required: false,\n    touched: false,\n    placeholder: 'Type something...',\n    maxLength: 100,\n  },\n}"
             },
             {
                 "name": "WithIcon",
@@ -1816,7 +1833,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
-                    "defaultValue": "{\n  name: 'Disabled',\n  args: {\n    value: '',\n    disabled: true,\n    invalid: false,\n    required: false,\n    touched: false,\n    placeholder: 'Type something...',\n    maxLength: 100,\n  },\n}"
+                    "defaultValue": "{\n  name: 'Disabled',\n  args: {\n    value: '',\n    disabled: true,\n    expand: false,\n    invalid: false,\n    required: false,\n    touched: false,\n    placeholder: 'Type something...',\n    maxLength: 100,\n  },\n}"
                 },
                 {
                     "name": "EmptyWithoutPlaceholder",
@@ -1827,7 +1844,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
-                    "defaultValue": "{\n  name: 'Empty without placeholder',\n  args: {\n    value: '',\n    disabled: false,\n    invalid: false,\n    required: false,\n    touched: false,\n    placeholder: '',\n    maxLength: 100,\n  },\n}"
+                    "defaultValue": "{\n  name: 'Empty without placeholder',\n  args: {\n    value: '',\n    disabled: false,\n    expand: false,\n    invalid: false,\n    required: false,\n    touched: false,\n    placeholder: '',\n    maxLength: 100,\n  },\n}"
                 },
                 {
                     "name": "EmptyWithPlaceholder",
@@ -1838,7 +1855,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
-                    "defaultValue": "{\n  name: 'Empty with placeholder',\n  args: {\n    value: '',\n    disabled: false,\n    invalid: false,\n    required: false,\n    touched: false,\n    placeholder: 'Type something...',\n    maxLength: 100,\n  },\n}"
+                    "defaultValue": "{\n  name: 'Empty with placeholder',\n  args: {\n    value: '',\n    disabled: false,\n    expand: false,\n    invalid: false,\n    required: false,\n    touched: false,\n    placeholder: 'Type something...',\n    maxLength: 100,\n  },\n}"
                 },
                 {
                     "name": "Invalid",
@@ -1849,7 +1866,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
-                    "defaultValue": "{\n  name: 'Invalid with value',\n  args: {\n    value: 'This is invalid',\n    disabled: false,\n    invalid: true,\n    required: false,\n    touched: true,\n    placeholder: 'Type something...',\n    maxLength: 100,\n  },\n}"
+                    "defaultValue": "{\n  name: 'Invalid with value',\n  args: {\n    value: 'This is invalid',\n    disabled: false,\n    expand: false,\n    invalid: true,\n    required: false,\n    touched: true,\n    placeholder: 'Type something...',\n    maxLength: 100,\n  },\n}"
                 },
                 {
                     "name": "InvalidWithPlaceholder",
@@ -1860,7 +1877,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
-                    "defaultValue": "{\n  name: 'Invalid with placeholder',\n  args: {\n    value: '',\n    disabled: false,\n    invalid: true,\n    required: false,\n    touched: true,\n    placeholder: 'Type something...',\n    maxLength: 100,\n  },\n}"
+                    "defaultValue": "{\n  name: 'Invalid with placeholder',\n  args: {\n    value: '',\n    disabled: false,\n    expand: false,\n    invalid: true,\n    required: false,\n    touched: true,\n    placeholder: 'Type something...',\n    maxLength: 100,\n  },\n}"
                 },
                 {
                     "name": "meta",
@@ -1871,7 +1888,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Meta<InputComponent>",
-                    "defaultValue": "{\n  title: 'Atoms/Input',\n  component: InputComponent,\n  tags: ['autodocs'],\n  args: {\n    value: '',\n    disabled: false,\n    invalid: false,\n    required: false,\n    touched: false,\n    placeholder: 'Placeholder...',\n    maxLength: 100,\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
+                    "defaultValue": "{\n  title: 'Atoms/Input',\n  component: InputComponent,\n  tags: ['autodocs'],\n  args: {\n    value: '',\n    disabled: false,\n    expand: false,\n    invalid: false,\n    required: false,\n    touched: false,\n    placeholder: 'Placeholder...',\n    maxLength: 100,\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
                 },
                 {
                     "name": "WithContent",
@@ -1882,7 +1899,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
-                    "defaultValue": "{\n  name: 'Holding value',\n  args: {\n    value: 'I typed this',\n    disabled: false,\n    invalid: false,\n    required: false,\n    touched: false,\n    placeholder: 'Type something...',\n    maxLength: 100,\n  },\n}"
+                    "defaultValue": "{\n  name: 'Holding value',\n  args: {\n    value: 'I typed this',\n    disabled: false,\n    expand: false,\n    invalid: false,\n    required: false,\n    touched: false,\n    placeholder: 'Type something...',\n    maxLength: 100,\n  },\n}"
                 }
             ],
             "projects/tikal-ui-components/src/stories/button.stories.ts": [
@@ -2483,7 +2500,7 @@
                 "linktype": "component",
                 "name": "InputComponent",
                 "coveragePercent": 90,
-                "coverageCount": "9/10",
+                "coverageCount": "10/11",
                 "status": "very-good"
             },
             {

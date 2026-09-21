@@ -1,6 +1,7 @@
 <input
   pInputText
   [ariaLabel]="label()"
+  [class.full-length]="expand()"
   [disabled]="disabled()"
   [invalid]="invalid() && touched()"
   [maxLength]="maxLength()"
