@@ -803,6 +803,75 @@
             "templateData": "<p-chip [label]=\"label()\">\n  @if (icon()) {\n    <svg [pIcon]=\"icon()\"></svg>\n  }\n</p-chip>\n"
         },
         {
+            "name": "EmptyPlayerSlotComponent",
+            "id": "component-EmptyPlayerSlotComponent-2e3a3806967925c1c124893cae876c0dca1a7e85af82f9c89138edbc0547a8a9da33c3cb96b898396d74302eafa7676d39a8b3b6391c7afa78dbc077cc77b420",
+            "file": "projects/tikal-ui-components/src/lib/components/empty-player-slot/empty-player-slot.ts",
+            "changeDetection": "ChangeDetectionStrategy.OnPush",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "tikal-empty-player-slot",
+            "styleUrls": [
+                "./empty-player-slot.scss"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./empty-player-slot.html"
+            ],
+            "templateVariables": [],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [
+                {
+                    "name": "text",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>What text should be displayed?</p>\n",
+                    "line": 11,
+                    "rawdescription": "\nWhat text should be displayed?",
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": true
+                }
+            ],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [],
+            "coverageIgnore": false,
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component, input } from '@angular/core';\n\n@Component({\n  selector: 'tikal-empty-player-slot',\n  imports: [],\n  templateUrl: './empty-player-slot.html',\n  styleUrl: './empty-player-slot.scss',\n})\nexport class EmptyPlayerSlotComponent {\n  /** What text should be displayed? */\n  readonly text = input.required<string>();\n}\n",
+            "styleUrl": "./empty-player-slot.scss",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": ":host {\n  display: flex;\n  flex-direction: row;\n\n  align-items: center;\n\n  padding: 1.5rem;\n  gap: 0.75rem;\n\n  background-color: var(--p-surface-100);\n}\n\n:host-context(.dark) :host {\n  background-color: var(--p-surface-900);\n}\n\n.dot {\n  width: 0.75rem;\n  height: 0.75rem;\n\n  border-radius: 50%;\n\n  background-color: var(--p-surface-400);\n}\n\n:host-context(.dark) .dot {\n  background-color: var(--p-surface-600);\n}\n\np {\n  margin: 0;\n\n  color: var(--p-surface-500);\n}\n\n:host-context(.dark) p {\n  color: var(--p-surface-400);\n}\n",
+                    "styleUrl": "./empty-player-slot.scss"
+                }
+            ],
+            "stylesData": "",
+            "extends": [],
+            "relationships": {
+                "incoming": [],
+                "outgoing": []
+            },
+            "templateData": "<span class=\"dot\"></span>\n<p>{{ text() }}</p>\n"
+        },
+        {
             "name": "InputComponent",
             "id": "component-InputComponent-e86616864ec305657e1d914c4e126a2dcfb3a09ee3da3f8d87b094151a3e5c8d2d3a4c89997d47cf7e68d6c2e5a0e0e062c47e2db1091c0b4e0798f4c2a6fdf2",
             "file": "projects/tikal-ui-components/src/lib/components/input/input.ts",
@@ -1230,6 +1299,17 @@
                 "defaultValue": "{\n  name: 'Disabled',\n  args: {\n    value: '',\n    disabled: true,\n    expand: false,\n    invalid: false,\n    required: false,\n    touched: false,\n    placeholder: 'Type something...',\n    maxLength: 100,\n  },\n}"
             },
             {
+                "name": "EmptyPlayerSlot",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/tikal-ui-components/src/stories/empty-player-slot.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n  name: 'Empty player slot',\n}"
+            },
+            {
                 "name": "EmptyWithoutPlaceholder",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -1393,6 +1473,17 @@
                 "deprecationMessage": "",
                 "type": "Meta<ChipComponent>",
                 "defaultValue": "{\n  title: 'Atoms/Chip',\n  component: ChipComponent,\n  tags: ['autodocs'],\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
+            },
+            {
+                "name": "meta",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/tikal-ui-components/src/stories/empty-player-slot.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Meta<EmptyPlayerSlotComponent>",
+                "defaultValue": "{\n  title: 'Atoms/EmptyPlayerSlot',\n  component: EmptyPlayerSlotComponent,\n  tags: ['autodocs'],\n  args: {\n    text: 'Open Slot',\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
             },
             {
                 "name": "meta",
@@ -1732,6 +1823,19 @@
                 "ctype": "miscellaneous",
                 "subtype": "typealias",
                 "coverageIgnore": false,
+                "rawtype": "StoryObj<EmptyPlayerSlotComponent>",
+                "file": "projects/tikal-ui-components/src/stories/empty-player-slot.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "rawdescription": "",
+                "description": "",
+                "kind": 184
+            },
+            {
+                "name": "Story",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "coverageIgnore": false,
                 "rawtype": "StoryObj<InputComponent>",
                 "file": "projects/tikal-ui-components/src/stories/input.stories.ts",
                 "deprecated": false,
@@ -1916,6 +2020,30 @@
                     "deprecationMessage": "",
                     "type": "Story",
                     "defaultValue": "{\n  name: 'Holding value',\n  args: {\n    value: 'I typed this',\n    disabled: false,\n    expand: false,\n    invalid: false,\n    required: false,\n    touched: false,\n    placeholder: 'Type something...',\n    maxLength: 100,\n  },\n}"
+                }
+            ],
+            "projects/tikal-ui-components/src/stories/empty-player-slot.stories.ts": [
+                {
+                    "name": "EmptyPlayerSlot",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/tikal-ui-components/src/stories/empty-player-slot.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n  name: 'Empty player slot',\n}"
+                },
+                {
+                    "name": "meta",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/tikal-ui-components/src/stories/empty-player-slot.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Meta<EmptyPlayerSlotComponent>",
+                    "defaultValue": "{\n  title: 'Atoms/EmptyPlayerSlot',\n  component: EmptyPlayerSlotComponent,\n  tags: ['autodocs'],\n  args: {\n    text: 'Open Slot',\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
                 }
             ],
             "projects/tikal-ui-components/src/stories/button.stories.ts": [
@@ -2339,6 +2467,21 @@
                     "kind": 184
                 }
             ],
+            "projects/tikal-ui-components/src/stories/empty-player-slot.stories.ts": [
+                {
+                    "name": "Story",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "coverageIgnore": false,
+                    "rawtype": "StoryObj<EmptyPlayerSlotComponent>",
+                    "file": "projects/tikal-ui-components/src/stories/empty-player-slot.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "",
+                    "description": "",
+                    "kind": 184
+                }
+            ],
             "projects/tikal-ui-components/src/stories/input.stories.ts": [
                 {
                     "name": "Story",
@@ -2392,7 +2535,7 @@
         "children": []
     },
     "coverage": {
-        "count": 8,
+        "count": 9,
         "status": "low",
         "files": [
             {
@@ -2509,6 +2652,15 @@
                 "coveragePercent": 66,
                 "coverageCount": "2/3",
                 "status": "good"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/lib/components/empty-player-slot/empty-player-slot.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "EmptyPlayerSlotComponent",
+                "coveragePercent": 50,
+                "coverageCount": "1/2",
+                "status": "medium"
             },
             {
                 "filePath": "projects/tikal-ui-components/src/lib/components/input/input.ts",
@@ -2798,6 +2950,36 @@
             },
             {
                 "filePath": "projects/tikal-ui-components/src/stories/chip.stories.ts",
+                "type": "type alias",
+                "linktype": "miscellaneous",
+                "linksubtype": "typealias",
+                "name": "Story",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/stories/empty-player-slot.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "EmptyPlayerSlot",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/stories/empty-player-slot.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "meta",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/stories/empty-player-slot.stories.ts",
                 "type": "type alias",
                 "linktype": "miscellaneous",
                 "linksubtype": "typealias",
