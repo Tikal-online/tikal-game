@@ -47,4 +47,7 @@ export class ButtonComponent {
 
   /** @ignore */
   readonly clicked = output<void>();
+
+  /** What form should the button belong to? */
+  readonly form = input<string>();
 }

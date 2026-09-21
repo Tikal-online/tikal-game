@@ -32,4 +32,7 @@ export class InputComponent implements FormValueControl<string> {
 
   /** What placeholder should the input display? */
   readonly placeholder = input<string>();
+
+  /** Should the input take the full widht? */
+  readonly expand = input<boolean>(false);
 }
