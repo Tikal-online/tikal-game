@@ -7,6 +7,7 @@ const meta: Meta<PlayerSlotComponent> = {
   tags: ['autodocs'],
   args: {
     name: 'MyUser1234',
+    colour: 'red',
   },
   decorators: [
     applicationConfig({
@@ -22,5 +23,6 @@ export const PlayerSlot: Story = {
   name: 'Ready',
   args: {
     name: 'MyUser1234',
+    colour: 'red',
   },
 };

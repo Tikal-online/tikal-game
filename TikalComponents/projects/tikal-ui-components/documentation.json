@@ -98,6 +98,10 @@
                     {
                         "name": "ChatMessageComponent",
                         "type": "component"
+                    },
+                    {
+                        "name": "PlayerSlotComponent",
+                        "type": "component"
                     }
                 ],
                 "outgoing": []
@@ -1201,7 +1205,7 @@
         },
         {
             "name": "PlayerSlotComponent",
-            "id": "component-PlayerSlotComponent-d7fd76bbde43b7c691b282fdc87b7bb83eb60ab3e6ecae3e030f549cfaf26c0e0cce502cf2a1d980d2e42450c7f92af5150e4bed1c49cae71c63bc783f55a3e1",
+            "id": "component-PlayerSlotComponent-85673b993de20ca259c4e039d2416c509c56314c76404f05223e51d96489ed36ac971fa93d2a7cd2fcea470fb8cb658a6b9afeb37ff941ba290e53fd96cef969",
             "file": "projects/tikal-ui-components/src/lib/components/player-slot/player-slot.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -1222,6 +1226,22 @@
             "hostDirectives": [],
             "inputsClass": [
                 {
+                    "name": "colour",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "PlayerColour",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>What is the colour of the player?</p>\n",
+                    "line": 17,
+                    "rawdescription": "\nWhat is the colour of the player?",
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": true
+                },
+                {
                     "name": "name",
                     "coverageIgnore": false,
                     "deprecated": false,
@@ -1230,7 +1250,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "<p>What is the name of the player?</p>\n",
-                    "line": 11,
+                    "line": 14,
                     "rawdescription": "\nWhat is the name of the player?",
                     "modifierKind": [
                         148
@@ -1247,16 +1267,21 @@
             "hostBindings": [],
             "hostListeners": [],
             "standalone": true,
-            "imports": [],
+            "imports": [
+                {
+                    "name": "EnumMapPipe",
+                    "type": "pipe"
+                }
+            ],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, input } from '@angular/core';\n\n@Component({\n  selector: 'tikal-player-slot',\n  imports: [],\n  templateUrl: './player-slot.html',\n  styleUrl: './player-slot.scss',\n})\nexport class PlayerSlotComponent {\n  /** What is the name of the player? */\n  readonly name = input.required<string>();\n}\n",
+            "sourceCode": "import { Component, input } from '@angular/core';\nimport { EnumMapPipe } from '../../../pipes/enum-map';\n\nexport type PlayerColour = 'red' | 'black' | 'green' | 'blue' | 'yellow';\n\n@Component({\n  selector: 'tikal-player-slot',\n  imports: [EnumMapPipe],\n  templateUrl: './player-slot.html',\n  styleUrl: './player-slot.scss',\n})\nexport class PlayerSlotComponent {\n  /** What is the name of the player? */\n  readonly name = input.required<string>();\n\n  /** What is the colour of the player? */\n  readonly colour = input.required<PlayerColour>();\n\n  /** @ignore */\n  readonly colourMap = {\n    red: 'var(--p-red-500)',\n    green: 'var(--p-green-500)',\n    blue: 'var(--p-blue-500)',\n    yellow: 'var(--p-yellow-500)',\n  };\n}\n",
             "styleUrl": "./player-slot.scss",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": ":host {\n  display: flex;\n  flex-direction: row;\n\n  align-items: center;\n\n  padding: 1.5rem;\n  gap: 0.75rem;\n\n  background-color: var(--p-surface-200);\n}\n\n:host-context(.dark) :host {\n  background-color: var(--p-surface-700);\n}\n\n.dot {\n  width: 0.75rem;\n  height: 0.75rem;\n\n  border-radius: 50%;\n\n  background-color: red;\n}\n\np {\n  margin: 0;\n}\n",
+                    "data": ":host {\n  display: flex;\n  flex-direction: row;\n\n  align-items: center;\n\n  padding: 1.5rem;\n  gap: 0.75rem;\n\n  background-color: var(--p-surface-200);\n}\n\n:host-context(.dark) :host {\n  background-color: var(--p-surface-700);\n}\n\n.dot {\n  width: 0.75rem;\n  height: 0.75rem;\n\n  border-radius: 50%;\n}\n\np {\n  margin: 0;\n}\n",
                     "styleUrl": "./player-slot.scss"
                 }
             ],
@@ -1264,9 +1289,14 @@
             "extends": [],
             "relationships": {
                 "incoming": [],
-                "outgoing": []
+                "outgoing": [
+                    {
+                        "name": "EnumMapPipe",
+                        "type": "pipe"
+                    }
+                ]
             },
-            "templateData": "<span class=\"dot\"></span>\n<p>{{ name() }}</p>\n"
+            "templateData": "<span class=\"dot\" [style.background-color]=\"colour() | enumMap: colourMap\"></span>\n<p>{{ name() }}</p>\n"
         },
         {
             "name": "SkeletonComponent",
@@ -1585,7 +1615,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Meta<PlayerSlotComponent>",
-                "defaultValue": "{\n  title: 'Atoms/Player-Slot',\n  component: PlayerSlotComponent,\n  tags: ['autodocs'],\n  args: {\n    name: 'MyUser1234',\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
+                "defaultValue": "{\n  title: 'Atoms/Player-Slot',\n  component: PlayerSlotComponent,\n  tags: ['autodocs'],\n  args: {\n    name: 'MyUser1234',\n    colour: 'red',\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
             },
             {
                 "name": "meta",
@@ -1640,7 +1670,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
-                "defaultValue": "{\n  name: 'Ready',\n  args: {\n    name: 'MyUser1234',\n  },\n}"
+                "defaultValue": "{\n  name: 'Ready',\n  args: {\n    name: 'MyUser1234',\n    colour: 'red',\n  },\n}"
             },
             {
                 "name": "preview",
@@ -1838,6 +1868,19 @@
                 "coverageIgnore": false,
                 "rawtype": "\"Me\" | \"Opponent\"",
                 "file": "projects/tikal-ui-components/src/lib/components/chat-message/chat-message.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "rawdescription": "",
+                "description": "",
+                "kind": 193
+            },
+            {
+                "name": "PlayerColour",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "coverageIgnore": false,
+                "rawtype": "\"red\" | \"black\" | \"green\" | \"blue\" | \"yellow\"",
+                "file": "projects/tikal-ui-components/src/lib/components/player-slot/player-slot.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "rawdescription": "",
@@ -2390,7 +2433,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Meta<PlayerSlotComponent>",
-                    "defaultValue": "{\n  title: 'Atoms/Player-Slot',\n  component: PlayerSlotComponent,\n  tags: ['autodocs'],\n  args: {\n    name: 'MyUser1234',\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
+                    "defaultValue": "{\n  title: 'Atoms/Player-Slot',\n  component: PlayerSlotComponent,\n  tags: ['autodocs'],\n  args: {\n    name: 'MyUser1234',\n    colour: 'red',\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
                 },
                 {
                     "name": "PlayerSlot",
@@ -2401,7 +2444,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
-                    "defaultValue": "{\n  name: 'Ready',\n  args: {\n    name: 'MyUser1234',\n  },\n}"
+                    "defaultValue": "{\n  name: 'Ready',\n  args: {\n    name: 'MyUser1234',\n    colour: 'red',\n  },\n}"
                 }
             ],
             "projects/tikal-ui-components/.storybook/preview.ts": [
@@ -2513,6 +2556,21 @@
                     "coverageIgnore": false,
                     "rawtype": "\"Me\" | \"Opponent\"",
                     "file": "projects/tikal-ui-components/src/lib/components/chat-message/chat-message.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "",
+                    "description": "",
+                    "kind": 193
+                }
+            ],
+            "projects/tikal-ui-components/src/lib/components/player-slot/player-slot.ts": [
+                {
+                    "name": "PlayerColour",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "coverageIgnore": false,
+                    "rawtype": "\"red\" | \"black\" | \"green\" | \"blue\" | \"yellow\"",
+                    "file": "projects/tikal-ui-components/src/lib/components/player-slot/player-slot.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "rawdescription": "",
@@ -2828,9 +2886,19 @@
                 "type": "component",
                 "linktype": "component",
                 "name": "PlayerSlotComponent",
-                "coveragePercent": 50,
-                "coverageCount": "1/2",
-                "status": "medium"
+                "coveragePercent": 66,
+                "coverageCount": "2/3",
+                "status": "good"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/lib/components/player-slot/player-slot.ts",
+                "type": "type alias",
+                "linktype": "miscellaneous",
+                "linksubtype": "typealias",
+                "name": "PlayerColour",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
             },
             {
                 "filePath": "projects/tikal-ui-components/src/lib/components/skeleton/skeleton.ts",
