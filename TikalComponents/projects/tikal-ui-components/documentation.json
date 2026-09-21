@@ -859,7 +859,7 @@
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": ":host {\n  display: flex;\n  flex-direction: row;\n\n  align-items: center;\n\n  padding: 1.5rem;\n  gap: 0.75rem;\n\n  background-color: var(--p-surface-100);\n}\n\n:host-context(.dark) :host {\n  background-color: var(--p-surface-900);\n}\n\n.dot {\n  width: 0.75rem;\n  height: 0.75rem;\n\n  border-radius: 50%;\n\n  background-color: var(--p-surface-400);\n}\n\n:host-context(.dark) .dot {\n  background-color: var(--p-surface-600);\n}\n\np {\n  margin: 0;\n\n  color: var(--p-surface-500);\n}\n\n:host-context(.dark) p {\n  color: var(--p-surface-400);\n}\n",
+                    "data": ":host {\n  display: flex;\n  flex-direction: row;\n\n  align-items: center;\n\n  padding: 1.5rem;\n  gap: 0.75rem;\n\n  background-color: var(--p-surface-100);\n}\n\n:host-context(.dark) :host {\n  background-color: var(--p-surface-800);\n}\n\n.dot {\n  width: 0.75rem;\n  height: 0.75rem;\n\n  border-radius: 50%;\n\n  background-color: var(--p-surface-400);\n}\n\n:host-context(.dark) .dot {\n  background-color: var(--p-surface-600);\n}\n\np {\n  margin: 0;\n\n  color: var(--p-surface-500);\n}\n\n:host-context(.dark) p {\n  color: var(--p-surface-400);\n}\n",
                     "styleUrl": "./empty-player-slot.scss"
                 }
             ],
@@ -1200,6 +1200,75 @@
             "templateData": "<p>{{ currentPlayers() }}/{{ maxPlayers() }}</p>\n<div class=\"bar\">\n  <div\n    class=\"bar-fill\"\n    [class.full]=\"currentPlayers() >= maxPlayers()\"\n    [style.width]=\"(currentPlayers() / maxPlayers()) * 100 + '%'\"\n  ></div>\n</div>\n"
         },
         {
+            "name": "PlayerSlotComponent",
+            "id": "component-PlayerSlotComponent-d7fd76bbde43b7c691b282fdc87b7bb83eb60ab3e6ecae3e030f549cfaf26c0e0cce502cf2a1d980d2e42450c7f92af5150e4bed1c49cae71c63bc783f55a3e1",
+            "file": "projects/tikal-ui-components/src/lib/components/player-slot/player-slot.ts",
+            "changeDetection": "ChangeDetectionStrategy.OnPush",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "tikal-player-slot",
+            "styleUrls": [
+                "./player-slot.scss"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./player-slot.html"
+            ],
+            "templateVariables": [],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [
+                {
+                    "name": "name",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>What is the name of the player?</p>\n",
+                    "line": 11,
+                    "rawdescription": "\nWhat is the name of the player?",
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": true
+                }
+            ],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [],
+            "coverageIgnore": false,
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component, input } from '@angular/core';\n\n@Component({\n  selector: 'tikal-player-slot',\n  imports: [],\n  templateUrl: './player-slot.html',\n  styleUrl: './player-slot.scss',\n})\nexport class PlayerSlotComponent {\n  /** What is the name of the player? */\n  readonly name = input.required<string>();\n}\n",
+            "styleUrl": "./player-slot.scss",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": ":host {\n  display: flex;\n  flex-direction: row;\n\n  align-items: center;\n\n  padding: 1.5rem;\n  gap: 0.75rem;\n\n  background-color: var(--p-surface-200);\n}\n\n:host-context(.dark) :host {\n  background-color: var(--p-surface-700);\n}\n\n.dot {\n  width: 0.75rem;\n  height: 0.75rem;\n\n  border-radius: 50%;\n\n  background-color: red;\n}\n\np {\n  margin: 0;\n}\n",
+                    "styleUrl": "./player-slot.scss"
+                }
+            ],
+            "stylesData": "",
+            "extends": [],
+            "relationships": {
+                "incoming": [],
+                "outgoing": []
+            },
+            "templateData": "<span class=\"dot\"></span>\n<p>{{ name() }}</p>\n"
+        },
+        {
             "name": "SkeletonComponent",
             "id": "component-SkeletonComponent-7e4194cfbc866f6e7b4fc845568a3631304570004b21157845db764cc134440c073c5dba388126d9b512292bb61115ff99302180ac009b537b78f5f30afa32b0",
             "file": "projects/tikal-ui-components/src/lib/components/skeleton/skeleton.ts",
@@ -1511,6 +1580,17 @@
                 "name": "meta",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
+                "file": "projects/tikal-ui-components/src/stories/player-slot.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Meta<PlayerSlotComponent>",
+                "defaultValue": "{\n  title: 'Atoms/Player-Slot',\n  component: PlayerSlotComponent,\n  tags: ['autodocs'],\n  args: {\n    name: 'MyUser1234',\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
+            },
+            {
+                "name": "meta",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
                 "file": "projects/tikal-ui-components/src/stories/skeleton.stories.ts",
                 "coverageIgnore": false,
                 "deprecated": false,
@@ -1550,6 +1630,17 @@
                 "deprecationMessage": "",
                 "type": "Story",
                 "defaultValue": "{\n  name: 'Opponent Message',\n  args: {\n    sender: 'Opponent',\n    message: 'This was sent by my opponent',\n  },\n}"
+            },
+            {
+                "name": "PlayerSlot",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/tikal-ui-components/src/stories/player-slot.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n  name: 'Ready',\n  args: {\n    name: 'MyUser1234',\n  },\n}"
             },
             {
                 "name": "preview",
@@ -1851,6 +1942,19 @@
                 "coverageIgnore": false,
                 "rawtype": "StoryObj<PlayerCountComponent>",
                 "file": "projects/tikal-ui-components/src/stories/player-count.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "rawdescription": "",
+                "description": "",
+                "kind": 184
+            },
+            {
+                "name": "Story",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "coverageIgnore": false,
+                "rawtype": "StoryObj<PlayerSlotComponent>",
+                "file": "projects/tikal-ui-components/src/stories/player-slot.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "rawdescription": "",
@@ -2276,6 +2380,30 @@
                     "defaultValue": "{\n  name: 'Chip with icon',\n  args: {\n    icon: 'check',\n    label: 'Chip Component',\n  },\n}"
                 }
             ],
+            "projects/tikal-ui-components/src/stories/player-slot.stories.ts": [
+                {
+                    "name": "meta",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/tikal-ui-components/src/stories/player-slot.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Meta<PlayerSlotComponent>",
+                    "defaultValue": "{\n  title: 'Atoms/Player-Slot',\n  component: PlayerSlotComponent,\n  tags: ['autodocs'],\n  args: {\n    name: 'MyUser1234',\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
+                },
+                {
+                    "name": "PlayerSlot",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/tikal-ui-components/src/stories/player-slot.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n  name: 'Ready',\n  args: {\n    name: 'MyUser1234',\n  },\n}"
+                }
+            ],
             "projects/tikal-ui-components/.storybook/preview.ts": [
                 {
                     "name": "preview",
@@ -2512,6 +2640,21 @@
                     "kind": 184
                 }
             ],
+            "projects/tikal-ui-components/src/stories/player-slot.stories.ts": [
+                {
+                    "name": "Story",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "coverageIgnore": false,
+                    "rawtype": "StoryObj<PlayerSlotComponent>",
+                    "file": "projects/tikal-ui-components/src/stories/player-slot.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "",
+                    "description": "",
+                    "kind": 184
+                }
+            ],
             "projects/tikal-ui-components/src/stories/skeleton.stories.ts": [
                 {
                     "name": "Story",
@@ -2679,6 +2822,15 @@
                 "coveragePercent": 66,
                 "coverageCount": "2/3",
                 "status": "good"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/lib/components/player-slot/player-slot.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "PlayerSlotComponent",
+                "coveragePercent": 50,
+                "coverageCount": "1/2",
+                "status": "medium"
             },
             {
                 "filePath": "projects/tikal-ui-components/src/lib/components/skeleton/skeleton.ts",
@@ -3110,6 +3262,36 @@
             },
             {
                 "filePath": "projects/tikal-ui-components/src/stories/player-count.stories.ts",
+                "type": "type alias",
+                "linktype": "miscellaneous",
+                "linksubtype": "typealias",
+                "name": "Story",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/stories/player-slot.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "meta",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/stories/player-slot.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "PlayerSlot",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/stories/player-slot.stories.ts",
                 "type": "type alias",
                 "linktype": "miscellaneous",
                 "linksubtype": "typealias",
