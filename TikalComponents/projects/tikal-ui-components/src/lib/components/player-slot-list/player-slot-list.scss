@@ -9,3 +9,7 @@
 
   overflow: hidden;
 }
+
+:host > * + * {
+  border-top: var(--p-content-border-color) solid 1px;
+}
