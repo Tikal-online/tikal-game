@@ -1699,7 +1699,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Meta<EmptyPlayerSlotComponent>",
-                "defaultValue": "{\n  title: 'Atoms/EmptyPlayerSlot',\n  component: EmptyPlayerSlotComponent,\n  tags: ['autodocs'],\n  args: {\n    text: 'Open Slot',\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
+                "defaultValue": "{\n  title: 'Atoms/Empty-Player-Slot',\n  component: EmptyPlayerSlotComponent,\n  tags: ['autodocs'],\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
             },
             {
                 "name": "meta",
@@ -2344,7 +2344,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Meta<EmptyPlayerSlotComponent>",
-                    "defaultValue": "{\n  title: 'Atoms/EmptyPlayerSlot',\n  component: EmptyPlayerSlotComponent,\n  tags: ['autodocs'],\n  args: {\n    text: 'Open Slot',\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
+                    "defaultValue": "{\n  title: 'Atoms/Empty-Player-Slot',\n  component: EmptyPlayerSlotComponent,\n  tags: ['autodocs'],\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
                 }
             ],
             "projects/tikal-ui-components/src/stories/player-slot-list.stories.ts": [
