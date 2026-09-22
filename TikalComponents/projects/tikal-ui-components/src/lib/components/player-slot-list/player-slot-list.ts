@@ -21,4 +21,7 @@ export class PlayerSlotListComponent {
 
   /** What players are currently in the lobby? */
   readonly players = input.required<PlayerSlotData[]>();
+
+  /** Are the players currenlty loading? */
+  readonly isLoading = input<boolean>(false);
 }

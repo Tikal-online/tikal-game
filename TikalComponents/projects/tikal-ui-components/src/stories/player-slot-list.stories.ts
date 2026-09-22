@@ -7,6 +7,7 @@ const meta: Meta<PlayerSlotListComponent> = {
   tags: ['autodocs'],
   args: {
     maxPlayers: 4,
+    isLoading: false,
     players: [
       {
         name: 'Player1',
@@ -32,6 +33,7 @@ export const HalfFullLobby: Story = {
   name: 'Half full lobby',
   args: {
     maxPlayers: 4,
+    isLoading: false,
     players: [
       {
         name: 'Player1',
@@ -49,6 +51,7 @@ export const FullLobby: Story = {
   name: 'Full lobby',
   args: {
     maxPlayers: 3,
+    isLoading: false,
     players: [
       {
         name: 'Player1',
@@ -70,6 +73,16 @@ export const EmptyLobby: Story = {
   name: 'Empty lobby',
   args: {
     maxPlayers: 4,
+    isLoading: false,
+    players: [],
+  },
+};
+
+export const Loading: Story = {
+  name: 'Loading',
+  args: {
+    maxPlayers: 4,
+    isLoading: true,
     players: [],
   },
 };
