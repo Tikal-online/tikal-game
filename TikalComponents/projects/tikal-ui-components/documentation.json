@@ -808,7 +808,7 @@
         },
         {
             "name": "EmptyPlayerSlotComponent",
-            "id": "component-EmptyPlayerSlotComponent-2e3a3806967925c1c124893cae876c0dca1a7e85af82f9c89138edbc0547a8a9da33c3cb96b898396d74302eafa7676d39a8b3b6391c7afa78dbc077cc77b420",
+            "id": "component-EmptyPlayerSlotComponent-3eabbe8841f2e383c93f024b8ce5c261a83737335198cb0aed0f2ae2a211435da3f9e614af2623d5827c37d1e87805d312134e11af6710ef066eaa1d1afd1cdf",
             "file": "projects/tikal-ui-components/src/lib/components/empty-player-slot/empty-player-slot.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -827,24 +827,7 @@
             "templateVariables": [],
             "viewProviders": [],
             "hostDirectives": [],
-            "inputsClass": [
-                {
-                    "name": "text",
-                    "coverageIgnore": false,
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "string",
-                    "indexKey": "",
-                    "optional": false,
-                    "description": "<p>What text should be displayed?</p>\n",
-                    "line": 11,
-                    "rawdescription": "\nWhat text should be displayed?",
-                    "modifierKind": [
-                        148
-                    ],
-                    "required": true
-                }
-            ],
+            "inputsClass": [],
             "outputsClass": [],
             "propertiesClass": [],
             "methodsClass": [],
@@ -854,11 +837,16 @@
             "hostBindings": [],
             "hostListeners": [],
             "standalone": true,
-            "imports": [],
+            "imports": [
+                {
+                    "name": "TranslocoDirective",
+                    "type": "directive"
+                }
+            ],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, input } from '@angular/core';\n\n@Component({\n  selector: 'tikal-empty-player-slot',\n  imports: [],\n  templateUrl: './empty-player-slot.html',\n  styleUrl: './empty-player-slot.scss',\n})\nexport class EmptyPlayerSlotComponent {\n  /** What text should be displayed? */\n  readonly text = input.required<string>();\n}\n",
+            "sourceCode": "import { Component } from '@angular/core';\nimport { TranslocoDirective } from '@jsverse/transloco';\n\n@Component({\n  selector: 'tikal-empty-player-slot',\n  imports: [TranslocoDirective],\n  templateUrl: './empty-player-slot.html',\n  styleUrl: './empty-player-slot.scss',\n})\nexport class EmptyPlayerSlotComponent {}\n",
             "styleUrl": "./empty-player-slot.scss",
             "assetsDirs": [],
             "styleUrlsData": [
@@ -876,9 +864,14 @@
                         "type": "component"
                     }
                 ],
-                "outgoing": []
+                "outgoing": [
+                    {
+                        "name": "TranslocoDirective",
+                        "type": "directive"
+                    }
+                ]
             },
-            "templateData": "<span class=\"dot\"></span>\n<p>{{ text() }}</p>\n"
+            "templateData": "<ng-container *transloco=\"let t; prefix: 'empty-player-slot'\">\n  <span class=\"dot\"></span>\n  <p>{{ t('open-slot') }}</p>\n</ng-container>\n"
         },
         {
             "name": "InputComponent",
@@ -1286,7 +1279,7 @@
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": ":host {\n  display: flex;\n  flex-direction: row;\n\n  align-items: center;\n\n  padding: 1rem;\n  gap: 0.75rem;\n\n  background-color: var(--p-surface-200);\n}\n\n:host-context(.dark) :host {\n  background-color: var(--p-surface-700);\n}\n\n.dot {\n  width: 0.75rem;\n  height: 0.75rem;\n\n  border-radius: 50%;\n}\n\np {\n  margin: 0;\n}\n",
+                    "data": ":host {\n  display: flex;\n  flex-direction: row;\n\n  align-items: center;\n\n  padding: 1rem;\n  gap: 0.75rem;\n\n  background-color: var(--p-surface-100);\n}\n\n:host-context(.dark) :host {\n  background-color: var(--p-surface-800);\n}\n\n.dot {\n  width: 0.75rem;\n  height: 0.75rem;\n\n  border-radius: 50%;\n}\n\np {\n  margin: 0;\n}\n",
                     "styleUrl": "./player-slot.scss"
                 }
             ],
@@ -1390,7 +1383,7 @@
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": ":host {\n  display: flex;\n  flex-direction: column;\n}\n",
+                    "data": ":host {\n  display: flex;\n  flex-direction: column;\n\n  width: 20rem;\n\n  border: var(--p-content-border-color) solid 1px;\n  border-radius: var(--p-content-border-radius);\n\n  overflow: hidden;\n}\n",
                     "styleUrl": "./player-slot-list.scss"
                 }
             ],
@@ -1816,7 +1809,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Preview",
-                "defaultValue": "{\n  decorators: [\n    applicationConfig({\n      providers: [\n        provideZonelessChangeDetection(),\n        providePrimeNG({\n          license: import.meta.env['STORYBOOK_PRIMENG_LICENSE'],\n          theme: {\n            preset: TikalTheme,\n            options: {\n              darkModeSelector: '.dark',\n            },\n          },\n        }),\n      ],\n    }),\n    withThemeByClassName<AngularRenderer>({\n      themes: {\n        light: '',\n        dark: 'dark',\n      },\n      defaultTheme: 'light',\n    }),\n  ],\n\n  parameters: {\n    controls: {\n      matchers: {\n        color: /(background|color)$/i,\n        date: /Date$/i,\n      },\n    },\n\n    a11y: {\n      // 'todo' - show a11y violations in the test UI only\n      // 'error' - fail CI on a11y violations\n      // 'off' - skip a11y checks entirely\n      test: 'todo',\n    },\n  },\n}"
+                "defaultValue": "{\n  decorators: [\n    applicationConfig({\n      providers: [\n        provideTransloco({\n          config: {\n            availableLangs: ['en'],\n            defaultLang: 'en',\n            reRenderOnLangChange: true,\n            prodMode: !isDevMode(),\n          },\n          loader: TranslocoHttpLoader,\n        }),\n        provideZonelessChangeDetection(),\n        providePrimeNG({\n          license: import.meta.env['STORYBOOK_PRIMENG_LICENSE'],\n          theme: {\n            preset: TikalTheme,\n            options: {\n              darkModeSelector: '.dark',\n            },\n          },\n        }),\n      ],\n    }),\n    withThemeByClassName<AngularRenderer>({\n      themes: {\n        light: '',\n        dark: 'dark',\n      },\n      defaultTheme: 'light',\n    }),\n  ],\n\n  parameters: {\n    controls: {\n      matchers: {\n        color: /(background|color)$/i,\n        date: /Date$/i,\n      },\n    },\n\n    a11y: {\n      // 'todo' - show a11y violations in the test UI only\n      // 'error' - fail CI on a11y violations\n      // 'off' - skip a11y checks entirely\n      test: 'todo',\n    },\n  },\n}"
             },
             {
                 "name": "PrimaryWithIcon",
@@ -2642,7 +2635,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Preview",
-                    "defaultValue": "{\n  decorators: [\n    applicationConfig({\n      providers: [\n        provideZonelessChangeDetection(),\n        providePrimeNG({\n          license: import.meta.env['STORYBOOK_PRIMENG_LICENSE'],\n          theme: {\n            preset: TikalTheme,\n            options: {\n              darkModeSelector: '.dark',\n            },\n          },\n        }),\n      ],\n    }),\n    withThemeByClassName<AngularRenderer>({\n      themes: {\n        light: '',\n        dark: 'dark',\n      },\n      defaultTheme: 'light',\n    }),\n  ],\n\n  parameters: {\n    controls: {\n      matchers: {\n        color: /(background|color)$/i,\n        date: /Date$/i,\n      },\n    },\n\n    a11y: {\n      // 'todo' - show a11y violations in the test UI only\n      // 'error' - fail CI on a11y violations\n      // 'off' - skip a11y checks entirely\n      test: 'todo',\n    },\n  },\n}"
+                    "defaultValue": "{\n  decorators: [\n    applicationConfig({\n      providers: [\n        provideTransloco({\n          config: {\n            availableLangs: ['en'],\n            defaultLang: 'en',\n            reRenderOnLangChange: true,\n            prodMode: !isDevMode(),\n          },\n          loader: TranslocoHttpLoader,\n        }),\n        provideZonelessChangeDetection(),\n        providePrimeNG({\n          license: import.meta.env['STORYBOOK_PRIMENG_LICENSE'],\n          theme: {\n            preset: TikalTheme,\n            options: {\n              darkModeSelector: '.dark',\n            },\n          },\n        }),\n      ],\n    }),\n    withThemeByClassName<AngularRenderer>({\n      themes: {\n        light: '',\n        dark: 'dark',\n      },\n      defaultTheme: 'light',\n    }),\n  ],\n\n  parameters: {\n    controls: {\n      matchers: {\n        color: /(background|color)$/i,\n        date: /Date$/i,\n      },\n    },\n\n    a11y: {\n      // 'todo' - show a11y violations in the test UI only\n      // 'error' - fail CI on a11y violations\n      // 'off' - skip a11y checks entirely\n      test: 'todo',\n    },\n  },\n}"
                 }
             ],
             "projects/tikal-ui-components/src/lib/theme/tikal-theme.ts": [
@@ -2951,7 +2944,7 @@
         "children": []
     },
     "coverage": {
-        "count": 9,
+        "count": 8,
         "status": "low",
         "files": [
             {
@@ -3074,9 +3067,9 @@
                 "type": "component",
                 "linktype": "component",
                 "name": "EmptyPlayerSlotComponent",
-                "coveragePercent": 50,
-                "coverageCount": "1/2",
-                "status": "medium"
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
             },
             {
                 "filePath": "projects/tikal-ui-components/src/lib/components/input/input.ts",

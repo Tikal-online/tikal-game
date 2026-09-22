@@ -5,9 +5,6 @@ const meta: Meta<EmptyPlayerSlotComponent> = {
   title: 'Atoms/EmptyPlayerSlot',
   component: EmptyPlayerSlotComponent,
   tags: ['autodocs'],
-  args: {
-    text: 'Open Slot',
-  },
   decorators: [
     applicationConfig({
       providers: [],

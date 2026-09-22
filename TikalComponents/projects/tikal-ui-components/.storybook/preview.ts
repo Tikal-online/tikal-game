@@ -1,16 +1,27 @@
 import { AngularRenderer, applicationConfig, type Preview } from '@storybook/angular-vite';
 import { setCompodocJson } from '@storybook/addon-docs/angular';
-import { provideZonelessChangeDetection } from '@angular/core';
+import { isDevMode, provideZonelessChangeDetection } from '@angular/core';
 import { providePrimeNG } from 'primeng/config';
 import { withThemeByClassName } from '@storybook/addon-themes';
 import docJson from '../documentation.json';
 import TikalTheme from '../src/lib/theme/tikal-theme';
+import { provideTransloco } from '@jsverse/transloco';
+import { TranslocoHttpLoader } from './transloco-loader';
 setCompodocJson(docJson);
 
 const preview: Preview = {
   decorators: [
     applicationConfig({
       providers: [
+        provideTransloco({
+          config: {
+            availableLangs: ['en'],
+            defaultLang: 'en',
+            reRenderOnLangChange: true,
+            prodMode: !isDevMode(),
+          },
+          loader: TranslocoHttpLoader,
+        }),
         provideZonelessChangeDetection(),
         providePrimeNG({
           license: import.meta.env['STORYBOOK_PRIMENG_LICENSE'],

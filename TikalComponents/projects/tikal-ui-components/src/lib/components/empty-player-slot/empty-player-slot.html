@@ -1,2 +1,4 @@
-<span class="dot"></span>
-<p>{{ text() }}</p>
+<ng-container *transloco="let t; prefix: 'empty-player-slot'">
+  <span class="dot"></span>
+  <p>{{ t('open-slot') }}</p>
+</ng-container>

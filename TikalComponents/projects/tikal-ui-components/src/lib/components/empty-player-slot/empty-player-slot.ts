@@ -1,12 +1,10 @@
-import { Component, input } from '@angular/core';
+import { Component } from '@angular/core';
+import { TranslocoDirective } from '@jsverse/transloco';
 
 @Component({
   selector: 'tikal-empty-player-slot',
-  imports: [],
+  imports: [TranslocoDirective],
   templateUrl: './empty-player-slot.html',
   styleUrl: './empty-player-slot.scss',
 })
-export class EmptyPlayerSlotComponent {
-  /** What text should be displayed? */
-  readonly text = input.required<string>();
-}
+export class EmptyPlayerSlotComponent {}
