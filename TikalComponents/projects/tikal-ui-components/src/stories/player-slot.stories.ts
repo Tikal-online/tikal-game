@@ -5,6 +5,11 @@ const meta: Meta<PlayerSlotComponent> = {
   title: 'Atoms/Player-Slot',
   component: PlayerSlotComponent,
   tags: ['autodocs'],
+  argTypes: {
+    colour: {
+      control: { type: 'select' },
+    },
+  },
   args: {
     name: 'MyUser1234',
     colour: 'red',
