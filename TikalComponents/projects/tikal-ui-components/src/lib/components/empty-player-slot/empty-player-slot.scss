@@ -4,6 +4,8 @@
 
   align-items: center;
 
+  height: 3.25rem;
+
   padding: 1rem;
   gap: 0.75rem;
 
@@ -35,4 +37,8 @@ p {
 
 :host-context(.dark) p {
   color: var(--p-surface-400);
+}
+
+tikal-skeleton {
+  width: 100%;
 }

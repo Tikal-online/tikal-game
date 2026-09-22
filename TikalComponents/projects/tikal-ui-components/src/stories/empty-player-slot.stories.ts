@@ -5,6 +5,9 @@ const meta: Meta<EmptyPlayerSlotComponent> = {
   title: 'Atoms/Empty-Player-Slot',
   component: EmptyPlayerSlotComponent,
   tags: ['autodocs'],
+  args: {
+    isLoading: false,
+  },
   decorators: [
     applicationConfig({
       providers: [],
@@ -15,6 +18,16 @@ const meta: Meta<EmptyPlayerSlotComponent> = {
 export default meta;
 type Story = StoryObj<EmptyPlayerSlotComponent>;
 
-export const EmptyPlayerSlot: Story = {
-  name: 'Empty player slot',
+export const Loaded: Story = {
+  name: 'Loaded',
+  args: {
+    isLoading: false,
+  },
+};
+
+export const Loading: Story = {
+  name: 'Loading',
+  args: {
+    isLoading: true,
+  },
 };

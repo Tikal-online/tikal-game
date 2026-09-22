@@ -808,7 +808,7 @@
         },
         {
             "name": "EmptyPlayerSlotComponent",
-            "id": "component-EmptyPlayerSlotComponent-3eabbe8841f2e383c93f024b8ce5c261a83737335198cb0aed0f2ae2a211435da3f9e614af2623d5827c37d1e87805d312134e11af6710ef066eaa1d1afd1cdf",
+            "id": "component-EmptyPlayerSlotComponent-1a944e6399c8e951053330ea180620d7a269322a7c87066a8c7cfcd7a4afc13f83f4de991d49cf4bcf67d571f0914b38e1a3ccc5092390c70c146e4010304d80",
             "file": "projects/tikal-ui-components/src/lib/components/empty-player-slot/empty-player-slot.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -827,7 +827,25 @@
             "templateVariables": [],
             "viewProviders": [],
             "hostDirectives": [],
-            "inputsClass": [],
+            "inputsClass": [
+                {
+                    "name": "isLoading",
+                    "coverageIgnore": false,
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "boolean",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>Is the player currently loading?</p>\n",
+                    "line": 13,
+                    "rawdescription": "\nIs the player currently loading?",
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                }
+            ],
             "outputsClass": [],
             "propertiesClass": [],
             "methodsClass": [],
@@ -841,17 +859,21 @@
                 {
                     "name": "TranslocoDirective",
                     "type": "directive"
+                },
+                {
+                    "name": "SkeletonComponent",
+                    "type": "component"
                 }
             ],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component } from '@angular/core';\nimport { TranslocoDirective } from '@jsverse/transloco';\n\n@Component({\n  selector: 'tikal-empty-player-slot',\n  imports: [TranslocoDirective],\n  templateUrl: './empty-player-slot.html',\n  styleUrl: './empty-player-slot.scss',\n})\nexport class EmptyPlayerSlotComponent {}\n",
+            "sourceCode": "import { Component, input } from '@angular/core';\nimport { TranslocoDirective } from '@jsverse/transloco';\nimport { SkeletonComponent } from '../skeleton/skeleton';\n\n@Component({\n  selector: 'tikal-empty-player-slot',\n  imports: [TranslocoDirective, SkeletonComponent],\n  templateUrl: './empty-player-slot.html',\n  styleUrl: './empty-player-slot.scss',\n})\nexport class EmptyPlayerSlotComponent {\n  /** Is the player currently loading? */\n  readonly isLoading = input<boolean>(false);\n}\n",
             "styleUrl": "./empty-player-slot.scss",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": ":host {\n  display: flex;\n  flex-direction: row;\n\n  align-items: center;\n\n  padding: 1rem;\n  gap: 0.75rem;\n\n  background-color: var(--p-surface-100);\n}\n\n:host-context(.dark) :host {\n  background-color: var(--p-surface-800);\n}\n\n.dot {\n  width: 0.75rem;\n  height: 0.75rem;\n\n  border-radius: 50%;\n\n  background-color: var(--p-surface-400);\n}\n\n:host-context(.dark) .dot {\n  background-color: var(--p-surface-600);\n}\n\np {\n  margin: 0;\n\n  color: var(--p-surface-500);\n}\n\n:host-context(.dark) p {\n  color: var(--p-surface-400);\n}\n",
+                    "data": ":host {\n  display: flex;\n  flex-direction: row;\n\n  align-items: center;\n\n  height: 3.25rem;\n\n  padding: 1rem;\n  gap: 0.75rem;\n\n  background-color: var(--p-surface-100);\n}\n\n:host-context(.dark) :host {\n  background-color: var(--p-surface-800);\n}\n\n.dot {\n  width: 0.75rem;\n  height: 0.75rem;\n\n  border-radius: 50%;\n\n  background-color: var(--p-surface-400);\n}\n\n:host-context(.dark) .dot {\n  background-color: var(--p-surface-600);\n}\n\np {\n  margin: 0;\n\n  color: var(--p-surface-500);\n}\n\n:host-context(.dark) p {\n  color: var(--p-surface-400);\n}\n\ntikal-skeleton {\n  width: 100%;\n}\n",
                     "styleUrl": "./empty-player-slot.scss"
                 }
             ],
@@ -868,10 +890,14 @@
                     {
                         "name": "TranslocoDirective",
                         "type": "directive"
+                    },
+                    {
+                        "name": "SkeletonComponent",
+                        "type": "component"
                     }
                 ]
             },
-            "templateData": "<ng-container *transloco=\"let t; prefix: 'empty-player-slot'\">\n  <span class=\"dot\"></span>\n  <p>{{ t('open-slot') }}</p>\n</ng-container>\n"
+            "templateData": "@if (isLoading()) {\n  <tikal-skeleton />\n} @else {\n  <ng-container *transloco=\"let t; prefix: 'empty-player-slot'\">\n    <span class=\"dot\"></span>\n    <p>{{ t('open-slot') }}</p>\n  </ng-container>\n}\n"
         },
         {
             "name": "InputComponent",
@@ -1279,7 +1305,7 @@
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": ":host {\n  display: flex;\n  flex-direction: row;\n\n  align-items: center;\n\n  padding: 1rem;\n  gap: 0.75rem;\n\n  background-color: var(--p-surface-100);\n}\n\n:host-context(.dark) :host {\n  background-color: var(--p-surface-800);\n}\n\n.dot {\n  width: 0.75rem;\n  height: 0.75rem;\n\n  border-radius: 50%;\n}\n\np {\n  margin: 0;\n}\n",
+                    "data": ":host {\n  display: flex;\n  flex-direction: row;\n\n  align-items: center;\n\n  height: 3.25rem;\n\n  padding: 1rem;\n  gap: 0.75rem;\n\n  background-color: var(--p-surface-100);\n}\n\n:host-context(.dark) :host {\n  background-color: var(--p-surface-800);\n}\n\n.dot {\n  width: 0.75rem;\n  height: 0.75rem;\n\n  border-radius: 50%;\n}\n\np {\n  margin: 0;\n}\n",
                     "styleUrl": "./player-slot.scss"
                 }
             ],
@@ -1471,7 +1497,12 @@
             "stylesData": "",
             "extends": [],
             "relationships": {
-                "incoming": [],
+                "incoming": [
+                    {
+                        "name": "EmptyPlayerSlotComponent",
+                        "type": "component"
+                    }
+                ],
                 "outgoing": [
                     {
                         "name": "SkeletonModule",
@@ -1528,17 +1559,6 @@
                 "deprecationMessage": "",
                 "type": "Story",
                 "defaultValue": "{\n  name: 'Empty lobby',\n  args: {\n    maxPlayers: 4,\n    players: [],\n  },\n}"
-            },
-            {
-                "name": "EmptyPlayerSlot",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/tikal-ui-components/src/stories/empty-player-slot.stories.ts",
-                "coverageIgnore": false,
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story",
-                "defaultValue": "{\n  name: 'Empty player slot',\n}"
             },
             {
                 "name": "EmptyWithoutPlaceholder",
@@ -1662,6 +1682,17 @@
                 "defaultValue": "{\n  name: 'Invalid with placeholder',\n  args: {\n    value: '',\n    disabled: false,\n    expand: false,\n    invalid: true,\n    required: false,\n    touched: true,\n    placeholder: 'Type something...',\n    maxLength: 100,\n  },\n}"
             },
             {
+                "name": "Loaded",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/tikal-ui-components/src/stories/empty-player-slot.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n  name: 'Loaded',\n  args: {\n    isLoading: false,\n  },\n}"
+            },
+            {
                 "name": "Loading",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -1671,6 +1702,17 @@
                 "deprecationMessage": "",
                 "type": "Story",
                 "defaultValue": "{\n  name: 'Loading',\n  args: {\n    label: 'message',\n    placeholder: 'Say something...',\n    maxLength: 100,\n    onSubmission: async () => {\n      return new Promise(() => {\n        /* never resolves */\n      });\n    },\n  },\n  play: async ({ canvas, userEvent }) => {\n    const messageInput = canvas.getByLabelText('message', {\n      selector: 'input',\n    });\n\n    await userEvent.type(messageInput, 'This is my message');\n\n    const submitButton = canvas.getByRole('button');\n\n    await userEvent.click(submitButton);\n  },\n}"
+            },
+            {
+                "name": "Loading",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/tikal-ui-components/src/stories/empty-player-slot.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n  name: 'Loading',\n  args: {\n    isLoading: true,\n  },\n}"
             },
             {
                 "name": "meta",
@@ -1736,7 +1778,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Meta<EmptyPlayerSlotComponent>",
-                "defaultValue": "{\n  title: 'Atoms/Empty-Player-Slot',\n  component: EmptyPlayerSlotComponent,\n  tags: ['autodocs'],\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
+                "defaultValue": "{\n  title: 'Atoms/Empty-Player-Slot',\n  component: EmptyPlayerSlotComponent,\n  tags: ['autodocs'],\n  args: {\n    isLoading: false,\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
             },
             {
                 "name": "meta",
@@ -2406,30 +2448,6 @@
                     "defaultValue": "{\n  title: 'Molecules/Player-Slot-List',\n  component: PlayerSlotListComponent,\n  tags: ['autodocs'],\n  args: {\n    maxPlayers: 4,\n    players: [\n      {\n        name: 'Player1',\n        colour: 'red',\n      },\n      {\n        name: 'Player2',\n        colour: 'green',\n      },\n    ],\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
                 }
             ],
-            "projects/tikal-ui-components/src/stories/empty-player-slot.stories.ts": [
-                {
-                    "name": "EmptyPlayerSlot",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/tikal-ui-components/src/stories/empty-player-slot.stories.ts",
-                    "coverageIgnore": false,
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Story",
-                    "defaultValue": "{\n  name: 'Empty player slot',\n}"
-                },
-                {
-                    "name": "meta",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/tikal-ui-components/src/stories/empty-player-slot.stories.ts",
-                    "coverageIgnore": false,
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Meta<EmptyPlayerSlotComponent>",
-                    "defaultValue": "{\n  title: 'Atoms/Empty-Player-Slot',\n  component: EmptyPlayerSlotComponent,\n  tags: ['autodocs'],\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
-                }
-            ],
             "projects/tikal-ui-components/src/stories/button.stories.ts": [
                 {
                     "name": "IconOnly",
@@ -2564,6 +2582,41 @@
                     "deprecationMessage": "",
                     "type": "Story",
                     "defaultValue": "{\n  name: 'Waiting for input',\n  args: {\n    label: 'message',\n    placeholder: 'Say something...',\n    maxLength: 100,\n  },\n}"
+                }
+            ],
+            "projects/tikal-ui-components/src/stories/empty-player-slot.stories.ts": [
+                {
+                    "name": "Loaded",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/tikal-ui-components/src/stories/empty-player-slot.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n  name: 'Loaded',\n  args: {\n    isLoading: false,\n  },\n}"
+                },
+                {
+                    "name": "Loading",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/tikal-ui-components/src/stories/empty-player-slot.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n  name: 'Loading',\n  args: {\n    isLoading: true,\n  },\n}"
+                },
+                {
+                    "name": "meta",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/tikal-ui-components/src/stories/empty-player-slot.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Meta<EmptyPlayerSlotComponent>",
+                    "defaultValue": "{\n  title: 'Atoms/Empty-Player-Slot',\n  component: EmptyPlayerSlotComponent,\n  tags: ['autodocs'],\n  args: {\n    isLoading: false,\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
                 }
             ],
             "projects/tikal-ui-components/src/stories/chat-message-list.stories.ts": [
@@ -3003,7 +3056,7 @@
         "children": []
     },
     "coverage": {
-        "count": 8,
+        "count": 9,
         "status": "low",
         "files": [
             {
@@ -3126,9 +3179,9 @@
                 "type": "component",
                 "linktype": "component",
                 "name": "EmptyPlayerSlotComponent",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
+                "coveragePercent": 50,
+                "coverageCount": "1/2",
+                "status": "medium"
             },
             {
                 "filePath": "projects/tikal-ui-components/src/lib/components/input/input.ts",
@@ -3469,7 +3522,17 @@
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
-                "name": "EmptyPlayerSlot",
+                "name": "Loaded",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/stories/empty-player-slot.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Loading",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
