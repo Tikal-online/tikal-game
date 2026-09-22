@@ -46,7 +46,7 @@ export const HalfFullLobby: Story = {
 };
 
 export const FullLobby: Story = {
-  name: 'full lobby',
+  name: 'Full lobby',
   args: {
     maxPlayers: 3,
     players: [

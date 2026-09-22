@@ -1303,7 +1303,7 @@
         },
         {
             "name": "PlayerSlotListComponent",
-            "id": "component-PlayerSlotListComponent-86d479288aac3815c084f01ee02795417baeb746d535f112fe0cdcf34697b7c912e2b5637c70ae3bbbd6044eb03b6f981bbcc92ce3c3572a5fb986980b811dc6",
+            "id": "component-PlayerSlotListComponent-43676283f34ac9a22f85006856cfc66494edb3539aced7e469c0a236fc2b729d9d345ef75042db99205fd17fe6d750b6aeda052c1cde8911e97faccf32260e53",
             "file": "projects/tikal-ui-components/src/lib/components/player-slot-list/player-slot-list.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -1332,7 +1332,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "<p>How many players fit in the lobby?</p>\n",
-                    "line": 18,
+                    "line": 20,
                     "rawdescription": "\nHow many players fit in the lobby?",
                     "modifierKind": [
                         148
@@ -1348,7 +1348,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "<p>What players are currently in the lobby?</p>\n",
-                    "line": 21,
+                    "line": 23,
                     "rawdescription": "\nWhat players are currently in the lobby?",
                     "modifierKind": [
                         148
@@ -1373,17 +1373,24 @@
                 {
                     "name": "EmptyPlayerSlotComponent",
                     "type": "component"
+                },
+                {
+                    "name": "User"
+                },
+                {
+                    "name": "TranslocoDirective",
+                    "type": "directive"
                 }
             ],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, input } from '@angular/core';\nimport { PlayerColour, PlayerSlotComponent } from '../player-slot/player-slot';\nimport { EmptyPlayerSlotComponent } from '../empty-player-slot/empty-player-slot';\n\nexport type PlayerSlotData = {\n  name: string;\n  colour: PlayerColour;\n};\n\n@Component({\n  selector: 'tikal-player-slot-list',\n  imports: [PlayerSlotComponent, EmptyPlayerSlotComponent],\n  templateUrl: './player-slot-list.html',\n  styleUrl: './player-slot-list.scss',\n})\nexport class PlayerSlotListComponent {\n  /** How many players fit in the lobby? */\n  readonly maxPlayers = input.required<number>();\n\n  /** What players are currently in the lobby? */\n  readonly players = input.required<PlayerSlotData[]>();\n}\n",
+            "sourceCode": "import { Component, input } from '@angular/core';\nimport { PlayerColour, PlayerSlotComponent } from '../player-slot/player-slot';\nimport { EmptyPlayerSlotComponent } from '../empty-player-slot/empty-player-slot';\nimport { User } from '@primeicons/angular';\nimport { TranslocoDirective } from '@jsverse/transloco';\n\nexport type PlayerSlotData = {\n  name: string;\n  colour: PlayerColour;\n};\n\n@Component({\n  selector: 'tikal-player-slot-list',\n  imports: [PlayerSlotComponent, EmptyPlayerSlotComponent, User, TranslocoDirective],\n  templateUrl: './player-slot-list.html',\n  styleUrl: './player-slot-list.scss',\n})\nexport class PlayerSlotListComponent {\n  /** How many players fit in the lobby? */\n  readonly maxPlayers = input.required<number>();\n\n  /** What players are currently in the lobby? */\n  readonly players = input.required<PlayerSlotData[]>();\n}\n",
             "styleUrl": "./player-slot-list.scss",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": ":host {\n  display: flex;\n  flex-direction: column;\n\n  width: 20rem;\n\n  border: var(--p-content-border-color) solid 1px;\n  border-radius: var(--p-content-border-radius);\n\n  overflow: hidden;\n}\n",
+                    "data": ":host {\n  display: flex;\n  flex-direction: column;\n\n  width: 20rem;\n}\n\n.players {\n  border: var(--p-content-border-color) solid 1px;\n  border-radius: var(--p-content-border-radius);\n\n  overflow: hidden;\n}\n\n.players > * + * {\n  border-top: var(--p-content-border-color) solid 1px;\n}\n\n.header {\n  display: flex;\n  flex-direction: row;\n\n  align-items: center;\n\n  gap: 0.5rem;\n\n  padding: 0.5rem 0.1rem;\n}\n",
                     "styleUrl": "./player-slot-list.scss"
                 }
             ],
@@ -1399,10 +1406,18 @@
                     {
                         "name": "EmptyPlayerSlotComponent",
                         "type": "component"
+                    },
+                    {
+                        "name": "User",
+                        "type": "module"
+                    },
+                    {
+                        "name": "TranslocoDirective",
+                        "type": "directive"
                     }
                 ]
             },
-            "templateData": "@for (player of players(); track $index) {\n  <tikal-player-slot [colour]=\"player.colour\" [name]=\"player.name\" />\n}\n@for (empty of [].constructor(maxPlayers() - players().length); track $index) {\n  <tikal-empty-player-slot text=\"Open Slot\" />\n}\n"
+            "templateData": "<ng-container *transloco=\"let t; prefix: 'player-slot-list'\">\n  <div class=\"header\">\n    <span>{{ t('players') }}</span>\n    <svg data-p-icon=\"user\"></svg>\n    <span>{{ players().length }}/{{ maxPlayers() }}</span>\n  </div>\n  <div class=\"players\">\n    @for (player of players(); track $index) {\n      <tikal-player-slot [colour]=\"player.colour\" [name]=\"player.name\" />\n    }\n    @for (empty of [].constructor(maxPlayers() - players().length); track $index) {\n      <tikal-empty-player-slot />\n    }\n  </div>\n</ng-container>\n"
         },
         {
             "name": "SkeletonComponent",
@@ -1504,6 +1519,17 @@
                 "defaultValue": "{\n  name: 'Disabled',\n  args: {\n    value: '',\n    disabled: true,\n    expand: false,\n    invalid: false,\n    required: false,\n    touched: false,\n    placeholder: 'Type something...',\n    maxLength: 100,\n  },\n}"
             },
             {
+                "name": "EmptyLobby",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/tikal-ui-components/src/stories/player-slot-list.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n  name: 'Empty lobby',\n  args: {\n    maxPlayers: 4,\n    players: [],\n  },\n}"
+            },
+            {
                 "name": "EmptyPlayerSlot",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -1546,6 +1572,17 @@
                 "deprecationMessage": "",
                 "type": "Story",
                 "defaultValue": "{\n  name: 'Full',\n  args: {\n    currentPlayers: 3,\n    maxPlayers: 3,\n  },\n}"
+            },
+            {
+                "name": "FullLobby",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/tikal-ui-components/src/stories/player-slot-list.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n  name: 'Full lobby',\n  args: {\n    maxPlayers: 3,\n    players: [\n      {\n        name: 'Player1',\n        colour: 'red',\n      },\n      {\n        name: 'Player2',\n        colour: 'green',\n      },\n      {\n        name: 'Player3',\n        colour: 'yellow',\n      },\n    ],\n  },\n}"
             },
             {
                 "name": "HalfFullLobby",
@@ -1743,7 +1780,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Meta<PlayerSlotComponent>",
-                "defaultValue": "{\n  title: 'Atoms/Player-Slot',\n  component: PlayerSlotComponent,\n  tags: ['autodocs'],\n  args: {\n    name: 'MyUser1234',\n    colour: 'red',\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
+                "defaultValue": "{\n  title: 'Atoms/Player-Slot',\n  component: PlayerSlotComponent,\n  tags: ['autodocs'],\n  argTypes: {\n    colour: {\n      control: { type: 'select' },\n    },\n  },\n  args: {\n    name: 'MyUser1234',\n    colour: 'red',\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
             },
             {
                 "name": "meta",
@@ -2323,6 +2360,52 @@
                     "defaultValue": "{\n  name: 'Holding value',\n  args: {\n    value: 'I typed this',\n    disabled: false,\n    expand: false,\n    invalid: false,\n    required: false,\n    touched: false,\n    placeholder: 'Type something...',\n    maxLength: 100,\n  },\n}"
                 }
             ],
+            "projects/tikal-ui-components/src/stories/player-slot-list.stories.ts": [
+                {
+                    "name": "EmptyLobby",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/tikal-ui-components/src/stories/player-slot-list.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n  name: 'Empty lobby',\n  args: {\n    maxPlayers: 4,\n    players: [],\n  },\n}"
+                },
+                {
+                    "name": "FullLobby",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/tikal-ui-components/src/stories/player-slot-list.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n  name: 'Full lobby',\n  args: {\n    maxPlayers: 3,\n    players: [\n      {\n        name: 'Player1',\n        colour: 'red',\n      },\n      {\n        name: 'Player2',\n        colour: 'green',\n      },\n      {\n        name: 'Player3',\n        colour: 'yellow',\n      },\n    ],\n  },\n}"
+                },
+                {
+                    "name": "HalfFullLobby",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/tikal-ui-components/src/stories/player-slot-list.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n  name: 'Half full lobby',\n  args: {\n    maxPlayers: 4,\n    players: [\n      {\n        name: 'Player1',\n        colour: 'red',\n      },\n      {\n        name: 'Player2',\n        colour: 'green',\n      },\n    ],\n  },\n}"
+                },
+                {
+                    "name": "meta",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/tikal-ui-components/src/stories/player-slot-list.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Meta<PlayerSlotListComponent>",
+                    "defaultValue": "{\n  title: 'Molecules/Player-Slot-List',\n  component: PlayerSlotListComponent,\n  tags: ['autodocs'],\n  args: {\n    maxPlayers: 4,\n    players: [\n      {\n        name: 'Player1',\n        colour: 'red',\n      },\n      {\n        name: 'Player2',\n        colour: 'green',\n      },\n    ],\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
+                }
+            ],
             "projects/tikal-ui-components/src/stories/empty-player-slot.stories.ts": [
                 {
                     "name": "EmptyPlayerSlot",
@@ -2345,30 +2428,6 @@
                     "deprecationMessage": "",
                     "type": "Meta<EmptyPlayerSlotComponent>",
                     "defaultValue": "{\n  title: 'Atoms/Empty-Player-Slot',\n  component: EmptyPlayerSlotComponent,\n  tags: ['autodocs'],\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
-                }
-            ],
-            "projects/tikal-ui-components/src/stories/player-slot-list.stories.ts": [
-                {
-                    "name": "HalfFullLobby",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/tikal-ui-components/src/stories/player-slot-list.stories.ts",
-                    "coverageIgnore": false,
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Story",
-                    "defaultValue": "{\n  name: 'Half full lobby',\n  args: {\n    maxPlayers: 4,\n    players: [\n      {\n        name: 'Player1',\n        colour: 'red',\n      },\n      {\n        name: 'Player2',\n        colour: 'green',\n      },\n    ],\n  },\n}"
-                },
-                {
-                    "name": "meta",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/tikal-ui-components/src/stories/player-slot-list.stories.ts",
-                    "coverageIgnore": false,
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Meta<PlayerSlotListComponent>",
-                    "defaultValue": "{\n  title: 'Molecules/Player-Slot-List',\n  component: PlayerSlotListComponent,\n  tags: ['autodocs'],\n  args: {\n    maxPlayers: 4,\n    players: [\n      {\n        name: 'Player1',\n        colour: 'red',\n      },\n      {\n        name: 'Player2',\n        colour: 'green',\n      },\n    ],\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
                 }
             ],
             "projects/tikal-ui-components/src/stories/button.stories.ts": [
@@ -2611,7 +2670,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Meta<PlayerSlotComponent>",
-                    "defaultValue": "{\n  title: 'Atoms/Player-Slot',\n  component: PlayerSlotComponent,\n  tags: ['autodocs'],\n  args: {\n    name: 'MyUser1234',\n    colour: 'red',\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
+                    "defaultValue": "{\n  title: 'Atoms/Player-Slot',\n  component: PlayerSlotComponent,\n  tags: ['autodocs'],\n  argTypes: {\n    colour: {\n      control: { type: 'select' },\n    },\n  },\n  args: {\n    name: 'MyUser1234',\n    colour: 'red',\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
                 },
                 {
                     "name": "PlayerSlot",
@@ -3561,6 +3620,26 @@
                 "linktype": "miscellaneous",
                 "linksubtype": "typealias",
                 "name": "Story",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/stories/player-slot-list.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "EmptyLobby",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/stories/player-slot-list.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "FullLobby",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
