@@ -1,4 +1,11 @@
 :host {
   display: flex;
   flex-direction: column;
+
+  width: 20rem;
+
+  border: var(--p-content-border-color) solid 1px;
+  border-radius: var(--p-content-border-radius);
+
+  overflow: hidden;
 }
