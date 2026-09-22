@@ -1,0 +1,21 @@
+<ng-container *transloco="let t; prefix: 'player-slot-list'">
+  <div class="header">
+    <span>{{ t('players') }}</span>
+    <svg data-p-icon="user"></svg>
+    <span>{{ players().length }}/{{ maxPlayers() }}</span>
+  </div>
+  <div class="players">
+    @if (isLoading()) {
+      @for (empty of [].constructor(maxPlayers()); track $index) {
+        <tikal-empty-player-slot [isLoading]="true" />
+      }
+    } @else {
+      @for (player of players(); track $index) {
+        <tikal-player-slot [colour]="player.colour" [name]="player.name" />
+      }
+      @for (empty of [].constructor(maxPlayers() - players().length); track $index) {
+        <tikal-empty-player-slot />
+      }
+    }
+  </div>
+</ng-container>

@@ -1,0 +1,28 @@
+:host {
+  display: flex;
+  flex-direction: column;
+
+  width: 20rem;
+}
+
+.players {
+  border: var(--p-content-border-color) solid 1px;
+  border-radius: var(--p-content-border-radius);
+
+  overflow: hidden;
+}
+
+.players > * + * {
+  border-top: var(--p-content-border-color) solid 1px;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+
+  align-items: center;
+
+  gap: 0.5rem;
+
+  padding: 0.5rem 0.1rem;
+}
