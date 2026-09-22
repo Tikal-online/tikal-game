@@ -7,11 +7,16 @@
     [visible]="true"
   >
     <p>{{ t('detail') }}</p>
-    <form [formRoot]="accountForm">
-      <tikal-input [formField]="accountForm.name" [placeholder]="t('placeholder')" />
+    <form id="account" [formRoot]="accountForm">
+      <tikal-input
+        [expand]="true"
+        [formField]="accountForm.name"
+        [placeholder]="t('placeholder')"
+      />
     </form>
     <ng-template #footer>
       <tikal-button
+        form="account"
         icon="send"
         type="submit"
         [isLoading]="accountForm().submitting()"
