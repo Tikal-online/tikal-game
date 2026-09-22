@@ -29,7 +29,7 @@
     "neverthrow": "^8.2.0",
     "primeng": "^22.1.0",
     "rxjs": "~7.8.0",
-    "tikal-ui-components": "^0.8.1",
+    "tikal-ui-components": "^0.9.0",
     "tslib": "~2.3.0"
   },
   "devDependencies": {
