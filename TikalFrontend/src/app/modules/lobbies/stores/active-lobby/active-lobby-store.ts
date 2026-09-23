@@ -32,8 +32,10 @@ export const ActiveLobbyStore = signalStore(
     _activeLobbyService: inject(ActiveLobbyService),
   })),
 
-  withComputed(({ loadingStatus: status }) => ({
-    isLoading: computed(() => status() === 'loading'),
+  withComputed(({ loadingStatus, lobby }) => ({
+    isLoading: computed(() => loadingStatus() === 'loading'),
+
+    isInLobby: computed(() => lobby() !== null),
   })),
 
   withMethods((store) => ({
