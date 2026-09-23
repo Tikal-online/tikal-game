@@ -1,0 +1,9 @@
+<ng-container *transloco="let t; prefix: 'lobbies.active'">
+  @if (activeLobbyStore.isLoading()) {
+    <h1>{{ t('loading-header') }}</h1>
+    <tikal-player-slot-list [isLoading]="true" [maxPlayers]="4" [players]="[]" />
+  } @else if (activeLobbyStore.lobby(); as lobby) {
+    <h1>{{ lobby.name }}</h1>
+    <tikal-player-slot-list [maxPlayers]="lobby.maxPlayers" [players]="lobby.players" />
+  }
+</ng-container>

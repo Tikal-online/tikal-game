@@ -27,6 +27,9 @@
     "preview": {
       "loading-header": "Loading...",
       "back-button-label": "Back to lobbies"
+    },
+    "active": {
+      "loading-header": "Loading..."
     }
   },
   "empty-player-slot": {

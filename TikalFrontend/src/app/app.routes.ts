@@ -6,6 +6,7 @@ import { hasAccount } from './core/route-guards/has-account/has-account-guard';
 import { CreateAccountComponent } from './core/components/create-account/create-account';
 import { hasNoAccount } from './core/route-guards/has-no-account/has-no-account-guard';
 import { LobbyPreviewComponent } from './modules/lobbies/components/lobby-preview/lobby-preview';
+import { ActiveLobbyComponent } from './modules/lobbies/components/active-lobby/active-lobby';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'Lobbies', pathMatch: 'full' },
@@ -15,6 +16,7 @@ export const routes: Routes = [
     canActivate: [isAuthenticated, hasAccount],
     children: [
       { path: '', component: LobbiesComponent },
+      { path: 'me', component: ActiveLobbyComponent },
       { path: ':id', component: LobbyPreviewComponent },
     ],
   },
