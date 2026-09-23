@@ -1329,7 +1329,7 @@
         },
         {
             "name": "PlayerSlotListComponent",
-            "id": "component-PlayerSlotListComponent-a35d870604d67c0649f87dd666bfb979b208c3001fe3cdbc8af3957e6c98e45159285123d78db432c2a58b3fb677b1020cff766fdc81e31ccd764661858a02a5",
+            "id": "component-PlayerSlotListComponent-ebecca39af72742934924593d275304607870e61b183f5cc0f633f70b22efca6e9d7e70c30bdff76caa228cdef6133c4caaa23a9d6e5a27e5235c5facffb2b7a",
             "file": "projects/tikal-ui-components/src/lib/components/player-slot-list/player-slot-list.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -1428,7 +1428,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, input } from '@angular/core';\nimport { PlayerColour, PlayerSlotComponent } from '../player-slot/player-slot';\nimport { EmptyPlayerSlotComponent } from '../empty-player-slot/empty-player-slot';\nimport { User } from '@primeicons/angular';\nimport { TranslocoDirective } from '@jsverse/transloco';\n\nexport type PlayerSlotData = {\n  name: string;\n  colour: PlayerColour;\n};\n\n@Component({\n  selector: 'tikal-player-slot-list',\n  imports: [PlayerSlotComponent, EmptyPlayerSlotComponent, User, TranslocoDirective],\n  templateUrl: './player-slot-list.html',\n  styleUrl: './player-slot-list.scss',\n})\nexport class PlayerSlotListComponent {\n  /** How many players fit in the lobby? */\n  readonly maxPlayers = input.required<number>();\n\n  /** What players are currently in the lobby? */\n  readonly players = input.required<PlayerSlotData[]>();\n\n  /** Are the players currenlty loading? */\n  readonly isLoading = input<boolean>(false);\n}\n",
+            "sourceCode": "import { Component, input } from '@angular/core';\nimport { PlayerColour, PlayerSlotComponent } from '../player-slot/player-slot';\nimport { EmptyPlayerSlotComponent } from '../empty-player-slot/empty-player-slot';\nimport { User } from '@primeicons/angular';\nimport { TranslocoDirective } from '@jsverse/transloco';\n\nexport type PlayerSlotData = {\n  name: string;\n  selectedColour: PlayerColour;\n};\n\n@Component({\n  selector: 'tikal-player-slot-list',\n  imports: [PlayerSlotComponent, EmptyPlayerSlotComponent, User, TranslocoDirective],\n  templateUrl: './player-slot-list.html',\n  styleUrl: './player-slot-list.scss',\n})\nexport class PlayerSlotListComponent {\n  /** How many players fit in the lobby? */\n  readonly maxPlayers = input.required<number>();\n\n  /** What players are currently in the lobby? */\n  readonly players = input.required<PlayerSlotData[]>();\n\n  /** Are the players currenlty loading? */\n  readonly isLoading = input<boolean>(false);\n}\n",
             "styleUrl": "./player-slot-list.scss",
             "assetsDirs": [],
             "styleUrlsData": [
@@ -1460,7 +1460,7 @@
                     }
                 ]
             },
-            "templateData": "<ng-container *transloco=\"let t; prefix: 'player-slot-list'\">\n  <div class=\"header\">\n    <span>{{ t('players') }}</span>\n    <svg data-p-icon=\"user\"></svg>\n    <span>{{ players().length }}/{{ maxPlayers() }}</span>\n  </div>\n  <div class=\"players\">\n    @if (isLoading()) {\n      @for (empty of [].constructor(maxPlayers()); track $index) {\n        <tikal-empty-player-slot [isLoading]=\"true\" />\n      }\n    } @else {\n      @for (player of players(); track $index) {\n        <tikal-player-slot [colour]=\"player.colour\" [name]=\"player.name\" />\n      }\n      @for (empty of [].constructor(maxPlayers() - players().length); track $index) {\n        <tikal-empty-player-slot />\n      }\n    }\n  </div>\n</ng-container>\n"
+            "templateData": "<ng-container *transloco=\"let t; prefix: 'player-slot-list'\">\n  <div class=\"header\">\n    <span>{{ t('players') }}</span>\n    <svg data-p-icon=\"user\"></svg>\n    <span>{{ players().length }}/{{ maxPlayers() }}</span>\n  </div>\n  <div class=\"players\">\n    @if (isLoading()) {\n      @for (empty of [].constructor(maxPlayers()); track $index) {\n        <tikal-empty-player-slot [isLoading]=\"true\" />\n      }\n    } @else {\n      @for (player of players(); track $index) {\n        <tikal-player-slot [colour]=\"player.selectedColour\" [name]=\"player.name\" />\n      }\n      @for (empty of [].constructor(maxPlayers() - players().length); track $index) {\n        <tikal-empty-player-slot />\n      }\n    }\n  </div>\n</ng-container>\n"
         },
         {
             "name": "SkeletonComponent",
@@ -1619,7 +1619,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
-                "defaultValue": "{\n  name: 'Full lobby',\n  args: {\n    maxPlayers: 3,\n    isLoading: false,\n    players: [\n      {\n        name: 'Player1',\n        colour: 'red',\n      },\n      {\n        name: 'Player2',\n        colour: 'green',\n      },\n      {\n        name: 'Player3',\n        colour: 'yellow',\n      },\n    ],\n  },\n}"
+                "defaultValue": "{\n  name: 'Full lobby',\n  args: {\n    maxPlayers: 3,\n    isLoading: false,\n    players: [\n      {\n        name: 'Player1',\n        selectedColour: 'red',\n      },\n      {\n        name: 'Player2',\n        selectedColour: 'green',\n      },\n      {\n        name: 'Player3',\n        selectedColour: 'yellow',\n      },\n    ],\n  },\n}"
             },
             {
                 "name": "HalfFullLobby",
@@ -1630,7 +1630,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
-                "defaultValue": "{\n  name: 'Half full lobby',\n  args: {\n    maxPlayers: 4,\n    isLoading: false,\n    players: [\n      {\n        name: 'Player1',\n        colour: 'red',\n      },\n      {\n        name: 'Player2',\n        colour: 'green',\n      },\n    ],\n  },\n}"
+                "defaultValue": "{\n  name: 'Half full lobby',\n  args: {\n    maxPlayers: 4,\n    isLoading: false,\n    players: [\n      {\n        name: 'Player1',\n        selectedColour: 'red',\n      },\n      {\n        name: 'Player2',\n        selectedColour: 'green',\n      },\n    ],\n  },\n}"
             },
             {
                 "name": "HalfwayFull",
@@ -1839,7 +1839,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Meta<PlayerSlotListComponent>",
-                "defaultValue": "{\n  title: 'Molecules/Player-Slot-List',\n  component: PlayerSlotListComponent,\n  tags: ['autodocs'],\n  args: {\n    maxPlayers: 4,\n    isLoading: false,\n    players: [\n      {\n        name: 'Player1',\n        colour: 'red',\n      },\n      {\n        name: 'Player2',\n        colour: 'green',\n      },\n    ],\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
+                "defaultValue": "{\n  title: 'Molecules/Player-Slot-List',\n  component: PlayerSlotListComponent,\n  tags: ['autodocs'],\n  args: {\n    maxPlayers: 4,\n    isLoading: false,\n    players: [\n      {\n        name: 'Player1',\n        selectedColour: 'red',\n      },\n      {\n        name: 'Player2',\n        selectedColour: 'green',\n      },\n    ],\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
             },
             {
                 "name": "meta",
@@ -2127,7 +2127,7 @@
                 "ctype": "miscellaneous",
                 "subtype": "typealias",
                 "coverageIgnore": false,
-                "rawtype": "{ name: string; colour: PlayerColour }",
+                "rawtype": "{ name: string; selectedColour: PlayerColour }",
                 "file": "projects/tikal-ui-components/src/lib/components/player-slot-list/player-slot-list.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
@@ -2451,7 +2451,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
-                    "defaultValue": "{\n  name: 'Full lobby',\n  args: {\n    maxPlayers: 3,\n    isLoading: false,\n    players: [\n      {\n        name: 'Player1',\n        colour: 'red',\n      },\n      {\n        name: 'Player2',\n        colour: 'green',\n      },\n      {\n        name: 'Player3',\n        colour: 'yellow',\n      },\n    ],\n  },\n}"
+                    "defaultValue": "{\n  name: 'Full lobby',\n  args: {\n    maxPlayers: 3,\n    isLoading: false,\n    players: [\n      {\n        name: 'Player1',\n        selectedColour: 'red',\n      },\n      {\n        name: 'Player2',\n        selectedColour: 'green',\n      },\n      {\n        name: 'Player3',\n        selectedColour: 'yellow',\n      },\n    ],\n  },\n}"
                 },
                 {
                     "name": "HalfFullLobby",
@@ -2462,7 +2462,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
-                    "defaultValue": "{\n  name: 'Half full lobby',\n  args: {\n    maxPlayers: 4,\n    isLoading: false,\n    players: [\n      {\n        name: 'Player1',\n        colour: 'red',\n      },\n      {\n        name: 'Player2',\n        colour: 'green',\n      },\n    ],\n  },\n}"
+                    "defaultValue": "{\n  name: 'Half full lobby',\n  args: {\n    maxPlayers: 4,\n    isLoading: false,\n    players: [\n      {\n        name: 'Player1',\n        selectedColour: 'red',\n      },\n      {\n        name: 'Player2',\n        selectedColour: 'green',\n      },\n    ],\n  },\n}"
                 },
                 {
                     "name": "Loading",
@@ -2484,7 +2484,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Meta<PlayerSlotListComponent>",
-                    "defaultValue": "{\n  title: 'Molecules/Player-Slot-List',\n  component: PlayerSlotListComponent,\n  tags: ['autodocs'],\n  args: {\n    maxPlayers: 4,\n    isLoading: false,\n    players: [\n      {\n        name: 'Player1',\n        colour: 'red',\n      },\n      {\n        name: 'Player2',\n        colour: 'green',\n      },\n    ],\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
+                    "defaultValue": "{\n  title: 'Molecules/Player-Slot-List',\n  component: PlayerSlotListComponent,\n  tags: ['autodocs'],\n  args: {\n    maxPlayers: 4,\n    isLoading: false,\n    players: [\n      {\n        name: 'Player1',\n        selectedColour: 'red',\n      },\n      {\n        name: 'Player2',\n        selectedColour: 'green',\n      },\n    ],\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
                 }
             ],
             "projects/tikal-ui-components/src/stories/button.stories.ts": [
@@ -2913,7 +2913,7 @@
                     "ctype": "miscellaneous",
                     "subtype": "typealias",
                     "coverageIgnore": false,
-                    "rawtype": "{ name: string; colour: PlayerColour }",
+                    "rawtype": "{ name: string; selectedColour: PlayerColour }",
                     "file": "projects/tikal-ui-components/src/lib/components/player-slot-list/player-slot-list.ts",
                     "deprecated": false,
                     "deprecationMessage": "",

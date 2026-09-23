@@ -11,7 +11,7 @@
       }
     } @else {
       @for (player of players(); track $index) {
-        <tikal-player-slot [colour]="player.colour" [name]="player.name" />
+        <tikal-player-slot [colour]="player.selectedColour" [name]="player.name" />
       }
       @for (empty of [].constructor(maxPlayers() - players().length); track $index) {
         <tikal-empty-player-slot />
