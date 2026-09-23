@@ -6,7 +6,7 @@ import { TranslocoDirective } from '@jsverse/transloco';
 
 export type PlayerSlotData = {
   name: string;
-  colour: PlayerColour;
+  selectedColour: PlayerColour;
 };
 
 @Component({
