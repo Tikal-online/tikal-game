@@ -37,7 +37,7 @@ export const ActiveLobbyStore = signalStore(
   })),
 
   withMethods((store) => ({
-    loadActiveLobby: rxMethod(
+    loadActiveLobby: rxMethod<void>(
       pipe(
         tap(() => patchState(store, { loadingStatus: 'loading' })),
         switchMap(() => {
