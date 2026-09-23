@@ -15,12 +15,12 @@ import { ActiveLobbyService } from '../../services/active-lobby/active-lobby-ser
 
 type ActiveLobbyState = {
   lobby: Lobby | null;
-  status: 'initial' | 'loading' | 'loaded' | 'error';
+  loadingStatus: 'initial' | 'loading' | 'loaded' | 'error';
 };
 
 const initialStatus: ActiveLobbyState = {
   lobby: null,
-  status: 'initial',
+  loadingStatus: 'initial',
 };
 
 export const ActiveLobbyStore = signalStore(
@@ -32,19 +32,19 @@ export const ActiveLobbyStore = signalStore(
     _activeLobbyService: inject(ActiveLobbyService),
   })),
 
-  withComputed(({ status }) => ({
+  withComputed(({ loadingStatus: status }) => ({
     isLoading: computed(() => status() === 'loading'),
   })),
 
   withMethods((store) => ({
     loadActiveLobby: rxMethod(
       pipe(
-        tap(() => patchState(store, { status: 'loading' })),
+        tap(() => patchState(store, { loadingStatus: 'loading' })),
         switchMap(() => {
           return store._activeLobbyService.getActiveLobby().pipe(
             tapResponse({
-              next: (result) => patchState(store, { lobby: result, status: 'loaded' }),
-              error: () => patchState(store, { lobby: null, status: 'error' }),
+              next: (result) => patchState(store, { lobby: result, loadingStatus: 'loaded' }),
+              error: () => patchState(store, { lobby: null, loadingStatus: 'error' }),
             }),
           );
         }),
