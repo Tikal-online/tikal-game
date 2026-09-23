@@ -23,6 +23,9 @@
         "detail": "There are no active lobbies matching your search criteria",
         "button": "Create Lobby"
       }
+    },
+    "preview": {
+      "loading-header": "Loading..."
     }
   },
   "empty-player-slot": {
