@@ -2,6 +2,7 @@
 <ng-container *transloco="let t; prefix: 'lobbies.list'">
   <p-table
     scrollHeight="flex"
+    selectionMode="single"
     [lazy]="true"
     [paginator]="lobbiesSummaryStore.hasMultiplePages()"
     [rows]="lobbiesSummaryStore.filter.pageSize()"
@@ -34,7 +35,7 @@
           <td><tikal-skeleton /></td>
         </tr>
       } @else {
-        <tr>
+        <tr [routerLink]="lobby.id">
           <td>{{ lobby.name }}</td>
           <td>
             <tikal-player-count

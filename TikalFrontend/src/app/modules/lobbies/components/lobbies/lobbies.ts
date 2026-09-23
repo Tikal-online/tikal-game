@@ -1,10 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { SkeletonComponent, PlayerCountComponent, ChipComponent } from 'tikal-ui-components';
 import { LobbySummaryStore } from '../../stores/lobby/lobby-summary-store';
-import { TableLazyLoadEvent, TableModule } from 'primeng/table';
+import { TableLazyLoadEvent, TableModule, TableRowSelectEvent } from 'primeng/table';
 import { LobbiesHeaderComponent } from '../lobbies-header/lobbies-header';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { LobbiesNotFoundComponent } from '../lobbies-not-found/lobbies-not-found';
+import { Router, RouterLink } from '@angular/router';
+import { LobbySummary } from '../../services/lobby/lobby-service';
 
 @Component({
   selector: 'tikal-lobbies',
@@ -18,9 +20,12 @@ import { LobbiesNotFoundComponent } from '../lobbies-not-found/lobbies-not-found
     LobbiesHeaderComponent,
     TranslocoDirective,
     LobbiesNotFoundComponent,
+    RouterLink,
   ],
 })
 export class LobbiesComponent {
+  private readonly router = inject(Router);
+
   readonly lobbiesSummaryStore = inject(LobbySummaryStore);
 
   constructor() {
