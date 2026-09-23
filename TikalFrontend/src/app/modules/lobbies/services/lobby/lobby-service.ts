@@ -1,7 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { inject, Service } from '@angular/core';
-import { Observable } from 'rxjs';
+import { catchError, map, Observable, of, throwError } from 'rxjs';
 import { PaginatedResult } from '../../../../core/dtos/paginated-result';
+import { Lobby } from '../../models/lobby';
 
 export type LobbySummary = {
   id: string;
@@ -28,5 +29,18 @@ export class LobbyService {
         searchText: searchText,
       },
     });
+  }
+
+  getLobby(id: number): Observable<Lobby | null> {
+    return this.http.get<Lobby>(this.url + `/${id}`).pipe(
+      map((lobby: Lobby) => lobby),
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 404) {
+          return of(null);
+        }
+
+        return throwError(() => error);
+      }),
+    );
   }
 }

@@ -5,6 +5,7 @@ import { TableLazyLoadEvent, TableModule } from 'primeng/table';
 import { LobbiesHeaderComponent } from '../lobbies-header/lobbies-header';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { LobbiesNotFoundComponent } from '../lobbies-not-found/lobbies-not-found';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'tikal-lobbies',
@@ -18,6 +19,7 @@ import { LobbiesNotFoundComponent } from '../lobbies-not-found/lobbies-not-found
     LobbiesHeaderComponent,
     TranslocoDirective,
     LobbiesNotFoundComponent,
+    RouterLink,
   ],
 })
 export class LobbiesComponent {
