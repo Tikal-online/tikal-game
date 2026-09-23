@@ -1,3 +1,7 @@
-@if (previewLobbyStore.lobby(); as lobby) {
+@if (previewLobbyStore.isLoading()) {
+  <h1>Loading...</h1>
+  <tikal-player-slot-list [isLoading]="true" [maxPlayers]="4" [players]="[]" />
+} @else if (previewLobbyStore.lobby(); as lobby) {
   <h1>{{ lobby.name }}</h1>
+  <tikal-player-slot-list [maxPlayers]="lobby.maxPlayers" [players]="[]" />
 }

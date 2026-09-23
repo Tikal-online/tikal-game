@@ -24,5 +24,11 @@
         "button": "Create Lobby"
       }
     }
+  },
+  "empty-player-slot": {
+    "open-slot": "Open Slot"
+  },
+  "player-slot-list": {
+    "players": "Players"
   }
 }
