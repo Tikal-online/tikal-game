@@ -36,6 +36,7 @@
                       routerLinkActive
                       type="button"
                       [isActive]="lobbiesLink.isActive"
+                      [routerLinkActiveOptions]="{ exact: true }"
                     >
                       <svg data-p-icon="home"></svg>
                       <span>Lobbies</span>
@@ -57,6 +58,28 @@
                 </p-sidebar-menu>
               </p-sidebar-group-content>
             </p-sidebar-group>
+            @if (activeLobbyStore.isInLobby()) {
+              <p-sidebar-group>
+                <p-sidebar-group-label>Live</p-sidebar-group-label>
+                <p-sidebar-group-content>
+                  <p-sidebar-menu>
+                    <p-sidebar-menu-item>
+                      <button
+                        #activeLobbyLink="routerLinkActive"
+                        pSidebarMenuButton
+                        routerLink="/Lobbies/me"
+                        routerLinkActive
+                        type="button"
+                        [isActive]="activeLobbyLink.isActive"
+                      >
+                        <svg data-p-icon="trophy"></svg>
+                        <span>Active Lobby</span>
+                      </button>
+                    </p-sidebar-menu-item>
+                  </p-sidebar-menu>
+                </p-sidebar-group-content>
+              </p-sidebar-group>
+            }
           </p-sidebar-content>
         </p-sidebar-panel>
       </p-sidebar-aside>

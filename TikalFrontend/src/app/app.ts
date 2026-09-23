@@ -8,8 +8,10 @@ import { User } from '@primeicons/angular/user';
 import { Home } from '@primeicons/angular/home';
 import { Sidebar } from '@primeicons/angular/sidebar';
 import { Crown } from '@primeicons/angular/crown';
+import { Trophy } from '@primeicons/angular/trophy';
 import { ButtonComponent } from 'tikal-ui-components';
 import { ThemeStore } from './core/stores/theme-store/theme-store';
+import { ActiveLobbyStore } from './modules/lobbies/stores/active-lobby/active-lobby-store';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -22,6 +24,7 @@ import { ThemeStore } from './core/stores/theme-store/theme-store';
     Home,
     User,
     Crown,
+    Trophy,
     Sidebar,
     RouterLinkWithHref,
     RouterLinkActive,
@@ -36,9 +39,15 @@ export class App {
 
   private readonly themeStore = inject(ThemeStore);
 
+  readonly activeLobbyStore = inject(ActiveLobbyStore);
+
   readonly initializationFailed = computed(
     () => this.accountStore.initializationFailed() || this.authStore.initializationFailed(),
   );
+
+  constructor() {
+    this.activeLobbyStore.loadActiveLobby();
+  }
 
   toggleDarkMode(): void {
     this.themeStore.toggleDarkMode();
