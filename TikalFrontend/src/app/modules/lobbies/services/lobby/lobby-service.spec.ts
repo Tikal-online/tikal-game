@@ -5,11 +5,13 @@ import { PaginatedResult } from '../../../../core/dtos/paginated-result';
 import { catchError, firstValueFrom, of } from 'rxjs';
 import { Lobby } from '../../models/lobby';
 import {
+  CONFLICT,
   ERROR_RESPONSES,
   HttpResponseData,
   NOT_FOUND,
 } from '../../../../core/tests/http-responses';
 import { HttpErrorResponse } from '@angular/common/http';
+import { ID_TEST_CASES } from '../../../../core/tests/id-test-cases';
 
 const DEFAULT_PAGINATED_RESULT: PaginatedResult<LobbySummary[]> = {
   data: [],
@@ -65,7 +67,7 @@ describe('LobbyService', () => {
     },
   );
 
-  test.for<number>([1, 2, 353452])(
+  test.for<number>(ID_TEST_CASES)(
     'getLobby returns lobby when GET /Api/Lobbies/%i returns Success',
     async (id) => {
       // given
@@ -79,7 +81,7 @@ describe('LobbyService', () => {
     },
   );
 
-  test.for<number>([1, 2, 353452])(
+  test.for<number>(ID_TEST_CASES)(
     'getLobby returns null when GET /Api/Lobbies/%i returns NotFound',
     async (id) => {
       // given
@@ -110,6 +112,104 @@ describe('LobbyService', () => {
 
       // when & then
       const req = http.expectOne({ method: 'GET', url: `/Api/Lobbies/${1}` });
+      req.flush('', error);
+
+      await promise;
+
+      expect(capturedError!.status).toEqual(error.status);
+    },
+  );
+
+  test.for<number>(ID_TEST_CASES)(
+    'joinLobby returns success when POST /Api/Lobbies/%i/Players returns Success',
+    async (id) => {
+      // given
+      const promise = firstValueFrom(service.joinLobby(id));
+
+      // when & then
+      const req = http.expectOne({ method: 'POST', url: `/Api/Lobbies/${id}/Players` });
+      req.flush(DEFAULT_LOBBY);
+
+      const result = await promise;
+
+      expect(result.isOk()).toBeTruthy();
+    },
+  );
+
+  test.for<number>(ID_TEST_CASES)(
+    'joinLobby returns PlayerAlreadyInLobby when POST /Api/Lobbies/%i/Players returns 409 with matching title',
+    async (id) => {
+      // given
+      const promise = firstValueFrom(service.joinLobby(id));
+
+      // when & then
+      const req = http.expectOne({ method: 'POST', url: `/Api/Lobbies/${id}/Players` });
+      req.flush({ title: 'Player is already in a lobby' }, CONFLICT);
+
+      const result = await promise;
+
+      expect(result.isErr()).toBeTruthy();
+      if (result.isErr()) {
+        expect(result.error).toEqual({ type: 'PlayerAlreadyInLobby' });
+      }
+    },
+  );
+
+  test.for<number>(ID_TEST_CASES)(
+    'joinLobby returns LobbyFull when POST /Api/Lobbies/%i/Players returns 409 with matching title',
+    async (id) => {
+      // given
+      const promise = firstValueFrom(service.joinLobby(id));
+
+      // when & then
+      const req = http.expectOne({ method: 'POST', url: `/Api/Lobbies/${id}/Players` });
+      req.flush({ title: 'Lobby is full' }, CONFLICT);
+
+      const result = await promise;
+
+      expect(result.isErr()).toBeTruthy();
+      if (result.isErr()) {
+        expect(result.error).toEqual({ type: 'LobbyFull' });
+      }
+    },
+  );
+
+  test.for<number>(ID_TEST_CASES)(
+    'joinLobby returns LobbyNotFound when POST /Api/Lobbies/%i/Players returns 404',
+    async (id) => {
+      // given
+      const promise = firstValueFrom(service.joinLobby(id));
+
+      // when & then
+      const req = http.expectOne({ method: 'POST', url: `/Api/Lobbies/${id}/Players` });
+      req.flush('', NOT_FOUND);
+
+      const result = await promise;
+
+      expect(result.isErr()).toBeTruthy();
+      if (result.isErr()) {
+        expect(result.error).toEqual({ type: 'LobbyNotFound' });
+      }
+    },
+  );
+
+  test.for<HttpResponseData>(ERROR_RESPONSES.filter((error) => ![404, 409].includes(error.status)))(
+    'joinLobby throws error when GET /Api/Lobbies/id returns $status',
+    async (error: HttpResponseData) => {
+      // given
+      let capturedError: HttpErrorResponse;
+
+      const promise = firstValueFrom(
+        service.joinLobby(1).pipe(
+          catchError((httpError) => {
+            capturedError = httpError;
+            return of(httpError);
+          }),
+        ),
+      );
+
+      // when & then
+      const req = http.expectOne({ method: 'POST', url: `/Api/Lobbies/${1}/Players` });
       req.flush('', error);
 
       await promise;

@@ -26,7 +26,8 @@
     },
     "preview": {
       "loading-header": "Loading...",
-      "back-button-label": "Back to lobbies"
+      "back-button-label": "Back to lobbies",
+      "join-button-label": "Join"
     },
     "active": {
       "loading-header": "Loading..."

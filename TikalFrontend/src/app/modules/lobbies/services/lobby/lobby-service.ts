@@ -3,6 +3,8 @@ import { inject, Service } from '@angular/core';
 import { catchError, map, Observable, of, throwError } from 'rxjs';
 import { PaginatedResult } from '../../../../core/dtos/paginated-result';
 import { Lobby } from '../../models/lobby';
+import { err, ok, Result } from 'neverthrow';
+import { LobbyFull, LobbyNotFound, PlayerAlreadyInLobby } from '../../errors/lobby-errors';
 
 export type LobbySummary = {
   id: string;
@@ -37,6 +39,28 @@ export class LobbyService {
       catchError((error: HttpErrorResponse) => {
         if (error.status === 404) {
           return of(null);
+        }
+
+        return throwError(() => error);
+      }),
+    );
+  }
+
+  joinLobby(
+    id: number,
+  ): Observable<Result<void, PlayerAlreadyInLobby | LobbyNotFound | LobbyFull>> {
+    return this.http.post<void>(this.url + `/${id}/Players`, '').pipe(
+      map(() => ok()),
+      catchError((error: HttpErrorResponse) => {
+        // TODO: improve problem response error handling
+        if (error.status === 409) {
+          if (error.error.title === 'Player is already in a lobby') {
+            return err({ type: 'PlayerAlreadyInLobby' } as const);
+          } else {
+            return err({ type: 'LobbyFull' } as const);
+          }
+        } else if (error.status === 404) {
+          return err({ type: 'LobbyNotFound' } as const);
         }
 
         return throwError(() => error);
