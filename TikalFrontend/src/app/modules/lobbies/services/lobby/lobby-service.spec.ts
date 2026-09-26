@@ -11,6 +11,7 @@ import {
   NOT_FOUND,
 } from '../../../../core/tests/http-responses';
 import { HttpErrorResponse } from '@angular/common/http';
+import { ID_TEST_CASES } from '../../../../core/tests/id-test-cases';
 
 const DEFAULT_PAGINATED_RESULT: PaginatedResult<LobbySummary[]> = {
   data: [],
@@ -66,7 +67,7 @@ describe('LobbyService', () => {
     },
   );
 
-  test.for<number>([1, 2, 353452])(
+  test.for<number>(ID_TEST_CASES)(
     'getLobby returns lobby when GET /Api/Lobbies/%i returns Success',
     async (id) => {
       // given
@@ -80,7 +81,7 @@ describe('LobbyService', () => {
     },
   );
 
-  test.for<number>([1, 2, 353452])(
+  test.for<number>(ID_TEST_CASES)(
     'getLobby returns null when GET /Api/Lobbies/%i returns NotFound',
     async (id) => {
       // given
@@ -119,7 +120,7 @@ describe('LobbyService', () => {
     },
   );
 
-  test.for<number>([1, 2, 209348902])(
+  test.for<number>(ID_TEST_CASES)(
     'joinLobby returns success when POST /Api/Lobbies/%i/Players returns Success',
     async (id) => {
       // given
@@ -135,7 +136,7 @@ describe('LobbyService', () => {
     },
   );
 
-  test.for<number>([1, 2, 209348902])(
+  test.for<number>(ID_TEST_CASES)(
     'joinLobby returns PlayerAlreadyInLobby when POST /Api/Lobbies/%i/Players returns 409 with matching title',
     async (id) => {
       // given
@@ -154,7 +155,7 @@ describe('LobbyService', () => {
     },
   );
 
-  test.for<number>([1, 2, 209348902])(
+  test.for<number>(ID_TEST_CASES)(
     'joinLobby returns LobbyFull when POST /Api/Lobbies/%i/Players returns 409 with matching title',
     async (id) => {
       // given
@@ -173,7 +174,7 @@ describe('LobbyService', () => {
     },
   );
 
-  test.for<number>([1, 2, 209348902])(
+  test.for<number>(ID_TEST_CASES)(
     'joinLobby returns LobbyNotFound when POST /Api/Lobbies/%i/Players returns 404',
     async (id) => {
       // given
