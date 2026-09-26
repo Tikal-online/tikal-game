@@ -1,5 +1,5 @@
-import { Component, inject } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { Component, effect, inject } from '@angular/core';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { PreviewLobbyStore } from '../../stores/lobby/preview-lobby-store';
 import { PlayerSlotListComponent, ButtonComponent } from 'tikal-ui-components';
 import { TranslocoDirective } from '@jsverse/transloco';
@@ -11,6 +11,8 @@ import { TranslocoDirective } from '@jsverse/transloco';
   styleUrl: './lobby-preview.scss',
 })
 export class LobbyPreviewComponent {
+  private readonly router = inject(Router);
+
   private readonly route = inject(ActivatedRoute);
 
   readonly previewLobbyStore = inject(PreviewLobbyStore);
@@ -19,5 +21,11 @@ export class LobbyPreviewComponent {
     const id = Number(this.route.snapshot.paramMap.get('id'));
 
     this.previewLobbyStore.loadLobby(id);
+
+    effect(() => {
+      if (this.previewLobbyStore.joiningStatus() === 'joined') {
+        this.router.navigate(['/Lobbies/me']);
+      }
+    });
   }
 }

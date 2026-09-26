@@ -14,4 +14,11 @@
     <h1>{{ lobby.name }}</h1>
     <tikal-player-slot-list [maxPlayers]="lobby.maxPlayers" [players]="lobby.players" />
   }
+  <tikal-button
+    label="Join"
+    size="large"
+    type="button"
+    [isLoading]="previewLobbyStore.isJoining()"
+    (clicked)="previewLobbyStore.joinLobby()"
+  />
 </ng-container>
