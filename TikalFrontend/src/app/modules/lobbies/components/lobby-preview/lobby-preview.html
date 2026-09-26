@@ -1,17 +1,22 @@
 <ng-container *transloco="let t; prefix: 'lobbies.preview'">
-  <tikal-button
-    colour="secondary"
-    icon="arrow-left"
-    routerLink=".."
-    type="button"
-    [label]="t('back-button-label')"
-    [text]="true"
-  />
+  <div>
+    <tikal-button
+      colour="secondary"
+      icon="arrow-left"
+      routerLink=".."
+      type="button"
+      [label]="t('back-button-label')"
+      [text]="true"
+    />
+    @if (previewLobbyStore.isLoading()) {
+      <h1>{{ t('loading-header') }}</h1>
+    } @else if (previewLobbyStore.lobby(); as lobby) {
+      <h1>{{ lobby.name }}</h1>
+    }
+  </div>
   @if (previewLobbyStore.isLoading()) {
-    <h1>{{ t('loading-header') }}</h1>
     <tikal-player-slot-list [isLoading]="true" [maxPlayers]="4" [players]="[]" />
   } @else if (previewLobbyStore.lobby(); as lobby) {
-    <h1>{{ lobby.name }}</h1>
     <tikal-player-slot-list [maxPlayers]="lobby.maxPlayers" [players]="lobby.players" />
   }
   <tikal-button
