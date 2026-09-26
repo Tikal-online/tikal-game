@@ -21,10 +21,10 @@
   }
   <tikal-button
     icon="plus"
-    label="Join"
     size="large"
     type="button"
     [isLoading]="previewLobbyStore.isJoining()"
+    [label]="t('join-button-label')"
     (clicked)="previewLobbyStore.joinLobby()"
   />
 </ng-container>
