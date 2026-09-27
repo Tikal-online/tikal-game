@@ -6,4 +6,11 @@
     <h1>{{ lobby.name }}</h1>
     <tikal-player-slot-list [maxPlayers]="lobby.maxPlayers" [players]="lobby.players" />
   }
+  <tikal-button
+    label="Leave"
+    size="large"
+    type="button"
+    [isLoading]="activeLobbyStore.isLeaving()"
+    (clicked)="activeLobbyStore.leaveActiveLobby()"
+  />
 </ng-container>
