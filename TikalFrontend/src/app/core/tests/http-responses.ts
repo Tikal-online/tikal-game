@@ -54,6 +54,11 @@ export const ERROR_RESPONSES = [
   CONFLICT,
 ];
 
+export const OK = {
+  status: 200,
+  statusText: 'Ok',
+};
+
 export const CREATED = {
   status: 201,
   statusText: 'Created',
