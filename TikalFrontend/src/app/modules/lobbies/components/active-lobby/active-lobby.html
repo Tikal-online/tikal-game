@@ -7,10 +7,10 @@
     <tikal-player-slot-list [maxPlayers]="lobby.maxPlayers" [players]="lobby.players" />
   }
   <tikal-button
-    label="Leave"
     size="large"
     type="button"
     [isLoading]="activeLobbyStore.isLeaving()"
+    [label]="t('leave-button-label')"
     (clicked)="activeLobbyStore.leaveActiveLobby()"
   />
 </ng-container>
