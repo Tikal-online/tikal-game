@@ -30,7 +30,8 @@
       "join-button-label": "Join"
     },
     "active": {
-      "loading-header": "Loading..."
+      "loading-header": "Loading...",
+      "leave-button-label": "Leave"
     }
   },
   "empty-player-slot": {
