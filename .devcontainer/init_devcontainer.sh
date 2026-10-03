@@ -5,6 +5,9 @@ set -e
 echo "Setting ownership for .NET user secrets..."
 sudo chown -R vscode:vscode /home/vscode/.microsoft/usersecrets
 
+echo "Setting ownership for dataprotection keys..."
+sudo chown -R vscode:vscode /home/vscode/.aspnet/DataProtection-Keys
+
 echo "Adding development CA certificate..."
 sudo cp /.aspnet/dev-certs/dotnet-dev-ca.crt /usr/local/share/ca-certificates/
 

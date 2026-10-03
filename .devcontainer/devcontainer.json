@@ -16,6 +16,7 @@
   ],
   "mounts": [
     "source=usersecrets,target=/home/vscode/.microsoft/usersecrets,type=volume",
+    "source=dataprotection,target=/home/vscode/.aspnet/DataProtection-Keys,type=volume",
     "source=${localEnv:HOME}/.aspnet/dev-certs,target=/.aspnet/dev-certs,type=bind,consistency=cached"
   ],
   "remoteEnv": {
