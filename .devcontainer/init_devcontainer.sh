@@ -19,3 +19,7 @@ rm dotnet-install.sh
 
 echo "Importing development certificate..."
 dotnet dev-certs https --import /.aspnet/dev-certs/dotnet-dev-cert.pfx --clean -p secret
+
+echo "Extracting crt and key"
+openssl pkcs12 -in /.aspnet/dev-certs/dotnet-dev-cert.pfx -clcerts -nokeys -out /.aspnet/dev-certs/cert.crt -passin pass:'secret'
+openssl pkcs12 -in /.aspnet/dev-certs/dotnet-dev-cert.pfx -nocerts -out /.aspnet/dev-certs/key.key -passin pass:'secret' -nodes
