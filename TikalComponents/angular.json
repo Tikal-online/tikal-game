@@ -40,8 +40,8 @@
             "port": 6006,
             "styles": ["src/styles.css"],
             "https": true,
-            "sslKey": "/.aspnet/dev-certs/trust/key.key",
-            "sslCert": "/.aspnet/dev-certs/trust/cert.crt"
+            "sslKey": "/.aspnet/dev-certs/key.key",
+            "sslCert": "/.aspnet/dev-certs/cert.crt"
           }
         },
         "build-storybook": {
