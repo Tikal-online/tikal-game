@@ -4,7 +4,6 @@
   "features": {
     "ghcr.io/devcontainers/features/git:1": {},
     "ghcr.io/devcontainers/features/git-lfs:1": {},
-    "ghcr.io/microsoft/aspire-devcontainer-feature/aspire:2": {},
     "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {},
     "ghcr.io/devcontainers/features/node:2.0.0": {
       "version": "24"
@@ -17,10 +16,10 @@
   ],
   "mounts": [
     "source=usersecrets,target=/home/vscode/.microsoft/usersecrets,type=volume",
-    "source=${localEnv:HOME}/.aspnet/dev-certs,target=/.aspnet/dev-certs/trust,type=bind,consistency=cached"
+    "source=${localEnv:HOME}/.aspnet/dev-certs,target=/.aspnet/dev-certs,type=bind,consistency=cached"
   ],
   "remoteEnv": {
-    "SSL_CERT_DIR": "/usr/lib/ssl/certs:/home/vscode/.aspnet/dev-certs/trust"
+    "SSL_CERT_DIR": "/usr/lib/ssl/certs:/home/vscode/.aspnet/dev-certs"
   },
   "postStartCommand": "./.devcontainer/init_devcontainer.sh",
   "remoteUser": "vscode"

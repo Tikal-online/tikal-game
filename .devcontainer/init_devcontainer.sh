@@ -6,7 +6,7 @@ echo "Setting ownership for .NET user secrets..."
 sudo chown -R vscode:vscode /home/vscode/.microsoft/usersecrets
 
 echo "Adding development CA certificate..."
-sudo cp /.aspnet/dev-certs/trust/dotnet-dev-ca.pem /etc/ssl/certs/
+sudo cp /.aspnet/dev-certs/dotnet-dev-ca.crt /usr/local/share/ca-certificates/
 
 echo "Updating certificate store..."
 sudo update-ca-certificates
@@ -18,4 +18,4 @@ chmod +x dotnet-install.sh
 rm dotnet-install.sh
 
 echo "Importing development certificate..."
-dotnet dev-certs https --import /.aspnet/dev-certs/trust/dotnet-dev-cert.pfx --clean -p secret
+dotnet dev-certs https --import /.aspnet/dev-certs/dotnet-dev-cert.pfx --clean -p secret
