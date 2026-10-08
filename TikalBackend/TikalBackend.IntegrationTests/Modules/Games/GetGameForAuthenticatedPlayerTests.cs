@@ -5,7 +5,6 @@ using RestApi.Controllers.Lobbies.Dtos;
 using TikalBackend.IntegrationTests.Extensions;
 using TikalBackend.IntegrationTests.Modules.Lobbies;
 using TikalBackend.IntegrationTests.Modules.Lobbies.Dtos;
-using Xunit;
 
 namespace TikalBackend.IntegrationTests.Modules.Games;
 
@@ -73,6 +72,24 @@ public sealed class GetGameForAuthenticatedPlayerTests : IntegrationTestFixture
 
         TestUser[] expectedPlayers = [TestUser.Default, TestUser.TestUser1];
 
-        // TODO: add assertions
+        Assert.Multiple(
+            () => Assert.Equal(HttpStatusCode.OK, response.StatusCode),
+            () => Assert.Equal(expectedPlayers.Length, game.Players.Count),
+            () => Assert.Equal(4, game.Tiles.Count),
+            () =>
+            {
+                foreach (var expectedPlayer in expectedPlayers)
+                {
+                    var player = game.Players.FirstOrDefault(p => p.UserId == expectedPlayer.UserId);
+
+                    Assert.Multiple(
+                        () => Assert.NotNull(player),
+                        () => Assert.Equal(expectedPlayer.UserId, player?.UserId),
+                        () => Assert.Equal(expectedPlayer.Name, player?.Name),
+                        () => Assert.Equal(0, player?.Points)
+                    );
+                }
+            }
+        );
     }
 }
