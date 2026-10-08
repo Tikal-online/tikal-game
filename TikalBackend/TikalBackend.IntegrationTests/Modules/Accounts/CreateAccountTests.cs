@@ -7,21 +7,23 @@ using TikalBackend.IntegrationTests.Modules.Accounts.Dtos;
 
 namespace TikalBackend.IntegrationTests.Modules.Accounts;
 
-internal sealed class CreateAccountTests : IntegrationTestFixture
+public sealed class CreateAccountTests(TestContainerSetup setup) : IntegrationTestFixture
 {
-    [TestCaseSource(typeof(CreateAccountDtoTestCases), nameof(CreateAccountDtoTestCases.ValidCreateAccountDtos))]
+    [Theory]
+    [ClassData(typeof(ValidCreateAccountDtos))]
     public async Task GivenUnauthenticatedUser_WhenCreateAccount_ThenReturnsUnauthorized(
         CreateAccountDto createAccountDto
     )
     {
         // when
-        var response = await Client.PostAsJsonAsync(AccountUrl.CreateAccount, createAccountDto);
+        var response = await Client.PostAsJsonAsync(AccountUrl.CreateAccount, createAccountDto, TestContext.Current.CancellationToken);
 
         // then
-        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
+        Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
     }
 
-    [TestCaseSource(typeof(CreateAccountDtoTestCases), nameof(CreateAccountDtoTestCases.InvalidCreateAccountDtos))]
+    [Theory]
+    [ClassData(typeof(ValidCreateAccountDtos))]
     public async Task GivenInvalidCreateAccountDto_WhenCreateAccount_ThenReturnsBadRequest(
         CreateAccountDto createAccountDto
     )
@@ -30,10 +32,11 @@ internal sealed class CreateAccountTests : IntegrationTestFixture
         var response = await Client.PostAsyncWithUser(AccountUrl.CreateAccount, TestUser.Default, createAccountDto);
 
         // then
-        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
     }
 
-    [TestCaseSource(typeof(CreateAccountDtoTestCases), nameof(CreateAccountDtoTestCases.ValidCreateAccountDtos))]
+    [Theory]
+    [ClassData(typeof(ValidCreateAccountDtos))]
     public async Task GivenExistingAccountForUser_WhenCreateAccount_ThenReturnsConflict(
         CreateAccountDto createAccountDto
     )
@@ -45,10 +48,11 @@ internal sealed class CreateAccountTests : IntegrationTestFixture
         var response = await Client.PostAsyncWithUser(AccountUrl.CreateAccount, TestUser.Default, createAccountDto);
 
         // then
-        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Conflict));
+        Assert.Equal(HttpStatusCode.Conflict, response.StatusCode);
     }
 
-    [TestCaseSource(typeof(CreateAccountDtoTestCases), nameof(CreateAccountDtoTestCases.ValidCreateAccountDtos))]
+    [Theory]
+    [ClassData(typeof(ValidCreateAccountDtos))]
     public async Task GivenNoAccountForUser_WhenCreateAccount_ThenReturnsCreatedAccount(
         CreateAccountDto createAccountDto
     )
@@ -56,16 +60,14 @@ internal sealed class CreateAccountTests : IntegrationTestFixture
         // when
         var response = await Client.PostAsyncWithUser(AccountUrl.CreateAccount, TestUser.Default, createAccountDto);
 
-        var account = await response.Content.ReadFromJsonAsync<AccountModel>();
+        var account = await response.Content.ReadFromJsonAsync<AccountModel>(TestContext.Current.CancellationToken);
 
         // then
-        using (Assert.EnterMultipleScope())
-        {
-            Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Created));
-
-            Assert.That(account, Is.Not.Null);
-            Assert.That(account!.UserId, Is.EqualTo(TestUser.Default.UserId));
-            Assert.That(account.Name, Is.EqualTo(createAccountDto.Name));
-        }
+        Assert.Multiple(
+            () => Assert.Equal(HttpStatusCode.Created, response.StatusCode),
+            () => Assert.NotNull(account),
+            () => Assert.Equal(TestUser.Default.UserId, account?.UserId),
+            () => Assert.Equal(createAccountDto.Name, account?.Name)
+        );
     }
 }

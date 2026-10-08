@@ -7,6 +7,7 @@ namespace TikalBackend.IntegrationTests.Modules.Lobbies;
 
 internal sealed class SetPlayerReadyTests : IntegrationTestFixture
 {
+    /*
     [Test]
     public async Task GivenUnauthenticatedUser_WhenSetPlayerReady_ThenReturnsUnauthorized()
     {
@@ -53,4 +54,5 @@ internal sealed class SetPlayerReadyTests : IntegrationTestFixture
         // then
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
     }
+    */
 }

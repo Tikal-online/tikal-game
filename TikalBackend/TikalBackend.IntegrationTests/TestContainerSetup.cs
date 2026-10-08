@@ -1,24 +1,24 @@
 using Testcontainers.PostgreSql;
+using TikalBackend.IntegrationTests;
 using TikalBackend.IntegrationTests.Utils;
+
+[assembly: AssemblyFixture(typeof(TestContainerSetup))]
+[assembly: CollectionBehavior(DisableTestParallelization = true)]
 
 namespace TikalBackend.IntegrationTests;
 
-[SetUpFixture]
-internal sealed class TestContainerSetup
+
+public class TestContainerSetup : IAsyncLifetime
 {
-    private PostgreSqlContainer databaseContainer;
+    public PostgreSqlContainer DatabaseContainer { get; } = PostgresDatabase.Instance;
 
-    [OneTimeSetUp]
-    public async Task Setup()
+    public async ValueTask InitializeAsync()
     {
-        databaseContainer = PostgresDatabase.Instance;
-
-        await databaseContainer.StartAsync();
+        await DatabaseContainer.StartAsync();
     }
 
-    [OneTimeTearDown]
-    public async Task TearDown()
+    public async ValueTask DisposeAsync()
     {
-        await databaseContainer.StopAsync();
+        await DatabaseContainer.StopAsync();
     }
 }

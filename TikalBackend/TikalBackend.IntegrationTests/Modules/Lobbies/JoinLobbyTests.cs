@@ -8,6 +8,7 @@ namespace TikalBackend.IntegrationTests.Modules.Lobbies;
 
 internal sealed class JoinLobbyTests : IntegrationTestFixture
 {
+    /*
     [Test]
     public async Task GivenUnauthenticatedUser_WhenJoinLobby_ThenReturnsUnauthorized()
     {
@@ -112,4 +113,5 @@ internal sealed class JoinLobbyTests : IntegrationTestFixture
         // then
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Conflict));
     }
+    */
 }

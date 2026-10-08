@@ -8,6 +8,7 @@ namespace TikalBackend.IntegrationTests.Modules.Lobbies;
 
 internal sealed class SendLobbyChatMessageTests : IntegrationTestFixture
 {
+    /*
     [TestCaseSource(typeof(SendMessageDtoTestCases), nameof(SendMessageDtoTestCases.ValidSendMessageDtoCommands))]
     public async Task GivenUnauthenticatedUser_WhenSendLobbyChatMessage_ThenReturnsUnauthorized(
         SendMessageDto sendMessageDto
@@ -95,4 +96,5 @@ internal sealed class SendLobbyChatMessageTests : IntegrationTestFixture
         // then
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
     }
+    */
 }

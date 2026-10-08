@@ -9,24 +9,31 @@ using TikalBackend.IntegrationTests.Utils;
 
 namespace TikalBackend.IntegrationTests;
 
-internal abstract class IntegrationTestFixture : TestContainerFixture
+public abstract class IntegrationTestFixture : IDisposable
 {
-    private CustomWebApplicationFactory factory;
+    private readonly CustomWebApplicationFactory factory;
 
-    protected HttpClient Client { get; private set; }
+    protected readonly HttpClient Client;
 
-    [SetUp]
-    public void Setup()
+    public IntegrationTestFixture()
     {
-        factory = new CustomWebApplicationFactory(DatabaseContainer.GetConnectionString());
+        factory = new CustomWebApplicationFactory(PostgresDatabase.Instance.GetConnectionString());
         Client = factory.CreateDefaultClient();
     }
 
-    [TearDown]
-    public void TearDown()
+    public void Dispose()
     {
-        Client.Dispose();
-        factory.Dispose();
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            Client.Dispose();
+            factory.Dispose();
+        }
     }
 
     protected Task CreateUserAccount(TestUser user)

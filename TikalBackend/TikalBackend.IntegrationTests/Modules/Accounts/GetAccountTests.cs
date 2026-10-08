@@ -4,32 +4,34 @@ using Accounts.Contracts.Models;
 using RestApi.Controllers.Accounts.Dtos;
 using TikalBackend.IntegrationTests.Extensions;
 using TikalBackend.IntegrationTests.Modules.Accounts.Dtos;
+using Xunit;
 
 namespace TikalBackend.IntegrationTests.Modules.Accounts;
 
-internal sealed class GetAccountTests : IntegrationTestFixture
+public sealed class GetAccountTests : IntegrationTestFixture
 {
-    [Test]
+    [Fact]
     public async Task GivenUnauthenticatedUser_WhenGetAccount_ThenReturnsUnauthorized()
     {
         // when
-        var response = await Client.GetAsync(AccountUrl.GetAccount);
+        var response = await Client.GetAsync(AccountUrl.GetAccount, TestContext.Current.CancellationToken);
 
         // then
-        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
+        Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
     }
 
-    [Test]
+    [Fact]
     public async Task GivenNoUserAccountForAuthenticatedUser_WhenGetAccount_ThenReturnsNotFound()
     {
         // when
         var response = await Client.GetAsyncWithUser(AccountUrl.GetAccount, TestUser.Default);
 
         // then
-        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
+        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }
 
-    [TestCaseSource(typeof(CreateAccountDtoTestCases), nameof(CreateAccountDtoTestCases.ValidCreateAccountDtos))]
+    [Theory]
+    [ClassData(typeof(ValidCreateAccountDtos))]
     public async Task GivenUserAccountForAuthenticatedUser_WhenGetAccount_ThenReturnsAccount(
         CreateAccountDto createAccountDto
     )
@@ -40,16 +42,14 @@ internal sealed class GetAccountTests : IntegrationTestFixture
         // when
         var response = await Client.GetAsyncWithUser(AccountUrl.GetAccount, TestUser.Default);
 
-        var account = await response.Content.ReadFromJsonAsync<AccountModel>();
+        var account = await response.Content.ReadFromJsonAsync<AccountModel>(TestContext.Current.CancellationToken);
 
         // then
-        using (Assert.EnterMultipleScope())
-        {
-            Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
-
-            Assert.That(account, Is.Not.Null);
-            Assert.That(account!.UserId, Is.EqualTo(TestUser.Default.UserId));
-            Assert.That(account.Name, Is.EqualTo(createAccountDto.Name));
-        }
+        Assert.Multiple(
+            () => Assert.Equal(HttpStatusCode.OK, response.StatusCode),
+            () => Assert.NotNull(account),
+            () => Assert.Equal(TestUser.Default.UserId, account?.UserId),
+            () => Assert.Equal(createAccountDto.Name, account?.Name)
+        );
     }
 }
