@@ -4,7 +4,6 @@ using Accounts.Contracts.Models;
 using RestApi.Controllers.Accounts.Dtos;
 using TikalBackend.IntegrationTests.Extensions;
 using TikalBackend.IntegrationTests.Modules.Accounts.Dtos;
-using Xunit;
 
 namespace TikalBackend.IntegrationTests.Modules.Accounts;
 
