@@ -1,5 +1,4 @@
 using RestApi.Controllers.Accounts.Dtos;
-using Xunit;
 
 namespace TikalBackend.IntegrationTests.Modules.Accounts.Dtos;
 

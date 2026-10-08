@@ -7,7 +7,7 @@ using TikalBackend.IntegrationTests.Modules.Accounts.Dtos;
 
 namespace TikalBackend.IntegrationTests.Modules.Accounts;
 
-public sealed class CreateAccountTests(TestContainerSetup setup) : IntegrationTestFixture
+public sealed class CreateAccountTests : IntegrationTestFixture
 {
     [Theory]
     [ClassData(typeof(ValidCreateAccountDtos))]
@@ -23,7 +23,7 @@ public sealed class CreateAccountTests(TestContainerSetup setup) : IntegrationTe
     }
 
     [Theory]
-    [ClassData(typeof(ValidCreateAccountDtos))]
+    [ClassData(typeof(InvalidCreateAccountDtos))]
     public async Task GivenInvalidCreateAccountDto_WhenCreateAccount_ThenReturnsBadRequest(
         CreateAccountDto createAccountDto
     )
