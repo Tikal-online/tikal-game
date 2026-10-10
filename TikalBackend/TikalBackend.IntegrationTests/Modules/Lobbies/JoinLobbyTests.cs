@@ -1,35 +1,33 @@
 using System.Net;
-using System.Net.Http.Json;
 using RestApi.Controllers.Lobbies.Dtos;
 using TikalBackend.IntegrationTests.Extensions;
 using TikalBackend.IntegrationTests.Modules.Lobbies.Dtos;
 
 namespace TikalBackend.IntegrationTests.Modules.Lobbies;
 
-internal sealed class JoinLobbyTests : IntegrationTestFixture
+public sealed class JoinLobbyTests : IntegrationTestFixture
 {
-    /*
-    [Test]
+    [Fact]
     public async Task GivenUnauthenticatedUser_WhenJoinLobby_ThenReturnsUnauthorized()
     {
         // when
-        var response = await Client.PostAsync(LobbyUrl.JoinLobby(1), null);
+        var response = await Client.PostAsync(LobbyUrl.JoinLobby(1), null, TestContext.Current.CancellationToken);
 
         // then
-        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
+        Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
     }
 
-    [Test]
+    [Fact]
     public async Task GivenUserWithoutAccount_WhenJoinLobby_ThenReturnsUnauthorized()
     {
         // when
         var response = await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(1), TestUser.Default, null);
 
         // then
-        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
+        Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
     }
 
-    [Test]
+    [Fact]
     public async Task GivenNoLobbyWithId_WhenJoinLobby_ThenReturnsNotFound()
     {
         // given
@@ -39,10 +37,11 @@ internal sealed class JoinLobbyTests : IntegrationTestFixture
         var response = await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(1), TestUser.Default, null);
 
         // then
-        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
+        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }
 
-    [TestCaseSource(typeof(CreateLobbyDtoTestCases), nameof(CreateLobbyDtoTestCases.ValidCreateLobbyDtos))]
+    [Theory]
+    [ClassData(typeof(ValidCreateLobbyDtos))]
     public async Task GivenPlayerAlreadyInLobby_WhenJoinLobby_ThenReturnsConflict(CreateLobbyDto createLobbyDto)
     {
         // given
@@ -50,34 +49,29 @@ internal sealed class JoinLobbyTests : IntegrationTestFixture
         await Client.PostAsyncWithUser(LobbyUrl.CreateLobby, TestUser.Default, createLobbyDto);
 
         await CreateUserAccount(TestUser.TestUser1);
-        await Client.PostAsyncWithUser(LobbyUrl.CreateLobby, TestUser.TestUser1, createLobbyDto);
-
-        var lobbyResponse = await Client.GetAsyncWithUser(LobbyUrl.GetActiveLobby, TestUser.TestUser1);
-        var lobby = await lobbyResponse.Content.ReadFromJsonAsync<LobbyDto>();
+        var lobby = await CreateAndGetLobby(createLobbyDto, TestUser.TestUser1);
 
         // when
         var response = await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby!.Id), TestUser.Default, null);
 
         // then
-        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Conflict));
+        Assert.Equal(HttpStatusCode.Conflict, response.StatusCode);
     }
 
-    [TestCaseSource(typeof(CreateLobbyDtoTestCases), nameof(CreateLobbyDtoTestCases.ValidCreateLobbyDtos))]
+    [Theory]
+    [ClassData(typeof(ValidCreateLobbyDtos))]
     public async Task GivenFullLobby_WhenJoinLobby_ThenReturnsConflict(CreateLobbyDto createLobbyDto)
     {
         // given
         await CreateUserAccount(TestUser.Default);
 
         await CreateUserAccount(TestUser.TestUser1);
-        await Client.PostAsyncWithUser(LobbyUrl.CreateLobby, TestUser.TestUser1, createLobbyDto);
-
-        var lobbyResponse = await Client.GetAsyncWithUser(LobbyUrl.GetActiveLobby, TestUser.TestUser1);
-        var lobby = await lobbyResponse.Content.ReadFromJsonAsync<LobbyDto>();
+        var lobby = await CreateAndGetLobby(createLobbyDto, TestUser.TestUser1);
 
         List<TestUser> users = [TestUser.TestUser2, TestUser.TestUser3, TestUser.TestUser4];
 
         // players join until the lobby is full
-        for (var i = 0; i < lobby!.MaxPlayers - 1; i++)
+        for (var i = 0; i < lobby.MaxPlayers - 1; i++)
         {
             await CreateUserAccount(users[i]);
             await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), users[i], null);
@@ -87,10 +81,11 @@ internal sealed class JoinLobbyTests : IntegrationTestFixture
         var response = await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.Default, null);
 
         // then
-        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Conflict));
+        Assert.Equal(HttpStatusCode.Conflict, response.StatusCode);
     }
 
-    [TestCaseSource(typeof(CreateLobbyDtoTestCases), nameof(CreateLobbyDtoTestCases.ValidCreateLobbyDtos))]
+    [Theory]
+    [ClassData(typeof(ValidCreateLobbyDtos))]
     public async Task GivenLobbyInGame_WhenJoinLobby_ThenReturnsConflict(CreateLobbyDto createLobbyDto)
     {
         // given
@@ -111,7 +106,6 @@ internal sealed class JoinLobbyTests : IntegrationTestFixture
         var response = await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.Default, null);
 
         // then
-        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Conflict));
+        Assert.Equal(HttpStatusCode.Conflict, response.StatusCode);
     }
-    */
 }
