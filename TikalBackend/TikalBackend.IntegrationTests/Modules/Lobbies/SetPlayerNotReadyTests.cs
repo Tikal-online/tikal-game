@@ -5,30 +5,29 @@ using TikalBackend.IntegrationTests.Modules.Lobbies.Dtos;
 
 namespace TikalBackend.IntegrationTests.Modules.Lobbies;
 
-internal sealed class SetPlayerNotReadyTests : IntegrationTestFixture
+public sealed class SetPlayerNotReadyTests : IntegrationTestFixture
 {
-    /*
-    [Test]
+    [Fact]
     public async Task GivenUnauthenticatedUser_WhenSetPlayerNotReady_ThenReturnsUnauthorized()
     {
         // when
-        var response = await Client.DeleteAsync(LobbyUrl.SetPlayerNotReady);
+        var response = await Client.DeleteAsync(LobbyUrl.SetPlayerNotReady, TestContext.Current.CancellationToken);
 
         // then
-        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
+        Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
     }
 
-    [Test]
+    [Fact]
     public async Task GivenUserWithoutAccount_WhenSetPlayerNotReady_ThenReturnsUnauthorized()
     {
         // when
         var response = await Client.DeleteAsyncWithUser(LobbyUrl.SetPlayerNotReady, TestUser.Default);
 
         // then
-        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
+        Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
     }
 
-    [Test]
+    [Fact]
     public async Task GivenUserNotInALobby_WhenSetPlayerNotReady_ThenReturnsNotFound()
     {
         // given
@@ -38,10 +37,11 @@ internal sealed class SetPlayerNotReadyTests : IntegrationTestFixture
         var response = await Client.DeleteAsyncWithUser(LobbyUrl.SetPlayerNotReady, TestUser.Default);
 
         // then
-        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
+        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }
 
-    [TestCaseSource(typeof(CreateLobbyDtoTestCases), nameof(CreateLobbyDtoTestCases.ValidCreateLobbyDtos))]
+    [Theory]
+    [ClassData(typeof(ValidCreateLobbyDtos))]
     public async Task GivenUserInALobby_WhenSetPlayerNotReady_ThenReturnsSuccess(CreateLobbyDto createLobbyDto)
     {
         // given
@@ -52,7 +52,6 @@ internal sealed class SetPlayerNotReadyTests : IntegrationTestFixture
         var response = await Client.DeleteAsyncWithUser(LobbyUrl.SetPlayerNotReady, TestUser.Default);
 
         // then
-        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
-    */
 }
