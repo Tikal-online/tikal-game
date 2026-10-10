@@ -27,5 +27,7 @@ public sealed class ActiveLobbyHub : Hub<ActiveLobbyClient>
         await Groups.AddToGroupAsync(Context.ConnectionId, $"{lobbyId}");
 
         await base.OnConnectedAsync();
+
+        await Clients.Caller.InitializationComplete();
     }
 }

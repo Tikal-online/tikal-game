@@ -1,4 +1,4 @@
-using Xunit;
+namespace TikalBackend.IntegrationTests.Modules.Lobbies.Dtos;
 
 internal class LobbyIdTestCases : TheoryData<long>
 {

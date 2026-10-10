@@ -65,7 +65,13 @@ public abstract class IntegrationTestFixture : IDisposable
 
         if (startConnection)
         {
+            var initializationCompleteSource = new TaskCompletionSource();
+            connection.On("InitializationComplete", initializationCompleteSource.SetResult);
+
             await connection.StartAsync();
+
+            // Wait until OnConnectedAsync has completed and the client is assigned to all needed Groups
+            await initializationCompleteSource.Task.WaitAsync(TimeSpan.FromSeconds(5));
         }
 
         return connection;

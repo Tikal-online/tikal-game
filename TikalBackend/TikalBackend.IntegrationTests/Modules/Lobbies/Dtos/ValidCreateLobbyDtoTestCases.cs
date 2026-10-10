@@ -1,6 +1,4 @@
-
 using RestApi.Controllers.Lobbies.Dtos;
-using Xunit;
 
 namespace TikalBackend.IntegrationTests.Modules.Lobbies.Dtos;
 

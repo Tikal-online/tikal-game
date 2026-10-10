@@ -1,12 +1,9 @@
 using System.Net;
-using System.Net.Http.Json;
 using Microsoft.AspNetCore.SignalR.Client;
 using RestApi.Controllers.Lobbies.Dtos;
 using SignalRApi.Hubs.Lobbies.Dtos;
 using TikalBackend.IntegrationTests.Extensions;
-using TikalBackend.IntegrationTests.Modules.Accounts.Dtos;
 using TikalBackend.IntegrationTests.Modules.Lobbies.Dtos;
-using Xunit;
 using LobbyPlayerDto = SignalRApi.Hubs.Lobbies.Dtos.LobbyPlayerDto;
 
 namespace TikalBackend.IntegrationTests.Modules.Lobbies;
@@ -44,7 +41,7 @@ public sealed class ActiveLobbyTests : IntegrationTestFixture
         var exception = await closedExceptionSource.Task.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken);
 
         Assert.NotNull(exception);
-        Assert.Contains(exception.Message, "Account required");
+        Assert.Contains("Account required", exception.Message);
     }
 
     [Fact]
@@ -67,7 +64,7 @@ public sealed class ActiveLobbyTests : IntegrationTestFixture
         var exception = await closedExceptionSource.Task.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken);
 
         Assert.NotNull(exception);
-        Assert.Contains(exception.Message, "Player is not in a lobby");
+        Assert.Contains("Player is not in a lobby", exception.Message);
     }
 
     [Theory]
@@ -76,32 +73,24 @@ public sealed class ActiveLobbyTests : IntegrationTestFixture
     {
         // given
         await CreateUserAccount(TestUser.Default);
-        await Client.PostAsyncWithUser(LobbyUrl.CreateLobby, TestUser.Default, createLobbyDto);
+        var lobby = await CreateAndGetLobby(createLobbyDto, TestUser.Default);
         await using var connection = await CreateConnection(LobbyUrl.ActiveLobbyHub, TestUser.Default);
 
         var joinedPlayerSource = new TaskCompletionSource<LobbyPlayerDto>();
         connection.On<LobbyPlayerDto>("PlayerJoined", joinedPlayerSource.SetResult);
 
-        var lobbyResponse = await Client.GetAsyncWithUser(LobbyUrl.GetActiveLobby, TestUser.Default);
-        var lobby = await lobbyResponse.Content.ReadFromJsonAsync<LobbyDto>(TestContext.Current.CancellationToken);
-
         // when
         await CreateUserAccount(TestUser.TestUser1);
-        await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby!.Id), TestUser.TestUser1, null);
+        await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.TestUser1, null);
 
         // then
         var joinedPlayer = await joinedPlayerSource.Task.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken);
 
-        Assert.NotNull(joinedPlayer);
-
-        // TODO: do assertions
-        /*
-        using (Assert.EnterMultipleScope())
-        {
-            Assert.That(joinedPlayer.UserId, Is.EqualTo(TestUser.TestUser1.UserId));
-            Assert.That(joinedPlayer.Name, Is.EqualTo(TestUser.TestUser1.Name));
-        }
-        */
+        Assert.Multiple(
+            () => Assert.NotNull(joinedPlayer),
+            () => Assert.Equal(TestUser.TestUser1.UserId, joinedPlayer.UserId),
+            () => Assert.Equal(TestUser.TestUser1.Name, joinedPlayer.Name)
+        );
     }
 
     [Theory]
@@ -110,17 +99,14 @@ public sealed class ActiveLobbyTests : IntegrationTestFixture
     {
         // given
         await CreateUserAccount(TestUser.Default);
-        await Client.PostAsyncWithUser(LobbyUrl.CreateLobby, TestUser.Default, createLobbyDto);
+        var lobby = await CreateAndGetLobby(createLobbyDto, TestUser.Default);
         await using var connection = await CreateConnection(LobbyUrl.ActiveLobbyHub, TestUser.Default);
 
         var leftPlayerSource = new TaskCompletionSource<LobbyPlayerDto>();
         connection.On<LobbyPlayerDto>("PlayerLeft", leftPlayerSource.SetResult);
 
-        var lobbyResponse = await Client.GetAsyncWithUser(LobbyUrl.GetActiveLobby, TestUser.Default);
-        var lobby = await lobbyResponse.Content.ReadFromJsonAsync<LobbyDto>(TestContext.Current.CancellationToken);
-
         await CreateUserAccount(TestUser.TestUser1);
-        await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby!.Id), TestUser.TestUser1, null);
+        await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.TestUser1, null);
 
         // when
         await Client.DeleteAsyncWithUser(LobbyUrl.LeaveLobby(lobby.Id), TestUser.TestUser1);
@@ -128,19 +114,13 @@ public sealed class ActiveLobbyTests : IntegrationTestFixture
         // then
         var leftPlayer = await leftPlayerSource.Task.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken);
 
-        Assert.NotNull(leftPlayer);
-
-        // TODO: do assertions
-        /*
-        using (Assert.EnterMultipleScope())
-        {
-            Assert.That(leftPlayer.UserId, Is.EqualTo(TestUser.TestUser1.UserId));
-            Assert.That(leftPlayer.Name, Is.EqualTo(TestUser.TestUser1.Name));
-        }
-        */
+        Assert.Multiple(
+            () => Assert.NotNull(leftPlayer),
+            () => Assert.Equal(TestUser.TestUser1.UserId, leftPlayer.UserId),
+            () => Assert.Equal(TestUser.TestUser1.Name, leftPlayer.Name)
+        );
     }
 
-    /*
     [Theory]
     [ClassData(typeof(ValidCreateLobbyDtos))]
     public async Task GivenLobby_WhenLastOwnerLeavesLobby_ThenPromotesPlayerAndSendsPlayerUpdatedNotification(
@@ -149,13 +129,10 @@ public sealed class ActiveLobbyTests : IntegrationTestFixture
     {
         // given
         await CreateUserAccount(TestUser.Default);
-        await Client.PostAsyncWithUser(LobbyUrl.CreateLobby, TestUser.Default, createLobbyDto);
-
-        var lobbyResponse = await Client.GetAsyncWithUser(LobbyUrl.GetActiveLobby, TestUser.Default);
-        var lobby = await lobbyResponse.Content.ReadFromJsonAsync<LobbyDto>();
+        var lobby = await CreateAndGetLobby(createLobbyDto, TestUser.Default);
 
         await CreateUserAccount(TestUser.TestUser1);
-        await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby!.Id), TestUser.TestUser1, null);
+        await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.TestUser1, null);
 
         await using var connection = await CreateConnection(LobbyUrl.ActiveLobbyHub, TestUser.TestUser1);
         await Client.GetAsyncWithUser(LobbyUrl.GetActiveLobby, TestUser.TestUser1);
@@ -167,19 +144,18 @@ public sealed class ActiveLobbyTests : IntegrationTestFixture
         await Client.DeleteAsyncWithUser(LobbyUrl.LeaveLobby(lobby.Id), TestUser.Default);
 
         // then
-        var updatedPlayer = await updatedPlayerSource.Task.WaitAsync(TimeSpan.FromSeconds(5));
+        var updatedPlayer = await updatedPlayerSource.Task.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken);
 
-        Assert.That(updatedPlayer, Is.Not.Null);
-
-        using (Assert.EnterMultipleScope())
-        {
-            Assert.That(updatedPlayer.UserId, Is.EqualTo(TestUser.TestUser1.UserId));
-            Assert.That(updatedPlayer.Name, Is.EqualTo(TestUser.TestUser1.Name));
-            Assert.That(updatedPlayer.IsOwner, Is.True);
-        }
+        Assert.Multiple(
+            () => Assert.NotNull(updatedPlayer),
+            () => Assert.Equal(TestUser.TestUser1.UserId, updatedPlayer.UserId),
+            () => Assert.Equal(TestUser.TestUser1.Name, updatedPlayer.Name),
+            () => Assert.True(updatedPlayer.IsOwner)
+        );
     }
 
-    [TestCaseSource(typeof(SendMessageDtoTestCases), nameof(SendMessageDtoTestCases.ValidSendMessageDtoCommands))]
+    [Theory]
+    [ClassData(typeof(ValidSendMessageDtos))]
     public async Task GivenLobby_WhenPlayerSendsChatMessage_ThenSendsChatMessage(SendMessageDto sendMessageDto)
     {
         // given
@@ -190,81 +166,70 @@ public sealed class ActiveLobbyTests : IntegrationTestFixture
         };
 
         await CreateUserAccount(TestUser.Default);
-        await Client.PostAsyncWithUser(LobbyUrl.CreateLobby, TestUser.Default, createLobbyDto);
+        var lobby = await CreateAndGetLobby(createLobbyDto, TestUser.Default);
         await using var connection = await CreateConnection(LobbyUrl.ActiveLobbyHub, TestUser.Default);
 
         var chatMessageSource = new TaskCompletionSource<ChatMessageDto>();
         connection.On<ChatMessageDto>("ReceiveMessage", chatMessageSource.SetResult);
 
-        var lobbyResponse = await Client.GetAsyncWithUser(LobbyUrl.GetActiveLobby, TestUser.Default);
-        var lobby = await lobbyResponse.Content.ReadFromJsonAsync<LobbyDto>();
-
         await CreateUserAccount(TestUser.TestUser1);
-        await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby!.Id), TestUser.TestUser1, null);
+        await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.TestUser1, null);
 
         // when
         await Client.PostAsyncWithUser(LobbyUrl.SendMessage(lobby.Id), TestUser.TestUser1, sendMessageDto);
 
         // then
-        var chatMessage = await chatMessageSource.Task.WaitAsync(TimeSpan.FromSeconds(5));
+        var chatMessage = await chatMessageSource.Task.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken);
 
-        Assert.That(chatMessage, Is.Not.Null);
-
-        using (Assert.EnterMultipleScope())
-        {
-            Assert.That(chatMessage.UserId, Is.EqualTo(TestUser.TestUser1.UserId));
-            Assert.That(chatMessage.Username, Is.EqualTo(TestUser.TestUser1.Name));
-            Assert.That(chatMessage.Content, Is.EqualTo(sendMessageDto.Message));
-        }
+        Assert.Multiple(
+            () => Assert.NotNull(chatMessage),
+            () => Assert.Equal(TestUser.TestUser1.UserId, chatMessage.UserId),
+            () => Assert.Equal(TestUser.TestUser1.Name, chatMessage.Username),
+            () => Assert.Equal(sendMessageDto.Message, chatMessage.Content)
+        );
     }
 
-    [TestCaseSource(typeof(CreateLobbyDtoTestCases), nameof(CreateLobbyDtoTestCases.ValidCreateLobbyDtos))]
+    [Theory]
+    [ClassData(typeof(ValidCreateLobbyDtos))]
     public async Task GivenLobby_WhenPlayerReadyUp_ThenSetsPlayerToReadyAndSendsPlayerUpdatedNotification(
         CreateLobbyDto createLobbyDto
     )
     {
         // given
         await CreateUserAccount(TestUser.Default);
-        await Client.PostAsyncWithUser(LobbyUrl.CreateLobby, TestUser.Default, createLobbyDto);
+        var lobby = await CreateAndGetLobby(createLobbyDto, TestUser.Default);
         await using var connection = await CreateConnection(LobbyUrl.ActiveLobbyHub, TestUser.Default);
-
-        var lobbyResponse = await Client.GetAsyncWithUser(LobbyUrl.GetActiveLobby, TestUser.Default);
-        var lobby = await lobbyResponse.Content.ReadFromJsonAsync<LobbyDto>();
-
-        await CreateUserAccount(TestUser.TestUser1);
-        await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby!.Id), TestUser.TestUser1, null);
 
         var updatedPlayerSource = new TaskCompletionSource<LobbyPlayerDto>();
         connection.On<LobbyPlayerDto>("PlayerUpdated", updatedPlayerSource.SetResult);
+
+        await CreateUserAccount(TestUser.TestUser1);
+        await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.TestUser1, null);
 
         // when
         await Client.PutAsyncWithUser(LobbyUrl.SetPlayerReady, TestUser.TestUser1, null);
 
         // then
-        var updatedPlayer = await updatedPlayerSource.Task.WaitAsync(TimeSpan.FromSeconds(5));
+        var updatedPlayer = await updatedPlayerSource.Task.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken);
 
-        Assert.That(updatedPlayer, Is.Not.Null);
-
-        using (Assert.EnterMultipleScope())
-        {
-            Assert.That(updatedPlayer.UserId, Is.EqualTo(TestUser.TestUser1.UserId));
-            Assert.That(updatedPlayer.Name, Is.EqualTo(TestUser.TestUser1.Name));
-            Assert.That(updatedPlayer.IsReady, Is.True);
-        }
+        Assert.Multiple(
+            () => Assert.NotNull(updatedPlayer),
+            () => Assert.Equal(TestUser.TestUser1.UserId, updatedPlayer.UserId),
+            () => Assert.Equal(TestUser.TestUser1.Name, updatedPlayer.Name),
+            () => Assert.True(updatedPlayer.IsReady)
+        );
     }
 
-    [TestCaseSource(typeof(CreateLobbyDtoTestCases), nameof(CreateLobbyDtoTestCases.ValidCreateLobbyDtos))]
+    [Theory]
+    [ClassData(typeof(ValidCreateLobbyDtos))]
     public async Task GivenLobby_WhenPlayerReadyDown_ThenSetsPlayerToNotReadyAndSendsPlayerUpdatedNotification(
         CreateLobbyDto createLobbyDto
     )
     {
         // given
         await CreateUserAccount(TestUser.Default);
-        await Client.PostAsyncWithUser(LobbyUrl.CreateLobby, TestUser.Default, createLobbyDto);
+        var lobby = await CreateAndGetLobby(createLobbyDto, TestUser.Default);
         await using var connection = await CreateConnection(LobbyUrl.ActiveLobbyHub, TestUser.Default);
-
-        var lobbyResponse = await Client.GetAsyncWithUser(LobbyUrl.GetActiveLobby, TestUser.Default);
-        var lobby = await lobbyResponse.Content.ReadFromJsonAsync<LobbyDto>();
 
         await CreateUserAccount(TestUser.TestUser1);
         await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby!.Id), TestUser.TestUser1, null);
@@ -277,16 +242,13 @@ public sealed class ActiveLobbyTests : IntegrationTestFixture
         await Client.DeleteAsyncWithUser(LobbyUrl.SetPlayerNotReady, TestUser.TestUser1);
 
         // then
-        var updatedPlayer = await updatedPlayerSource.Task.WaitAsync(TimeSpan.FromSeconds(5));
+        var updatedPlayer = await updatedPlayerSource.Task.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken);
 
-        Assert.That(updatedPlayer, Is.Not.Null);
-
-        using (Assert.EnterMultipleScope())
-        {
-            Assert.That(updatedPlayer.UserId, Is.EqualTo(TestUser.TestUser1.UserId));
-            Assert.That(updatedPlayer.Name, Is.EqualTo(TestUser.TestUser1.Name));
-            Assert.That(updatedPlayer.IsReady, Is.False);
-        }
+        Assert.Multiple(
+            () => Assert.NotNull(updatedPlayer),
+            () => Assert.Equal(TestUser.TestUser1.UserId, updatedPlayer.UserId),
+            () => Assert.Equal(TestUser.TestUser1.Name, updatedPlayer.Name),
+            () => Assert.False(updatedPlayer.IsReady)
+        );
     }
-    */
 }

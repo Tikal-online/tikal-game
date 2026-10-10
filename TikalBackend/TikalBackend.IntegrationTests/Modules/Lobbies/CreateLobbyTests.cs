@@ -3,7 +3,6 @@ using System.Net.Http.Json;
 using RestApi.Controllers.Lobbies.Dtos;
 using TikalBackend.IntegrationTests.Extensions;
 using TikalBackend.IntegrationTests.Modules.Lobbies.Dtos;
-using Xunit;
 
 namespace TikalBackend.IntegrationTests.Modules.Lobbies;
 

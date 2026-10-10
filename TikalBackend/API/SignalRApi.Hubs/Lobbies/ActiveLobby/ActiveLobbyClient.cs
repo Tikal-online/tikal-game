@@ -4,6 +4,8 @@ namespace SignalRApi.Hubs.Lobbies.ActiveLobby;
 
 public interface ActiveLobbyClient
 {
+    Task InitializationComplete();
+
     Task PlayerJoined(LobbyPlayerDto lobbyPlayerDto);
 
     Task PlayerLeft(LobbyPlayerDto lobbyPlayerDto);
