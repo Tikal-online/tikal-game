@@ -5,9 +5,9 @@ namespace Lobbies.Domain.Tests.Data;
 
 public static class LobbyTestCases
 {
-    public static IEnumerable<Lobby> ValidLobbyTestCases =>
-    [
-        new()
+    public static IEnumerable<Lobby> ValidLobbies()
+    {
+        yield return new()
         {
             Id = 1,
             MaxPlayers = 2,
@@ -22,8 +22,9 @@ public static class LobbyTestCases
                     IsReady = false
                 }
             ]
-        },
-        new()
+        };
+
+        yield return new()
         {
             Id = 2,
             MaxPlayers = 3,
@@ -45,8 +46,9 @@ public static class LobbyTestCases
                     IsReady = false
                 }
             ]
-        },
-        new()
+        };
+
+        yield return new()
         {
             Id = 3,
             MaxPlayers = 4,
@@ -75,8 +77,9 @@ public static class LobbyTestCases
                     IsReady = true
                 }
             ]
-        },
-        new()
+        };
+
+        yield return new()
         {
             Id = 4,
             MaxPlayers = 2,
@@ -98,8 +101,8 @@ public static class LobbyTestCases
                     IsReady = true
                 }
             ]
-        }
-    ];
+        };
+    }
 
     public static IEnumerable<Lobby> InGameLobbyTestCases =>
     [
