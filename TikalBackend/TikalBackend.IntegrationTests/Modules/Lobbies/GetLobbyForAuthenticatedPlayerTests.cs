@@ -66,7 +66,6 @@ public sealed class GetLobbyForAuthenticatedPlayerTests : IntegrationTestFixture
             () => Assert.Equal(1, lobby?.Players.Count),
             () => Assert.Equal(TestUser.Default.UserId, lobby?.Players.First().UserId),
             () => Assert.Equal(TestUser.Default.Name, lobby?.Players.First().Name)
-
         );
     }
 }

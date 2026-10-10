@@ -3,21 +3,11 @@ using System.Net.Http.Json;
 using RestApi.Controllers.Lobbies.Dtos;
 using TikalBackend.IntegrationTests.Extensions;
 using TikalBackend.IntegrationTests.Modules.Lobbies.Dtos;
-using Xunit;
 
 namespace TikalBackend.IntegrationTests.Modules.Lobbies;
 
 public sealed class GetLobbyTests : IntegrationTestFixture
 {
-    public static IEnumerable<long> LobbyIdTestCases =>
-    [
-        0,
-        1,
-        123,
-        45345,
-        3450934853
-    ];
-
     [Theory]
     [ClassData(typeof(LobbyIdTestCases))]
     public async Task GivenUnauthenticatedUser_WhenGetLobby_ThenReturnsUnauthorized(long lobbyId)
@@ -73,21 +63,14 @@ public sealed class GetLobbyTests : IntegrationTestFixture
         var lobby = await response.Content.ReadFromJsonAsync<LobbyDto>(TestContext.Current.CancellationToken);
 
         // then
-        Assert.NotNull(lobby);
-
-        // TODO: assertions
-        /*
-        using (Assert.EnterMultipleScope())
-        {
-            Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
-
-            Assert.That(lobby.Id, Is.EqualTo(createdLobby.Id));
-            Assert.That(lobby.Name, Is.EqualTo(createdLobby.Name));
-            Assert.That(lobby.MaxPlayers, Is.EqualTo(createdLobby.MaxPlayers));
-            Assert.That(lobby.InGame, Is.EqualTo(createdLobby.InGame));
-
-            Assert.That(lobby.Players, Is.EquivalentTo(createdLobby.Players));
-        }
-        */
+        Assert.Multiple(
+            () => Assert.Equal(HttpStatusCode.OK, response.StatusCode),
+            () => Assert.NotNull(lobby),
+            () => Assert.Equal(createdLobby.Id, lobby?.Id),
+            () => Assert.Equal(createdLobby.Name, lobby?.Name),
+            () => Assert.Equal(createdLobby.MaxPlayers, lobby?.MaxPlayers),
+            () => Assert.Equal(createdLobby.InGame, lobby?.InGame),
+            () => Assert.Equal(createdLobby.Players, lobby?.Players)
+        );
     }
 }
