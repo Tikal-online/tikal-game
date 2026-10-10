@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.WebUtilities;
 using RestApi.Controllers.Lobbies.Dtos;
 using Shared.Contracts.Queries;
 using TikalBackend.IntegrationTests.Extensions;
-using Xunit;
 
 namespace TikalBackend.IntegrationTests.Modules.Lobbies;
 
@@ -23,7 +22,7 @@ public sealed class GetPaginatedLobbiesTests : IntegrationTestFixture
         var url = QueryHelpers.AddQueryString(LobbyUrl.GetLobbies, queryParams);
 
         // when
-        var response = await Client.GetAsync(url);
+        var response = await Client.GetAsync(url, TestContext.Current.CancellationToken);
 
         // then
         Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
@@ -99,16 +98,15 @@ public sealed class GetPaginatedLobbiesTests : IntegrationTestFixture
         // when
         var response = await Client.GetAsyncWithUser(url, TestUser.Default);
 
-        var paginatedResult = await response.Content.ReadFromJsonAsync<PaginatedResult<List<LobbySummaryDto>>>();
+        var paginatedResult = await response.Content.ReadFromJsonAsync<PaginatedResult<List<LobbySummaryDto>>>(TestContext.Current.CancellationToken);
 
         var lobbies = paginatedResult?.Data;
 
         // then
-        Assert.NotNull(lobbies);
-        // TODO: assertions
-        /*
-        Assert.That(lobbies, Has.Count.EqualTo(1));
-        Assert.That(lobbies.First().Name, Is.EqualTo("Lobby2"));
-        */
+        Assert.Multiple(
+            () => Assert.NotNull(lobbies),
+            () => Assert.Equal(1, lobbies?.Count),
+            () => Assert.Equal("Lobby2", lobbies?.First().Name)
+        );
     }
 }
