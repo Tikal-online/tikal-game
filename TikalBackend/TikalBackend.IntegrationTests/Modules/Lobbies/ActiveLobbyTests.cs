@@ -81,7 +81,7 @@ public sealed class ActiveLobbyTests : IntegrationTestFixture
 
         // when
         await CreateUserAccount(TestUser.TestUser1);
-        await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.TestUser1, null);
+        await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.TestUser1, null, TestContext.Current.CancellationToken);
 
         // then
         var joinedPlayer = await joinedPlayerSource.Task.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken);
@@ -106,10 +106,10 @@ public sealed class ActiveLobbyTests : IntegrationTestFixture
         connection.On<LobbyPlayerDto>("PlayerLeft", leftPlayerSource.SetResult);
 
         await CreateUserAccount(TestUser.TestUser1);
-        await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.TestUser1, null);
+        await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.TestUser1, null, TestContext.Current.CancellationToken);
 
         // when
-        await Client.DeleteAsyncWithUser(LobbyUrl.LeaveLobby(lobby.Id), TestUser.TestUser1);
+        await Client.DeleteAsyncWithUser(LobbyUrl.LeaveLobby(lobby.Id), TestUser.TestUser1, TestContext.Current.CancellationToken);
 
         // then
         var leftPlayer = await leftPlayerSource.Task.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken);
@@ -132,16 +132,16 @@ public sealed class ActiveLobbyTests : IntegrationTestFixture
         var lobby = await CreateAndGetLobby(createLobbyDto, TestUser.Default);
 
         await CreateUserAccount(TestUser.TestUser1);
-        await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.TestUser1, null);
+        await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.TestUser1, null, TestContext.Current.CancellationToken);
 
         await using var connection = await CreateConnection(LobbyUrl.ActiveLobbyHub, TestUser.TestUser1);
-        await Client.GetAsyncWithUser(LobbyUrl.GetActiveLobby, TestUser.TestUser1);
+        await Client.GetAsyncWithUser(LobbyUrl.GetActiveLobby, TestUser.TestUser1, TestContext.Current.CancellationToken);
 
         var updatedPlayerSource = new TaskCompletionSource<LobbyPlayerDto>();
         connection.On<LobbyPlayerDto>("PlayerUpdated", updatedPlayerSource.SetResult);
 
         // when
-        await Client.DeleteAsyncWithUser(LobbyUrl.LeaveLobby(lobby.Id), TestUser.Default);
+        await Client.DeleteAsyncWithUser(LobbyUrl.LeaveLobby(lobby.Id), TestUser.Default, TestContext.Current.CancellationToken);
 
         // then
         var updatedPlayer = await updatedPlayerSource.Task.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken);
@@ -173,10 +173,10 @@ public sealed class ActiveLobbyTests : IntegrationTestFixture
         connection.On<ChatMessageDto>("ReceiveMessage", chatMessageSource.SetResult);
 
         await CreateUserAccount(TestUser.TestUser1);
-        await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.TestUser1, null);
+        await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.TestUser1, null, TestContext.Current.CancellationToken);
 
         // when
-        await Client.PostAsyncWithUser(LobbyUrl.SendMessage(lobby.Id), TestUser.TestUser1, sendMessageDto);
+        await Client.PostAsyncWithUser(LobbyUrl.SendMessage(lobby.Id), TestUser.TestUser1, sendMessageDto, TestContext.Current.CancellationToken);
 
         // then
         var chatMessage = await chatMessageSource.Task.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken);
@@ -204,10 +204,10 @@ public sealed class ActiveLobbyTests : IntegrationTestFixture
         connection.On<LobbyPlayerDto>("PlayerUpdated", updatedPlayerSource.SetResult);
 
         await CreateUserAccount(TestUser.TestUser1);
-        await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.TestUser1, null);
+        await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.TestUser1, null, TestContext.Current.CancellationToken);
 
         // when
-        await Client.PutAsyncWithUser(LobbyUrl.SetPlayerReady, TestUser.TestUser1, null);
+        await Client.PutAsyncWithUser(LobbyUrl.SetPlayerReady, TestUser.TestUser1, null, TestContext.Current.CancellationToken);
 
         // then
         var updatedPlayer = await updatedPlayerSource.Task.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken);
@@ -232,14 +232,14 @@ public sealed class ActiveLobbyTests : IntegrationTestFixture
         await using var connection = await CreateConnection(LobbyUrl.ActiveLobbyHub, TestUser.Default);
 
         await CreateUserAccount(TestUser.TestUser1);
-        await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby!.Id), TestUser.TestUser1, null);
-        await Client.PutAsyncWithUser(LobbyUrl.SetPlayerReady, TestUser.TestUser1, null);
+        await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.TestUser1, null, TestContext.Current.CancellationToken);
+        await Client.PutAsyncWithUser(LobbyUrl.SetPlayerReady, TestUser.TestUser1, null, TestContext.Current.CancellationToken);
 
         var updatedPlayerSource = new TaskCompletionSource<LobbyPlayerDto>();
         connection.On<LobbyPlayerDto>("PlayerUpdated", updatedPlayerSource.SetResult);
 
         // when
-        await Client.DeleteAsyncWithUser(LobbyUrl.SetPlayerNotReady, TestUser.TestUser1);
+        await Client.DeleteAsyncWithUser(LobbyUrl.SetPlayerNotReady, TestUser.TestUser1, TestContext.Current.CancellationToken);
 
         // then
         var updatedPlayer = await updatedPlayerSource.Task.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken);

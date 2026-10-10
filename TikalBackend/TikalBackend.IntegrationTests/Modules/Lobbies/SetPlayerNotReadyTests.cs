@@ -21,7 +21,7 @@ public sealed class SetPlayerNotReadyTests : IntegrationTestFixture
     public async Task GivenUserWithoutAccount_WhenSetPlayerNotReady_ThenReturnsUnauthorized()
     {
         // when
-        var response = await Client.DeleteAsyncWithUser(LobbyUrl.SetPlayerNotReady, TestUser.Default);
+        var response = await Client.DeleteAsyncWithUser(LobbyUrl.SetPlayerNotReady, TestUser.Default, TestContext.Current.CancellationToken);
 
         // then
         Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
@@ -34,7 +34,7 @@ public sealed class SetPlayerNotReadyTests : IntegrationTestFixture
         await CreateUserAccount(TestUser.Default);
 
         // when
-        var response = await Client.DeleteAsyncWithUser(LobbyUrl.SetPlayerNotReady, TestUser.Default);
+        var response = await Client.DeleteAsyncWithUser(LobbyUrl.SetPlayerNotReady, TestUser.Default, TestContext.Current.CancellationToken);
 
         // then
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
@@ -46,10 +46,10 @@ public sealed class SetPlayerNotReadyTests : IntegrationTestFixture
     {
         // given
         await CreateUserAccount(TestUser.Default);
-        await Client.PostAsyncWithUser(LobbyUrl.CreateLobby, TestUser.Default, createLobbyDto);
+        await Client.PostAsyncWithUser(LobbyUrl.CreateLobby, TestUser.Default, createLobbyDto, TestContext.Current.CancellationToken);
 
         // when
-        var response = await Client.DeleteAsyncWithUser(LobbyUrl.SetPlayerNotReady, TestUser.Default);
+        var response = await Client.DeleteAsyncWithUser(LobbyUrl.SetPlayerNotReady, TestUser.Default, TestContext.Current.CancellationToken);
 
         // then
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);

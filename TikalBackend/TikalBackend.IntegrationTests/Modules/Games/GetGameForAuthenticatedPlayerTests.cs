@@ -24,7 +24,7 @@ public sealed class GetGameForAuthenticatedPlayerTests : IntegrationTestFixture
     public async Task GivenUserWithoutAccount_WhenGetGameForAuthenticatedPlayer_ThenReturnsUnauthorized()
     {
         // when
-        var response = await Client.GetAsyncWithUser(GameUrl.GetActiveGame, TestUser.Default);
+        var response = await Client.GetAsyncWithUser(GameUrl.GetActiveGame, TestUser.Default, TestContext.Current.CancellationToken);
 
         // then
         Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
@@ -37,7 +37,7 @@ public sealed class GetGameForAuthenticatedPlayerTests : IntegrationTestFixture
         await CreateUserAccount(TestUser.Default);
 
         // when
-        var response = await Client.GetAsyncWithUser(GameUrl.GetActiveGame, TestUser.Default);
+        var response = await Client.GetAsyncWithUser(GameUrl.GetActiveGame, TestUser.Default, TestContext.Current.CancellationToken);
 
         // then
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
@@ -55,15 +55,15 @@ public sealed class GetGameForAuthenticatedPlayerTests : IntegrationTestFixture
 
         var lobby = await CreateAndGetLobby(createLobbyDto, TestUser.Default);
 
-        await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.TestUser1, null);
+        await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.TestUser1, null, TestContext.Current.CancellationToken);
 
-        await Client.PutAsyncWithUser(LobbyUrl.SetPlayerReady, TestUser.Default, null);
-        await Client.PutAsyncWithUser(LobbyUrl.SetPlayerReady, TestUser.TestUser1, null);
+        await Client.PutAsyncWithUser(LobbyUrl.SetPlayerReady, TestUser.Default, null, TestContext.Current.CancellationToken);
+        await Client.PutAsyncWithUser(LobbyUrl.SetPlayerReady, TestUser.TestUser1, null, TestContext.Current.CancellationToken);
 
-        await Client.PostAsyncWithUser(LobbyUrl.StartLobby(lobby.Id), TestUser.Default, null);
+        await Client.PostAsyncWithUser(LobbyUrl.StartLobby(lobby.Id), TestUser.Default, null, TestContext.Current.CancellationToken);
 
         // when
-        var response = await Client.GetAsyncWithUser(GameUrl.GetActiveGame, TestUser.Default);
+        var response = await Client.GetAsyncWithUser(GameUrl.GetActiveGame, TestUser.Default, TestContext.Current.CancellationToken);
 
         var game = await response.Content.ReadFromJsonAsync<GameDto>(TestContext.Current.CancellationToken);
 

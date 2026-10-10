@@ -21,7 +21,7 @@ public sealed class JoinLobbyTests : IntegrationTestFixture
     public async Task GivenUserWithoutAccount_WhenJoinLobby_ThenReturnsUnauthorized()
     {
         // when
-        var response = await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(1), TestUser.Default, null);
+        var response = await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(1), TestUser.Default, null, TestContext.Current.CancellationToken);
 
         // then
         Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
@@ -34,7 +34,7 @@ public sealed class JoinLobbyTests : IntegrationTestFixture
         await CreateUserAccount(TestUser.Default);
 
         // when
-        var response = await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(1), TestUser.Default, null);
+        var response = await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(1), TestUser.Default, null, TestContext.Current.CancellationToken);
 
         // then
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
@@ -46,13 +46,13 @@ public sealed class JoinLobbyTests : IntegrationTestFixture
     {
         // given
         await CreateUserAccount(TestUser.Default);
-        await Client.PostAsyncWithUser(LobbyUrl.CreateLobby, TestUser.Default, createLobbyDto);
+        await Client.PostAsyncWithUser(LobbyUrl.CreateLobby, TestUser.Default, createLobbyDto, TestContext.Current.CancellationToken);
 
         await CreateUserAccount(TestUser.TestUser1);
         var lobby = await CreateAndGetLobby(createLobbyDto, TestUser.TestUser1);
 
         // when
-        var response = await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby!.Id), TestUser.Default, null);
+        var response = await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby!.Id), TestUser.Default, null, TestContext.Current.CancellationToken);
 
         // then
         Assert.Equal(HttpStatusCode.Conflict, response.StatusCode);
@@ -74,11 +74,11 @@ public sealed class JoinLobbyTests : IntegrationTestFixture
         for (var i = 0; i < lobby.MaxPlayers - 1; i++)
         {
             await CreateUserAccount(users[i]);
-            await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), users[i], null);
+            await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), users[i], null, TestContext.Current.CancellationToken);
         }
 
         // when
-        var response = await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.Default, null);
+        var response = await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.Default, null, TestContext.Current.CancellationToken);
 
         // then
         Assert.Equal(HttpStatusCode.Conflict, response.StatusCode);
@@ -95,15 +95,15 @@ public sealed class JoinLobbyTests : IntegrationTestFixture
         var lobby = await CreateAndGetLobby(createLobbyDto, TestUser.TestUser1);
 
         await CreateUserAccount(TestUser.TestUser2);
-        await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.TestUser2, null);
+        await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.TestUser2, null, TestContext.Current.CancellationToken);
 
-        await Client.PutAsyncWithUser(LobbyUrl.SetPlayerReady, TestUser.TestUser1, null);
-        await Client.PutAsyncWithUser(LobbyUrl.SetPlayerReady, TestUser.TestUser2, null);
+        await Client.PutAsyncWithUser(LobbyUrl.SetPlayerReady, TestUser.TestUser1, null, TestContext.Current.CancellationToken);
+        await Client.PutAsyncWithUser(LobbyUrl.SetPlayerReady, TestUser.TestUser2, null, TestContext.Current.CancellationToken);
 
-        await Client.PostAsyncWithUser(LobbyUrl.StartLobby(lobby.Id), TestUser.TestUser1, null);
+        await Client.PostAsyncWithUser(LobbyUrl.StartLobby(lobby.Id), TestUser.TestUser1, null, TestContext.Current.CancellationToken);
 
         // when
-        var response = await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.Default, null);
+        var response = await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.Default, null, TestContext.Current.CancellationToken);
 
         // then
         Assert.Equal(HttpStatusCode.Conflict, response.StatusCode);

@@ -28,7 +28,7 @@ public sealed class SendLobbyChatMessageTests : IntegrationTestFixture
     )
     {
         // when
-        var response = await Client.PostAsyncWithUser(LobbyUrl.SendMessage(1), TestUser.Default, sendMessageDto);
+        var response = await Client.PostAsyncWithUser(LobbyUrl.SendMessage(1), TestUser.Default, sendMessageDto, TestContext.Current.CancellationToken);
 
         // then
         Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
@@ -44,7 +44,7 @@ public sealed class SendLobbyChatMessageTests : IntegrationTestFixture
         await CreateUserAccount(TestUser.Default);
 
         // when
-        var response = await Client.PostAsyncWithUser(LobbyUrl.SendMessage(1), TestUser.Default, sendMessageDto);
+        var response = await Client.PostAsyncWithUser(LobbyUrl.SendMessage(1), TestUser.Default, sendMessageDto, TestContext.Current.CancellationToken);
 
         // then
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
@@ -65,7 +65,7 @@ public sealed class SendLobbyChatMessageTests : IntegrationTestFixture
         var lobby = await CreateAndGetLobby(createLobbyDto, TestUser.TestUser1);
 
         // when
-        var response = await Client.PostAsyncWithUser(LobbyUrl.SendMessage(lobby.Id), TestUser.Default, sendMessageDto);
+        var response = await Client.PostAsyncWithUser(LobbyUrl.SendMessage(lobby.Id), TestUser.Default, sendMessageDto, TestContext.Current.CancellationToken);
 
         // then
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
@@ -85,7 +85,7 @@ public sealed class SendLobbyChatMessageTests : IntegrationTestFixture
         var lobby = await CreateAndGetLobby(createLobbyDto, TestUser.Default);
 
         // when
-        var response = await Client.PostAsyncWithUser(LobbyUrl.SendMessage(lobby.Id), TestUser.Default, sendMessageDto);
+        var response = await Client.PostAsyncWithUser(LobbyUrl.SendMessage(lobby.Id), TestUser.Default, sendMessageDto, TestContext.Current.CancellationToken);
 
         // then
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);

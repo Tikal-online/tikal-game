@@ -21,7 +21,7 @@ public sealed class StartLobbyTests : IntegrationTestFixture
     public async Task GivenUserWithoutAccount_WhenStartLobby_ThenReturnsUnauthorized()
     {
         // when
-        var response = await Client.PostAsyncWithUser(LobbyUrl.StartLobby(1), TestUser.Default, null);
+        var response = await Client.PostAsyncWithUser(LobbyUrl.StartLobby(1), TestUser.Default, null, TestContext.Current.CancellationToken);
 
         // then
         Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
@@ -34,7 +34,7 @@ public sealed class StartLobbyTests : IntegrationTestFixture
         await CreateUserAccount(TestUser.Default);
 
         // when
-        var response = await Client.PostAsyncWithUser(LobbyUrl.StartLobby(1), TestUser.Default, null);
+        var response = await Client.PostAsyncWithUser(LobbyUrl.StartLobby(1), TestUser.Default, null, TestContext.Current.CancellationToken);
 
         // then
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
@@ -51,7 +51,7 @@ public sealed class StartLobbyTests : IntegrationTestFixture
         var lobby = await CreateAndGetLobby(createLobbyDto, TestUser.TestUser1);
 
         // when
-        var response = await Client.PostAsyncWithUser(LobbyUrl.StartLobby(lobby.Id), TestUser.Default, null);
+        var response = await Client.PostAsyncWithUser(LobbyUrl.StartLobby(lobby.Id), TestUser.Default, null, TestContext.Current.CancellationToken);
 
         // then
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
@@ -67,10 +67,10 @@ public sealed class StartLobbyTests : IntegrationTestFixture
 
         var lobby = await CreateAndGetLobby(createLobbyDto, TestUser.TestUser1);
 
-        await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.Default, null);
+        await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.Default, null, TestContext.Current.CancellationToken);
 
         // when
-        var response = await Client.PostAsyncWithUser(LobbyUrl.StartLobby(lobby.Id), TestUser.Default, null);
+        var response = await Client.PostAsyncWithUser(LobbyUrl.StartLobby(lobby.Id), TestUser.Default, null, TestContext.Current.CancellationToken);
 
         // then
         Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
@@ -86,10 +86,10 @@ public sealed class StartLobbyTests : IntegrationTestFixture
 
         var lobby = await CreateAndGetLobby(createLobbyDto, TestUser.Default);
 
-        await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.TestUser1, null);
+        await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.TestUser1, null, TestContext.Current.CancellationToken);
 
         // when
-        var response = await Client.PostAsyncWithUser(LobbyUrl.StartLobby(lobby.Id), TestUser.Default, null);
+        var response = await Client.PostAsyncWithUser(LobbyUrl.StartLobby(lobby.Id), TestUser.Default, null, TestContext.Current.CancellationToken);
 
         // then
         Assert.Equal(HttpStatusCode.Conflict, response.StatusCode);
@@ -105,13 +105,13 @@ public sealed class StartLobbyTests : IntegrationTestFixture
 
         var lobby = await CreateAndGetLobby(createLobbyDto, TestUser.Default);
 
-        await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.TestUser1, null);
+        await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.TestUser1, null, TestContext.Current.CancellationToken);
 
-        await Client.PutAsyncWithUser(LobbyUrl.SetPlayerReady, TestUser.Default, null);
-        await Client.PutAsyncWithUser(LobbyUrl.SetPlayerReady, TestUser.TestUser1, null);
+        await Client.PutAsyncWithUser(LobbyUrl.SetPlayerReady, TestUser.Default, null, TestContext.Current.CancellationToken);
+        await Client.PutAsyncWithUser(LobbyUrl.SetPlayerReady, TestUser.TestUser1, null, TestContext.Current.CancellationToken);
 
         // when
-        var response = await Client.PostAsyncWithUser(LobbyUrl.StartLobby(lobby.Id), TestUser.Default, null);
+        var response = await Client.PostAsyncWithUser(LobbyUrl.StartLobby(lobby.Id), TestUser.Default, null, TestContext.Current.CancellationToken);
 
         // then
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);

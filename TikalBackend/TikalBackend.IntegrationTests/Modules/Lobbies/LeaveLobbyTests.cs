@@ -21,7 +21,7 @@ public sealed class LeaveLobbyTests : IntegrationTestFixture
     public async Task GivenUserWithoutAccount_WhenLeaveLobby_ThenReturnsUnauthorized()
     {
         // when
-        var response = await Client.DeleteAsyncWithUser(LobbyUrl.LeaveLobby(1), TestUser.Default);
+        var response = await Client.DeleteAsyncWithUser(LobbyUrl.LeaveLobby(1), TestUser.Default, TestContext.Current.CancellationToken);
 
         // then
         Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
@@ -34,7 +34,7 @@ public sealed class LeaveLobbyTests : IntegrationTestFixture
         await CreateUserAccount(TestUser.Default);
 
         // when
-        var response = await Client.DeleteAsyncWithUser(LobbyUrl.LeaveLobby(1), TestUser.Default);
+        var response = await Client.DeleteAsyncWithUser(LobbyUrl.LeaveLobby(1), TestUser.Default, TestContext.Current.CancellationToken);
 
         // then
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
@@ -51,7 +51,7 @@ public sealed class LeaveLobbyTests : IntegrationTestFixture
         var lobby = await CreateAndGetLobby(createLobbyDto, TestUser.TestUser1);
 
         // when
-        var response = await Client.DeleteAsyncWithUser(LobbyUrl.LeaveLobby(lobby.Id), TestUser.Default);
+        var response = await Client.DeleteAsyncWithUser(LobbyUrl.LeaveLobby(lobby.Id), TestUser.Default, TestContext.Current.CancellationToken);
 
         // then
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
@@ -67,7 +67,7 @@ public sealed class LeaveLobbyTests : IntegrationTestFixture
         var lobby = await CreateAndGetLobby(createLobbyDto, TestUser.Default);
 
         // when
-        var response = await Client.DeleteAsyncWithUser(LobbyUrl.LeaveLobby(lobby.Id), TestUser.Default);
+        var response = await Client.DeleteAsyncWithUser(LobbyUrl.LeaveLobby(lobby.Id), TestUser.Default, TestContext.Current.CancellationToken);
 
         // then
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -82,15 +82,15 @@ public sealed class LeaveLobbyTests : IntegrationTestFixture
         var lobby = await CreateAndGetLobby(createLobbyDto, TestUser.Default);
 
         await CreateUserAccount(TestUser.TestUser1);
-        await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.TestUser1, null);
+        await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.TestUser1, null, TestContext.Current.CancellationToken);
 
-        await Client.PutAsyncWithUser(LobbyUrl.SetPlayerReady, TestUser.Default, null);
-        await Client.PutAsyncWithUser(LobbyUrl.SetPlayerReady, TestUser.TestUser1, null);
+        await Client.PutAsyncWithUser(LobbyUrl.SetPlayerReady, TestUser.Default, null, TestContext.Current.CancellationToken);
+        await Client.PutAsyncWithUser(LobbyUrl.SetPlayerReady, TestUser.TestUser1, null, TestContext.Current.CancellationToken);
 
-        await Client.PostAsyncWithUser(LobbyUrl.StartLobby(lobby.Id), TestUser.Default, null);
+        await Client.PostAsyncWithUser(LobbyUrl.StartLobby(lobby.Id), TestUser.Default, null, TestContext.Current.CancellationToken);
 
         // when
-        var response = await Client.DeleteAsyncWithUser(LobbyUrl.LeaveLobby(lobby.Id), TestUser.Default);
+        var response = await Client.DeleteAsyncWithUser(LobbyUrl.LeaveLobby(lobby.Id), TestUser.Default, TestContext.Current.CancellationToken);
 
         // then
         Assert.Equal(HttpStatusCode.Conflict, response.StatusCode);

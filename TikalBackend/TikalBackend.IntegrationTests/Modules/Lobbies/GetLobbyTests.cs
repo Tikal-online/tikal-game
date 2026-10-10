@@ -24,7 +24,7 @@ public sealed class GetLobbyTests : IntegrationTestFixture
     public async Task GivenUserWithoutAccount_WhenGetLobby_ThenReturnsUnauthorized(long lobbyId)
     {
         // when
-        var response = await Client.GetAsyncWithUser(LobbyUrl.GetLobby(lobbyId), TestUser.Default);
+        var response = await Client.GetAsyncWithUser(LobbyUrl.GetLobby(lobbyId), TestUser.Default, TestContext.Current.CancellationToken);
 
         // then
         Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
@@ -38,7 +38,7 @@ public sealed class GetLobbyTests : IntegrationTestFixture
         await CreateUserAccount(TestUser.Default);
 
         // when
-        var response = await Client.GetAsyncWithUser(LobbyUrl.GetLobby(lobbyId), TestUser.Default);
+        var response = await Client.GetAsyncWithUser(LobbyUrl.GetLobby(lobbyId), TestUser.Default, TestContext.Current.CancellationToken);
 
         // then
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
@@ -51,14 +51,14 @@ public sealed class GetLobbyTests : IntegrationTestFixture
         // given
         await CreateUserAccount(TestUser.Default);
 
-        await Client.PostAsyncWithUser(LobbyUrl.CreateLobby, TestUser.Default, createLobbyDto);
+        await Client.PostAsyncWithUser(LobbyUrl.CreateLobby, TestUser.Default, createLobbyDto, TestContext.Current.CancellationToken);
 
-        var createdLobbyResponse = await Client.GetAsyncWithUser(LobbyUrl.GetActiveLobby, TestUser.Default);
+        var createdLobbyResponse = await Client.GetAsyncWithUser(LobbyUrl.GetActiveLobby, TestUser.Default, TestContext.Current.CancellationToken);
 
         var createdLobby = await createdLobbyResponse.Content.ReadFromJsonAsync<LobbyDto>(TestContext.Current.CancellationToken);
 
         // when
-        var response = await Client.GetAsyncWithUser(LobbyUrl.GetLobby(createdLobby!.Id), TestUser.Default);
+        var response = await Client.GetAsyncWithUser(LobbyUrl.GetLobby(createdLobby!.Id), TestUser.Default, TestContext.Current.CancellationToken);
 
         var lobby = await response.Content.ReadFromJsonAsync<LobbyDto>(TestContext.Current.CancellationToken);
 

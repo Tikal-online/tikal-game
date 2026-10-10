@@ -23,7 +23,7 @@ public sealed class GetAccountTests : IntegrationTestFixture
     public async Task GivenNoUserAccountForAuthenticatedUser_WhenGetAccount_ThenReturnsNotFound()
     {
         // when
-        var response = await Client.GetAsyncWithUser(AccountUrl.GetAccount, TestUser.Default);
+        var response = await Client.GetAsyncWithUser(AccountUrl.GetAccount, TestUser.Default, TestContext.Current.CancellationToken);
 
         // then
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
@@ -36,10 +36,10 @@ public sealed class GetAccountTests : IntegrationTestFixture
     )
     {
         // given
-        await Client.PostAsyncWithUser(AccountUrl.CreateAccount, TestUser.Default, createAccountDto);
+        await Client.PostAsyncWithUser(AccountUrl.CreateAccount, TestUser.Default, createAccountDto, TestContext.Current.CancellationToken);
 
         // when
-        var response = await Client.GetAsyncWithUser(AccountUrl.GetAccount, TestUser.Default);
+        var response = await Client.GetAsyncWithUser(AccountUrl.GetAccount, TestUser.Default, TestContext.Current.CancellationToken);
 
         var account = await response.Content.ReadFromJsonAsync<AccountModel>(TestContext.Current.CancellationToken);
 

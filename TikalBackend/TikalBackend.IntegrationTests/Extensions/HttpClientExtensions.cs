@@ -6,38 +6,38 @@ internal static class HttpClientExtensions
 {
     extension(HttpClient client)
     {
-        public Task<HttpResponseMessage> GetAsyncWithUser(string url, TestUser user)
+        public Task<HttpResponseMessage> GetAsyncWithUser(string url, TestUser user, CancellationToken cancellationToken)
         {
             var request = new HttpRequestMessage(HttpMethod.Get, url).WithUser(user);
 
-            return client.SendAsync(request);
+            return client.SendAsync(request, cancellationToken);
         }
 
-        public Task<HttpResponseMessage> DeleteAsyncWithUser(string url, TestUser user)
+        public Task<HttpResponseMessage> DeleteAsyncWithUser(string url, TestUser user, CancellationToken cancellationToken)
         {
             var request = new HttpRequestMessage(HttpMethod.Delete, url).WithUser(user);
 
-            return client.SendAsync(request);
+            return client.SendAsync(request, cancellationToken);
         }
 
-        public Task<HttpResponseMessage> PutAsyncWithUser(string url, TestUser user, object? body)
+        public Task<HttpResponseMessage> PutAsyncWithUser(string url, TestUser user, object? body, CancellationToken cancellationToken)
         {
             var request = new HttpRequestMessage(HttpMethod.Put, url)
             {
                 Content = JsonContent.Create(body)
             }.WithUser(user);
 
-            return client.SendAsync(request);
+            return client.SendAsync(request, cancellationToken);
         }
 
-        public Task<HttpResponseMessage> PostAsyncWithUser(string url, TestUser user, object? body)
+        public Task<HttpResponseMessage> PostAsyncWithUser(string url, TestUser user, object? body, CancellationToken cancellationToken)
         {
             var request = new HttpRequestMessage(HttpMethod.Post, url)
             {
                 Content = JsonContent.Create(body)
             }.WithUser(user);
 
-            return client.SendAsync(request);
+            return client.SendAsync(request, cancellationToken);
         }
     }
 

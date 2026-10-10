@@ -29,7 +29,7 @@ public sealed class CreateAccountTests : IntegrationTestFixture
     )
     {
         // when
-        var response = await Client.PostAsyncWithUser(AccountUrl.CreateAccount, TestUser.Default, createAccountDto);
+        var response = await Client.PostAsyncWithUser(AccountUrl.CreateAccount, TestUser.Default, createAccountDto, TestContext.Current.CancellationToken);
 
         // then
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
@@ -42,10 +42,10 @@ public sealed class CreateAccountTests : IntegrationTestFixture
     )
     {
         // given
-        await Client.PostAsyncWithUser(AccountUrl.CreateAccount, TestUser.Default, createAccountDto);
+        await Client.PostAsyncWithUser(AccountUrl.CreateAccount, TestUser.Default, createAccountDto, TestContext.Current.CancellationToken);
 
         // when
-        var response = await Client.PostAsyncWithUser(AccountUrl.CreateAccount, TestUser.Default, createAccountDto);
+        var response = await Client.PostAsyncWithUser(AccountUrl.CreateAccount, TestUser.Default, createAccountDto, TestContext.Current.CancellationToken);
 
         // then
         Assert.Equal(HttpStatusCode.Conflict, response.StatusCode);
@@ -58,7 +58,7 @@ public sealed class CreateAccountTests : IntegrationTestFixture
     )
     {
         // when
-        var response = await Client.PostAsyncWithUser(AccountUrl.CreateAccount, TestUser.Default, createAccountDto);
+        var response = await Client.PostAsyncWithUser(AccountUrl.CreateAccount, TestUser.Default, createAccountDto, TestContext.Current.CancellationToken);
 
         var account = await response.Content.ReadFromJsonAsync<AccountModel>(TestContext.Current.CancellationToken);
 

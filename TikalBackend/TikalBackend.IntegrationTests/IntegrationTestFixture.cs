@@ -38,13 +38,13 @@ public abstract class IntegrationTestFixture : IDisposable
 
     protected Task CreateUserAccount(TestUser user)
     {
-        return Client.PostAsyncWithUser(AccountUrl.CreateAccount, user, new CreateAccountDto { Name = user.Name });
+        return Client.PostAsyncWithUser(AccountUrl.CreateAccount, user, new CreateAccountDto { Name = user.Name }, TestContext.Current.CancellationToken);
     }
 
     protected async Task<LobbyDto> CreateAndGetLobby(CreateLobbyDto createLobbyDto, TestUser user)
     {
-        await Client.PostAsyncWithUser(LobbyUrl.CreateLobby, user, createLobbyDto);
-        var response = await Client.GetAsyncWithUser(LobbyUrl.GetActiveLobby, user);
+        await Client.PostAsyncWithUser(LobbyUrl.CreateLobby, user, createLobbyDto, TestContext.Current.CancellationToken);
+        var response = await Client.GetAsyncWithUser(LobbyUrl.GetActiveLobby, user, TestContext.Current.CancellationToken);
         return (await response.Content.ReadFromJsonAsync<LobbyDto>())!;
     }
 
@@ -68,10 +68,10 @@ public abstract class IntegrationTestFixture : IDisposable
             var initializationCompleteSource = new TaskCompletionSource();
             connection.On("InitializationComplete", initializationCompleteSource.SetResult);
 
-            await connection.StartAsync();
+            await connection.StartAsync(TestContext.Current.CancellationToken);
 
             // Wait until OnConnectedAsync has completed and the client is assigned to all needed Groups
-            await initializationCompleteSource.Task.WaitAsync(TimeSpan.FromSeconds(5));
+            await initializationCompleteSource.Task.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken);
         }
 
         return connection;

@@ -41,7 +41,7 @@ public sealed class GetPaginatedLobbiesTests : IntegrationTestFixture
         var url = QueryHelpers.AddQueryString(LobbyUrl.GetLobbies, queryParams);
 
         // when
-        var response = await Client.GetAsyncWithUser(url, TestUser.Default);
+        var response = await Client.GetAsyncWithUser(url, TestUser.Default, TestContext.Current.CancellationToken);
 
         // then
         Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
@@ -63,7 +63,8 @@ public sealed class GetPaginatedLobbiesTests : IntegrationTestFixture
             {
                 Name = "Lobby1",
                 MaxPlayers = 2
-            }
+            },
+            TestContext.Current.CancellationToken
         );
 
         await Client.PostAsyncWithUser(
@@ -73,7 +74,8 @@ public sealed class GetPaginatedLobbiesTests : IntegrationTestFixture
             {
                 Name = "Lobby2",
                 MaxPlayers = 3
-            }
+            },
+            TestContext.Current.CancellationToken
         );
 
         await Client.PostAsyncWithUser(
@@ -83,7 +85,8 @@ public sealed class GetPaginatedLobbiesTests : IntegrationTestFixture
             {
                 Name = "Lobby3",
                 MaxPlayers = 4
-            }
+            },
+            TestContext.Current.CancellationToken
         );
 
         var queryParams = new Dictionary<string, string?>
@@ -96,7 +99,7 @@ public sealed class GetPaginatedLobbiesTests : IntegrationTestFixture
         var url = QueryHelpers.AddQueryString(LobbyUrl.GetLobbies, queryParams);
 
         // when
-        var response = await Client.GetAsyncWithUser(url, TestUser.Default);
+        var response = await Client.GetAsyncWithUser(url, TestUser.Default, TestContext.Current.CancellationToken);
 
         var paginatedResult = await response.Content.ReadFromJsonAsync<PaginatedResult<List<LobbySummaryDto>>>(TestContext.Current.CancellationToken);
 
