@@ -6,22 +6,23 @@ using TikalBackend.IntegrationTests.Modules.Lobbies.Dtos;
 
 namespace TikalBackend.IntegrationTests.Modules.Lobbies;
 
-internal sealed class SendLobbyChatMessageTests : IntegrationTestFixture
+public sealed class SendLobbyChatMessageTests : IntegrationTestFixture
 {
-    /*
-    [TestCaseSource(typeof(SendMessageDtoTestCases), nameof(SendMessageDtoTestCases.ValidSendMessageDtoCommands))]
+    [Theory]
+    [ClassData(typeof(ValidSendMessageDtos))]
     public async Task GivenUnauthenticatedUser_WhenSendLobbyChatMessage_ThenReturnsUnauthorized(
         SendMessageDto sendMessageDto
     )
     {
         // when
-        var response = await Client.PostAsJsonAsync(LobbyUrl.SendMessage(1), sendMessageDto);
+        var response = await Client.PostAsJsonAsync(LobbyUrl.SendMessage(1), sendMessageDto, TestContext.Current.CancellationToken);
 
         // then
-        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
+        Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
     }
 
-    [TestCaseSource(typeof(SendMessageDtoTestCases), nameof(SendMessageDtoTestCases.ValidSendMessageDtoCommands))]
+    [Theory]
+    [ClassData(typeof(ValidSendMessageDtos))]
     public async Task GivenUserWithoutAccount_WhenSendLobbyChatMessage_ThenReturnsUnauthorized(
         SendMessageDto sendMessageDto
     )
@@ -30,10 +31,11 @@ internal sealed class SendLobbyChatMessageTests : IntegrationTestFixture
         var response = await Client.PostAsyncWithUser(LobbyUrl.SendMessage(1), TestUser.Default, sendMessageDto);
 
         // then
-        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
+        Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
     }
 
-    [TestCaseSource(typeof(SendMessageDtoTestCases), nameof(SendMessageDtoTestCases.ValidSendMessageDtoCommands))]
+    [Theory]
+    [ClassData(typeof(ValidSendMessageDtos))]
     public async Task GivenLobbyDoesntExist_WhenSendLobbyChatMessage_ThenReturnsNotFound(
         SendMessageDto sendMessageDto
     )
@@ -45,10 +47,11 @@ internal sealed class SendLobbyChatMessageTests : IntegrationTestFixture
         var response = await Client.PostAsyncWithUser(LobbyUrl.SendMessage(1), TestUser.Default, sendMessageDto);
 
         // then
-        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
+        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }
 
-    [TestCaseSource(typeof(SendMessageDtoTestCases), nameof(SendMessageDtoTestCases.ValidSendMessageDtoCommands))]
+    [Theory]
+    [ClassData(typeof(ValidSendMessageDtos))]
     public async Task GivenPlayerNotInLobby_WhenSendLobbyChatMessage_ThenReturnsNotFound(
         SendMessageDto sendMessageDto
     )
@@ -57,23 +60,19 @@ internal sealed class SendLobbyChatMessageTests : IntegrationTestFixture
         await CreateUserAccount(TestUser.Default);
         await CreateUserAccount(TestUser.TestUser1);
 
-        await Client.PostAsyncWithUser(
-            LobbyUrl.CreateLobby,
-            TestUser.TestUser1,
-            new CreateLobbyDto { Name = "TestLobby", MaxPlayers = 4 }
-        );
-        var lobbyResponse = await Client.GetAsyncWithUser(LobbyUrl.GetActiveLobby, TestUser.TestUser1);
-        var lobby = await lobbyResponse.Content.ReadFromJsonAsync<LobbyDto>();
+        var createLobbyDto = new CreateLobbyDto { Name = "TestLobby", MaxPlayers = 4 };
+
+        var lobby = await CreateAndGetLobby(createLobbyDto, TestUser.TestUser1);
 
         // when
-        var response =
-            await Client.PostAsyncWithUser(LobbyUrl.SendMessage(lobby!.Id), TestUser.Default, sendMessageDto);
+        var response = await Client.PostAsyncWithUser(LobbyUrl.SendMessage(lobby.Id), TestUser.Default, sendMessageDto);
 
         // then
-        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
+        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }
 
-    [TestCaseSource(typeof(SendMessageDtoTestCases), nameof(SendMessageDtoTestCases.ValidSendMessageDtoCommands))]
+    [Theory]
+    [ClassData(typeof(ValidSendMessageDtos))]
     public async Task GivenPlayerInLobby_WhenSendLobbyChatMessage_ThenReturnsSuccess(
         SendMessageDto sendMessageDto
     )
@@ -81,20 +80,14 @@ internal sealed class SendLobbyChatMessageTests : IntegrationTestFixture
         // given
         await CreateUserAccount(TestUser.Default);
 
-        await Client.PostAsyncWithUser(
-            LobbyUrl.CreateLobby,
-            TestUser.Default,
-            new CreateLobbyDto { Name = "TestLobby", MaxPlayers = 4 }
-        );
-        var lobbyResponse = await Client.GetAsyncWithUser(LobbyUrl.GetActiveLobby, TestUser.Default);
-        var lobby = await lobbyResponse.Content.ReadFromJsonAsync<LobbyDto>();
+        var createLobbyDto = new CreateLobbyDto { Name = "TestLobby", MaxPlayers = 4 };
+
+        var lobby = await CreateAndGetLobby(createLobbyDto, TestUser.Default);
 
         // when
-        var response =
-            await Client.PostAsyncWithUser(LobbyUrl.SendMessage(lobby!.Id), TestUser.Default, sendMessageDto);
+        var response = await Client.PostAsyncWithUser(LobbyUrl.SendMessage(lobby.Id), TestUser.Default, sendMessageDto);
 
         // then
-        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
-    */
 }
