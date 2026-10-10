@@ -3,7 +3,6 @@ using System.Net.Http.Json;
 using RestApi.Controllers.Lobbies.Dtos;
 using TikalBackend.IntegrationTests.Extensions;
 using TikalBackend.IntegrationTests.Modules.Lobbies.Dtos;
-using Xunit;
 
 namespace TikalBackend.IntegrationTests.Modules.Lobbies;
 
@@ -59,22 +58,15 @@ public sealed class GetLobbyForAuthenticatedPlayerTests : IntegrationTestFixture
         var lobby = await response.Content.ReadFromJsonAsync<LobbyDto>(TestContext.Current.CancellationToken);
 
         // then
-        Assert.NotNull(lobby);
+        Assert.Multiple(
+            () => Assert.NotNull(lobby),
+            () => Assert.Equal(createLobbyDto.Name, lobby?.Name),
+            () => Assert.Equal(createLobbyDto.MaxPlayers, lobby?.MaxPlayers),
+            () => Assert.False(lobby?.InGame),
+            () => Assert.Equal(1, lobby?.Players.Count),
+            () => Assert.Equal(TestUser.Default.UserId, lobby?.Players.First().UserId),
+            () => Assert.Equal(TestUser.Default.Name, lobby?.Players.First().Name)
 
-        // TODO: assertions
-        /*
-        using (Assert.EnterMultipleScope())
-        {
-            Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
-
-            Assert.That(lobby.Name, Is.EqualTo(createLobbyDto.Name));
-            Assert.That(lobby.MaxPlayers, Is.EqualTo(createLobbyDto.MaxPlayers));
-            Assert.That(lobby.InGame, Is.False);
-
-            Assert.That(lobby.Players, Has.Count.EqualTo(1));
-            Assert.That(lobby.Players[0].UserId, Is.EqualTo(TestUser.Default.UserId));
-            Assert.That(lobby.Players[0].Name, Is.EqualTo(TestUser.Default.Name));
-        }
-        */
+        );
     }
 }
