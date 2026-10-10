@@ -8,17 +8,16 @@ using Moq;
 
 namespace Accounts.Application.Tests.UseCases.CreateAccount;
 
-internal sealed class CreateAccountCommandHandlerTests
+public sealed class CreateAccountCommandHandlerTests
 {
     // dependencies
-    private Mock<AccountRepository> accountRepository;
-    private Mock<UnitOfWork> unitOfWork;
+    private readonly Mock<AccountRepository> accountRepository;
+    private readonly Mock<UnitOfWork> unitOfWork;
 
     // under test
     private CreateAccountCommandHandler handler;
 
-    [SetUp]
-    public void Setup()
+    public CreateAccountCommandHandlerTests()
     {
         accountRepository = new Mock<AccountRepository>();
         unitOfWork = new Mock<UnitOfWork>();
@@ -26,10 +25,8 @@ internal sealed class CreateAccountCommandHandlerTests
         handler = new CreateAccountCommandHandler(accountRepository.Object, unitOfWork.Object);
     }
 
-    [TestCaseSource(
-        typeof(CreateAccountCommandTestCases),
-        nameof(CreateAccountCommandTestCases.ValidCreateAccountCommands)
-    )]
+    [Theory]
+    [ClassData(typeof(ValidCreateAccountCommands))]
     public async Task GivenExistingAccountForUserId_WhenHandle_ThenReturnsDuplicateUserIdError(
         CreateAccountCommand command
     )
@@ -49,17 +46,14 @@ internal sealed class CreateAccountCommandHandlerTests
         var result = await handler.Handle(command, CancellationToken.None);
 
         // then
-        using (Assert.EnterMultipleScope())
-        {
-            Assert.That(result.Value, Is.InstanceOf<DuplicateUserId>());
-            Assert.That(result.AsT1.UserId, Is.EqualTo(existingAccount.UserId));
-        }
+        Assert.Multiple(
+            () => Assert.IsType<DuplicateUserId>(result.Value),
+            () => Assert.Equal(existingAccount.UserId, result.AsT1.UserId)
+        );
     }
 
-    [TestCaseSource(
-        typeof(CreateAccountCommandTestCases),
-        nameof(CreateAccountCommandTestCases.ValidCreateAccountCommands)
-    )]
+    [Theory]
+    [ClassData(typeof(ValidCreateAccountCommands))]
     public async Task GivenNoAccountForUserId_WhenHandle_ThenReturnsCreatedAccountAndPersistsAccount(
         CreateAccountCommand command
     )
@@ -73,12 +67,11 @@ internal sealed class CreateAccountCommandHandlerTests
         var result = await handler.Handle(command, CancellationToken.None);
 
         // then
-        using (Assert.EnterMultipleScope())
-        {
-            Assert.That(result.Value, Is.InstanceOf<AccountModel>());
-            Assert.That(result.AsT0.Name, Is.EqualTo(command.Name));
-            Assert.That(result.AsT0.UserId, Is.EqualTo(command.UserId));
-        }
+        Assert.Multiple(
+            () => Assert.IsType<AccountModel>(result.Value),
+            () => Assert.Equal(command.UserId, result.AsT0.UserId),
+            () => Assert.Equal(command.Name, result.AsT0.Name)
+        );
 
         accountRepository.Verify(r => r.Create(It.IsAny<Account>()), Times.Once);
         unitOfWork.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);

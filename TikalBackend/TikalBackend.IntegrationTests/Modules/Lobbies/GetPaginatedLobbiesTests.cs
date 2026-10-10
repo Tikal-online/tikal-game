@@ -7,9 +7,9 @@ using TikalBackend.IntegrationTests.Extensions;
 
 namespace TikalBackend.IntegrationTests.Modules.Lobbies;
 
-internal sealed class GetPaginatedLobbiesTests : IntegrationTestFixture
+public sealed class GetPaginatedLobbiesTests : IntegrationTestFixture
 {
-    [Test]
+    [Fact]
     public async Task GivenUnauthenticatedUser_WhenGetPaginatedLobbies_ThenReturnsUnauthorized()
     {
         var queryParams = new Dictionary<string, string?>
@@ -22,13 +22,13 @@ internal sealed class GetPaginatedLobbiesTests : IntegrationTestFixture
         var url = QueryHelpers.AddQueryString(LobbyUrl.GetLobbies, queryParams);
 
         // when
-        var response = await Client.GetAsync(url);
+        var response = await Client.GetAsync(url, TestContext.Current.CancellationToken);
 
         // then
-        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
+        Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
     }
 
-    [Test]
+    [Fact]
     public async Task GivenUserWithoutAccount_WhenGetPaginatedLobbies_ThenReturnsUnauthorized()
     {
         var queryParams = new Dictionary<string, string?>
@@ -41,14 +41,14 @@ internal sealed class GetPaginatedLobbiesTests : IntegrationTestFixture
         var url = QueryHelpers.AddQueryString(LobbyUrl.GetLobbies, queryParams);
 
         // when
-        var response = await Client.GetAsyncWithUser(url, TestUser.Default);
+        var response = await Client.GetAsyncWithUser(url, TestUser.Default, TestContext.Current.CancellationToken);
 
         // then
-        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
+        Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
     }
 
     // TODO: improve this test by parameterizing it to test multiple scenarios
-    [Test]
+    [Fact]
     public async Task GivenLobbiesAndSearchString_WhenGetPaginatedLobbies_ThenReturnsLobbiesWithMatchingNames()
     {
         // given
@@ -63,7 +63,8 @@ internal sealed class GetPaginatedLobbiesTests : IntegrationTestFixture
             {
                 Name = "Lobby1",
                 MaxPlayers = 2
-            }
+            },
+            TestContext.Current.CancellationToken
         );
 
         await Client.PostAsyncWithUser(
@@ -73,7 +74,8 @@ internal sealed class GetPaginatedLobbiesTests : IntegrationTestFixture
             {
                 Name = "Lobby2",
                 MaxPlayers = 3
-            }
+            },
+            TestContext.Current.CancellationToken
         );
 
         await Client.PostAsyncWithUser(
@@ -83,7 +85,8 @@ internal sealed class GetPaginatedLobbiesTests : IntegrationTestFixture
             {
                 Name = "Lobby3",
                 MaxPlayers = 4
-            }
+            },
+            TestContext.Current.CancellationToken
         );
 
         var queryParams = new Dictionary<string, string?>
@@ -96,15 +99,17 @@ internal sealed class GetPaginatedLobbiesTests : IntegrationTestFixture
         var url = QueryHelpers.AddQueryString(LobbyUrl.GetLobbies, queryParams);
 
         // when
-        var response = await Client.GetAsyncWithUser(url, TestUser.Default);
+        var response = await Client.GetAsyncWithUser(url, TestUser.Default, TestContext.Current.CancellationToken);
 
-        var paginatedResult = await response.Content.ReadFromJsonAsync<PaginatedResult<List<LobbySummaryDto>>>();
+        var paginatedResult = await response.Content.ReadFromJsonAsync<PaginatedResult<List<LobbySummaryDto>>>(TestContext.Current.CancellationToken);
 
         var lobbies = paginatedResult?.Data;
 
         // then
-        Assert.That(lobbies, Is.Not.Null);
-        Assert.That(lobbies, Has.Count.EqualTo(1));
-        Assert.That(lobbies.First().Name, Is.EqualTo("Lobby2"));
+        Assert.Multiple(
+            () => Assert.NotNull(lobbies),
+            () => Assert.Equal(1, lobbies?.Count),
+            () => Assert.Equal("Lobby2", lobbies?.First().Name)
+        );
     }
 }

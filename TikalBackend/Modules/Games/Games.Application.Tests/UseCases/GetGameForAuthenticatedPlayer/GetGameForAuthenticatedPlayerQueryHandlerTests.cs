@@ -13,18 +13,17 @@ using Shared.Contracts.Enums;
 
 namespace Games.Application.Tests.UseCases.GetGameForAuthenticatedPlayer;
 
-internal sealed class GetGameForAuthenticatedPlayerQueryHandlerTests
+public sealed class GetGameForAuthenticatedPlayerQueryHandlerTests
 {
     // dependencies
-    private Mock<GameQueryContext> gameQueryContext;
-    private Mock<ISender> sender;
-    private AccountContext accountContext;
+    private readonly Mock<GameQueryContext> gameQueryContext;
+    private readonly Mock<ISender> sender;
+    private readonly AccountContext accountContext;
 
     // under test
-    private GetGameForAuthenticatedPlayerQueryHandler handler;
+    private readonly GetGameForAuthenticatedPlayerQueryHandler handler;
 
-    [SetUp]
-    public void Setup()
+    public GetGameForAuthenticatedPlayerQueryHandlerTests()
     {
         gameQueryContext = new Mock<GameQueryContext>();
         sender = new Mock<ISender>();
@@ -37,7 +36,7 @@ internal sealed class GetGameForAuthenticatedPlayerQueryHandlerTests
         );
     }
 
-    [Test]
+    [Fact]
     public async Task GivenAuthenticatedPlayerNotInGame_WhenHandle_ThenReturnsNull()
     {
         // given
@@ -50,10 +49,11 @@ internal sealed class GetGameForAuthenticatedPlayerQueryHandlerTests
         var result = await handler.Handle(query, CancellationToken.None);
 
         // then
-        Assert.That(result, Is.Null);
+        Assert.Null(result);
     }
 
-    [TestCaseSource(typeof(GameTestCases), nameof(GameTestCases.ValidGameTestCases))]
+    [Theory]
+    [ClassData(typeof(ValidGames))]
     public async Task GivenAuthenticatedPlayerInGame_WhenHandle_ThenReturnsGameModel(Game game)
     {
         // given
@@ -63,12 +63,12 @@ internal sealed class GetGameForAuthenticatedPlayerQueryHandlerTests
         sender.Setup(s => s.Send(
             It.Is<GetAccountsQuery>(q => q.UserIds.SetEquals(game.Players.Select(p => p.UserId))),
             It.IsAny<CancellationToken>()
-        )).ReturnsAsync((GetAccountsQuery accountsQuery, CancellationToken _) => accountsQuery.UserIds.Select(id =>
+        )).ReturnsAsync((GetAccountsQuery accountsQuery, CancellationToken _) => [.. accountsQuery.UserIds.Select(id =>
             new AccountModel
             {
                 Name = "Test",
                 UserId = id
-            }).ToList());
+            })]);
 
         var query = new GetGameForAuthenticatedPlayerQuery();
 
@@ -76,18 +76,20 @@ internal sealed class GetGameForAuthenticatedPlayerQueryHandlerTests
         var result = await handler.Handle(query, CancellationToken.None);
 
         // then
-        Assert.That(result, Is.Not.Null);
-
-        using (Assert.EnterMultipleScope())
-        {
-            Assert.That(result.Id, Is.EqualTo(game.Id));
-            Assert.That(result.Players, Has.Count.EqualTo(game.Players.Count));
-
-            for (var i = 0; i < game.Players.Count; i++)
+        Assert.Multiple(
+            () => Assert.NotNull(result),
+            () => Assert.Equal(game.Id, result?.Id),
+            () => Assert.Equal(game.Players.Count, result?.Players.Count),
+            () =>
             {
-                Assert.That(result.Players[i].UserId, Is.EqualTo(game.Players.ElementAt(i).UserId));
-                Assert.That(result.Players[i].Colour, Is.EqualTo((ColourModel)game.Players.ElementAt(i).Colour));
+                for (var i = 0; i < game.Players.Count; i++)
+                {
+                    Assert.Multiple(
+                        () => Assert.Equal(game.Players.ElementAt(i).UserId, result?.Players.ElementAt(i).UserId),
+                        () => Assert.Equal((ColourModel)game.Players.ElementAt(i).Colour, result?.Players.ElementAt(i).Colour)
+                    );
+                }
             }
-        }
+        );
     }
 }

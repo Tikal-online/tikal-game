@@ -5,42 +5,43 @@ using TikalBackend.IntegrationTests.Modules.Lobbies.Dtos;
 
 namespace TikalBackend.IntegrationTests.Modules.Lobbies;
 
-internal sealed class StartLobbyTests : IntegrationTestFixture
+public sealed class StartLobbyTests : IntegrationTestFixture
 {
-    [Test]
+    [Fact]
     public async Task GivenUnauthenticatedUser_WhenStartLobby_ThenReturnsUnauthorized()
     {
         // when
-        var response = await Client.PostAsync(LobbyUrl.StartLobby(1), null);
+        var response = await Client.PostAsync(LobbyUrl.StartLobby(1), null, TestContext.Current.CancellationToken);
 
         // then
-        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
+        Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
     }
 
-    [Test]
+    [Fact]
     public async Task GivenUserWithoutAccount_WhenStartLobby_ThenReturnsUnauthorized()
     {
         // when
-        var response = await Client.PostAsyncWithUser(LobbyUrl.StartLobby(1), TestUser.Default, null);
+        var response = await Client.PostAsyncWithUser(LobbyUrl.StartLobby(1), TestUser.Default, null, TestContext.Current.CancellationToken);
 
         // then
-        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
+        Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
     }
 
-    [Test]
+    [Fact]
     public async Task GivenNoLobbyWithId_WhenStartLobby_ThenReturnsNotFound()
     {
         // given
         await CreateUserAccount(TestUser.Default);
 
         // when
-        var response = await Client.PostAsyncWithUser(LobbyUrl.StartLobby(1), TestUser.Default, null);
+        var response = await Client.PostAsyncWithUser(LobbyUrl.StartLobby(1), TestUser.Default, null, TestContext.Current.CancellationToken);
 
         // then
-        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
+        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }
 
-    [TestCaseSource(typeof(CreateLobbyDtoTestCases), nameof(CreateLobbyDtoTestCases.ValidCreateLobbyDtos))]
+    [Theory]
+    [ClassData(typeof(ValidCreateLobbyDtos))]
     public async Task GivenPlayerNotInLobby_WhenStartLobby_ThenReturnsNotFound(CreateLobbyDto createLobbyDto)
     {
         // given
@@ -50,13 +51,14 @@ internal sealed class StartLobbyTests : IntegrationTestFixture
         var lobby = await CreateAndGetLobby(createLobbyDto, TestUser.TestUser1);
 
         // when
-        var response = await Client.PostAsyncWithUser(LobbyUrl.StartLobby(lobby.Id), TestUser.Default, null);
+        var response = await Client.PostAsyncWithUser(LobbyUrl.StartLobby(lobby.Id), TestUser.Default, null, TestContext.Current.CancellationToken);
 
         // then
-        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
+        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }
 
-    [TestCaseSource(typeof(CreateLobbyDtoTestCases), nameof(CreateLobbyDtoTestCases.ValidCreateLobbyDtos))]
+    [Theory]
+    [ClassData(typeof(ValidCreateLobbyDtos))]
     public async Task GivenPlayerIsNotOwner_WhenStartLobby_ThenReturnsForbidden(CreateLobbyDto createLobbyDto)
     {
         // given
@@ -65,16 +67,17 @@ internal sealed class StartLobbyTests : IntegrationTestFixture
 
         var lobby = await CreateAndGetLobby(createLobbyDto, TestUser.TestUser1);
 
-        await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.Default, null);
+        await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.Default, null, TestContext.Current.CancellationToken);
 
         // when
-        var response = await Client.PostAsyncWithUser(LobbyUrl.StartLobby(lobby.Id), TestUser.Default, null);
+        var response = await Client.PostAsyncWithUser(LobbyUrl.StartLobby(lobby.Id), TestUser.Default, null, TestContext.Current.CancellationToken);
 
         // then
-        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Forbidden));
+        Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
     }
 
-    [TestCaseSource(typeof(CreateLobbyDtoTestCases), nameof(CreateLobbyDtoTestCases.ValidCreateLobbyDtos))]
+    [Theory]
+    [ClassData(typeof(ValidCreateLobbyDtos))]
     public async Task GivenNotAllPlayersReady_WhenStartLobby_ThenReturnsConflict(CreateLobbyDto createLobbyDto)
     {
         // given
@@ -83,16 +86,17 @@ internal sealed class StartLobbyTests : IntegrationTestFixture
 
         var lobby = await CreateAndGetLobby(createLobbyDto, TestUser.Default);
 
-        await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.TestUser1, null);
+        await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.TestUser1, null, TestContext.Current.CancellationToken);
 
         // when
-        var response = await Client.PostAsyncWithUser(LobbyUrl.StartLobby(lobby.Id), TestUser.Default, null);
+        var response = await Client.PostAsyncWithUser(LobbyUrl.StartLobby(lobby.Id), TestUser.Default, null, TestContext.Current.CancellationToken);
 
         // then
-        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Conflict));
+        Assert.Equal(HttpStatusCode.Conflict, response.StatusCode);
     }
 
-    [TestCaseSource(typeof(CreateLobbyDtoTestCases), nameof(CreateLobbyDtoTestCases.ValidCreateLobbyDtos))]
+    [Theory]
+    [ClassData(typeof(ValidCreateLobbyDtos))]
     public async Task GivenAllPlayersReady_WhenStartLobby_ThenReturnsSuccess(CreateLobbyDto createLobbyDto)
     {
         // given
@@ -101,15 +105,15 @@ internal sealed class StartLobbyTests : IntegrationTestFixture
 
         var lobby = await CreateAndGetLobby(createLobbyDto, TestUser.Default);
 
-        await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.TestUser1, null);
+        await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.TestUser1, null, TestContext.Current.CancellationToken);
 
-        await Client.PutAsyncWithUser(LobbyUrl.SetPlayerReady, TestUser.Default, null);
-        await Client.PutAsyncWithUser(LobbyUrl.SetPlayerReady, TestUser.TestUser1, null);
+        await Client.PutAsyncWithUser(LobbyUrl.SetPlayerReady, TestUser.Default, null, TestContext.Current.CancellationToken);
+        await Client.PutAsyncWithUser(LobbyUrl.SetPlayerReady, TestUser.TestUser1, null, TestContext.Current.CancellationToken);
 
         // when
-        var response = await Client.PostAsyncWithUser(LobbyUrl.StartLobby(lobby.Id), TestUser.Default, null);
+        var response = await Client.PostAsyncWithUser(LobbyUrl.StartLobby(lobby.Id), TestUser.Default, null, TestContext.Current.CancellationToken);
 
         // then
-        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
 }

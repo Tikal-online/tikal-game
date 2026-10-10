@@ -6,9 +6,10 @@ using Games.Domain.Types;
 
 namespace Games.Domain.Tests.Entities;
 
-internal sealed class TilesTests
+public sealed class TilesTests
 {
-    [TestCaseSource(typeof(TilesPathFinding), nameof(TilesPathFinding.ValidTestCases))]
+    [Theory]
+    [ClassData(typeof(ValidTilePaths))]
     public void GivenTilesWithStartAndGoal_WhenGetTravelCost_ThenReturnsExpectedTravelCost(
         List<Tile> tiles,
         HexCoordinate start,
@@ -20,10 +21,11 @@ internal sealed class TilesTests
         var cost = tiles.GetTravelCost(start, goal);
 
         // then
-        Assert.AreEqual(expectedCost, cost.Value);
+        Assert.Equal(expectedCost, cost.Value);
     }
 
-    [TestCaseSource(typeof(TilesPathFinding), nameof(TilesPathFinding.NoPathTestCases))]
+    [Theory]
+    [ClassData(typeof(NoPathTilePaths))]
     public void GivenTilesWithNoAvailableRoute_WhenGetTravelCost_ThenReturnsNoPathFoundError(
         List<Tile> tiles,
         HexCoordinate start,
@@ -34,6 +36,6 @@ internal sealed class TilesTests
         var cost = tiles.GetTravelCost(start, goal);
 
         // then
-        Assert.That(cost.Value, Is.InstanceOf<NoPathFound>());
+        Assert.IsType<NoPathFound>(cost.Value);
     }
 }

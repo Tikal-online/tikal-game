@@ -11,18 +11,17 @@ using Shared.Application.Tests;
 
 namespace Lobbies.Application.Tests.UseCases.SetPlayerNotReady;
 
-internal sealed class SetPlayerNotReadyCommandHandlerTests
+public sealed class SetPlayerNotReadyCommandHandlerTests
 {
     // dependencies
-    private Mock<PlayerRepository> playerRepository;
-    private Mock<UnitOfWork> unitOfWork;
-    private AccountContext accountContext;
+    private readonly Mock<PlayerRepository> playerRepository;
+    private readonly Mock<UnitOfWork> unitOfWork;
+    private readonly AccountContext accountContext;
 
     // under test
-    private SetPlayerNotReadyCommandHandler handler;
+    private readonly SetPlayerNotReadyCommandHandler handler;
 
-    [SetUp]
-    public void Setup()
+    public SetPlayerNotReadyCommandHandlerTests()
     {
         playerRepository = new Mock<PlayerRepository>();
         unitOfWork = new Mock<UnitOfWork>();
@@ -38,7 +37,7 @@ internal sealed class SetPlayerNotReadyCommandHandlerTests
             .ReturnsAsync(player);
     }
 
-    [Test]
+    [Fact]
     public async Task GivenNonExistingPlayer_WhenHandle_ThenReturnsPlayerNotInALobbyError()
     {
         // given
@@ -51,10 +50,11 @@ internal sealed class SetPlayerNotReadyCommandHandlerTests
         var result = await handler.Handle(command, CancellationToken.None);
 
         // then
-        Assert.That(result.Value, Is.InstanceOf<PlayerNotInALobby>());
+        Assert.IsType<PlayerNotInALobby>(result.Value);
     }
 
-    [TestCaseSource(typeof(PlayerTestCases), nameof(PlayerTestCases.ValidPlayerTestCases))]
+    [Theory]
+    [ClassData(typeof(ValidPlayers))]
     public async Task GivenExistingPlayer_WhenHandle_ThenReturnsSuccessAndPlayerIsNotReady(Player player)
     {
         // given
@@ -66,10 +66,9 @@ internal sealed class SetPlayerNotReadyCommandHandlerTests
         var result = await handler.Handle(command, CancellationToken.None);
 
         // then
-        using (Assert.EnterMultipleScope())
-        {
-            Assert.That(result.Value, Is.InstanceOf<Success>());
-            Assert.That(player.IsReady, Is.False);
-        }
+        Assert.Multiple(
+            () => Assert.IsType<Success>(result.Value),
+            () => Assert.False(player.IsReady)
+        );
     }
 }

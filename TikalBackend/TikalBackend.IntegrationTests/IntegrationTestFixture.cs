@@ -9,35 +9,42 @@ using TikalBackend.IntegrationTests.Utils;
 
 namespace TikalBackend.IntegrationTests;
 
-internal abstract class IntegrationTestFixture : TestContainerFixture
+public abstract class IntegrationTestFixture : IDisposable
 {
-    private CustomWebApplicationFactory factory;
+    private readonly CustomWebApplicationFactory factory;
 
-    protected HttpClient Client { get; private set; }
+    protected readonly HttpClient Client;
 
-    [SetUp]
-    public void Setup()
+    public IntegrationTestFixture()
     {
-        factory = new CustomWebApplicationFactory(DatabaseContainer.GetConnectionString());
+        factory = new CustomWebApplicationFactory(PostgresDatabase.Instance.GetConnectionString());
         Client = factory.CreateDefaultClient();
     }
 
-    [TearDown]
-    public void TearDown()
+    public void Dispose()
     {
-        Client.Dispose();
-        factory.Dispose();
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            Client.Dispose();
+            factory.Dispose();
+        }
     }
 
     protected Task CreateUserAccount(TestUser user)
     {
-        return Client.PostAsyncWithUser(AccountUrl.CreateAccount, user, new CreateAccountDto { Name = user.Name });
+        return Client.PostAsyncWithUser(AccountUrl.CreateAccount, user, new CreateAccountDto { Name = user.Name }, TestContext.Current.CancellationToken);
     }
 
     protected async Task<LobbyDto> CreateAndGetLobby(CreateLobbyDto createLobbyDto, TestUser user)
     {
-        await Client.PostAsyncWithUser(LobbyUrl.CreateLobby, user, createLobbyDto);
-        var response = await Client.GetAsyncWithUser(LobbyUrl.GetActiveLobby, user);
+        await Client.PostAsyncWithUser(LobbyUrl.CreateLobby, user, createLobbyDto, TestContext.Current.CancellationToken);
+        var response = await Client.GetAsyncWithUser(LobbyUrl.GetActiveLobby, user, TestContext.Current.CancellationToken);
         return (await response.Content.ReadFromJsonAsync<LobbyDto>())!;
     }
 
@@ -58,7 +65,13 @@ internal abstract class IntegrationTestFixture : TestContainerFixture
 
         if (startConnection)
         {
-            await connection.StartAsync();
+            var initializationCompleteSource = new TaskCompletionSource();
+            connection.On("InitializationComplete", initializationCompleteSource.SetResult);
+
+            await connection.StartAsync(TestContext.Current.CancellationToken);
+
+            // Wait until OnConnectedAsync has completed and the client is assigned to all needed Groups
+            await initializationCompleteSource.Task.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken);
         }
 
         return connection;

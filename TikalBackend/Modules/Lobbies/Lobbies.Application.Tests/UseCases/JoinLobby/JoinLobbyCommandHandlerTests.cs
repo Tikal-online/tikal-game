@@ -8,35 +8,21 @@ using Moq;
 using OneOf.Types;
 using Shared.Application.Contexts;
 using Shared.Application.Tests;
-using Shared.Application.Tests.Extensions;
 
 namespace Lobbies.Application.Tests.UseCases.JoinLobby;
 
-internal sealed class JoinLobbyCommandHandlerTests
+public sealed class JoinLobbyCommandHandlerTests
 {
     // dependencies
-    private Mock<LobbyRepository> lobbyRepository;
-    private Mock<PlayerQueryContext> playerQueryContext;
-    private Mock<UnitOfWork> unitOfWork;
-    private AccountContext accountContext;
+    private readonly Mock<LobbyRepository> lobbyRepository;
+    private readonly Mock<PlayerQueryContext> playerQueryContext;
+    private readonly Mock<UnitOfWork> unitOfWork;
+    private readonly AccountContext accountContext;
 
     // under test
-    private JoinLobbyCommandHandler handler;
+    private readonly JoinLobbyCommandHandler handler;
 
-    // test data
-    public static IEnumerable<Lobby> NotFullLobbyTestCases => LobbyTestCases.ValidLobbyTestCases
-        .Where(l => !l.IsFull)
-        .Select(l => l.DeepClone());
-
-    public static IEnumerable<Lobby> FullLobbyTestCases => LobbyTestCases.ValidLobbyTestCases
-        .Where(l => l.IsFull)
-        .Select(l => l.DeepClone());
-
-    public static IEnumerable<Lobby> InGameLobbyTestCases => LobbyTestCases.InGameLobbyTestCases
-        .Select(l => l.DeepClone());
-
-    [SetUp]
-    public void Setup()
+    public JoinLobbyCommandHandlerTests()
     {
         lobbyRepository = new Mock<LobbyRepository>();
         playerQueryContext = new Mock<PlayerQueryContext>();
@@ -60,7 +46,8 @@ internal sealed class JoinLobbyCommandHandlerTests
         lobbyRepository.Setup(r => r.GetById(lobby.Id)).ReturnsAsync(lobby);
     }
 
-    [TestCaseSource(nameof(NotFullLobbyTestCases))]
+    [Theory]
+    [ClassData(typeof(NotFullLobbies))]
     public async Task GivenPlayerIsAlreadyInALobby_WhenHandle_ThenReturnsPlayerAlreadyInALobbyError(Lobby lobby)
     {
         // given
@@ -74,10 +61,11 @@ internal sealed class JoinLobbyCommandHandlerTests
         var result = await handler.Handle(command, CancellationToken.None);
 
         // then
-        Assert.That(result.Value, Is.InstanceOf<PlayerAlreadyInALobby>());
+        Assert.IsType<PlayerAlreadyInALobby>(result.Value);
     }
 
-    [TestCaseSource(nameof(NotFullLobbyTestCases))]
+    [Theory]
+    [ClassData(typeof(NotFullLobbies))]
     public async Task GivenLobbyDoesntExist_WhenHandle_ThenReturnsLobbyNotFoundError(Lobby lobby)
     {
         // given
@@ -91,10 +79,11 @@ internal sealed class JoinLobbyCommandHandlerTests
         var result = await handler.Handle(command, CancellationToken.None);
 
         // then
-        Assert.That(result.Value, Is.InstanceOf<LobbyNotFound>());
+        Assert.IsType<LobbyNotFound>(result.Value);
     }
 
-    [TestCaseSource(nameof(FullLobbyTestCases))]
+    [Theory]
+    [ClassData(typeof(FullLobbies))]
     public async Task GivenFullLobby_WhenHandle_ThenReturnsLobbyFullError(Lobby lobby)
     {
         // given
@@ -106,10 +95,11 @@ internal sealed class JoinLobbyCommandHandlerTests
         var result = await handler.Handle(command, CancellationToken.None);
 
         // then
-        Assert.That(result.Value, Is.InstanceOf<LobbyFull>());
+        Assert.IsType<LobbyFull>(result.Value);
     }
 
-    [TestCaseSource(nameof(InGameLobbyTestCases))]
+    [Theory]
+    [ClassData(typeof(InGameLobbies))]
     public async Task GivenLobbyInGame_WhenHandle_ThenReturnsLobbyInGameError(Lobby lobby)
     {
         // given
@@ -121,10 +111,11 @@ internal sealed class JoinLobbyCommandHandlerTests
         var result = await handler.Handle(command, CancellationToken.None);
 
         // then
-        Assert.That(result.Value, Is.InstanceOf<LobbyInGame>());
+        Assert.IsType<LobbyInGame>(result.Value);
     }
 
-    [TestCaseSource(nameof(NotFullLobbyTestCases))]
+    [Theory]
+    [ClassData(typeof(NotFullLobbies))]
     public async Task GivenNotFullLobby_WhenHandle_ThenAddsPlayerToLobby(Lobby lobby)
     {
         // given
@@ -138,10 +129,9 @@ internal sealed class JoinLobbyCommandHandlerTests
         // then
         var player = lobby.Players.FirstOrDefault(p => p.UserId == accountContext.Account.UserId);
 
-        using (Assert.EnterMultipleScope())
-        {
-            Assert.That(result.Value, Is.InstanceOf<Success>());
-            Assert.That(player, Is.Not.Null);
-        }
+        Assert.Multiple(
+            () => Assert.NotNull(result.Value),
+            () => Assert.IsType<Success>(result.Value)
+        );
     }
 }

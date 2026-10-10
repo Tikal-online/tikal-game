@@ -5,13 +5,10 @@ using Shared.Domain.Enums;
 
 namespace Lobbies.Domain.Tests.Entities;
 
-internal sealed class LobbyTests
+public sealed class LobbyTests
 {
-    // test data
-    public static IEnumerable<Lobby> LobbyWithMultiplePlayersAndOneOwnerTestCases =>
-        LobbyTestCases.ValidLobbyTestCases.Where(l => l.Players.Count > 1 && l.Players.Count(p => p.IsOwner) == 1);
-
-    [TestCaseSource(typeof(LobbyTestCases), nameof(LobbyTestCases.ValidLobbyTestCases))]
+    [Theory]
+    [ClassData(typeof(ValidLobbies))]
     public void GivenLobby_WhenRemovePlayer_ThenRemovesPlayerFromList(Lobby lobby)
     {
         // given
@@ -21,10 +18,11 @@ internal sealed class LobbyTests
         lobby.RemovePlayer(playerToRemove);
 
         // then
-        Assert.That(lobby.Players, Does.Not.Contain(playerToRemove));
+        Assert.DoesNotContain(playerToRemove, lobby.Players);
     }
 
-    [TestCaseSource(typeof(LobbyTestCases), nameof(LobbyTestCases.ValidLobbyTestCases))]
+    [Theory]
+    [ClassData(typeof(ValidLobbies))]
     public void GivenLobby_WhenRemovePlayer_ThenAddsPlayerLeftEvent(Lobby lobby)
     {
         // given
@@ -36,11 +34,14 @@ internal sealed class LobbyTests
         // then
         var domainEvent = lobby.DomainEvents.OfType<PlayerLeftEvent>().SingleOrDefault();
 
-        Assert.That(domainEvent, Is.Not.Null);
-        Assert.That(domainEvent.Player, Is.EqualTo(playerToRemove));
+        Assert.Multiple(
+            () => Assert.NotNull(domainEvent),
+            () => Assert.Equal(playerToRemove, domainEvent?.Player)
+        );
     }
 
-    [TestCaseSource(typeof(LobbyTestCases), nameof(LobbyTestCases.ValidLobbyTestCases))]
+    [Theory]
+    [ClassData(typeof(ValidLobbies))]
     public void GivenLobby_WhenAddPlayer_ThenAddsPlayerToList(Lobby lobby)
     {
         // given
@@ -56,10 +57,11 @@ internal sealed class LobbyTests
         lobby.AddPlayer(playerToAdd);
 
         // then
-        Assert.That(lobby.Players, Does.Contain(playerToAdd));
+        Assert.Contains(playerToAdd, lobby.Players);
     }
 
-    [TestCaseSource(typeof(LobbyTestCases), nameof(LobbyTestCases.ValidLobbyTestCases))]
+    [Theory]
+    [ClassData(typeof(ValidLobbies))]
     public void GivenLobby_WhenAddPlayer_ThenAddsPlayerJoinedEvent(Lobby lobby)
     {
         // given
@@ -77,11 +79,14 @@ internal sealed class LobbyTests
         // then
         var domainEvent = lobby.DomainEvents.OfType<PlayerJoinedEvent>().SingleOrDefault();
 
-        Assert.That(domainEvent, Is.Not.Null);
-        Assert.That(domainEvent.Player, Is.EqualTo(playerToAdd));
+        Assert.Multiple(
+            () => Assert.NotNull(domainEvent),
+            () => Assert.Equal(playerToAdd, domainEvent?.Player)
+        );
     }
 
-    [TestCaseSource(nameof(LobbyWithMultiplePlayersAndOneOwnerTestCases))]
+    [Theory]
+    [ClassData(typeof(LobbiesWithOneOwnerAndMultiplePlayers))]
     public void GivenLobbyWithMultiplePlayersAndOneOwner_WhenOwnerIsRemoved_ThenPromotesAnotherPlayerToOwner(
         Lobby lobby
     )
@@ -93,11 +98,14 @@ internal sealed class LobbyTests
         lobby.RemovePlayer(playerToRemove);
 
         // then
-        Assert.That(lobby.Players, Does.Not.Contain(playerToRemove));
-        Assert.That(lobby.Players.Any(p => p.IsOwner), Is.True);
+        Assert.Multiple(
+            () => Assert.DoesNotContain(playerToRemove, lobby.Players),
+            () => Assert.Contains(lobby.Players, p => p.IsOwner)
+        );
     }
 
-    [TestCaseSource(nameof(LobbyWithMultiplePlayersAndOneOwnerTestCases))]
+    [Theory]
+    [ClassData(typeof(LobbiesWithOneOwnerAndMultiplePlayers))]
     public void GivenLobbyWithMultiplePlayersAndOneOwner_WhenOwnerIsRemoved_ThenAddsPlayerUpdatedEvent(
         Lobby lobby
     )
@@ -112,11 +120,14 @@ internal sealed class LobbyTests
         var domainEvent = lobby.DomainEvents.OfType<PlayerUpdatedEvent>().SingleOrDefault();
         var promotedPlayer = lobby.Players.First(p => p.IsOwner);
 
-        Assert.That(domainEvent, Is.Not.Null);
-        Assert.That(domainEvent.Player, Is.EqualTo(promotedPlayer));
+        Assert.Multiple(
+            () => Assert.NotNull(domainEvent),
+            () => Assert.Equal(promotedPlayer, domainEvent?.Player)
+        );
     }
 
-    [TestCaseSource(typeof(LobbyTestCases), nameof(LobbyTestCases.ValidLobbyTestCases))]
+    [Theory]
+    [ClassData(typeof(ValidLobbies))]
     public void GivenLobby_WhenGetUnusedColour_ThenReturnsColourUsedByNoPlayer(Lobby lobby)
     {
         // given
@@ -126,6 +137,6 @@ internal sealed class LobbyTests
         var unusedColour = lobby.GetUnusedColour();
 
         // then
-        Assert.That(usedColours, Does.Not.Contain(unusedColour));
+        Assert.DoesNotContain(unusedColour, usedColours);
     }
 }

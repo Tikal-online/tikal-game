@@ -8,35 +8,21 @@ using Moq;
 using OneOf.Types;
 using Shared.Application.Contexts;
 using Shared.Application.Tests;
-using Shared.Application.Tests.Extensions;
 
 namespace Lobbies.Application.Tests.UseCases.LeaveLobby;
 
-internal sealed class LeaveLobbyCommandHandlerTests
+public sealed class LeaveLobbyCommandHandlerTests
 {
     // dependencies
-    private Mock<PlayerRepository> playerRepository;
-    private Mock<LobbyRepository> lobbyRepository;
-    private Mock<UnitOfWork> unitOfWork;
-    private AccountContext accountContext;
+    private readonly Mock<PlayerRepository> playerRepository;
+    private readonly Mock<LobbyRepository> lobbyRepository;
+    private readonly Mock<UnitOfWork> unitOfWork;
+    private readonly AccountContext accountContext;
 
     // under test
-    private LeaveLobbyCommandHandler handler;
+    private readonly LeaveLobbyCommandHandler handler;
 
-    // test data
-    public static IEnumerable<Lobby> LobbyWithMoreThanOnePlayerTests => LobbyTestCases.ValidLobbyTestCases
-        .Where(l => l.Players.Count > 1)
-        .Select(l => l.DeepClone());
-
-    public static IEnumerable<Lobby> LobbyWithOnePlayerTests => LobbyTestCases.ValidLobbyTestCases
-        .Where(l => l.Players.Count == 1)
-        .Select(l => l.DeepClone());
-
-    public static IEnumerable<Lobby> InGameLobbyTests => LobbyTestCases.InGameLobbyTestCases
-        .Select(l => l.DeepClone());
-
-    [SetUp]
-    public void Setup()
+    public LeaveLobbyCommandHandlerTests()
     {
         playerRepository = new Mock<PlayerRepository>();
         lobbyRepository = new Mock<LobbyRepository>();
@@ -63,7 +49,7 @@ internal sealed class LeaveLobbyCommandHandlerTests
         player.Lobby = lobby;
     }
 
-    [Test]
+    [Fact]
     public async Task GivenLobbyDoesntExist_WhenHandle_ThenReturnsLobbyNotFoundError()
     {
         // given
@@ -76,10 +62,11 @@ internal sealed class LeaveLobbyCommandHandlerTests
         var result = await handler.Handle(command, CancellationToken.None);
 
         // then
-        Assert.That(result.Value, Is.InstanceOf<LobbyNotFound>());
+        Assert.IsType<LobbyNotFound>(result.Value);
     }
 
-    [TestCaseSource(nameof(LobbyWithMoreThanOnePlayerTests))]
+    [Theory]
+    [ClassData(typeof(LobbiesWithMoreThanOnePlayer))]
     public async Task GivenPlayerIsNotPartOfLobby_WhenHandle_ThenReturnsPlayerNotInGivenLobbyError(Lobby lobby)
     {
         // given
@@ -92,10 +79,11 @@ internal sealed class LeaveLobbyCommandHandlerTests
         var result = await handler.Handle(command, CancellationToken.None);
 
         // then
-        Assert.That(result.Value, Is.InstanceOf<PlayerNotInGivenLobby>());
+        Assert.IsType<PlayerNotInGivenLobby>(result.Value);
     }
 
-    [TestCaseSource(nameof(InGameLobbyTests))]
+    [Theory]
+    [ClassData(typeof(InGameLobbies))]
     public async Task GivenLobbyInGame_WhenHandle_ThenReturnsLobbyInGameError(Lobby lobby)
     {
         // given
@@ -107,10 +95,11 @@ internal sealed class LeaveLobbyCommandHandlerTests
         var result = await handler.Handle(command, CancellationToken.None);
 
         // then
-        Assert.That(result.Value, Is.InstanceOf<LobbyInGame>());
+        Assert.IsType<LobbyInGame>(result.Value);
     }
 
-    [TestCaseSource(nameof(LobbyWithMoreThanOnePlayerTests))]
+    [Theory]
+    [ClassData(typeof(LobbiesWithMoreThanOnePlayer))]
     public async Task GivenLobbyWithMultiplePlayers_WhenHandle_ThenRemovesPlayer(Lobby lobby)
     {
         // given
@@ -122,13 +111,14 @@ internal sealed class LeaveLobbyCommandHandlerTests
         var result = await handler.Handle(command, CancellationToken.None);
 
         // then
-        Assert.That(result.Value, Is.InstanceOf<Success>());
+        Assert.IsType<Success>(result.Value);
 
         playerRepository.Verify(r => r.Delete(It.IsAny<Player>()), Times.Once);
         unitOfWork.Verify(u => u.SaveChangesAsync(CancellationToken.None), Times.Once);
     }
 
-    [TestCaseSource(nameof(LobbyWithOnePlayerTests))]
+    [Theory]
+    [ClassData(typeof(LobbiesWithOnePlayer))]
     public async Task GivenLobbyWithOnePlayer_WhenHandle_ThenRemovesPlayerAndDeletesLobby(Lobby lobby)
     {
         // given
@@ -140,7 +130,7 @@ internal sealed class LeaveLobbyCommandHandlerTests
         var result = await handler.Handle(command, CancellationToken.None);
 
         // then
-        Assert.That(result.Value, Is.InstanceOf<Success>());
+        Assert.IsType<Success>(result.Value);
 
         playerRepository.Verify(r => r.Delete(It.IsAny<Player>()), Times.Once);
         lobbyRepository.Verify(r => r.Delete(lobby), Times.Once);

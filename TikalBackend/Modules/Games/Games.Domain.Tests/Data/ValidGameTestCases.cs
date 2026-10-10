@@ -4,12 +4,12 @@ using Shared.Domain.Enums;
 
 namespace Games.Domain.Tests.Data;
 
-public static class GameTestCases
+public class ValidGames : TheoryData<Game>
 {
-    // TODO: add more game test cases
-    public static IEnumerable<Game> ValidGameTestCases =>
-    [
-        new()
+    public ValidGames()
+    {
+        // TODO: add more game test cases
+        Add(new Game()
         {
             LobbyId = 1,
             Players =
@@ -45,6 +45,6 @@ public static class GameTestCases
                     Coordinate = new HexCoordinate(2, -1)
                 }
             ]
-        }
-    ];
+        });
+    }
 }

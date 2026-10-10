@@ -8,30 +8,21 @@ using Moq;
 using OneOf.Types;
 using Shared.Application.Contexts;
 using Shared.Application.Tests;
-using Shared.Application.Tests.Extensions;
 using Shared.Contracts.Errors;
 
 namespace Lobbies.Application.Tests.UseCases.StartLobby;
 
-internal sealed class StartLobbyCommandHandlerTests
+public sealed class StartLobbyCommandHandlerTests
 {
     // dependencies
-    private Mock<LobbyRepository> lobbyRepository;
-    private Mock<UnitOfWork> unitOfWork;
-    private AccountContext accountContext;
+    private readonly Mock<LobbyRepository> lobbyRepository;
+    private readonly Mock<UnitOfWork> unitOfWork;
+    private readonly AccountContext accountContext;
 
     // under test
-    private StartLobbyCommandHandler handler;
+    private readonly StartLobbyCommandHandler handler;
 
-    // test data
-    public static IEnumerable<Lobby> StartAbleLobbyTests = LobbyTestCases.ValidLobbyTestCases
-        .Where(l => l.CanBeStarted).Select(l => l.DeepClone());
-
-    public static IEnumerable<Lobby> NotStartAbleLobbyTests = LobbyTestCases.ValidLobbyTestCases
-        .Where(l => !l.CanBeStarted).Select(l => l.DeepClone());
-
-    [SetUp]
-    public void Setup()
+    public StartLobbyCommandHandlerTests()
     {
         lobbyRepository = new Mock<LobbyRepository>();
         unitOfWork = new Mock<UnitOfWork>();
@@ -57,7 +48,7 @@ internal sealed class StartLobbyCommandHandlerTests
         player.IsOwner = true;
     }
 
-    [Test]
+    [Fact]
     public async Task GivenLobbyDoesntExist_WhenHandle_ThenReturnsLobbyNotFoundError()
     {
         // given
@@ -70,10 +61,11 @@ internal sealed class StartLobbyCommandHandlerTests
         var result = await handler.Handle(command, CancellationToken.None);
 
         // then
-        Assert.That(result.Value, Is.InstanceOf<LobbyNotFound>());
+        Assert.IsType<LobbyNotFound>(result.Value);
     }
 
-    [TestCaseSource(nameof(StartAbleLobbyTests))]
+    [Theory]
+    [ClassData(typeof(StartableLobbies))]
     public async Task GivenPlayerIsNotPartOfLobby_WhenHandle_ThenReturnsPlayerNotInGivenLobbyError(Lobby lobby)
     {
         // given
@@ -86,10 +78,11 @@ internal sealed class StartLobbyCommandHandlerTests
         var result = await handler.Handle(command, CancellationToken.None);
 
         // then
-        Assert.That(result.Value, Is.InstanceOf<PlayerNotInGivenLobby>());
+        Assert.IsType<PlayerNotInGivenLobby>(result.Value);
     }
 
-    [TestCaseSource(nameof(StartAbleLobbyTests))]
+    [Theory]
+    [ClassData(typeof(StartableLobbies))]
     public async Task GivenPlayerIsNotLobbyOwner_WhenHandle_ThenReturnsUnprivilegedError(Lobby lobby)
     {
         // given
@@ -104,10 +97,11 @@ internal sealed class StartLobbyCommandHandlerTests
         var result = await handler.Handle(command, CancellationToken.None);
 
         // then
-        Assert.That(result.Value, Is.InstanceOf<Unprivileged>());
+        Assert.IsType<Unprivileged>(result.Value);
     }
 
-    [TestCaseSource(nameof(NotStartAbleLobbyTests))]
+    [Theory]
+    [ClassData(typeof(NotStartableLobbies))]
     public async Task GivenLobbyIsNotStartAble_WhenHandle_ThenReturnsLobbyCannotBeStartedError(Lobby lobby)
     {
         // given
@@ -119,10 +113,11 @@ internal sealed class StartLobbyCommandHandlerTests
         var result = await handler.Handle(command, CancellationToken.None);
 
         // then
-        Assert.That(result.Value, Is.InstanceOf<LobbyCannotBeStarted>());
+        Assert.IsType<LobbyCannotBeStarted>(result.Value);
     }
 
-    [TestCaseSource(nameof(StartAbleLobbyTests))]
+    [Theory]
+    [ClassData(typeof(StartableLobbies))]
     public async Task GivenStartAbleLobby_WhenHandle_ThenStartsLobby(Lobby lobby)
     {
         // given
@@ -134,7 +129,7 @@ internal sealed class StartLobbyCommandHandlerTests
         var result = await handler.Handle(command, CancellationToken.None);
 
         // then
-        Assert.That(result.Value, Is.InstanceOf<Success>());
+        Assert.IsType<Success>(result.Value);
 
         unitOfWork.Verify(u => u.SaveChangesAsync(CancellationToken.None), Times.Once);
     }

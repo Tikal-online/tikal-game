@@ -9,19 +9,18 @@ using Shared.Application.Tests;
 
 namespace Lobbies.Application.Tests.UseCases.CreateLobby;
 
-internal sealed class CreateLobbyCommandHandlerTests
+public sealed class CreateLobbyCommandHandlerTests
 {
     // dependencies
-    private Mock<LobbyRepository> lobbyRepository;
-    private Mock<PlayerQueryContext> playerQueryContext;
-    private Mock<UnitOfWork> unitOfWork;
-    private AccountContext accountContext;
+    private readonly Mock<LobbyRepository> lobbyRepository;
+    private readonly Mock<PlayerQueryContext> playerQueryContext;
+    private readonly Mock<UnitOfWork> unitOfWork;
+    private readonly AccountContext accountContext;
 
     // under test
-    private CreateLobbyCommandHandler handler;
+    private readonly CreateLobbyCommandHandler handler;
 
-    [SetUp]
-    public void Setup()
+    public CreateLobbyCommandHandlerTests()
     {
         lobbyRepository = new Mock<LobbyRepository>();
         playerQueryContext = new Mock<PlayerQueryContext>();
@@ -42,10 +41,8 @@ internal sealed class CreateLobbyCommandHandlerTests
         playerQueryContext.Setup(p => p.PlayerExists(accountContext.Account.UserId)).ReturnsAsync(false);
     }
 
-    [TestCaseSource(
-        typeof(CreateLobbyCommandTestCases),
-        nameof(CreateLobbyCommandTestCases.ValidCreateLobbyCommands)
-    )]
+    [Theory]
+    [ClassData(typeof(ValidCreateLobbyCommands))]
     public async Task GivenPlayerIsAlreadyInALobby_WhenHandle_ThenReturnsPlayerAlreadyInALobbyError(
         CreateLobbyCommand command
     )
@@ -59,13 +56,11 @@ internal sealed class CreateLobbyCommandHandlerTests
         var result = await handler.Handle(command, CancellationToken.None);
 
         // then
-        Assert.That(result.Value, Is.InstanceOf<PlayerAlreadyInALobby>());
+        Assert.IsType<PlayerAlreadyInALobby>(result.Value);
     }
 
-    [TestCaseSource(
-        typeof(CreateLobbyCommandTestCases),
-        nameof(CreateLobbyCommandTestCases.ValidCreateLobbyCommands)
-    )]
+    [Theory]
+    [ClassData(typeof(ValidCreateLobbyCommands))]
     public async Task GivenSuccessfulCreation_WhenHandle_ThenReturnsSuccess(CreateLobbyCommand command)
     {
         // given
@@ -75,6 +70,6 @@ internal sealed class CreateLobbyCommandHandlerTests
         var result = await handler.Handle(command, CancellationToken.None);
 
         // then
-        Assert.That(result.Value, Is.InstanceOf<Success>());
+        Assert.IsType<Success>(result.Value);
     }
 }
