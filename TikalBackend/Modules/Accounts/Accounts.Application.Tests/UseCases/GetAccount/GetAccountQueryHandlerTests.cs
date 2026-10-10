@@ -7,23 +7,23 @@ using Moq;
 
 namespace Accounts.Application.Tests.UseCases.GetAccount;
 
-internal sealed class GetAccountQueryHandlerTests
+public sealed class GetAccountQueryHandlerTests
 {
     // dependencies
-    private Mock<AccountQueryContext> accountQueryContext;
+    private readonly Mock<AccountQueryContext> accountQueryContext;
 
     // under test
-    private GetAccountQueryHandler handler;
+    private readonly GetAccountQueryHandler handler;
 
-    [SetUp]
-    public void Setup()
+    public GetAccountQueryHandlerTests()
     {
         accountQueryContext = new Mock<AccountQueryContext>();
 
         handler = new GetAccountQueryHandler(accountQueryContext.Object);
     }
 
-    [TestCaseSource(typeof(GetAccountQueryTestCases), nameof(GetAccountQueryTestCases.ValidGetAccountQueries))]
+    [Theory]
+    [ClassData(typeof(ValidGetAccountQueries))]
     public async Task GivenNonExistentIdentifier_WhenHandle_ThenReturnsNull(GetAccountQuery query)
     {
         // given
@@ -35,10 +35,11 @@ internal sealed class GetAccountQueryHandlerTests
         var result = await handler.Handle(query, CancellationToken.None);
 
         // then
-        Assert.That(result, Is.Null);
+        Assert.Null(result);
     }
 
-    [TestCaseSource(typeof(AccountTestCases), nameof(AccountTestCases.ValidAccountTestCases))]
+    [Theory]
+    [ClassData(typeof(ValidAccounts))]
     public async Task GivenExistentIdentifier_WhenHandle_ThenReturnsCorrectlyMappedAccountModel(Account account)
     {
         // given
@@ -52,11 +53,10 @@ internal sealed class GetAccountQueryHandlerTests
         var result = await handler.Handle(query, CancellationToken.None);
 
         // then
-        using (Assert.EnterMultipleScope())
-        {
-            Assert.That(result, Is.Not.Null);
-            Assert.That(result!.Name, Is.EqualTo(account.Name));
-            Assert.That(result.UserId, Is.EqualTo(account.UserId));
-        }
+        Assert.Multiple(
+            () => Assert.NotNull(result),
+            () => Assert.Equal(account.Name, result?.Name),
+            () => Assert.Equal(account.UserId, result?.UserId)
+        );
     }
 }

@@ -4,18 +4,18 @@ using FluentValidation.TestHelper;
 
 namespace Accounts.Application.Tests.UseCases.GetAccount;
 
-internal sealed class GetAccountQueryValidatorTests
+public sealed class GetAccountQueryValidatorTests
 {
     // under test
-    private GetAccountQueryValidator validator;
+    private readonly GetAccountQueryValidator validator;
 
-    [SetUp]
-    public void Setup()
+    public GetAccountQueryValidatorTests()
     {
         validator = new GetAccountQueryValidator();
     }
 
-    [TestCaseSource(typeof(GetAccountQueryTestCases), nameof(GetAccountQueryTestCases.ValidGetAccountQueries))]
+    [Theory]
+    [ClassData(typeof(ValidGetAccountQueries))]
     public void GivenValidQuery_WhenValidate_ThenShouldNotHaveValidationErrors(GetAccountQuery query)
     {
         // when
@@ -25,7 +25,8 @@ internal sealed class GetAccountQueryValidatorTests
         result.ShouldNotHaveAnyValidationErrors();
     }
 
-    [TestCaseSource(typeof(GetAccountQueryTestCases), nameof(GetAccountQueryTestCases.InvalidGetAccountQueries))]
+    [Theory]
+    [ClassData(typeof(InvalidGetAccountQueries))]
     public void GivenInvalidQuery_WhenValidate_ThenShouldHaveValidationErrors(GetAccountQuery query)
     {
         // when
