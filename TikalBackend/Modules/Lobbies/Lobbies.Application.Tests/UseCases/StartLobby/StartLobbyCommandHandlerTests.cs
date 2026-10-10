@@ -8,7 +8,6 @@ using Moq;
 using OneOf.Types;
 using Shared.Application.Contexts;
 using Shared.Application.Tests;
-using Shared.Application.Tests.Extensions;
 using Shared.Contracts.Errors;
 
 namespace Lobbies.Application.Tests.UseCases.StartLobby;

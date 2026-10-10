@@ -301,8 +301,9 @@ resharper_web_config_wrong_module_highlighting = warning
 resharper_property_can_be_made_init_only_global_highlighting = none
 resharper_convert_to_primary_constructor_highlighting = none
 
-# Mapperly configuration+
+# Mapperly configuration
 dotnet_diagnostic.RMG020.severity = none
 
-# Disable xUnit1044: Avoid non-serializable types in TheoryData
+# Disable xUnit rules: Avoid non-serializable types in TheoryData
 dotnet_diagnostic.xUnit1044.severity = none
+dotnet_diagnostic.xUnit1045.severity = none

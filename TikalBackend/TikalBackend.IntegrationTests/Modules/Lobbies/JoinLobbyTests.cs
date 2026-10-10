@@ -52,7 +52,7 @@ public sealed class JoinLobbyTests : IntegrationTestFixture
         var lobby = await CreateAndGetLobby(createLobbyDto, TestUser.TestUser1);
 
         // when
-        var response = await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby!.Id), TestUser.Default, null, TestContext.Current.CancellationToken);
+        var response = await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.Default, null, TestContext.Current.CancellationToken);
 
         // then
         Assert.Equal(HttpStatusCode.Conflict, response.StatusCode);

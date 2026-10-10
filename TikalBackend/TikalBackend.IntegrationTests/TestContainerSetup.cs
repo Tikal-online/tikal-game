@@ -19,6 +19,15 @@ public class TestContainerSetup : IAsyncLifetime
 
     public async ValueTask DisposeAsync()
     {
-        await DatabaseContainer.StopAsync();
+        await DisposeAsync(true);
+        GC.SuppressFinalize(this);
+    }
+
+    protected virtual async ValueTask DisposeAsync(bool disposing)
+    {
+        if (disposing)
+        {
+            await DatabaseContainer.StopAsync();
+        }
     }
 }
