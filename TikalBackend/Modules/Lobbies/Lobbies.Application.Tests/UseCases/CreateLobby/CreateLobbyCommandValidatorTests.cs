@@ -4,21 +4,18 @@ using Lobbies.Contracts.Commands;
 
 namespace Lobbies.Application.Tests.UseCases.CreateLobby;
 
-internal sealed class CreateLobbyCommandValidatorTests
+public sealed class CreateLobbyCommandValidatorTests
 {
     // under tests
-    private CreateLobbyCommandValidator validator;
+    private readonly CreateLobbyCommandValidator validator;
 
-    [SetUp]
-    public void Setup()
+    public CreateLobbyCommandValidatorTests()
     {
         validator = new CreateLobbyCommandValidator();
     }
 
-    [TestCaseSource(
-        typeof(CreateLobbyCommandTestCases),
-        nameof(CreateLobbyCommandTestCases.ValidCreateLobbyCommands)
-    )]
+    [Theory]
+    [ClassData(typeof(ValidCreateLobbyCommands))]
     public void GivenValidCommand_WhenValidate_ThenShouldNotHaveValidationErrors(CreateLobbyCommand command)
     {
         // when
@@ -28,10 +25,8 @@ internal sealed class CreateLobbyCommandValidatorTests
         result.ShouldNotHaveAnyValidationErrors();
     }
 
-    [TestCaseSource(
-        typeof(CreateLobbyCommandTestCases),
-        nameof(CreateLobbyCommandTestCases.InvalidCreateLobbyCommands)
-    )]
+    [Theory]
+    [ClassData(typeof(InvalidCreateLobbyCommands))]
     public void GivenInvalidCommand_WhenValidate_ThenShouldHaveValidationErrors(CreateLobbyCommand command)
     {
         // when

@@ -12,18 +12,17 @@ using Shared.Application.Tests;
 
 namespace Lobbies.Application.Tests.UseCases.SendLobbyChatMessage;
 
-internal sealed class SendLobbyChatMessageCommandHandlerTests
+public sealed class SendLobbyChatMessageCommandHandlerTests
 {
     // dependencies
-    private Mock<LobbyQueryContext> lobbyQueryContext;
-    private Mock<IPublisher> publisher;
-    private AccountContext accountContext;
+    private readonly Mock<LobbyQueryContext> lobbyQueryContext;
+    private readonly Mock<IPublisher> publisher;
+    private readonly AccountContext accountContext;
 
     // under test
-    private SendLobbyChatMessageCommandHandler handler;
+    private readonly SendLobbyChatMessageCommandHandler handler;
 
-    [SetUp]
-    public void Setup()
+    public SendLobbyChatMessageCommandHandlerTests()
     {
         lobbyQueryContext = new Mock<LobbyQueryContext>();
         publisher = new Mock<IPublisher>();
@@ -44,7 +43,7 @@ internal sealed class SendLobbyChatMessageCommandHandlerTests
         player.Lobby = lobby;
     }
 
-    [Test]
+    [Fact]
     public async Task GivenLobbyDoesntExist_WhenHandle_ThenReturnsLobbyNotFoundError()
     {
         // given
@@ -57,10 +56,11 @@ internal sealed class SendLobbyChatMessageCommandHandlerTests
         var result = await handler.Handle(command, CancellationToken.None);
 
         // then
-        Assert.That(result.Value, Is.InstanceOf<LobbyNotFound>());
+        Assert.IsType<LobbyNotFound>(result.Value);
     }
 
-    [TestCaseSource(typeof(LobbyTestCases), nameof(LobbyTestCases.ValidLobbyTestCases))]
+    [Theory]
+    [ClassData(typeof(ValidLobbies))]
     public async Task GivenPlayerIsNotPartOfLobby_WhenHandle_ThenReturnsPlayerNotInGivenLobbyError(Lobby lobby)
     {
         // given
@@ -73,10 +73,11 @@ internal sealed class SendLobbyChatMessageCommandHandlerTests
         var result = await handler.Handle(command, CancellationToken.None);
 
         // then
-        Assert.That(result.Value, Is.InstanceOf<PlayerNotInGivenLobby>());
+        Assert.IsType<PlayerNotInGivenLobby>(result.Value);
     }
 
-    [TestCaseSource(typeof(LobbyTestCases), nameof(LobbyTestCases.ValidLobbyTestCases))]
+    [Theory]
+    [ClassData(typeof(ValidLobbies))]
     public async Task GivenPlayerInLobby_WhenHandle_ThenPublishesMessageSentNotification(Lobby lobby)
     {
         // given

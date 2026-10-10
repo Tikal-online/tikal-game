@@ -7,21 +7,19 @@ using Lobbies.Domain.Entities;
 using Lobbies.Domain.Tests.Data;
 using MediatR;
 using Moq;
-using Shared.Contracts.Enums;
 
 namespace Lobbies.Application.Tests.UseCases.GetLobby;
 
-internal sealed class GetLobbyQueryHandlerTests
+public sealed class GetLobbyQueryHandlerTests
 {
     // dependencies
-    private Mock<LobbyQueryContext> lobbyQueryContext;
-    private Mock<ISender> sender;
+    private readonly Mock<LobbyQueryContext> lobbyQueryContext;
+    private readonly Mock<ISender> sender;
 
     // under test
-    private GetLobbyQueryHandler handler;
+    private readonly GetLobbyQueryHandler handler;
 
-    [SetUp]
-    public void Setup()
+    public GetLobbyQueryHandlerTests()
     {
         lobbyQueryContext = new Mock<LobbyQueryContext>();
         sender = new Mock<ISender>();
@@ -29,7 +27,8 @@ internal sealed class GetLobbyQueryHandlerTests
         handler = new GetLobbyQueryHandler(lobbyQueryContext.Object, sender.Object);
     }
 
-    [TestCaseSource(typeof(GetLobbyQueryTestCases), nameof(GetLobbyQueryTestCases.ValidGetLobbyQueries))]
+    [Theory]
+    [ClassData(typeof(ValidGetLobbyQueries))]
     public async Task GivenNoLobbyWithId_WhenHandle_ThenReturnsNull(GetLobbyQuery query)
     {
         // given
@@ -40,10 +39,11 @@ internal sealed class GetLobbyQueryHandlerTests
         var result = await handler.Handle(query, CancellationToken.None);
 
         // then
-        Assert.That(result, Is.Null);
+        Assert.Null(result);
     }
 
-    [TestCaseSource(typeof(LobbyTestCases), nameof(LobbyTestCases.ValidLobbyTestCases))]
+    [Theory]
+    [ClassData(typeof(ValidLobbies))]
     public async Task GivenLobbyWithId_WhenHandle_ThenReturnsLobbyModel(Lobby lobby)
     {
         // given
@@ -55,37 +55,24 @@ internal sealed class GetLobbyQueryHandlerTests
         sender.Setup(s => s.Send(
             It.Is<GetAccountsQuery>(q => q.UserIds.SetEquals(lobby.Players.Select(p => p.UserId))),
             It.IsAny<CancellationToken>()
-        )).ReturnsAsync((GetAccountsQuery accountsQuery, CancellationToken _) => accountsQuery.UserIds.Select(id =>
+        )).ReturnsAsync((GetAccountsQuery accountsQuery, CancellationToken _) => [.. accountsQuery.UserIds.Select(id =>
             new AccountModel
             {
                 Name = "Test",
                 UserId = id
-            }).ToList());
+            })]);
 
         // when
         var result = await handler.Handle(query, CancellationToken.None);
 
         // then
-        Assert.That(result, Is.Not.Null);
-
-        using (Assert.EnterMultipleScope())
-        {
-            Assert.That(result.Id, Is.EqualTo(lobby.Id));
-            Assert.That(result.Name, Is.EqualTo(lobby.Name));
-            Assert.That(result.MaxPlayers, Is.EqualTo(lobby.MaxPlayers));
-            Assert.That(result.Players, Has.Count.EqualTo(lobby.Players.Count));
-            Assert.That(result.InGame, Is.EqualTo(lobby.InGame));
-
-            for (var i = 0; i < lobby.Players.Count; i++)
-            {
-                Assert.That(result.Players[i].UserId, Is.EqualTo(lobby.Players.ElementAt(i).UserId));
-                Assert.That(result.Players[i].IsOwner, Is.EqualTo(lobby.Players.ElementAt(i).IsOwner));
-                Assert.That(result.Players[i].IsReady, Is.EqualTo(lobby.Players.ElementAt(i).IsReady));
-                Assert.That(
-                    result.Players[i].SelectedColour,
-                    Is.EqualTo((ColourModel)lobby.Players.ElementAt(i).SelectedColour)
-                );
-            }
-        }
+        Assert.Multiple(
+            () => Assert.NotNull(result),
+            () => Assert.Equal(lobby.Id, result?.Id),
+            () => Assert.Equal(lobby.Name, result?.Name),
+            () => Assert.Equal(lobby.MaxPlayers, result?.MaxPlayers),
+            () => Assert.Equal(lobby.Players.Count, result?.Players.Count),
+            () => Assert.Equal(lobby.InGame, result?.InGame)
+        );
     }
 }

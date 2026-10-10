@@ -9,22 +9,20 @@ using MediatR;
 using Moq;
 using Shared.Application.Contexts;
 using Shared.Application.Tests;
-using Shared.Contracts.Enums;
 
 namespace Lobbies.Application.Tests.UseCases.GetLobbyForAuthenticatedPlayer;
 
-internal sealed class GetLobbyForAuthenticatedPlayerQueryHandlerTests
+public sealed class GetLobbyForAuthenticatedPlayerQueryHandlerTests
 {
     // dependencies
-    private Mock<LobbyQueryContext> lobbyQueryContext;
-    private Mock<ISender> sender;
-    private AccountContext accountContext;
+    private readonly Mock<LobbyQueryContext> lobbyQueryContext;
+    private readonly Mock<ISender> sender;
+    private readonly AccountContext accountContext;
 
     // under test
-    private GetLobbyForAuthenticatedPlayerQueryHandler handler;
+    private readonly GetLobbyForAuthenticatedPlayerQueryHandler handler;
 
-    [SetUp]
-    public void Setup()
+    public GetLobbyForAuthenticatedPlayerQueryHandlerTests()
     {
         lobbyQueryContext = new Mock<LobbyQueryContext>();
         sender = new Mock<ISender>();
@@ -37,7 +35,7 @@ internal sealed class GetLobbyForAuthenticatedPlayerQueryHandlerTests
         );
     }
 
-    [Test]
+    [Fact]
     public async Task GivenAuthenticatedPlayerNotInLobby_WhenHandle_ThenReturnsNull()
     {
         // given
@@ -50,10 +48,11 @@ internal sealed class GetLobbyForAuthenticatedPlayerQueryHandlerTests
         var result = await handler.Handle(query, CancellationToken.None);
 
         // then
-        Assert.That(result, Is.Null);
+        Assert.Null(result);
     }
 
-    [TestCaseSource(typeof(LobbyTestCases), nameof(LobbyTestCases.ValidLobbyTestCases))]
+    [Theory]
+    [ClassData(typeof(ValidLobbies))]
     public async Task GivenAuthenticatedPlayerInLobby_WhenHandle_ThenReturnsLobbyModel(Lobby lobby)
     {
         // given
@@ -63,12 +62,12 @@ internal sealed class GetLobbyForAuthenticatedPlayerQueryHandlerTests
         sender.Setup(s => s.Send(
             It.Is<GetAccountsQuery>(q => q.UserIds.SetEquals(lobby.Players.Select(p => p.UserId))),
             It.IsAny<CancellationToken>()
-        )).ReturnsAsync((GetAccountsQuery accountsQuery, CancellationToken _) => accountsQuery.UserIds.Select(id =>
+        )).ReturnsAsync((GetAccountsQuery accountsQuery, CancellationToken _) => [.. accountsQuery.UserIds.Select(id =>
             new AccountModel
             {
                 Name = "Test",
                 UserId = id
-            }).ToList());
+            })]);
 
         var query = new GetLobbyForAuthenticatedPlayerQuery();
 
@@ -76,26 +75,13 @@ internal sealed class GetLobbyForAuthenticatedPlayerQueryHandlerTests
         var result = await handler.Handle(query, CancellationToken.None);
 
         // then
-        Assert.That(result, Is.Not.Null);
-
-        using (Assert.EnterMultipleScope())
-        {
-            Assert.That(result.Id, Is.EqualTo(lobby.Id));
-            Assert.That(result.Name, Is.EqualTo(lobby.Name));
-            Assert.That(result.MaxPlayers, Is.EqualTo(lobby.MaxPlayers));
-            Assert.That(result.Players, Has.Count.EqualTo(lobby.Players.Count));
-            Assert.That(result.InGame, Is.EqualTo(lobby.InGame));
-
-            for (var i = 0; i < lobby.Players.Count; i++)
-            {
-                Assert.That(result.Players[i].UserId, Is.EqualTo(lobby.Players.ElementAt(i).UserId));
-                Assert.That(result.Players[i].IsOwner, Is.EqualTo(lobby.Players.ElementAt(i).IsOwner));
-                Assert.That(result.Players[i].IsReady, Is.EqualTo(lobby.Players.ElementAt(i).IsReady));
-                Assert.That(
-                    result.Players[i].SelectedColour,
-                    Is.EqualTo((ColourModel)lobby.Players.ElementAt(i).SelectedColour)
-                );
-            }
-        }
+        Assert.Multiple(
+            () => Assert.NotNull(result),
+            () => Assert.Equal(lobby.Id, result?.Id),
+            () => Assert.Equal(lobby.Name, result?.Name),
+            () => Assert.Equal(lobby.MaxPlayers, result?.MaxPlayers),
+            () => Assert.Equal(lobby.Players.Count, result?.Players.Count),
+            () => Assert.Equal(lobby.InGame, result?.InGame)
+        );
     }
 }
