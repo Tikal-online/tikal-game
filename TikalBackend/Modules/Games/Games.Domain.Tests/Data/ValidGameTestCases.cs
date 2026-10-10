@@ -4,7 +4,7 @@ using Shared.Domain.Enums;
 
 namespace Games.Domain.Tests.Data;
 
-internal class ValidGames : TheoryData<Game>
+public class ValidGames : TheoryData<Game>
 {
     public ValidGames()
     {
