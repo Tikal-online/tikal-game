@@ -1,15 +1,17 @@
 {
   "name": "Tikal",
-  "image": "mcr.microsoft.com/devcontainers/dotnet:latest",
+  "image": "mcr.microsoft.com/devcontainers/dotnet:10.0-noble",
   "features": {
     "ghcr.io/devcontainers/features/git:1": {},
     "ghcr.io/devcontainers/features/git-lfs:1": {},
+    "ghcr.io/devcontainers/features/github-cli:1": {},
     "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {},
     "ghcr.io/devcontainers/features/node:2.0.0": {
       "version": "24"
     },
     "ghcr.io/devcontainers-extra/features/mise:1": {},
-    "ghcr.io/riccardobravin/devcontainer-features/zensical:0": {}
+    "ghcr.io/riccardobravin/devcontainer-features/zensical:0": {},
+    "ghcr.io/devcontainer-community/devcontainer-features/tree-sitter:1": {}
   },
   "runArgs": [
     "--network=host"
@@ -17,11 +19,16 @@
   "mounts": [
     "source=usersecrets,target=/home/vscode/.microsoft/usersecrets,type=volume",
     "source=dataprotection,target=/home/vscode/.aspnet/DataProtection-Keys,type=volume",
-    "source=${localEnv:HOME}/.aspnet/dev-certs,target=/.aspnet/dev-certs,type=bind,consistency=cached"
+    "source=${localEnv:HOME}/.aspnet/dev-certs,target=/.aspnet/dev-certs,type=bind,consistency=cached",
+    "source=${localEnv:HOME}/.config/nvim,target=/home/vscode/.config/nvim,type=bind"
   ],
   "remoteEnv": {
-    "SSL_CERT_DIR": "/usr/lib/ssl/certs:/home/vscode/.aspnet/dev-certs"
+    "DISPLAY": "${localEnv:DISPLAY}",
+    "LANG": "en_GB.UTF-8",
+    "LANGUAGE": "en_GB:en",
+    "LC_ALL": "en_GB.UTF-8"
   },
+  "onCreateCommand": "sudo apt-get update && sudo apt-get install -y locales && sudo locale-gen en_GB.UTF-8 && sudo update-locale LANG=en_GB.UTF-8",
   "postStartCommand": "./.devcontainer/init_devcontainer.sh",
   "remoteUser": "vscode"
 }
