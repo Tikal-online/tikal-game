@@ -1143,6 +1143,119 @@
             "templateData": "<input\n  pInputText\n  [ariaLabel]=\"label()\"\n  [class.full-length]=\"expand()\"\n  [disabled]=\"disabled()\"\n  [invalid]=\"invalid() && touched()\"\n  [maxLength]=\"maxLength()\"\n  [placeholder]=\"placeholder()\"\n  [required]=\"required()\"\n  [value]=\"value()\"\n  (input)=\"value.set($event.target.value)\"\n/>\n"
         },
         {
+            "name": "MaxPlayerSelectComponent",
+            "id": "component-MaxPlayerSelectComponent-9e82666d95487bf39c461bb98048fd429d6cc6f3137b9196191716446b5b3e055a0b526bde1fab74f48d752bc5f74e7bfa5e339bc829c56b388f080efdede26c",
+            "file": "projects/tikal-ui-components/src/lib/components/max-player-select/max-player-select.ts",
+            "changeDetection": "ChangeDetectionStrategy.OnPush",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "tikal-max-player-select",
+            "styleUrls": [
+                "./max-player-select.scss"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./max-player-select.html"
+            ],
+            "templateVariables": [],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [
+                {
+                    "name": "value",
+                    "coverageIgnore": false,
+                    "defaultValue": "3",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "number",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>What value should the input have</p>\n",
+                    "line": 14,
+                    "rawdescription": "\nWhat value should the input have",
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                }
+            ],
+            "outputsClass": [
+                {
+                    "name": "value",
+                    "coverageIgnore": false,
+                    "defaultValue": "3",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "number",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>What value should the input have</p>\n",
+                    "line": 14,
+                    "rawdescription": "\nWhat value should the input have",
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                }
+            ],
+            "propertiesClass": [],
+            "methodsClass": [],
+            "coverageIgnore": false,
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [
+                {
+                    "name": "SelectButtonModule",
+                    "type": "module"
+                },
+                {
+                    "name": "FormsModule",
+                    "type": "module"
+                }
+            ],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component, model } from '@angular/core';\nimport { FormsModule } from '@angular/forms';\nimport { FormValueControl } from '@angular/forms/signals';\nimport { SelectButtonModule } from 'primeng/selectbutton';\n\n@Component({\n  selector: 'tikal-max-player-select',\n  imports: [SelectButtonModule, FormsModule],\n  templateUrl: './max-player-select.html',\n  styleUrl: './max-player-select.scss',\n})\nexport class MaxPlayerSelectComponent implements FormValueControl<number> {\n  /** What value should the input have */\n  readonly value = model(3);\n\n  /** @ignore */\n  readonly options = [\n    { label: '2', value: 2 },\n    { label: '3', value: 3 },\n    { label: '4', value: 4 },\n  ];\n}\n",
+            "styleUrl": "./max-player-select.scss",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": "",
+                    "styleUrl": "./max-player-select.scss"
+                }
+            ],
+            "stylesData": "",
+            "extends": [],
+            "implements": [
+                "FormValueControl"
+            ],
+            "relationships": {
+                "incoming": [],
+                "outgoing": [
+                    {
+                        "name": "SelectButtonModule",
+                        "type": "module"
+                    },
+                    {
+                        "name": "FormsModule",
+                        "type": "module"
+                    },
+                    {
+                        "name": "FormValueControl",
+                        "type": "interface"
+                    }
+                ]
+            },
+            "templateData": "<p-selectbutton [(ngModel)]=\"value\" [options]=\"options\" optionLabel=\"label\" optionValue=\"value\" />\n"
+        },
+        {
             "name": "PlayerCountComponent",
             "id": "component-PlayerCountComponent-fa065c90b127f7c4b5e262594d754cda6861b4e6594caa3334966cd67a3adea5358e2176444989d58ad65a01cc9df9b287db195ff1008f6ab5a79725c07cefb8",
             "file": "projects/tikal-ui-components/src/lib/components/player-count/player-count.ts",
@@ -1743,6 +1856,17 @@
                 "defaultValue": "{\n  name: 'Loading',\n  args: {\n    maxPlayers: 4,\n    isLoading: true,\n    players: [],\n  },\n}"
             },
             {
+                "name": "MaxPlayerSelect",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/tikal-ui-components/src/stories/max-player-select.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n  name: 'Max Player Select',\n  args: {\n    value: 3,\n  },\n}"
+            },
+            {
                 "name": "meta",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -1818,6 +1942,17 @@
                 "deprecationMessage": "",
                 "type": "Meta<InputComponent>",
                 "defaultValue": "{\n  title: 'Atoms/Input',\n  component: InputComponent,\n  tags: ['autodocs'],\n  args: {\n    value: '',\n    disabled: false,\n    expand: false,\n    invalid: false,\n    required: false,\n    touched: false,\n    placeholder: 'Placeholder...',\n    maxLength: 100,\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
+            },
+            {
+                "name": "meta",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/tikal-ui-components/src/stories/max-player-select.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Meta<MaxPlayerSelectComponent>",
+                "defaultValue": "{\n  title: 'Atoms/Max-Player-Select',\n  component: MaxPlayerSelectComponent,\n  tags: ['autodocs'],\n  args: {\n    value: 3,\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
             },
             {
                 "name": "meta",
@@ -2220,6 +2355,19 @@
                 "coverageIgnore": false,
                 "rawtype": "StoryObj<InputComponent>",
                 "file": "projects/tikal-ui-components/src/stories/input.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "rawdescription": "",
+                "description": "",
+                "kind": 184
+            },
+            {
+                "name": "Story",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "coverageIgnore": false,
+                "rawtype": "StoryObj<MaxPlayerSelectComponent>",
+                "file": "projects/tikal-ui-components/src/stories/max-player-select.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "rawdescription": "",
@@ -2658,6 +2806,30 @@
                     "defaultValue": "{\n  title: 'Atoms/Empty-Player-Slot',\n  component: EmptyPlayerSlotComponent,\n  tags: ['autodocs'],\n  args: {\n    isLoading: false,\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
                 }
             ],
+            "projects/tikal-ui-components/src/stories/max-player-select.stories.ts": [
+                {
+                    "name": "MaxPlayerSelect",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/tikal-ui-components/src/stories/max-player-select.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n  name: 'Max Player Select',\n  args: {\n    value: 3,\n  },\n}"
+                },
+                {
+                    "name": "meta",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/tikal-ui-components/src/stories/max-player-select.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Meta<MaxPlayerSelectComponent>",
+                    "defaultValue": "{\n  title: 'Atoms/Max-Player-Select',\n  component: MaxPlayerSelectComponent,\n  tags: ['autodocs'],\n  args: {\n    value: 3,\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
+                }
+            ],
             "projects/tikal-ui-components/src/stories/chat-message-list.stories.ts": [
                 {
                     "name": "meta",
@@ -3027,6 +3199,21 @@
                     "kind": 184
                 }
             ],
+            "projects/tikal-ui-components/src/stories/max-player-select.stories.ts": [
+                {
+                    "name": "Story",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "coverageIgnore": false,
+                    "rawtype": "StoryObj<MaxPlayerSelectComponent>",
+                    "file": "projects/tikal-ui-components/src/stories/max-player-select.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "",
+                    "description": "",
+                    "kind": 184
+                }
+            ],
             "projects/tikal-ui-components/src/stories/player-count.stories.ts": [
                 {
                     "name": "Story",
@@ -3230,6 +3417,15 @@
                 "coveragePercent": 90,
                 "coverageCount": "10/11",
                 "status": "very-good"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/lib/components/max-player-select/max-player-select.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "MaxPlayerSelectComponent",
+                "coveragePercent": 66,
+                "coverageCount": "2/3",
+                "status": "good"
             },
             {
                 "filePath": "projects/tikal-ui-components/src/lib/components/player-count/player-count.ts",
@@ -3668,6 +3864,36 @@
             },
             {
                 "filePath": "projects/tikal-ui-components/src/stories/input.stories.ts",
+                "type": "type alias",
+                "linktype": "miscellaneous",
+                "linksubtype": "typealias",
+                "name": "Story",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/stories/max-player-select.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "MaxPlayerSelect",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/stories/max-player-select.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "meta",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/stories/max-player-select.stories.ts",
                 "type": "type alias",
                 "linktype": "miscellaneous",
                 "linksubtype": "typealias",
