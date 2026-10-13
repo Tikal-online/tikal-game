@@ -16,6 +16,7 @@ type LobbySummaryState = {
   lobbies: LobbySummary[];
   status: 'initial' | 'loading' | 'loaded' | 'error';
   totalCount: number;
+  showCreateLobbyDialog: boolean;
   filter: {
     pageSize: number;
     pageNumber: number;
@@ -36,6 +37,7 @@ const initialState: LobbySummaryState = {
   lobbies: [],
   status: 'initial',
   totalCount: 0,
+  showCreateLobbyDialog: false,
   filter: {
     pageSize: 15,
     pageNumber: 1,
@@ -71,6 +73,10 @@ export const LobbySummaryStore = signalStore(
   })),
 
   withMethods((store) => ({
+    toggleCreateLobbyDialog(): void {
+      patchState(store, (state) => ({ showCreateLobbyDialog: !state.showCreateLobbyDialog }));
+    },
+
     updatePageNumber(pageNumber: number): void {
       patchState(store, (state) => ({ filter: { ...state.filter, pageNumber } }));
     },

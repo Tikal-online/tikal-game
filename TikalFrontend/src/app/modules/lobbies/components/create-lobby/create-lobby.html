@@ -1,0 +1,6 @@
+<p-dialog
+  header="Testing"
+  [modal]="true"
+  [visible]="lobbySummaryStore.showCreateLobbyDialog()"
+  (visibleChange)="!$event && lobbySummaryStore.toggleCreateLobbyDialog()"
+/>
