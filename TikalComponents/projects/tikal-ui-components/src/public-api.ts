@@ -28,3 +28,6 @@ export * from './lib/components/player-slot/player-slot';
 
 // Player slot list
 export * from './lib/components/player-slot-list/player-slot-list';
+
+// Max player select
+export * from './lib/components/max-player-select/max-player-select';
