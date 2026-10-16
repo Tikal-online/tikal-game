@@ -1,8 +1,8 @@
 import { Component, inject, signal } from '@angular/core';
 import { DialogModule } from 'primeng/dialog';
-import { LobbySummaryStore } from '../../stores/lobby/lobby-summary-store';
 import { ButtonComponent, InputComponent, MaxPlayerSelectComponent } from 'tikal-ui-components';
 import { disabled, form, FormField, FormRoot, maxLength, required } from '@angular/forms/signals';
+import { CreateLobbyStore } from '../../stores/active-lobby/create-lobby-store';
 
 type LobbyData = {
   name: string;
@@ -23,7 +23,7 @@ type LobbyData = {
   styleUrl: './create-lobby.scss',
 })
 export class CreateLobbyDialog {
-  readonly lobbySummaryStore = inject(LobbySummaryStore);
+  readonly createLobbyStore = inject(CreateLobbyStore);
 
   private readonly lobbyData = signal<LobbyData>({ name: '', maxPlayers: 4 });
 

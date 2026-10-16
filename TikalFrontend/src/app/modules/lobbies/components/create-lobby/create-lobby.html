@@ -2,8 +2,8 @@
   header="Create a lobby"
   [modal]="true"
   [style]="{ width: '24rem' }"
-  [visible]="lobbySummaryStore.showCreateLobbyDialog()"
-  (visibleChange)="!$event && lobbySummaryStore.toggleCreateLobbyDialog()"
+  [visible]="createLobbyStore.showCreateLobbyDialog()"
+  (visibleChange)="!$event && createLobbyStore.toggleCreateLobbyDialog()"
 >
   <form id="lobby" [formRoot]="lobbyForm">
     <tikal-input placeholder="Lobby Name" [expand]="true" [formField]="lobbyForm.name" />
@@ -17,7 +17,7 @@
       colour="secondary"
       label="Cancel"
       type="button"
-      (clicked)="lobbySummaryStore.toggleCreateLobbyDialog()"
+      (clicked)="createLobbyStore.toggleCreateLobbyDialog()"
     />
     <tikal-button
       form="lobby"
