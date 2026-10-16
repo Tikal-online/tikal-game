@@ -1,6 +1,30 @@
 <p-dialog
-  header="Testing"
+  header="Create a lobby"
   [modal]="true"
+  [style]="{ width: '24rem' }"
   [visible]="lobbySummaryStore.showCreateLobbyDialog()"
   (visibleChange)="!$event && lobbySummaryStore.toggleCreateLobbyDialog()"
-/>
+>
+  <form id="lobby" [formRoot]="lobbyForm">
+    <tikal-input placeholder="Lobby Name" [expand]="true" [formField]="lobbyForm.name" />
+    <div class="max-players-group">
+      <span>Players</span>
+      <tikal-max-player-select [formField]="lobbyForm.maxPlayers" />
+    </div>
+  </form>
+  <ng-template #footer>
+    <tikal-button
+      colour="secondary"
+      label="Cancel"
+      type="button"
+      (clicked)="lobbySummaryStore.toggleCreateLobbyDialog()"
+    />
+    <tikal-button
+      form="lobby"
+      icon="plus"
+      label="Create"
+      type="submit"
+      [isLoading]="lobbyForm().submitting()"
+    />
+  </ng-template>
+</p-dialog>
