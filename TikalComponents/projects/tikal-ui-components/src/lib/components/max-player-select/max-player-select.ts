@@ -1,4 +1,4 @@
-import { Component, model } from '@angular/core';
+import { Component, input, model } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { FormValueControl } from '@angular/forms/signals';
 import { SelectButtonModule } from 'primeng/selectbutton';
@@ -10,8 +10,11 @@ import { SelectButtonModule } from 'primeng/selectbutton';
   styleUrl: './max-player-select.scss',
 })
 export class MaxPlayerSelectComponent implements FormValueControl<number> {
-  /** What value should the input have */
+  /** What value should the input have? */
   readonly value = model(3);
+
+  /** Does the control hold an invalid value? */
+  readonly invalid = input(false);
 
   /** @ignore */
   readonly options = [

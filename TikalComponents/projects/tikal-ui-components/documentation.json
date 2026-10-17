@@ -1144,7 +1144,7 @@
         },
         {
             "name": "MaxPlayerSelectComponent",
-            "id": "component-MaxPlayerSelectComponent-9e82666d95487bf39c461bb98048fd429d6cc6f3137b9196191716446b5b3e055a0b526bde1fab74f48d752bc5f74e7bfa5e339bc829c56b388f080efdede26c",
+            "id": "component-MaxPlayerSelectComponent-be46c99b68c1f7b0e65b000b98dc3a5e85a0b500be844216d60534dcfa1049e90c249ca0db77d52ac0e1fa097c341cc9b9beba5a99a07f90a6a6059251866804",
             "file": "projects/tikal-ui-components/src/lib/components/max-player-select/max-player-select.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -1165,6 +1165,23 @@
             "hostDirectives": [],
             "inputsClass": [
                 {
+                    "name": "invalid",
+                    "coverageIgnore": false,
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "boolean",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>Does the control hold an invalid value?</p>\n",
+                    "line": 17,
+                    "rawdescription": "\nDoes the control hold an invalid value?",
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                },
+                {
                     "name": "value",
                     "coverageIgnore": false,
                     "defaultValue": "3",
@@ -1173,9 +1190,9 @@
                     "type": "number",
                     "indexKey": "",
                     "optional": false,
-                    "description": "<p>What value should the input have</p>\n",
+                    "description": "<p>What value should the input have?</p>\n",
                     "line": 14,
-                    "rawdescription": "\nWhat value should the input have",
+                    "rawdescription": "\nWhat value should the input have?",
                     "modifierKind": [
                         148
                     ],
@@ -1192,9 +1209,9 @@
                     "type": "number",
                     "indexKey": "",
                     "optional": false,
-                    "description": "<p>What value should the input have</p>\n",
+                    "description": "<p>What value should the input have?</p>\n",
                     "line": 14,
-                    "rawdescription": "\nWhat value should the input have",
+                    "rawdescription": "\nWhat value should the input have?",
                     "modifierKind": [
                         148
                     ],
@@ -1222,7 +1239,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, model } from '@angular/core';\nimport { FormsModule } from '@angular/forms';\nimport { FormValueControl } from '@angular/forms/signals';\nimport { SelectButtonModule } from 'primeng/selectbutton';\n\n@Component({\n  selector: 'tikal-max-player-select',\n  imports: [SelectButtonModule, FormsModule],\n  templateUrl: './max-player-select.html',\n  styleUrl: './max-player-select.scss',\n})\nexport class MaxPlayerSelectComponent implements FormValueControl<number> {\n  /** What value should the input have */\n  readonly value = model(3);\n\n  /** @ignore */\n  readonly options = [\n    { label: '2', value: 2 },\n    { label: '3', value: 3 },\n    { label: '4', value: 4 },\n  ];\n}\n",
+            "sourceCode": "import { Component, input, model } from '@angular/core';\nimport { FormsModule } from '@angular/forms';\nimport { FormValueControl } from '@angular/forms/signals';\nimport { SelectButtonModule } from 'primeng/selectbutton';\n\n@Component({\n  selector: 'tikal-max-player-select',\n  imports: [SelectButtonModule, FormsModule],\n  templateUrl: './max-player-select.html',\n  styleUrl: './max-player-select.scss',\n})\nexport class MaxPlayerSelectComponent implements FormValueControl<number> {\n  /** What value should the input have? */\n  readonly value = model(3);\n\n  /** Does the control hold an invalid value? */\n  readonly invalid = input(false);\n\n  /** @ignore */\n  readonly options = [\n    { label: '2', value: 2 },\n    { label: '3', value: 3 },\n    { label: '4', value: 4 },\n  ];\n}\n",
             "styleUrl": "./max-player-select.scss",
             "assetsDirs": [],
             "styleUrlsData": [
@@ -1253,7 +1270,7 @@
                     }
                 ]
             },
-            "templateData": "<p-selectbutton optionLabel=\"label\" optionValue=\"value\" [options]=\"options\" [(ngModel)]=\"value\" />\n"
+            "templateData": "<p-selectbutton\n  optionLabel=\"label\"\n  optionValue=\"value\"\n  [invalid]=\"invalid()\"\n  [options]=\"options\"\n  [(ngModel)]=\"value\"\n/>\n"
         },
         {
             "name": "PlayerCountComponent",
@@ -1801,6 +1818,17 @@
                 "defaultValue": "{\n  name: 'Invalid with value',\n  args: {\n    value: 'This is invalid',\n    disabled: false,\n    expand: false,\n    invalid: true,\n    required: false,\n    touched: true,\n    placeholder: 'Type something...',\n    maxLength: 100,\n  },\n}"
             },
             {
+                "name": "Invalid",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/tikal-ui-components/src/stories/max-player-select.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n  name: 'Invalid',\n  args: {\n    value: 3,\n    invalid: true,\n  },\n}"
+            },
+            {
                 "name": "InvalidWithPlaceholder",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -1854,17 +1882,6 @@
                 "deprecationMessage": "",
                 "type": "Story",
                 "defaultValue": "{\n  name: 'Loading',\n  args: {\n    maxPlayers: 4,\n    isLoading: true,\n    players: [],\n  },\n}"
-            },
-            {
-                "name": "MaxPlayerSelect",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/tikal-ui-components/src/stories/max-player-select.stories.ts",
-                "coverageIgnore": false,
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story",
-                "defaultValue": "{\n  name: 'Max Player Select',\n  args: {\n    value: 3,\n  },\n}"
             },
             {
                 "name": "meta",
@@ -1952,7 +1969,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Meta<MaxPlayerSelectComponent>",
-                "defaultValue": "{\n  title: 'Atoms/Max-Player-Select',\n  component: MaxPlayerSelectComponent,\n  tags: ['autodocs'],\n  args: {\n    value: 3,\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
+                "defaultValue": "{\n  title: 'Atoms/Max-Player-Select',\n  component: MaxPlayerSelectComponent,\n  tags: ['autodocs'],\n  args: {\n    value: 3,\n    invalid: false,\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
             },
             {
                 "name": "meta",
@@ -2129,6 +2146,17 @@
                 "deprecationMessage": "",
                 "type": "Story",
                 "defaultValue": "{\n  name: 'User typed content',\n  args: {\n    label: 'message',\n    placeholder: 'Say something...',\n    maxLength: 100,\n  },\n  play: async ({ canvas, userEvent }) => {\n    const messageInput = canvas.getByLabelText('message', {\n      selector: 'input',\n    });\n\n    await userEvent.type(messageInput, 'This is my message');\n  },\n}"
+            },
+            {
+                "name": "Valid",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/tikal-ui-components/src/stories/max-player-select.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n  name: 'Valid',\n  args: {\n    value: 3,\n    invalid: false,\n  },\n}"
             },
             {
                 "name": "WaitingForInput",
@@ -2771,6 +2799,41 @@
                     "defaultValue": "{\n  name: 'Waiting for input',\n  args: {\n    label: 'message',\n    placeholder: 'Say something...',\n    maxLength: 100,\n  },\n}"
                 }
             ],
+            "projects/tikal-ui-components/src/stories/max-player-select.stories.ts": [
+                {
+                    "name": "Invalid",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/tikal-ui-components/src/stories/max-player-select.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n  name: 'Invalid',\n  args: {\n    value: 3,\n    invalid: true,\n  },\n}"
+                },
+                {
+                    "name": "meta",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/tikal-ui-components/src/stories/max-player-select.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Meta<MaxPlayerSelectComponent>",
+                    "defaultValue": "{\n  title: 'Atoms/Max-Player-Select',\n  component: MaxPlayerSelectComponent,\n  tags: ['autodocs'],\n  args: {\n    value: 3,\n    invalid: false,\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
+                },
+                {
+                    "name": "Valid",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/tikal-ui-components/src/stories/max-player-select.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n  name: 'Valid',\n  args: {\n    value: 3,\n    invalid: false,\n  },\n}"
+                }
+            ],
             "projects/tikal-ui-components/src/stories/empty-player-slot.stories.ts": [
                 {
                     "name": "Loaded",
@@ -2804,30 +2867,6 @@
                     "deprecationMessage": "",
                     "type": "Meta<EmptyPlayerSlotComponent>",
                     "defaultValue": "{\n  title: 'Atoms/Empty-Player-Slot',\n  component: EmptyPlayerSlotComponent,\n  tags: ['autodocs'],\n  args: {\n    isLoading: false,\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
-                }
-            ],
-            "projects/tikal-ui-components/src/stories/max-player-select.stories.ts": [
-                {
-                    "name": "MaxPlayerSelect",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/tikal-ui-components/src/stories/max-player-select.stories.ts",
-                    "coverageIgnore": false,
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Story",
-                    "defaultValue": "{\n  name: 'Max Player Select',\n  args: {\n    value: 3,\n  },\n}"
-                },
-                {
-                    "name": "meta",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/tikal-ui-components/src/stories/max-player-select.stories.ts",
-                    "coverageIgnore": false,
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Meta<MaxPlayerSelectComponent>",
-                    "defaultValue": "{\n  title: 'Atoms/Max-Player-Select',\n  component: MaxPlayerSelectComponent,\n  tags: ['autodocs'],\n  args: {\n    value: 3,\n  },\n  decorators: [\n    applicationConfig({\n      providers: [],\n    }),\n  ],\n}"
                 }
             ],
             "projects/tikal-ui-components/src/stories/chat-message-list.stories.ts": [
@@ -3423,8 +3462,8 @@
                 "type": "component",
                 "linktype": "component",
                 "name": "MaxPlayerSelectComponent",
-                "coveragePercent": 66,
-                "coverageCount": "2/3",
+                "coveragePercent": 75,
+                "coverageCount": "3/4",
                 "status": "good"
             },
             {
@@ -3877,7 +3916,7 @@
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
-                "name": "MaxPlayerSelect",
+                "name": "Invalid",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
@@ -3888,6 +3927,16 @@
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
                 "name": "meta",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/tikal-ui-components/src/stories/max-player-select.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Valid",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
