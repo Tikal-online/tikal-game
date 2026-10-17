@@ -7,6 +7,7 @@ const meta: Meta<MaxPlayerSelectComponent> = {
   tags: ['autodocs'],
   args: {
     value: 3,
+    invalid: false,
   },
   decorators: [
     applicationConfig({
@@ -18,9 +19,18 @@ const meta: Meta<MaxPlayerSelectComponent> = {
 export default meta;
 type Story = StoryObj<MaxPlayerSelectComponent>;
 
-export const MaxPlayerSelect: Story = {
-  name: 'Max Player Select',
+export const Valid: Story = {
+  name: 'Valid',
   args: {
     value: 3,
+    invalid: false,
+  },
+};
+
+export const Invalid: Story = {
+  name: 'Invalid',
+  args: {
+    value: 3,
+    invalid: true,
   },
 };

@@ -1,1 +1,7 @@
-<p-selectbutton optionLabel="label" optionValue="value" [options]="options" [(ngModel)]="value" />
+<p-selectbutton
+  optionLabel="label"
+  optionValue="value"
+  [invalid]="invalid()"
+  [options]="options"
+  [(ngModel)]="value"
+/>
