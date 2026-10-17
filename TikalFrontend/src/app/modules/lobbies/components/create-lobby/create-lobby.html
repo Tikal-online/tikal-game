@@ -1,0 +1,38 @@
+<ng-container *transloco="let t; prefix: 'lobbies.create'">
+  <p-dialog
+    [header]="t('header')"
+    [modal]="true"
+    [style]="{ width: '24rem' }"
+    [visible]="activeLobbyStore.showCreateLobbyDialog()"
+    (visibleChange)="!$event && activeLobbyStore.toggleCreateLobbyDialog()"
+  >
+    <form id="lobby" [formRoot]="lobbyForm">
+      <tikal-input
+        [expand]="true"
+        [formField]="lobbyForm.name"
+        [label]="t('name-input-label')"
+        [placeholder]="t('name-input-placeholder')"
+      />
+      <div class="max-players-group">
+        <span>{{ t('max-players-input-label') }}</span>
+        <tikal-max-player-select [formField]="lobbyForm.maxPlayers" />
+      </div>
+    </form>
+    <ng-template #footer>
+      <tikal-button
+        colour="secondary"
+        type="button"
+        [label]="t('cancel-button-label')"
+        (clicked)="activeLobbyStore.toggleCreateLobbyDialog()"
+      />
+      <tikal-button
+        form="lobby"
+        icon="plus"
+        label="Create"
+        type="submit"
+        [isLoading]="activeLobbyStore.isCreating()"
+        [label]="t('create-button-label')"
+      />
+    </ng-template>
+  </p-dialog>
+</ng-container>

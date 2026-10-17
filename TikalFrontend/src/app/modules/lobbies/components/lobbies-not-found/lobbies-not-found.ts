@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { Inbox } from '@primeicons/angular/inbox';
 import { ButtonComponent } from 'tikal-ui-components';
+import { ActiveLobbyStore } from '../../stores/active-lobby/active-lobby-store';
 
 @Component({
   selector: 'tikal-lobbies-not-found',
@@ -9,4 +10,6 @@ import { ButtonComponent } from 'tikal-ui-components';
   templateUrl: './lobbies-not-found.html',
   styleUrl: './lobbies-not-found.scss',
 })
-export class LobbiesNotFoundComponent {}
+export class LobbiesNotFoundComponent {
+  readonly activeLobbyStore = inject(ActiveLobbyStore);
+}

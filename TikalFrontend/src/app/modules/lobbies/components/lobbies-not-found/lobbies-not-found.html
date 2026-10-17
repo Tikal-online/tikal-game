@@ -7,6 +7,11 @@
     <p class="detail">{{ t('detail') }}</p>
   </div>
   <div>
-    <tikal-button icon="plus" type="button" [label]="t('button')" />
+    <tikal-button
+      icon="plus"
+      type="button"
+      [label]="t('button')"
+      (clicked)="activeLobbyStore.toggleCreateLobbyDialog()"
+    />
   </div>
 </ng-container>

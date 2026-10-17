@@ -4,14 +4,16 @@ import { catchError, firstValueFrom, of } from 'rxjs';
 import { Lobby } from '../../models/lobby';
 import {
   CONFLICT,
+  CREATED,
   ERROR_RESPONSES,
   HttpResponseData,
   NOT_FOUND,
   OK,
 } from '../../../../core/tests/http-responses';
 import { HttpErrorResponse } from '@angular/common/http';
-import { ActiveLobbyService } from './active-lobby-service';
+import { ActiveLobbyService, CreateLobbyData } from './active-lobby-service';
 import { ID_TEST_CASES } from '../../../../core/tests/id-test-cases';
+import { CREATE_LOBBY_DATA_TEST_CASES } from '../../tests/data/create-lobby-data-test-cases';
 
 const DEFAULT_LOBBY: Lobby = {
   id: 1,
@@ -162,7 +164,7 @@ describe('LobbyService', () => {
   );
 
   test.for<HttpResponseData>(ERROR_RESPONSES.filter((error) => ![404, 409].includes(error.status)))(
-    'leaveLobby throws error when GET /Api/Lobbies/id returns $status',
+    'leaveLobby throws error when DELETE /Api/Lobbies/id/Players/me returns $status',
     async (error: HttpResponseData) => {
       // given
       let capturedError: HttpErrorResponse;
@@ -178,6 +180,66 @@ describe('LobbyService', () => {
 
       // when & then
       const req = http.expectOne({ method: 'DELETE', url: `/Api/Lobbies/${1}/Players/me` });
+      req.flush('', error);
+
+      await promise;
+
+      expect(capturedError!.status).toEqual(error.status);
+    },
+  );
+
+  test.for<CreateLobbyData>(CREATE_LOBBY_DATA_TEST_CASES)(
+    'createLobby returns success when POST /Api/Lobbies returns Created',
+    async (data) => {
+      // given
+      const promise = firstValueFrom(service.createLobby(data));
+
+      // when & then
+      const req = http.expectOne({ method: 'POST', url: '/Api/Lobbies' });
+      req.flush(CREATED);
+
+      const result = await promise;
+
+      expect(result.isOk()).toBeTruthy();
+    },
+  );
+
+  test.for<CreateLobbyData>(CREATE_LOBBY_DATA_TEST_CASES)(
+    'createLobby returns PlayerAlreadyInLobby when POST /Api/Lobbies returns 409',
+    async (data) => {
+      // given
+      const promise = firstValueFrom(service.createLobby(data));
+
+      // when & then
+      const req = http.expectOne({ method: 'POST', url: '/Api/Lobbies' });
+      req.flush('', CONFLICT);
+
+      const result = await promise;
+
+      expect(result.isErr()).toBeTruthy();
+      if (result.isErr()) {
+        expect(result.error).toEqual({ type: 'PlayerAlreadyInLobby' });
+      }
+    },
+  );
+
+  test.for<HttpResponseData>(ERROR_RESPONSES.filter((error) => error.status !== 409))(
+    'createLobby throws error when POST /Api/Lobbies returns $status',
+    async (error: HttpResponseData) => {
+      // given
+      let capturedError: HttpErrorResponse;
+
+      const promise = firstValueFrom(
+        service.createLobby({ name: 'name', maxPlayers: 4 }).pipe(
+          catchError((httpError) => {
+            capturedError = httpError;
+            return of(httpError);
+          }),
+        ),
+      );
+
+      // when & then
+      const req = http.expectOne({ method: 'POST', url: '/Api/Lobbies' });
       req.flush('', error);
 
       await promise;
