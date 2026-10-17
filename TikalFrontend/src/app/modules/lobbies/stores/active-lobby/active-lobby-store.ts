@@ -58,7 +58,13 @@ export const ActiveLobbyStore = signalStore(
 
     loadActiveLobby: rxMethod<void>(
       pipe(
-        tap(() => patchState(store, { loadingStatus: 'loading', leavingStatus: 'initial' })),
+        tap(() =>
+          patchState(store, {
+            loadingStatus: 'loading',
+            leavingStatus: 'initial',
+            creationStatus: 'initial',
+          }),
+        ),
         switchMap(() => {
           return store._activeLobbyService.getActiveLobby().pipe(
             tapResponse({
