@@ -1,6 +1,6 @@
 {
   "name": "Tikal",
-  "image": "mcr.microsoft.com/devcontainers/dotnet:10.0-noble",
+  "image": "mcr.microsoft.com/devcontainers/base:noble",
   "features": {
     "ghcr.io/devcontainers/features/git:1": {},
     "ghcr.io/devcontainers/features/git-lfs:1": {},
