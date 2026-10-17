@@ -1253,7 +1253,7 @@
                     }
                 ]
             },
-            "templateData": "<p-selectbutton [(ngModel)]=\"value\" [options]=\"options\" optionLabel=\"label\" optionValue=\"value\" />\n"
+            "templateData": "<p-selectbutton optionLabel=\"label\" optionValue=\"value\" [options]=\"options\" [(ngModel)]=\"value\" />\n"
         },
         {
             "name": "PlayerCountComponent",

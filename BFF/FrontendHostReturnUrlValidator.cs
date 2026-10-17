@@ -4,8 +4,8 @@ namespace BFF;
 
 internal class FrontendHostReturnUrlValidator : IReturnUrlValidator
 {
-    public bool IsValidAsync(Uri returnUrl)
+    public Task<bool> IsValidAsync(Uri returnUrl, CancellationToken ct = default)
     {
-        return true;
+        return Task.FromResult(true);
     }
 }

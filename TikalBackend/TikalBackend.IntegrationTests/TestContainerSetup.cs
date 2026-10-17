@@ -1,9 +1,11 @@
 using Testcontainers.PostgreSql;
 using TikalBackend.IntegrationTests;
 using TikalBackend.IntegrationTests.Utils;
+using Xunit.Sdk;
+using Xunit.v3;
 
 [assembly: AssemblyFixture(typeof(TestContainerSetup))]
-[assembly: CollectionBehavior(DisableTestParallelization = true)]
+[assembly: Parallelization(Mode = ParallelMode.None)]
 
 namespace TikalBackend.IntegrationTests;
 
