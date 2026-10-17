@@ -2,8 +2,8 @@
   header="Create a lobby"
   [modal]="true"
   [style]="{ width: '24rem' }"
-  [visible]="createLobbyStore.showCreateLobbyDialog()"
-  (visibleChange)="!$event && createLobbyStore.toggleCreateLobbyDialog()"
+  [visible]="activeLobbyStore.showCreateLobbyDialog()"
+  (visibleChange)="!$event && activeLobbyStore.toggleCreateLobbyDialog()"
 >
   <form id="lobby" [formRoot]="lobbyForm">
     <tikal-input placeholder="Lobby Name" [expand]="true" [formField]="lobbyForm.name" />
@@ -17,14 +17,14 @@
       colour="secondary"
       label="Cancel"
       type="button"
-      (clicked)="createLobbyStore.toggleCreateLobbyDialog()"
+      (clicked)="activeLobbyStore.toggleCreateLobbyDialog()"
     />
     <tikal-button
       form="lobby"
       icon="plus"
       label="Create"
       type="submit"
-      [isLoading]="lobbyForm().submitting()"
+      [isLoading]="activeLobbyStore.isCreating()"
     />
   </ng-template>
 </p-dialog>
