@@ -50,10 +50,12 @@ export class CreateLobbyDialog {
     },
     {
       submission: {
-        action: async (field) => {
+        action: (field) => {
           const data = field().value();
 
           this.activeLobbyStore.createLobby(data);
+
+          return Promise.resolve();
         },
       },
     },
