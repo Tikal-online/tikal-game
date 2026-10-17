@@ -20,6 +20,9 @@ chmod +x dotnet-install.sh
 ./dotnet-install.sh --jsonfile global.json
 rm dotnet-install.sh
 
+export DOTNET_ROOT="$HOME/.dotnet"
+export PATH="$DOTNET_ROOT:$PATH"
+
 echo "Importing development certificate..."
 dotnet dev-certs https --import /.aspnet/dev-certs/dotnet-dev-cert.pfx --clean -p secret
 
