@@ -4,6 +4,7 @@ import { ButtonComponent, InputComponent, MaxPlayerSelectComponent } from 'tikal
 import { disabled, form, FormField, FormRoot, maxLength, required } from '@angular/forms/signals';
 import { Router } from '@angular/router';
 import { ActiveLobbyStore } from '../../stores/active-lobby/active-lobby-store';
+import { TranslocoDirective } from '@jsverse/transloco';
 
 type LobbyData = {
   name: string;
@@ -19,6 +20,7 @@ type LobbyData = {
     FormField,
     InputComponent,
     MaxPlayerSelectComponent,
+    TranslocoDirective,
   ],
   templateUrl: './create-lobby.html',
   styleUrl: './create-lobby.scss',

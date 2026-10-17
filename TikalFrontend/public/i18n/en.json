@@ -32,6 +32,14 @@
     "active": {
       "loading-header": "Loading...",
       "leave-button-label": "Leave"
+    },
+    "create": {
+      "header": "Create a lobby",
+      "name-input-label": "lobby-name",
+      "name-input-placeholder": "Choose a name",
+      "max-players-input-label": "Players",
+      "cancel-button-label": "Cancel",
+      "create-button-label": "Create"
     }
   },
   "empty-player-slot": {
