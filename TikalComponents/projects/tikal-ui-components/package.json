@@ -1,6 +1,7 @@
 {
   "name": "tikal-ui-components",
   "version": "0.0.1",
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "https://github.com/Tikal-online/tikal-game.git"
