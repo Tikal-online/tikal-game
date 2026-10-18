@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { inject, Service } from '@angular/core';
 import { catchError, map, Observable, of, throwError } from 'rxjs';
-import { Lobby } from '../../models/lobby';
+import { Lobby, markAuthenticatedPlayer } from '../../models/lobby';
 import { err, ok, Result } from 'neverthrow';
 import {
   LobbyInGame,
@@ -9,6 +9,7 @@ import {
   PlayerAlreadyInLobby,
   PlayerNotInLobby,
 } from '../../errors/lobby-errors';
+import { AccountStore } from '../../../../core/stores/account-store/account-store';
 
 export type CreateLobbyData = {
   name: string;
@@ -21,9 +22,11 @@ export class ActiveLobbyService {
 
   private readonly http = inject(HttpClient);
 
+  private readonly accountStore = inject(AccountStore);
+
   getActiveLobby(): Observable<Lobby | null> {
     return this.http.get<Lobby>(this.url + `/me`).pipe(
-      map((lobby: Lobby) => lobby),
+      map((lobby: Lobby) => markAuthenticatedPlayer(lobby, this.accountStore.account()?.userId)),
       catchError((error: HttpErrorResponse) => {
         if (error.status === 404) {
           return of(null);

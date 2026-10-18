@@ -1,4 +1,4 @@
-import { Component, effect, inject } from '@angular/core';
+import { Component, DestroyRef, effect, inject } from '@angular/core';
 import { ActiveLobbyStore } from '../../stores/active-lobby/active-lobby-store';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { PlayerSlotListComponent, ButtonComponent } from 'tikal-ui-components';
@@ -17,9 +17,12 @@ export class ActiveLobbyComponent {
 
   constructor() {
     this.activeLobbyStore.loadActiveLobby();
+    this.activeLobbyStore.connect();
+
+    inject(DestroyRef).onDestroy(() => this.activeLobbyStore.disconnect());
 
     effect(() => {
-      if (this.activeLobbyStore.leavingStatus() === 'left') {
+      if (!this.activeLobbyStore.lobby() && !this.activeLobbyStore.isLoading()) {
         this.router.navigate(['/Lobbies']);
       }
     });
