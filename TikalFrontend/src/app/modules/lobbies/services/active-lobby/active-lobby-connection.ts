@@ -10,7 +10,7 @@ import { AccountStore } from '../../../../core/stores/account-store/account-stor
 export class ActiveLobbyConnection {
   readonly connectionStatus$ = new Subject<ConnectionStatus>();
 
-  readonly joinedPlayer$ = new Subject<Player>();
+  readonly joinedPlayers$ = new Subject<Player>();
 
   readonly leftPlayers$ = new Subject<Player>();
 
@@ -34,7 +34,7 @@ export class ActiveLobbyConnection {
         player.isMe = true;
       }
 
-      this.joinedPlayer$.next(player);
+      this.joinedPlayers$.next(player);
     });
 
     this.connection.on('PlayerLeft', (player: Player) => {
