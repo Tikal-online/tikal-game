@@ -127,7 +127,7 @@ export const ActiveLobbyStore = signalStore(
 
     watchJoinedPlayers: rxMethod<void>(
       pipe(
-        switchMap(() => store._activeLobbyConnection.joinedPlayer$),
+        switchMap(() => store._activeLobbyConnection.joinedPlayers$),
         tap((player) =>
           patchState(store, (state) => ({
             lobby: state.lobby
