@@ -2,12 +2,12 @@
 <ng-container *transloco="let t; prefix: 'lobbies.list'">
   <p-table
     scrollHeight="flex"
-    selectionMode="single"
     [lazy]="true"
     [paginator]="lobbiesSummaryStore.hasMultiplePages()"
     [rows]="lobbiesSummaryStore.filter.pageSize()"
     [rowsPerPageOptions]="[10, 15, 25, 50]"
     [scrollable]="true"
+    [selectionMode]="this.lobbiesSummaryStore.noLobbiesFound() ? null : 'single'"
     [showCurrentPageReport]="true"
     [totalRecords]="lobbiesSummaryStore.totalCount()"
     [value]="lobbiesSummaryStore.displayLobbies()"
