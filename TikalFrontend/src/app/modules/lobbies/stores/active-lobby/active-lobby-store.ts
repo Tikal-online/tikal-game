@@ -2,6 +2,7 @@ import {
   patchState,
   signalStore,
   withComputed,
+  withHooks,
   withMethods,
   withProps,
   withState,
@@ -15,9 +16,12 @@ import {
   ActiveLobbyService,
   CreateLobbyData,
 } from '../../services/active-lobby/active-lobby-service';
+import { ActiveLobbyConnection } from '../../services/active-lobby/active-lobby-connection';
+import { ConnectionStatus } from '../../../../core/types/connection-status';
 
 type ActiveLobbyState = {
   lobby: Lobby | null;
+  connectionStatus: ConnectionStatus;
   loadingStatus: 'initial' | 'loading' | 'loaded' | 'error';
   leavingStatus: 'initial' | 'leaving' | 'left' | 'error';
   creationStatus: 'initial' | 'creating' | 'created' | 'error';
@@ -26,6 +30,7 @@ type ActiveLobbyState = {
 
 const initialStatus: ActiveLobbyState = {
   lobby: null,
+  connectionStatus: 'Disconnected',
   loadingStatus: 'initial',
   leavingStatus: 'initial',
   creationStatus: 'initial',
@@ -39,6 +44,7 @@ export const ActiveLobbyStore = signalStore(
 
   withProps(() => ({
     _activeLobbyService: inject(ActiveLobbyService),
+    _activeLobbyConnection: inject(ActiveLobbyConnection),
   })),
 
   withComputed(({ loadingStatus, leavingStatus, creationStatus, lobby }) => ({
@@ -52,6 +58,14 @@ export const ActiveLobbyStore = signalStore(
   })),
 
   withMethods((store) => ({
+    connect(): Promise<void> {
+      return store._activeLobbyConnection.connect();
+    },
+
+    disconnect(): Promise<void> {
+      return store._activeLobbyConnection.disconnect();
+    },
+
     toggleCreateLobbyDialog(): void {
       patchState(store, (state) => ({ showCreateLobbyDialog: !state.showCreateLobbyDialog }));
     },
@@ -110,5 +124,77 @@ export const ActiveLobbyStore = signalStore(
         }),
       ),
     ),
+
+    watchJoinedPlayers: rxMethod<void>(
+      pipe(
+        switchMap(() => store._activeLobbyConnection.joinedPlayer$),
+        tap((player) =>
+          patchState(store, (state) => ({
+            lobby: state.lobby
+              ? { ...state.lobby, players: [...state.lobby.players, player] }
+              : null,
+          })),
+        ),
+      ),
+    ),
+
+    watchLeftPlayers: rxMethod<void>(
+      pipe(
+        switchMap(() => store._activeLobbyConnection.leftPlayers$),
+        tap((player) => {
+          if (player.isMe) {
+            patchState(store, {
+              lobby: null,
+              leavingStatus: 'left',
+              loadingStatus: 'initial',
+              creationStatus: 'initial',
+            });
+          } else {
+            patchState(store, (state) => ({
+              lobby: state.lobby
+                ? {
+                    ...state.lobby,
+                    players: state.lobby.players.filter((p) => p.userId !== player.userId),
+                  }
+                : null,
+            }));
+          }
+        }),
+      ),
+    ),
+
+    watchUpdatedPlayers: rxMethod<void>(
+      pipe(
+        switchMap(() => store._activeLobbyConnection.updatedPlayers$),
+        tap((player) => {
+          patchState(store, (state) => ({
+            lobby: state.lobby
+              ? {
+                  ...state.lobby,
+                  players: state.lobby.players.map((p) =>
+                    p.userId === player.userId ? player : p,
+                  ),
+                }
+              : null,
+          }));
+        }),
+      ),
+    ),
+
+    watchConnectionStatus: rxMethod<void>(
+      pipe(
+        switchMap(() => store._activeLobbyConnection.connectionStatus$),
+        tap((status) => patchState(store, { connectionStatus: status })),
+      ),
+    ),
   })),
+
+  withHooks({
+    onInit(store) {
+      store.watchJoinedPlayers();
+      store.watchConnectionStatus();
+      store.watchLeftPlayers();
+      store.watchUpdatedPlayers();
+    },
+  }),
 );
