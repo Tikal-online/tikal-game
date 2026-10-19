@@ -13,12 +13,12 @@
       },
       "Duende.IdentityServer.EntityFramework": {
         "type": "Direct",
-        "requested": "[7.4.10, )",
-        "resolved": "7.4.10",
-        "contentHash": "1mPdnsuHScOulfbJCB2D7b6mXmB9GAheCMOUKydMAY6fmYt5gSO0h+SBt6Lj5Fq/RUJYCyrhB6+tvJB0RR/pLg==",
+        "requested": "[7.4.14, )",
+        "resolved": "7.4.14",
+        "contentHash": "W8zqSv9vCYO6g625HWhzaHNOfqgaRwTaF7mxmsTwUxvktL0X21gMYdfoVys/97QQ7qbg1l9tXiM0brc4D4c3TQ==",
         "dependencies": {
-          "Duende.IdentityServer": "7.4.10",
-          "Duende.IdentityServer.EntityFramework.Storage": "7.4.10"
+          "Duende.IdentityServer": "7.4.14",
+          "Duende.IdentityServer.EntityFramework.Storage": "7.4.14"
         }
       },
       "Microsoft.AspNetCore.DataProtection.EntityFrameworkCore": {
@@ -138,26 +138,26 @@
       },
       "Duende.IdentityServer": {
         "type": "Transitive",
-        "resolved": "7.4.11",
-        "contentHash": "ugVHezIvXNckMGk6MBaYWqViyY3MazZI2purHn6GLqjpx2a0ac2jbtLkgHeExUpuiuYbTEWerxjMBX2Jwnqrww==",
+        "resolved": "7.4.14",
+        "contentHash": "kkf8pcpJgMGtkcWZhq5+2W/O3U5aWV4TPLeN980jwprV74EtEDdGBb+oh1fjZndN2QAwB0NDsE760khr+ebKzw==",
         "dependencies": {
-          "Duende.IdentityServer.Storage": "7.4.11",
-          "Microsoft.AspNetCore.Authentication.OpenIdConnect": "10.0.7"
+          "Duende.IdentityServer.Storage": "7.4.14",
+          "Microsoft.AspNetCore.Authentication.OpenIdConnect": "10.0.13"
         }
       },
       "Duende.IdentityServer.EntityFramework.Storage": {
         "type": "Transitive",
-        "resolved": "7.4.10",
-        "contentHash": "qpl0g4nVsFcmAdyzT1x0bNqJnlTe9mrSGaekR36TIq/13cLFJ86/3uMMXDExTc+KdytCCe5x3nGeECOD1O5emw==",
+        "resolved": "7.4.14",
+        "contentHash": "cTiU+GgCzXDIyQYyoWNZM4KcQ55nAbmMl+IhmWRFap2TRr3teVIZf4BshqbkW1KUwwoo/8sgyBvwyHVqEom5xw==",
         "dependencies": {
-          "Duende.IdentityServer.Storage": "7.4.10",
+          "Duende.IdentityServer.Storage": "7.4.14",
           "Microsoft.EntityFrameworkCore.Relational": "10.0.7"
         }
       },
       "Duende.IdentityServer.Storage": {
         "type": "Transitive",
-        "resolved": "7.4.11",
-        "contentHash": "OV5xkrXkVOwHCZgXPRst4iPO88Li3SeOEeRFqUis1AiJDI14WfUevuwNQD7D3uWTTkH5rYIe5bmhDfE+YgWH2Q==",
+        "resolved": "7.4.14",
+        "contentHash": "P2nmcOvmaL1NE4xFlIo1qlOB1JUdsd+vArNKO7K1+1BMd0c0gfrZNnzXeaiqh7JQGwTcGykxTsPCduTh7Jyqiw==",
         "dependencies": {
           "Duende.IdentityModel": "8.0.1"
         }
@@ -169,11 +169,16 @@
       },
       "Microsoft.AspNetCore.Authentication.OpenIdConnect": {
         "type": "Transitive",
-        "resolved": "10.0.7",
-        "contentHash": "Q7c2IKS/EwKScck80dp5zps1g62Dbqpteeh/mGMReFKuiP+88yWT4jB+mcP4cIFA+wsuIxh9uFJa6GHK4/9rzQ==",
+        "resolved": "10.0.13",
+        "contentHash": "dlyqhtVS6t6IeVvpxV8RuTQzrAFedkKbDoIbKbwjSmTimR4X/OxKvt+jwKLk8Qw/lqvoSQUl8iHLCO9CUCCH8A==",
         "dependencies": {
-          "Microsoft.IdentityModel.Protocols.OpenIdConnect": "8.0.1"
+          "Microsoft.IdentityModel.Protocols.OpenIdConnect": "8.19.2"
         }
+      },
+      "Microsoft.Bcl.Cryptography": {
+        "type": "Transitive",
+        "resolved": "10.0.2",
+        "contentHash": "LG9Yll3B5aNpxv0+D47g6LiOiKBIlodhcHdQwcYzo8VeexFLGqx5ymetmA2aBRyo9cCcWsQWrFsdbsr8LvmWDw=="
       },
       "Microsoft.Build.Framework": {
         "type": "Transitive",
@@ -262,48 +267,49 @@
       },
       "Microsoft.IdentityModel.Abstractions": {
         "type": "Transitive",
-        "resolved": "8.0.1",
-        "contentHash": "OtlIWcyX01olfdevPKZdIPfBEvbcioDyBiE/Z2lHsopsMD7twcKtlN9kMevHmI5IIPhFpfwCIiR6qHQz1WHUIw=="
+        "resolved": "8.19.2",
+        "contentHash": "HJbo/lnSfNHUfphPRT910poQc4T2/9+8svFLvzuaYHGAOJ2Tu+oEDqpX0BVP3BJ4OuUM1kylEKyaiX2fCAK3Cw=="
       },
       "Microsoft.IdentityModel.JsonWebTokens": {
         "type": "Transitive",
-        "resolved": "8.0.1",
-        "contentHash": "s6++gF9x0rQApQzOBbSyp4jUaAlwm+DroKfL8gdOHxs83k8SJfUXhuc46rDB3rNXBQ1MVRxqKUrqFhO/M0E97g==",
+        "resolved": "8.19.2",
+        "contentHash": "ui3fuBT4fs8kdKfBthI4NzLYIBIneEVS8UrL1JVBzAn80UiKmngBBi0BEByE7n/9c+EElcfFlCMFFTqpkBSLNA==",
         "dependencies": {
-          "Microsoft.IdentityModel.Tokens": "8.0.1"
+          "Microsoft.IdentityModel.Tokens": "8.19.2"
         }
       },
       "Microsoft.IdentityModel.Logging": {
         "type": "Transitive",
-        "resolved": "8.0.1",
-        "contentHash": "UCPF2exZqBXe7v/6sGNiM6zCQOUXXQ9+v5VTb9gPB8ZSUPnX53BxlN78v2jsbIvK9Dq4GovQxo23x8JgWvm/Qg==",
+        "resolved": "8.19.2",
+        "contentHash": "r5YLDIxGOnkVJHrqXv/iD1FM1CgGrQOdriXuvuWvTPmKbnGANhEysq9XKmN6IHjf2a+9bAGEpnoRBsAQlvJU5w==",
         "dependencies": {
-          "Microsoft.IdentityModel.Abstractions": "8.0.1"
+          "Microsoft.IdentityModel.Abstractions": "8.19.2"
         }
       },
       "Microsoft.IdentityModel.Protocols": {
         "type": "Transitive",
-        "resolved": "8.0.1",
-        "contentHash": "uA2vpKqU3I2mBBEaeJAWPTjT9v1TZrGWKdgK6G5qJd03CLx83kdiqO9cmiK8/n1erkHzFBwU/RphP83aAe3i3g==",
+        "resolved": "8.19.2",
+        "contentHash": "sGxSsSrZXNmca6D+jHH2rVRyo2nNRd/g4H9CFbPmLLq0xgoH1U0orLWE5minfijw7+zq49tBs7txenbfAErRoQ==",
         "dependencies": {
-          "Microsoft.IdentityModel.Tokens": "8.0.1"
+          "Microsoft.IdentityModel.Tokens": "8.19.2"
         }
       },
       "Microsoft.IdentityModel.Protocols.OpenIdConnect": {
         "type": "Transitive",
-        "resolved": "8.0.1",
-        "contentHash": "AQDbfpL+yzuuGhO/mQhKNsp44pm5Jv8/BI4KiFXR7beVGZoSH35zMV3PrmcfvSTsyI6qrcR898NzUauD6SRigg==",
+        "resolved": "8.19.2",
+        "contentHash": "1XOcyY36cVymzE3qKdzKaUEZ4Pzt7ZpSa14JZoPPK1NLFUkQDs85TCqpV6XDo0YjFXj6nVK00AfOHppjghjhtw==",
         "dependencies": {
-          "Microsoft.IdentityModel.Protocols": "8.0.1",
-          "System.IdentityModel.Tokens.Jwt": "8.0.1"
+          "Microsoft.IdentityModel.Protocols": "8.19.2",
+          "System.IdentityModel.Tokens.Jwt": "8.19.2"
         }
       },
       "Microsoft.IdentityModel.Tokens": {
         "type": "Transitive",
-        "resolved": "8.0.1",
-        "contentHash": "kDimB6Dkd3nkW2oZPDkMkVHfQt3IDqO5gL0oa8WVy3OP4uE8Ij+8TXnqg9TOd9ufjsY3IDiGz7pCUbnfL18tjg==",
+        "resolved": "8.19.2",
+        "contentHash": "GtPC1S02uH1gOO4fQ+zRysIicKmEXaYFP8PIkdJYXqMyruYhopre4ozVHp0XiDSA0+GJvOZH9prxCPvgBMg4Ww==",
         "dependencies": {
-          "Microsoft.IdentityModel.Logging": "8.0.1"
+          "Microsoft.Bcl.Cryptography": "10.0.2",
+          "Microsoft.IdentityModel.Logging": "8.19.2"
         }
       },
       "Microsoft.VisualStudio.SolutionPersistence": {
@@ -417,11 +423,11 @@
       "System.IdentityModel.Tokens.Jwt": {
         "type": "CentralTransitive",
         "requested": "[8.16.0, )",
-        "resolved": "8.0.1",
-        "contentHash": "GJw3bYkWpOgvN3tJo5X4lYUeIFA2HD293FPUhKmp7qxS+g5ywAb34Dnd3cDAFLkcMohy5XTpoaZ4uAHuw0uSPQ==",
+        "resolved": "8.19.2",
+        "contentHash": "gqhDC/icByKEutygpr+OFgAmjwTVowyzFjWB8K0q1ww8uFj5a1BQNL+QvijUl9uhq4p8OdDwcAIrjVC+eC9FVA==",
         "dependencies": {
-          "Microsoft.IdentityModel.JsonWebTokens": "8.0.1",
-          "Microsoft.IdentityModel.Tokens": "8.0.1"
+          "Microsoft.IdentityModel.JsonWebTokens": "8.19.2",
+          "Microsoft.IdentityModel.Tokens": "8.19.2"
         }
       }
     }
