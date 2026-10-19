@@ -16,6 +16,9 @@ export class PlayerSlotComponent {
   /** What is the colour of the player? */
   readonly colour = input.required<PlayerColour>();
 
+  /** Is the player ready? */
+  readonly isReady = input.required<boolean>();
+
   /** @ignore */
   readonly colourMap = {
     red: 'var(--p-red-500)',

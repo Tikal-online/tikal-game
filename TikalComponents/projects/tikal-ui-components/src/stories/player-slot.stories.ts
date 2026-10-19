@@ -13,6 +13,7 @@ const meta: Meta<PlayerSlotComponent> = {
   args: {
     name: 'MyUser1234',
     colour: 'red',
+    isReady: false,
   },
   decorators: [
     applicationConfig({
@@ -29,5 +30,6 @@ export const PlayerSlot: Story = {
   args: {
     name: 'MyUser1234',
     colour: 'red',
+    isReady: false,
   },
 };
