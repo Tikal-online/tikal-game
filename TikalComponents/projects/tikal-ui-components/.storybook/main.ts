@@ -18,5 +18,19 @@ const config: StorybookConfig = {
       compodocArgs: ['-e', 'json', '-d', 'projects/tikal-ui-components'],
     },
   },
+  async viteFinal(viteConfig) {
+    const { mergeConfig, searchForWorkspaceRoot } = await import('vite');
+
+    return mergeConfig(viteConfig, {
+      server: {
+        fs: {
+          allow: [
+            searchForWorkspaceRoot(process.cwd()),
+            './/node_modules/@openng/icons/fonts/openng-icons.woff2',
+          ],
+        },
+      },
+    });
+  },
 };
 export default config;

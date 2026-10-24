@@ -1,7 +1,6 @@
 import { Component, input, output } from '@angular/core';
-import { PIcon, Spinner } from '@primeicons/angular';
-import { ButtonModule } from 'primeng/button';
 import { EnumMapPipe } from '../../../pipes/enum-map';
+import { ButtonModule } from '@openng/optimus-ui/button';
 
 export type ButtonColour = 'primary' | 'secondary';
 
@@ -11,7 +10,7 @@ export type ButtonType = 'button' | 'submit' | 'reset';
 
 @Component({
   selector: 'tikal-button',
-  imports: [ButtonModule, PIcon, EnumMapPipe, Spinner],
+  imports: [ButtonModule, EnumMapPipe],
   templateUrl: './button.html',
   styleUrl: './button.scss',
 })

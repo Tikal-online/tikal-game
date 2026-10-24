@@ -1,3 +1,5 @@
+@import '@openng/icons/openng-icons.css';
+
 html.dark .sbdocs-preview {
   background-color: #18181b !important;
 }
