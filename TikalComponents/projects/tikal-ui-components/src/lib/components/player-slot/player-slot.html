@@ -2,7 +2,7 @@
   <span class="dot" [style.background-color]="colour() | enumMap: colourMap"></span>
   <p>{{ name() }}</p>
   @if (isOwner()) {
-    <svg color="var(--p-yellow-600)" data-p-icon="crown" [size]="20"></svg>
+    <svg aria-label="crown" color="var(--p-yellow-600)" data-p-icon="crown" [size]="20"></svg>
   }
 </div>
 @if (isReady()) {

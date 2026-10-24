@@ -1,7 +1,7 @@
 <ng-container *transloco="let t; prefix: 'player-slot-list'">
   <div class="header">
     <span>{{ t('players') }}</span>
-    <svg data-p-icon="user"></svg>
+    <svg aria-label="user" data-p-icon="user"></svg>
     <span>{{ players().length }}/{{ maxPlayers() }}</span>
   </div>
   <div class="players">
