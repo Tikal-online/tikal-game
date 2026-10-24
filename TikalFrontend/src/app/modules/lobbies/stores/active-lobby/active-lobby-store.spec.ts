@@ -9,6 +9,7 @@ import { Lobby } from '../../models/lobby';
 import { DEFAULT_TEST_LOBBY, LOBBY_TESTCASES } from '../../tests/data/lobby-test-cases';
 import { PLAYER_TESTCASES } from '../../tests/data/player-test-cases';
 import { ActivePlayerService } from '../../services/active-lobby/active-player-service';
+import { ok } from 'neverthrow';
 
 describe('ActiveLobbyStore', () => {
   // dependencies
@@ -334,6 +335,8 @@ describe('ActiveLobbyStore', () => {
     // given
     const store = TestBed.inject(ActiveLobbyStore);
 
+    activePlayerService.readyUp.mockResolvedValueOnce(of(ok()));
+
     // when
     TestBed.runInInjectionContext(() => {
       store.readyUp();
@@ -346,6 +349,8 @@ describe('ActiveLobbyStore', () => {
   test('when readyDown then calls activePlayerServiceService.readyDown', () => {
     // given
     const store = TestBed.inject(ActiveLobbyStore);
+
+    activePlayerService.readyDown.mockResolvedValueOnce(of(ok()));
 
     // when
     TestBed.runInInjectionContext(() => {
