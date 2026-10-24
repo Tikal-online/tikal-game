@@ -18,6 +18,7 @@ import {
 } from '../../services/active-lobby/active-lobby-service';
 import { ActiveLobbyConnection } from '../../services/active-lobby/active-lobby-connection';
 import { ConnectionStatus } from '../../../../core/types/connection-status';
+import { ActivePlayerService } from '../../services/active-lobby/active-player-service';
 
 type ActiveLobbyState = {
   lobby: Lobby | null;
@@ -44,6 +45,7 @@ export const ActiveLobbyStore = signalStore(
 
   withProps(() => ({
     _activeLobbyService: inject(ActiveLobbyService),
+    _activePlayerService: inject(ActivePlayerService),
     _activeLobbyConnection: inject(ActiveLobbyConnection),
   })),
 
@@ -53,6 +55,8 @@ export const ActiveLobbyStore = signalStore(
     isLeaving: computed(() => leavingStatus() === 'leaving'),
 
     isCreating: computed(() => creationStatus() === 'creating'),
+
+    activePlayer: computed(() => lobby()?.players.find((p) => p.isMe)),
 
     isInLobby: computed(() => lobby() !== null),
   })),
@@ -69,6 +73,22 @@ export const ActiveLobbyStore = signalStore(
     toggleCreateLobbyDialog(): void {
       patchState(store, (state) => ({ showCreateLobbyDialog: !state.showCreateLobbyDialog }));
     },
+
+    readyUp: rxMethod<void>(
+      pipe(
+        switchMap(() => {
+          return store._activePlayerService.readyUp();
+        }),
+      ),
+    ),
+
+    readyDown: rxMethod<void>(
+      pipe(
+        switchMap(() => {
+          return store._activePlayerService.readyDown();
+        }),
+      ),
+    ),
 
     loadActiveLobby: rxMethod<void>(
       pipe(

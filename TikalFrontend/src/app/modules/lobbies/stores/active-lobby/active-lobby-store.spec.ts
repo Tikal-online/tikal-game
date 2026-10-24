@@ -8,6 +8,8 @@ import { ActiveLobbyStore } from './active-lobby-store';
 import { Lobby } from '../../models/lobby';
 import { DEFAULT_TEST_LOBBY, LOBBY_TESTCASES } from '../../tests/data/lobby-test-cases';
 import { PLAYER_TESTCASES } from '../../tests/data/player-test-cases';
+import { ActivePlayerService } from '../../services/active-lobby/active-player-service';
+import { ok } from 'neverthrow';
 
 describe('ActiveLobbyStore', () => {
   // dependencies
@@ -15,6 +17,11 @@ describe('ActiveLobbyStore', () => {
     getActiveLobby: vi.fn(),
     leaveLobby: vi.fn(),
     createLobby: vi.fn(),
+  };
+
+  const activePlayerService = {
+    readyUp: vi.fn(),
+    readyDown: vi.fn(),
   };
 
   const activeLobbyConnection = {
@@ -30,6 +37,7 @@ describe('ActiveLobbyStore', () => {
     TestBed.configureTestingModule({
       providers: [
         { provide: ActiveLobbyService, useValue: activeLobbyService },
+        { provide: ActivePlayerService, useValue: activePlayerService },
         { provide: ActiveLobbyConnection, useValue: activeLobbyConnection },
       ],
     });
@@ -322,4 +330,34 @@ describe('ActiveLobbyStore', () => {
       expect(store.lobby()).toBeNull();
     },
   );
+
+  test('when readyUp then calls activePlayerServiceService.readyUp', () => {
+    // given
+    const store = TestBed.inject(ActiveLobbyStore);
+
+    activePlayerService.readyUp.mockResolvedValueOnce(of(ok()));
+
+    // when
+    TestBed.runInInjectionContext(() => {
+      store.readyUp();
+    });
+
+    // then
+    expect(activePlayerService.readyUp).toHaveBeenCalledOnce();
+  });
+
+  test('when readyDown then calls activePlayerServiceService.readyDown', () => {
+    // given
+    const store = TestBed.inject(ActiveLobbyStore);
+
+    activePlayerService.readyDown.mockResolvedValueOnce(of(ok()));
+
+    // when
+    TestBed.runInInjectionContext(() => {
+      store.readyDown();
+    });
+
+    // then
+    expect(activePlayerService.readyDown).toHaveBeenCalledOnce();
+  });
 });

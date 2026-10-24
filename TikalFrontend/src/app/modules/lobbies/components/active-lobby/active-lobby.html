@@ -6,11 +6,29 @@
     <h1>{{ lobby.name }}</h1>
     <tikal-player-slot-list [maxPlayers]="lobby.maxPlayers" [players]="lobby.players" />
   }
-  <tikal-button
-    size="large"
-    type="button"
-    [isLoading]="activeLobbyStore.isLeaving()"
-    [label]="t('leave-button-label')"
-    (clicked)="activeLobbyStore.leaveActiveLobby()"
-  />
+  <div class="button-options">
+    <tikal-button
+      size="large"
+      type="button"
+      [isLoading]="activeLobbyStore.isLeaving()"
+      [label]="t('leave-button-label')"
+      (clicked)="activeLobbyStore.leaveActiveLobby()"
+    />
+    @if (activeLobbyStore.activePlayer()?.isReady) {
+      <tikal-button
+        size="large"
+        type="button"
+        [label]="t('readydown-button-label')"
+        (clicked)="activeLobbyStore.readyDown()"
+      />
+    } @else {
+      <tikal-button
+        label="ReadyUp"
+        size="large"
+        type="button"
+        [label]="t('readyup-button-label')"
+        (clicked)="activeLobbyStore.readyUp()"
+      />
+    }
+  </div>
 </ng-container>
