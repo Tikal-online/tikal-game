@@ -1,5 +1,1 @@
-<p-chip [label]="label()">
-  @if (icon()) {
-    <svg [pIcon]="icon()"></svg>
-  }
-</p-chip>
+<p-chip [icon]="icon() ? 'pi pi-' + icon() : undefined" [label]="label()" />

@@ -1,10 +1,9 @@
 import { Component, input } from '@angular/core';
-import { ChipModule } from 'primeng/chip';
-import { PIcon } from '@primeicons/angular';
+import { ChipModule } from '@openng/optimus-ui/chip';
 
 @Component({
   selector: 'tikal-chip',
-  imports: [ChipModule, PIcon],
+  imports: [ChipModule],
   templateUrl: './chip.html',
   styleUrl: './chip.scss',
 })

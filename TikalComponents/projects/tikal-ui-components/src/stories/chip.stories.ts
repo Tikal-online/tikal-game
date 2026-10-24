@@ -1,15 +1,10 @@
-import { applicationConfig, Meta, StoryObj } from '@storybook/angular-vite';
-import { ChipComponent } from '../public-api';
+import { Meta, StoryObj } from '@storybook/angular-vite';
+import { ChipComponent } from '../lib/components/chip/chip';
 
 const meta: Meta<ChipComponent> = {
   title: 'Atoms/Chip',
   component: ChipComponent,
   tags: ['autodocs'],
-  decorators: [
-    applicationConfig({
-      providers: [],
-    }),
-  ],
 };
 
 export default meta;
