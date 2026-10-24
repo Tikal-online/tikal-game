@@ -1,5 +1,5 @@
 import { Component, input } from '@angular/core';
-import { MessageModule } from 'primeng/message';
+import { MessageModule } from '@openng/optimus-ui/message';
 import { EnumMapPipe } from '../../../pipes/enum-map';
 
 export type ChatMessageOrigin = 'Me' | 'Opponent';
