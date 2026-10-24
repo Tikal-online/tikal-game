@@ -1359,7 +1359,7 @@
         },
         {
             "name": "PlayerSlotComponent",
-            "id": "component-PlayerSlotComponent-bd4ffab08fad540351c4fd1f97996baf54c191f656902531ddd9ca25ec71e9a22560c176cfa83af5fdf8ad159fbdd9d23ebcdf65710e386391aba1f76f897a3c",
+            "id": "component-PlayerSlotComponent-e390f2b7892b9b1bac89c84f80b8c15700bef1e65bab77b978058d079f38b1bd595e104f6297776943224bf2a2cb698db61f9b1e716d7309db955c0350695915",
             "file": "projects/tikal-ui-components/src/lib/components/player-slot/player-slot.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -1388,7 +1388,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "<p>What is the colour of the player?</p>\n",
-                    "line": 18,
+                    "line": 19,
                     "rawdescription": "\nWhat is the colour of the player?",
                     "modifierKind": [
                         148
@@ -1404,7 +1404,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "<p>Is the player an owner of the lobby?</p>\n",
-                    "line": 24,
+                    "line": 25,
                     "rawdescription": "\nIs the player an owner of the lobby?",
                     "modifierKind": [
                         148
@@ -1420,7 +1420,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "<p>Is the player ready?</p>\n",
-                    "line": 21,
+                    "line": 22,
                     "rawdescription": "\nIs the player ready?",
                     "modifierKind": [
                         148
@@ -1436,7 +1436,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "<p>What is the name of the player?</p>\n",
-                    "line": 15,
+                    "line": 16,
                     "rawdescription": "\nWhat is the name of the player?",
                     "modifierKind": [
                         148
@@ -1460,12 +1460,16 @@
                 },
                 {
                     "name": "Crown"
+                },
+                {
+                    "name": "TranslocoDirective",
+                    "type": "directive"
                 }
             ],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, input } from '@angular/core';\nimport { EnumMapPipe } from '../../../pipes/enum-map';\nimport { Crown } from '@primeicons/angular/crown';\n\nexport type PlayerColour = 'red' | 'black' | 'green' | 'blue' | 'yellow';\n\n@Component({\n  selector: 'tikal-player-slot',\n  imports: [EnumMapPipe, Crown],\n  templateUrl: './player-slot.html',\n  styleUrl: './player-slot.scss',\n})\nexport class PlayerSlotComponent {\n  /** What is the name of the player? */\n  readonly name = input.required<string>();\n\n  /** What is the colour of the player? */\n  readonly colour = input.required<PlayerColour>();\n\n  /** Is the player ready? */\n  readonly isReady = input.required<boolean>();\n\n  /** Is the player an owner of the lobby? */\n  readonly isOwner = input.required<boolean>();\n\n  /** @ignore */\n  readonly colourMap = {\n    red: 'var(--p-red-500)',\n    green: 'var(--p-green-500)',\n    blue: 'var(--p-blue-500)',\n    yellow: 'var(--p-yellow-500)',\n  };\n}\n",
+            "sourceCode": "import { Component, input } from '@angular/core';\nimport { EnumMapPipe } from '../../../pipes/enum-map';\nimport { Crown } from '@primeicons/angular/crown';\nimport { TranslocoDirective } from '@jsverse/transloco';\n\nexport type PlayerColour = 'red' | 'black' | 'green' | 'blue' | 'yellow';\n\n@Component({\n  selector: 'tikal-player-slot',\n  imports: [EnumMapPipe, Crown, TranslocoDirective],\n  templateUrl: './player-slot.html',\n  styleUrl: './player-slot.scss',\n})\nexport class PlayerSlotComponent {\n  /** What is the name of the player? */\n  readonly name = input.required<string>();\n\n  /** What is the colour of the player? */\n  readonly colour = input.required<PlayerColour>();\n\n  /** Is the player ready? */\n  readonly isReady = input.required<boolean>();\n\n  /** Is the player an owner of the lobby? */\n  readonly isOwner = input.required<boolean>();\n\n  /** @ignore */\n  readonly colourMap = {\n    red: 'var(--p-red-500)',\n    green: 'var(--p-green-500)',\n    blue: 'var(--p-blue-500)',\n    yellow: 'var(--p-yellow-500)',\n  };\n}\n",
             "styleUrl": "./player-slot.scss",
             "assetsDirs": [],
             "styleUrlsData": [
@@ -1491,10 +1495,14 @@
                     {
                         "name": "Crown",
                         "type": "module"
+                    },
+                    {
+                        "name": "TranslocoDirective",
+                        "type": "directive"
                     }
                 ]
             },
-            "templateData": "<div class=\"main-group\">\n  <span class=\"dot\" [style.background-color]=\"colour() | enumMap: colourMap\"></span>\n  <p>{{ name() }}</p>\n  @if (isOwner()) {\n    <svg color=\"var(--p-yellow-600)\" data-p-icon=\"crown\" [size]=\"20\"></svg>\n  }\n</div>\n@if (isReady()) {\n  <p class=\"ready\">Ready</p>\n} @else {\n  <p class=\"not-ready\">Not Ready</p>\n}\n"
+            "templateData": "<ng-container *transloco=\"let t; prefix: 'player-slot'\">\n  <div class=\"main-group\">\n    <span class=\"dot\" [style.background-color]=\"colour() | enumMap: colourMap\"></span>\n    <p>{{ name() }}</p>\n    @if (isOwner()) {\n      <svg aria-label=\"crown\" color=\"var(--p-yellow-600)\" data-p-icon=\"crown\" [size]=\"20\"></svg>\n    }\n  </div>\n  @if (isReady()) {\n    <p class=\"ready\">{{ t('ready') }}</p>\n  } @else {\n    <p class=\"not-ready\">{{ t('not-ready') }}</p>\n  }\n</ng-container>\n"
         },
         {
             "name": "PlayerSlotListComponent",
@@ -1629,7 +1637,7 @@
                     }
                 ]
             },
-            "templateData": "<ng-container *transloco=\"let t; prefix: 'player-slot-list'\">\n  <div class=\"header\">\n    <span>{{ t('players') }}</span>\n    <svg data-p-icon=\"user\"></svg>\n    <span>{{ players().length }}/{{ maxPlayers() }}</span>\n  </div>\n  <div class=\"players\">\n    @if (isLoading()) {\n      @for (empty of [].constructor(maxPlayers()); track $index) {\n        <tikal-empty-player-slot [isLoading]=\"true\" />\n      }\n    } @else {\n      @for (player of players(); track $index) {\n        <tikal-player-slot\n          [colour]=\"player.selectedColour\"\n          [isOwner]=\"player.isOwner\"\n          [isReady]=\"player.isReady\"\n          [name]=\"player.name\"\n        />\n      }\n      @for (empty of [].constructor(maxPlayers() - players().length); track $index) {\n        <tikal-empty-player-slot />\n      }\n    }\n  </div>\n</ng-container>\n"
+            "templateData": "<ng-container *transloco=\"let t; prefix: 'player-slot-list'\">\n  <div class=\"header\">\n    <span>{{ t('players') }}</span>\n    <svg aria-label=\"user\" data-p-icon=\"user\"></svg>\n    <span>{{ players().length }}/{{ maxPlayers() }}</span>\n  </div>\n  <div class=\"players\">\n    @if (isLoading()) {\n      @for (empty of [].constructor(maxPlayers()); track $index) {\n        <tikal-empty-player-slot [isLoading]=\"true\" />\n      }\n    } @else {\n      @for (player of players(); track $index) {\n        <tikal-player-slot\n          [colour]=\"player.selectedColour\"\n          [isOwner]=\"player.isOwner\"\n          [isReady]=\"player.isReady\"\n          [name]=\"player.name\"\n        />\n      }\n      @for (empty of [].constructor(maxPlayers() - players().length); track $index) {\n        <tikal-empty-player-slot />\n      }\n    }\n  </div>\n</ng-container>\n"
         },
         {
             "name": "SkeletonComponent",
