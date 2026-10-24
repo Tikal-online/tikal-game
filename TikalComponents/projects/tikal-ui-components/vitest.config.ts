@@ -5,7 +5,7 @@ import { storybookTest } from '@storybook/addon-vitest/vitest-plugin';
 import { playwright } from '@vitest/browser-playwright';
 import { storybookAngularVitest } from '@storybook/angular-vite/vitest';
 const dirname =
-  typeof import.meta.dirname !== 'undefined'
+  import.meta.dirname !== 'undefined'
     ? import.meta.dirname
     : path.dirname(fileURLToPath(import.meta.url));
 
