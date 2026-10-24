@@ -1,7 +1,6 @@
 import { Component, input } from '@angular/core';
 import { PlayerColour, PlayerSlotComponent } from '../player-slot/player-slot';
 import { EmptyPlayerSlotComponent } from '../empty-player-slot/empty-player-slot';
-import { User } from '@primeicons/angular';
 import { TranslocoDirective } from '@jsverse/transloco';
 
 export type PlayerSlotData = {
@@ -13,7 +12,7 @@ export type PlayerSlotData = {
 
 @Component({
   selector: 'tikal-player-slot-list',
-  imports: [PlayerSlotComponent, EmptyPlayerSlotComponent, User, TranslocoDirective],
+  imports: [PlayerSlotComponent, EmptyPlayerSlotComponent, TranslocoDirective],
   templateUrl: './player-slot-list.html',
   styleUrl: './player-slot-list.scss',
 })
