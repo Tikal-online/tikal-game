@@ -13,6 +13,7 @@
       @for (player of players(); track $index) {
         <tikal-player-slot
           [colour]="player.selectedColour"
+          [isOwner]="player.isOwner"
           [isReady]="player.isReady"
           [name]="player.name"
         />

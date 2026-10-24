@@ -14,6 +14,7 @@ const meta: Meta<PlayerSlotComponent> = {
     name: 'MyUser1234',
     colour: 'red',
     isReady: false,
+    isOwner: true,
   },
   decorators: [
     applicationConfig({
@@ -25,11 +26,22 @@ const meta: Meta<PlayerSlotComponent> = {
 export default meta;
 type Story = StoryObj<PlayerSlotComponent>;
 
-export const PlayerSlot: Story = {
+export const Ready: Story = {
   name: 'Ready',
   args: {
     name: 'MyUser1234',
     colour: 'red',
+    isReady: true,
+    isOwner: false,
+  },
+};
+
+export const Owner: Story = {
+  name: 'Owner',
+  args: {
+    name: 'MyUser1234',
+    colour: 'red',
     isReady: false,
+    isOwner: true,
   },
 };
