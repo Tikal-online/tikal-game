@@ -1,13 +1,12 @@
 import { Component, input } from '@angular/core';
 import { EnumMapPipe } from '../../../pipes/enum-map';
-import { Crown } from '@primeicons/angular/crown';
 import { TranslocoDirective } from '@jsverse/transloco';
 
 export type PlayerColour = 'red' | 'black' | 'green' | 'blue' | 'yellow';
 
 @Component({
   selector: 'tikal-player-slot',
-  imports: [EnumMapPipe, Crown, TranslocoDirective],
+  imports: [EnumMapPipe, TranslocoDirective],
   templateUrl: './player-slot.html',
   styleUrl: './player-slot.scss',
 })

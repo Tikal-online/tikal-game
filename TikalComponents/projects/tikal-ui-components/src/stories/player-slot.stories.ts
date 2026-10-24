@@ -1,4 +1,4 @@
-import { applicationConfig, Meta, StoryObj } from '@storybook/angular-vite';
+import { Meta, StoryObj } from '@storybook/angular-vite';
 import { PlayerSlotComponent } from '../lib/components/player-slot/player-slot';
 
 const meta: Meta<PlayerSlotComponent> = {
@@ -16,11 +16,6 @@ const meta: Meta<PlayerSlotComponent> = {
     isReady: false,
     isOwner: true,
   },
-  decorators: [
-    applicationConfig({
-      providers: [],
-    }),
-  ],
 };
 
 export default meta;
