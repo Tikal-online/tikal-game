@@ -42,6 +42,10 @@
       "create-button-label": "Create"
     }
   },
+  "player-slot" : {
+    "ready": "Ready",
+    "not-ready": "Not Ready"
+  },
   "empty-player-slot": {
     "open-slot": "Open Slot"
   },
