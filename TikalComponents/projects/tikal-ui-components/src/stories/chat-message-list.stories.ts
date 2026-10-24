@@ -1,4 +1,4 @@
-import { applicationConfig, Meta, StoryObj } from '@storybook/angular-vite';
+import { Meta, StoryObj } from '@storybook/angular-vite';
 import { ChatMessageListComponent } from '../lib/components/chat-message-list/chat-message-list';
 
 const meta: Meta<ChatMessageListComponent> = {
@@ -6,9 +6,6 @@ const meta: Meta<ChatMessageListComponent> = {
   component: ChatMessageListComponent,
   tags: ['autodocs'],
   decorators: [
-    applicationConfig({
-      providers: [],
-    }),
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     (story) => {
       const s = story();

@@ -1,5 +1,5 @@
 import { Component, input } from '@angular/core';
-import { ScrollerModule } from 'primeng/scroller';
+import { ScrollerModule } from '@openng/optimus-ui/scroller';
 import { ChatMessageOrigin, ChatMessageComponent } from '../chat-message/chat-message';
 
 export type ChatMessageData = {
