@@ -1,15 +1,13 @@
-<button
-  pButton
+<p-button
   [attr.form]="form()"
   [disabled]="isLoading()"
+  [icon]="'pi pi-' + icon()"
+  [label]="label()"
+  [loading]="isLoading()"
   [outlined]="outline()"
   [severity]="colour()"
   [size]="size() | enumMap: sizeMap"
   [type]="type()"
+  [variant]="text() ? 'text' : undefined"
   (click)="clicked.emit()"
->
-  @if (isLoading()) {
-    <i class="pi pi-spin pi-spinner"></i>
-  } @else if (icon()) {}
-  {{ label() }}
-</button>
+/>

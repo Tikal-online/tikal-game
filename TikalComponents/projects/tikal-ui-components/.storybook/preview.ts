@@ -1,4 +1,4 @@
-import { AngularRenderer, applicationConfig, type Preview } from '@storybook/angular-vite';
+import { applicationConfig, type Preview } from '@storybook/angular-vite';
 import { isDevMode, provideZonelessChangeDetection } from '@angular/core';
 import { provideOptimus } from '@openng/optimus-ui/config';
 import { withThemeByClassName } from '@storybook/addon-themes';
@@ -30,7 +30,7 @@ const preview: Preview = {
         }),
       ],
     }),
-    withThemeByClassName<AngularRenderer>({
+    withThemeByClassName({
       themes: {
         light: '',
         dark: 'dark',

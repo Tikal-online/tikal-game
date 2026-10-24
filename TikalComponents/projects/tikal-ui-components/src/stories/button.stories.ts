@@ -1,4 +1,4 @@
-import { applicationConfig, Meta, StoryObj } from '@storybook/angular-vite';
+import { Meta, StoryObj } from '@storybook/angular-vite';
 import { ButtonComponent } from '../lib/components/button/button';
 
 const meta: Meta<ButtonComponent> = {
@@ -26,11 +26,6 @@ const meta: Meta<ButtonComponent> = {
     outline: false,
     text: false,
   },
-  decorators: [
-    applicationConfig({
-      providers: [],
-    }),
-  ],
 };
 
 export default meta;

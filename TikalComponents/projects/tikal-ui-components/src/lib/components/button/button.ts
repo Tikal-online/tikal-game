@@ -30,7 +30,7 @@ export class ButtonComponent {
   };
 
   /** What text should the button display? */
-  readonly label = input<string>();
+  readonly label = input<string>('');
 
   /** Is the action related to the button currently running? */
   readonly isLoading = input<boolean>(false);

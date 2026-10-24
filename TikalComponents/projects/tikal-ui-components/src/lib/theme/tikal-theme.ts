@@ -15,16 +15,37 @@ const TikalTheme = definePreset(Aura, {
       800: '{surface.800}',
       900: '{surface.900}',
       950: '{surface.950}',
-      color: 'light-dark({primary.950}, {primary.50})',
-      contrastColor: 'light-dark(#ffffff, {primary.950})',
-      hoverColor: 'light-dark({primary.800}, {primary.200})',
-      activeColor: 'light-dark({primary.700}, {primary.300})',
     },
-    highlight: {
-      background: 'light-dark({primary.950}, {primary.50})',
-      focusBackground: 'light-dark({primary.700}, {primary.300})',
-      color: 'light-dark(#ffffff, {primary.950})',
-      focusColor: 'light-dark(#ffffff, {primary.950})',
+    colorScheme: {
+      light: {
+        primary: {
+          color: '{primary.950}',
+          contrastColor: '#ffffff',
+          hoverColor: '{primary.800}',
+          activeColor: '{primary.700}',
+        },
+        highlight: {
+          background: '{primary.950}',
+          focusBackground: '{primary.700}',
+          color: '#ffffff',
+          focusColor: '#ffffff',
+        },
+      },
+
+      dark: {
+        primary: {
+          color: '{primary.50}',
+          contrastColor: '{primary.950}',
+          hoverColor: '{primary.200}',
+          activeColor: '{primary.300}',
+        },
+        highlight: {
+          background: 'rgba(255, 255, 255, 0.16)',
+          focusBackground: 'rgba(255, 255, 255, 0.24)',
+          color: 'rgba(255, 255, 255, 0.87)',
+          focusColor: 'rgba(255, 255, 255, 0.87)',
+        },
+      },
     },
   },
 });
