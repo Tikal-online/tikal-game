@@ -1,4 +1,4 @@
-import { applicationConfig, Meta, StoryObj } from '@storybook/angular-vite';
+import { Meta, StoryObj } from '@storybook/angular-vite';
 import { MaxPlayerSelectComponent } from '../lib/components/max-player-select/max-player-select';
 
 const meta: Meta<MaxPlayerSelectComponent> = {
@@ -9,11 +9,6 @@ const meta: Meta<MaxPlayerSelectComponent> = {
     value: 3,
     invalid: false,
   },
-  decorators: [
-    applicationConfig({
-      providers: [],
-    }),
-  ],
 };
 
 export default meta;

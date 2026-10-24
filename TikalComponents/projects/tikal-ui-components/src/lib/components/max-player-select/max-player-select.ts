@@ -1,7 +1,7 @@
 import { Component, input, model } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { FormValueControl } from '@angular/forms/signals';
-import { SelectButtonModule } from 'primeng/selectbutton';
+import { SelectButtonModule } from '@openng/optimus-ui/selectbutton';
 
 @Component({
   selector: 'tikal-max-player-select',
