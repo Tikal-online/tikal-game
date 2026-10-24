@@ -24,6 +24,10 @@ area/tikal-frontend:
   - changed-files:
       - any-glob-to-any-file: "TikalFrontend/**"
 
+area/tikal-components:
+  - changed-files:
+      - any-glob-to-any-file: "TikalComponents/**"
+
 area/docs:
   - changed-files:
       - any-glob-to-any-file: "docs/**"
