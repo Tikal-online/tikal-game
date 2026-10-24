@@ -16,9 +16,9 @@
     />
     @if (activeLobbyStore.activePlayer()?.isReady) {
       <tikal-button
-        label="ReadyDown"
         size="large"
         type="button"
+        [label]="t('readydown-button-label')"
         (clicked)="activeLobbyStore.readyDown()"
       />
     } @else {
@@ -26,6 +26,7 @@
         label="ReadyUp"
         size="large"
         type="button"
+        [label]="t('readyup-button-label')"
         (clicked)="activeLobbyStore.readyUp()"
       />
     }

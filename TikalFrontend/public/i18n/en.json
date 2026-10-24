@@ -31,7 +31,9 @@
     },
     "active": {
       "loading-header": "Loading...",
-      "leave-button-label": "Leave"
+      "leave-button-label": "Leave",
+      "readyup-button-label": "Ready Up",
+      "readydown-button-label": "Ready Down"
     },
     "create": {
       "header": "Create a lobby",
