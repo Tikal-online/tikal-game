@@ -1,9 +1,14 @@
-<div class="main-group">
-  <span class="dot" [style.background-color]="colour() | enumMap: colourMap"></span>
-  <p>{{ name() }}</p>
-</div>
-@if (isReady()) {
-  <p class="ready">Ready</p>
-} @else {
-  <p class="not-ready">Not Ready</p>
-}
+<ng-container *transloco="let t; prefix: 'player-slot'">
+  <div class="main-group">
+    <span class="dot" [style.background-color]="colour() | enumMap: colourMap"></span>
+    <p>{{ name() }}</p>
+    @if (isOwner()) {
+      <svg aria-label="crown" color="var(--p-yellow-600)" data-p-icon="crown" [size]="20"></svg>
+    }
+  </div>
+  @if (isReady()) {
+    <p class="ready">{{ t('ready') }}</p>
+  } @else {
+    <p class="not-ready">{{ t('not-ready') }}</p>
+  }
+</ng-container>

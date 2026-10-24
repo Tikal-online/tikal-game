@@ -1,7 +1,7 @@
 <ng-container *transloco="let t; prefix: 'player-slot-list'">
   <div class="header">
     <span>{{ t('players') }}</span>
-    <svg data-p-icon="user"></svg>
+    <svg aria-label="user" data-p-icon="user"></svg>
     <span>{{ players().length }}/{{ maxPlayers() }}</span>
   </div>
   <div class="players">
@@ -11,7 +11,12 @@
       }
     } @else {
       @for (player of players(); track $index) {
-        <tikal-player-slot [colour]="player.selectedColour" [name]="player.name" />
+        <tikal-player-slot
+          [colour]="player.selectedColour"
+          [isOwner]="player.isOwner"
+          [isReady]="player.isReady"
+          [name]="player.name"
+        />
       }
       @for (empty of [].constructor(maxPlayers() - players().length); track $index) {
         <tikal-empty-player-slot />
