@@ -6,14 +6,14 @@
     "url": "https://github.com/Tikal-online/tikal-game.git"
   },
   "peerDependencies": {
-    "@angular/common": "^22.1.0",
-    "@angular/core": "^22.1.0",
-    "@angular/forms": "^22.1.0",
-    "@angular/router": "^22.1.0",
+    "@angular/common": "^22.2.0",
+    "@angular/core": "^22.2.0",
+    "@angular/forms": "^22.2.0",
+    "@angular/router": "^22.2.0",
     "@jsverse/transloco": "^8.4.0",
-    "@primeuix/themes": "^3.0.0",
-    "@primeicons/angular": "^8.0.0",
-    "primeng": "^22.1.0"
+    "@openng/icons": "^1.0.0",
+    "@openng/optimus-ui-themes": "^2.0.2",
+    "@openng/optimus-ui": "^2.0.2"
   },
   "dependencies": {
     "tslib": "^2.3.0"
