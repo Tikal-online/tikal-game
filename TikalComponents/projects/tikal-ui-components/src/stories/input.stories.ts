@@ -1,4 +1,4 @@
-import { applicationConfig, Meta, StoryObj } from '@storybook/angular-vite';
+import { Meta, StoryObj } from '@storybook/angular-vite';
 import { InputComponent } from '../lib/components/input/input';
 
 const meta: Meta<InputComponent> = {
@@ -15,11 +15,6 @@ const meta: Meta<InputComponent> = {
     placeholder: 'Placeholder...',
     maxLength: 100,
   },
-  decorators: [
-    applicationConfig({
-      providers: [],
-    }),
-  ],
 };
 
 export default meta;

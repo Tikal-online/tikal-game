@@ -1,6 +1,6 @@
 import { Component, model, input } from '@angular/core';
 import { FormValueControl } from '@angular/forms/signals';
-import { InputTextModule } from 'primeng/inputtext';
+import { InputTextModule } from '@openng/optimus-ui/inputtext';
 
 @Component({
   selector: 'tikal-input',
