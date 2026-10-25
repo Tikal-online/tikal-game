@@ -38,7 +38,7 @@
             "configDir": "projects/tikal-ui-components/.storybook",
             "browserTarget": "tikal-ui-components:build",
             "port": 6006,
-            "styles": ["src/styles.css"],
+            "styles": ["projects/tikal-ui-components/src/styles.css"],
             "https": true,
             "sslKey": "/.aspnet/dev-certs/key.key",
             "sslCert": "/.aspnet/dev-certs/cert.crt"
@@ -50,7 +50,7 @@
             "configDir": "projects/tikal-ui-components/.storybook",
             "browserTarget": "tikal-ui-components:build",
             "outputDir": "storybook-static",
-            "styles": ["src/styles.css"]
+            "styles": ["projects/tikal-ui-components/src/styles.css"]
           }
         },
         "lint": {
