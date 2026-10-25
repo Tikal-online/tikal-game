@@ -24,7 +24,8 @@ const preview: Preview = {
         }),
         provideZonelessChangeDetection(),
         providePrimeNG({
-          license: import.meta.env['STORYBOOK_PRIMENG_LICENSE'],
+          license:
+            'eyJpZCI6IjJmYWE2OGNmLTZkYTItNDlmNS1iZWY1LTNhYWUxMTcwZmFiMCIsInByb2R1Y3QiOiJwcmltZXVpIiwidGllciI6ImNvbW11bml0eSIsInR5cGUiOiJkZXYiLCJpYXQiOjE3ODcyOTAwNzEsImV4cCI6MTgxODgyNjA3MX0.c_zo_mjRE48LO8Ivrsc4fE6D33GDJJRgn2HoXuETWhIve_Tzw3rK3yGGg3BF5-T0KBJ-_KO0hicRAvKrY1vKBA',
           theme: {
             preset: TikalTheme,
             options: {
