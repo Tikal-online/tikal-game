@@ -24,6 +24,9 @@ export class PlayerSlotComponent {
   /** Is the player an owner of the lobby? */
   readonly isOwner = input.required<boolean>();
 
+  /** Is the player the currently authenticated user? */
+  readonly isMe = input.required<boolean>();
+
   /** @ignore */
   readonly colourMap = {
     red: 'var(--p-red-500)',

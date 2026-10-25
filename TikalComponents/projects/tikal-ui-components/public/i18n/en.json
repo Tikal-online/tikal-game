@@ -1,7 +1,8 @@
 {
   "player-slot" : {
     "ready": "Ready",
-    "not-ready": "Not Ready"
+    "not-ready": "Not Ready",
+    "you": "You"
   },
   "empty-player-slot": {
     "open-slot": "Open Slot"
