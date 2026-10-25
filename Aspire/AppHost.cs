@@ -11,8 +11,6 @@ var databasePassword = builder.AddParameter("DatabasePassword", true);
 
 var duendeLicense = builder.AddParameter("DuendeLicense", true);
 
-var primeNgLicense = builder.AddParameter("PrimeNgLicense", true);
-
 // ================================================
 // Services
 // ================================================
@@ -82,8 +80,5 @@ bff.WithEnvironment("Identity__Authority", identity.GetEndpoint("https"));
 bff.WithEnvironment("Frontend__Url", frontend.GetEndpoint("https"));
 bff.WithEnvironment("Backend__Url", backend.GetEndpoint("https"));
 bff.WithEnvironment("Duende__LicenseKey", duendeLicense);
-
-// storybook
-storybook.WithEnvironment("STORYBOOK_PRIMENG_LICENSE", primeNgLicense);
 
 await builder.Build().RunAsync();
