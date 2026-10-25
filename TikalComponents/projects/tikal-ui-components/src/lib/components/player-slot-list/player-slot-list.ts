@@ -9,6 +9,7 @@ export type PlayerSlotData = {
   selectedColour: PlayerColour;
   isReady: boolean;
   isOwner: boolean;
+  isMe: boolean;
 };
 
 @Component({

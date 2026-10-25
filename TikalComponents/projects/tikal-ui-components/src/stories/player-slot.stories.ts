@@ -15,6 +15,7 @@ const meta: Meta<PlayerSlotComponent> = {
     colour: 'red',
     isReady: false,
     isOwner: true,
+    isMe: true,
   },
   decorators: [
     applicationConfig({
@@ -33,6 +34,7 @@ export const Ready: Story = {
     colour: 'red',
     isReady: true,
     isOwner: false,
+    isMe: true,
   },
 };
 
@@ -43,5 +45,6 @@ export const Owner: Story = {
     colour: 'red',
     isReady: false,
     isOwner: true,
+    isMe: false,
   },
 };
