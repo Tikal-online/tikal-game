@@ -271,7 +271,7 @@ describe('ActiveLobbyService', () => {
 
       expect(result.isErr()).toBeTruthy();
       if (result.isErr()) {
-        expect(result.error).toEqual({ type: 'LobbyNotFound' });
+        expect(result.error).toEqual({ type: 'PlayerNotInLobby' });
       }
     },
   );
