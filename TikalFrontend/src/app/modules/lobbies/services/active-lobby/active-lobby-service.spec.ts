@@ -1,7 +1,6 @@
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { catchError, firstValueFrom, of } from 'rxjs';
-import { Lobby } from '../../models/lobby';
 import {
   CONFLICT,
   CREATED,
@@ -14,15 +13,9 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { ActiveLobbyService, CreateLobbyData } from './active-lobby-service';
 import { ID_TEST_CASES } from '../../../../core/tests/id-test-cases';
 import { CREATE_LOBBY_DATA_TEST_CASES } from '../../tests/data/create-lobby-data-test-cases';
+import { DEFAULT_TEST_LOBBY } from '../../tests/data/lobby-test-cases';
 
-const DEFAULT_LOBBY: Lobby = {
-  id: 1,
-  name: 'name',
-  maxPlayers: 4,
-  players: [],
-};
-
-describe('LobbyService', () => {
+describe('ActiveLobbyService', () => {
   // dependencies
   let http: HttpTestingController;
 
@@ -49,9 +42,9 @@ describe('LobbyService', () => {
 
     // when & then
     const req = http.expectOne({ method: 'GET', url: '/Api/Lobbies/me' });
-    req.flush(DEFAULT_LOBBY);
+    req.flush(DEFAULT_TEST_LOBBY);
 
-    expect(await promise).toEqual(DEFAULT_LOBBY);
+    expect(await promise).toEqual(DEFAULT_TEST_LOBBY);
   });
 
   test('getActiveLobby returns null when GET /Api/Lobbies/me returns NotFound', async () => {
@@ -240,6 +233,85 @@ describe('LobbyService', () => {
 
       // when & then
       const req = http.expectOne({ method: 'POST', url: '/Api/Lobbies' });
+      req.flush('', error);
+
+      await promise;
+
+      expect(capturedError!.status).toEqual(error.status);
+    },
+  );
+
+  test.for<number>(ID_TEST_CASES)(
+    'startLobby returns success when POST /Api/Lobbies/%i/Start returns Success',
+    async (id) => {
+      // given
+      const promise = firstValueFrom(service.startLobby(id));
+
+      // when & then
+      const req = http.expectOne({ method: 'POST', url: `/Api/Lobbies/${id}/Start` });
+      req.flush(OK);
+
+      const result = await promise;
+
+      expect(result.isOk()).toBeTruthy();
+    },
+  );
+
+  test.for<number>(ID_TEST_CASES)(
+    'startLobby returns PlayerNotInLobby when POST /Api/Lobbies/%i/Start returns 404',
+    async (id) => {
+      // given
+      const promise = firstValueFrom(service.startLobby(id));
+
+      // when & then
+      const req = http.expectOne({ method: 'POST', url: `/Api/Lobbies/${id}/Start` });
+      req.flush('', NOT_FOUND);
+
+      const result = await promise;
+
+      expect(result.isErr()).toBeTruthy();
+      if (result.isErr()) {
+        expect(result.error).toEqual({ type: 'PlayerNotInLobby' });
+      }
+    },
+  );
+
+  test.for<number>(ID_TEST_CASES)(
+    'startLobby returns LobbyInGame when POST /Api/Lobbies/%i/Start returns 409',
+    async (id) => {
+      // given
+      const promise = firstValueFrom(service.startLobby(id));
+
+      // when & then
+      const req = http.expectOne({ method: 'POST', url: `/Api/Lobbies/${id}/Start` });
+      req.flush('', CONFLICT);
+
+      const result = await promise;
+
+      expect(result.isErr()).toBeTruthy();
+      if (result.isErr()) {
+        expect(result.error).toEqual({ type: 'LobbyInGame' });
+      }
+    },
+  );
+
+  test.for<HttpResponseData>(ERROR_RESPONSES.filter((error) => ![404, 409].includes(error.status)))(
+    'startLobby throws error when POST /Api/Lobbies/id/Start returns $status',
+    async (error: HttpResponseData) => {
+      // given
+      let capturedError: HttpErrorResponse;
+
+      const promise = firstValueFrom(
+        service.startLobby(1).pipe(
+          catchError((httpError) => {
+            capturedError = httpError;
+            return of(httpError);
+          }),
+        ),
+      );
+
+      // when & then
+      const req = http.expectOne({ method: 'POST', url: '/Api/Lobbies/1/Start' });
       req.flush('', error);
 
       await promise;

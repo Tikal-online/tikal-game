@@ -1,3 +1,5 @@
+import { Colour } from '../../../core/models/colour';
+
 export type Player = {
   userId: string;
   name: string;
@@ -6,5 +8,3 @@ export type Player = {
   isReady: boolean;
   isMe: boolean;
 };
-
-export type Colour = 'red' | 'black' | 'green' | 'blue' | 'yellow';

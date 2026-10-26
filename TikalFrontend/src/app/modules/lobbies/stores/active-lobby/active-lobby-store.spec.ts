@@ -17,6 +17,7 @@ describe('ActiveLobbyStore', () => {
     getActiveLobby: vi.fn(),
     leaveLobby: vi.fn(),
     createLobby: vi.fn(),
+    startLobby: vi.fn(),
   };
 
   const activePlayerService = {
@@ -98,6 +99,7 @@ describe('ActiveLobbyStore', () => {
     expect(store.loadingStatus()).toEqual('loaded');
     expect(store.leavingStatus()).toEqual('initial');
     expect(store.creationStatus()).toEqual('initial');
+    expect(store.startingStatus()).toEqual('initial');
     expect(store.lobby()).toBeNull();
   });
 
@@ -118,6 +120,7 @@ describe('ActiveLobbyStore', () => {
     expect(store.loadingStatus()).toEqual('error');
     expect(store.leavingStatus()).toEqual('initial');
     expect(store.creationStatus()).toEqual('initial');
+    expect(store.startingStatus()).toEqual('initial');
     expect(store.lobby()).toBeNull();
   });
 
@@ -138,6 +141,7 @@ describe('ActiveLobbyStore', () => {
       expect(store.loadingStatus()).toEqual('loaded');
       expect(store.leavingStatus()).toEqual('initial');
       expect(store.creationStatus()).toEqual('initial');
+      expect(store.startingStatus()).toEqual('initial');
       expect(store.lobby()).toEqual(lobby);
     },
   );
@@ -194,6 +198,7 @@ describe('ActiveLobbyStore', () => {
       expect(store.leavingStatus()).toEqual('left');
       expect(store.loadingStatus()).toEqual('initial');
       expect(store.creationStatus()).toEqual('initial');
+      expect(store.startingStatus()).toEqual('initial');
       expect(store.lobby()).toBeNull();
     },
   );
@@ -291,6 +296,7 @@ describe('ActiveLobbyStore', () => {
       expect(store.leavingStatus()).toEqual('left');
       expect(store.loadingStatus()).toEqual('initial');
       expect(store.creationStatus()).toEqual('initial');
+      expect(store.startingStatus()).toEqual('initial');
       expect(store.lobby()).toBeNull();
     },
   );
@@ -360,4 +366,57 @@ describe('ActiveLobbyStore', () => {
     // then
     expect(activePlayerService.readyDown).toHaveBeenCalledOnce();
   });
+
+  test('given no active lobby when startActiveLobby then does not call startLobby', async () => {
+    // given
+    const store = TestBed.inject(ActiveLobbyStore);
+
+    // when
+    TestBed.runInInjectionContext(() => {
+      store.startActiveLobby();
+    });
+
+    // then
+    expect(activeLobbyService.startLobby).not.toHaveBeenCalled();
+  });
+
+  test.for<Lobby>(LOBBY_TESTCASES)(
+    'given starting fails when startActiveLobby then sets startingStatus to error',
+    (lobby: Lobby) => {
+      // given
+      const store = TestBed.inject(ActiveLobbyStore);
+
+      activeLobbyService.getActiveLobby.mockReturnValueOnce(of(lobby));
+      activeLobbyService.startLobby.mockReturnValueOnce(throwError(() => new Error('test error')));
+
+      // when
+      TestBed.runInInjectionContext(() => {
+        store.loadActiveLobby();
+        store.startActiveLobby();
+      });
+
+      // then
+      expect(store.startingStatus()).toEqual('error');
+    },
+  );
+
+  test.for<Lobby>(LOBBY_TESTCASES)(
+    'given starting succeeds when startActiveLobby then sets startingStatus to started',
+    (lobby: Lobby) => {
+      // given
+      const store = TestBed.inject(ActiveLobbyStore);
+
+      activeLobbyService.getActiveLobby.mockReturnValueOnce(of(lobby));
+      activeLobbyService.startLobby.mockReturnValueOnce(of(null));
+
+      // when
+      TestBed.runInInjectionContext(() => {
+        store.loadActiveLobby();
+        store.startActiveLobby();
+      });
+
+      // then
+      expect(store.startingStatus()).toEqual('started');
+    },
+  );
 });
