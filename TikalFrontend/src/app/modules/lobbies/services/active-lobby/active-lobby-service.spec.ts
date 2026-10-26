@@ -1,7 +1,6 @@
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { catchError, firstValueFrom, of } from 'rxjs';
-import { Lobby } from '../../models/lobby';
 import {
   CONFLICT,
   CREATED,
@@ -14,13 +13,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { ActiveLobbyService, CreateLobbyData } from './active-lobby-service';
 import { ID_TEST_CASES } from '../../../../core/tests/id-test-cases';
 import { CREATE_LOBBY_DATA_TEST_CASES } from '../../tests/data/create-lobby-data-test-cases';
-
-const DEFAULT_LOBBY: Lobby = {
-  id: 1,
-  name: 'name',
-  maxPlayers: 4,
-  players: [],
-};
+import { DEFAULT_TEST_LOBBY } from '../../tests/data/lobby-test-cases';
 
 describe('ActiveLobbyService', () => {
   // dependencies
@@ -49,9 +42,9 @@ describe('ActiveLobbyService', () => {
 
     // when & then
     const req = http.expectOne({ method: 'GET', url: '/Api/Lobbies/me' });
-    req.flush(DEFAULT_LOBBY);
+    req.flush(DEFAULT_TEST_LOBBY);
 
-    expect(await promise).toEqual(DEFAULT_LOBBY);
+    expect(await promise).toEqual(DEFAULT_TEST_LOBBY);
   });
 
   test('getActiveLobby returns null when GET /Api/Lobbies/me returns NotFound', async () => {
