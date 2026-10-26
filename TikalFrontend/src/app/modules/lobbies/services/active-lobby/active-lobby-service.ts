@@ -68,4 +68,19 @@ export class ActiveLobbyService {
       }),
     );
   }
+
+  startLobby(id: number): Observable<Result<void, PlayerNotInLobby | LobbyInGame>> {
+    return this.http.post(`${this.url}/${id}/Start`, {}).pipe(
+      map(() => ok()),
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 404) {
+          return err({ type: 'PlayerNotInLobby' } as const);
+        } else if (error.status === 409) {
+          return err({ type: 'LobbyInGame' } as const);
+        }
+
+        return throwError(() => error);
+      }),
+    );
+  }
 }

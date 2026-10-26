@@ -22,7 +22,7 @@ const DEFAULT_LOBBY: Lobby = {
   players: [],
 };
 
-describe('LobbyService', () => {
+describe('ActiveLobbyService', () => {
   // dependencies
   let http: HttpTestingController;
 
@@ -240,6 +240,85 @@ describe('LobbyService', () => {
 
       // when & then
       const req = http.expectOne({ method: 'POST', url: '/Api/Lobbies' });
+      req.flush('', error);
+
+      await promise;
+
+      expect(capturedError!.status).toEqual(error.status);
+    },
+  );
+
+  test.for<number>(ID_TEST_CASES)(
+    'startLobby returns success when POST /Api/Lobbies/%i/Start returns Success',
+    async (id) => {
+      // given
+      const promise = firstValueFrom(service.startLobby(id));
+
+      // when & then
+      const req = http.expectOne({ method: 'POST', url: `/Api/Lobbies/${id}/Start` });
+      req.flush(OK);
+
+      const result = await promise;
+
+      expect(result.isOk()).toBeTruthy();
+    },
+  );
+
+  test.for<number>(ID_TEST_CASES)(
+    'startLobby returns PlayerNotInLobby when POST /Api/Lobbies/%i/Start returns 404',
+    async (id) => {
+      // given
+      const promise = firstValueFrom(service.startLobby(id));
+
+      // when & then
+      const req = http.expectOne({ method: 'POST', url: `/Api/Lobbies/${id}/Start` });
+      req.flush('', NOT_FOUND);
+
+      const result = await promise;
+
+      expect(result.isErr()).toBeTruthy();
+      if (result.isErr()) {
+        expect(result.error).toEqual({ type: 'LobbyNotFound' });
+      }
+    },
+  );
+
+  test.for<number>(ID_TEST_CASES)(
+    'startLobby returns LobbyInGame when POST /Api/Lobbies/%i/Start returns 409',
+    async (id) => {
+      // given
+      const promise = firstValueFrom(service.startLobby(id));
+
+      // when & then
+      const req = http.expectOne({ method: 'POST', url: `/Api/Lobbies/${id}/Start` });
+      req.flush('', CONFLICT);
+
+      const result = await promise;
+
+      expect(result.isErr()).toBeTruthy();
+      if (result.isErr()) {
+        expect(result.error).toEqual({ type: 'LobbyInGame' });
+      }
+    },
+  );
+
+  test.for<HttpResponseData>(ERROR_RESPONSES.filter((error) => ![404, 409].includes(error.status)))(
+    'startLobby throws error when POST /Api/Lobbies/id/Start returns $status',
+    async (error: HttpResponseData) => {
+      // given
+      let capturedError: HttpErrorResponse;
+
+      const promise = firstValueFrom(
+        service.startLobby(1).pipe(
+          catchError((httpError) => {
+            capturedError = httpError;
+            return of(httpError);
+          }),
+        ),
+      );
+
+      // when & then
+      const req = http.expectOne({ method: 'POST', url: '/Api/Lobbies/1/Start' });
       req.flush('', error);
 
       await promise;
