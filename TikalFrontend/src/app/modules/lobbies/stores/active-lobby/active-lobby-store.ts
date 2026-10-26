@@ -26,6 +26,7 @@ type ActiveLobbyState = {
   loadingStatus: 'initial' | 'loading' | 'loaded' | 'error';
   leavingStatus: 'initial' | 'leaving' | 'left' | 'error';
   creationStatus: 'initial' | 'creating' | 'created' | 'error';
+  startingStatus: 'initial' | 'starting' | 'started' | 'error';
   showCreateLobbyDialog: boolean;
 };
 
@@ -35,6 +36,7 @@ const initialStatus: ActiveLobbyState = {
   loadingStatus: 'initial',
   leavingStatus: 'initial',
   creationStatus: 'initial',
+  startingStatus: 'initial',
   showCreateLobbyDialog: false,
 };
 
@@ -97,6 +99,7 @@ export const ActiveLobbyStore = signalStore(
             loadingStatus: 'loading',
             leavingStatus: 'initial',
             creationStatus: 'initial',
+            startingStatus: 'initial',
           }),
         ),
         switchMap(() => {
@@ -123,8 +126,24 @@ export const ActiveLobbyStore = signalStore(
                   leavingStatus: 'left',
                   loadingStatus: 'initial',
                   creationStatus: 'initial',
+                  startingStatus: 'initial',
                 }),
               error: () => patchState(store, { leavingStatus: 'error' }),
+            }),
+          );
+        }),
+      ),
+    ),
+
+    startActiveLobby: rxMethod<void>(
+      pipe(
+        filter(() => !!store.lobby()),
+        tap(() => patchState(store, { startingStatus: 'starting' })),
+        switchMap(() => {
+          return store._activeLobbyService.startLobby(store.lobby()!.id).pipe(
+            tapResponse({
+              next: () => patchState(store, { startingStatus: 'started' }),
+              error: () => patchState(store, { startingStatus: 'error' }),
             }),
           );
         }),
@@ -168,6 +187,7 @@ export const ActiveLobbyStore = signalStore(
               leavingStatus: 'left',
               loadingStatus: 'initial',
               creationStatus: 'initial',
+              startingStatus: 'initial',
             });
           } else {
             patchState(store, (state) => ({
