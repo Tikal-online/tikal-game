@@ -1,3 +1,4 @@
+using JasperFx.Resources;
 using Microsoft.AspNetCore.SignalR;
 using RestApi.Controllers;
 using SignalRApi.Hubs.Lobbies.ActiveLobby;
@@ -28,6 +29,9 @@ builder.Services.AddOpenApi(options => { options.AddDocumentTransformer<Security
 builder.Services.AddHealthChecks();
 
 builder.Services.ConfigureAuthentication(builder.Configuration);
+
+// TODO: for now let wolverine create what it needs on startup, should be managed outside of application
+builder.Host.UseResourceSetupOnStartup();
 
 var app = builder.Build();
 
