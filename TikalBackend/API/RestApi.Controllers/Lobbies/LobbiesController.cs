@@ -76,7 +76,7 @@ public sealed partial class LobbiesController : ApiController
     {
         var query = new JoinLobbyCommand(Id);
 
-        var result = await sender.Send(query, cancellationToken);
+        var result = await bus.InvokeAsync<OneOf<Success, PlayerAlreadyInALobby, LobbyNotFound, LobbyFull, LobbyInGame>>(query, cancellationToken);
 
         return result.Match<IActionResult>(
             _ => Ok(),

@@ -16,7 +16,6 @@ public sealed class JoinLobbyCommandHandlerTests
     // dependencies
     private readonly Mock<LobbyRepository> lobbyRepository;
     private readonly Mock<PlayerQueryContext> playerQueryContext;
-    private readonly Mock<UnitOfWork> unitOfWork;
     private readonly AccountContext accountContext;
 
     // under test
@@ -26,13 +25,11 @@ public sealed class JoinLobbyCommandHandlerTests
     {
         lobbyRepository = new Mock<LobbyRepository>();
         playerQueryContext = new Mock<PlayerQueryContext>();
-        unitOfWork = new Mock<UnitOfWork>();
         accountContext = AccountContextHelper.TestAccountContext;
 
         handler = new JoinLobbyCommandHandler(
             lobbyRepository.Object,
             playerQueryContext.Object,
-            unitOfWork.Object,
             accountContext
         );
     }
