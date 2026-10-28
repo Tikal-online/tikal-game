@@ -659,7 +659,8 @@
           "Games.Application": "[1.0.0, )",
           "Microsoft.EntityFrameworkCore": "[10.0.13, )",
           "Microsoft.EntityFrameworkCore.Relational": "[10.0.13, )",
-          "Npgsql.EntityFrameworkCore.PostgreSQL": "[10.0.3, )"
+          "Npgsql.EntityFrameworkCore.PostgreSQL": "[10.0.3, )",
+          "WolverineFX.EntityFrameworkCore": "[6.56.0, )"
         }
       },
       "lobbies.application": {
