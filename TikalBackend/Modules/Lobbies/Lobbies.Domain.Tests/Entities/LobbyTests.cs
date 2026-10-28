@@ -48,6 +48,7 @@ public sealed class LobbyTests
         var playerToAdd = new Player
         {
             UserId = "user-id",
+            Name = "name",
             IsOwner = false,
             IsReady = false,
             SelectedColour = Colour.Red
@@ -68,6 +69,7 @@ public sealed class LobbyTests
         var playerToAdd = new Player
         {
             UserId = "user-id",
+            Name = "name",
             IsOwner = false,
             IsReady = false,
             SelectedColour = Colour.Red

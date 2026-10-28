@@ -17,6 +17,7 @@ public static class LobbyTestCases
                 new Player
                 {
                     UserId = "595b266b-7b12-4e3e-a83a-646ca364e1a7",
+                    Name = "Player1",
                     SelectedColour = Colour.Black,
                     IsOwner = true,
                     IsReady = false
@@ -34,6 +35,7 @@ public static class LobbyTestCases
                 new Player
                 {
                     UserId = "ab6e7381-1570-4cbb-a149-00c34e33499e",
+                    Name = "Player1",
                     SelectedColour = Colour.Red,
                     IsOwner = true,
                     IsReady = false
@@ -41,6 +43,7 @@ public static class LobbyTestCases
                 new Player
                 {
                     UserId = "e369a3fb-47d2-4f7e-b2d2-3a2cecbd0b91",
+                    Name = "Player2",
                     SelectedColour = Colour.Black,
                     IsOwner = false,
                     IsReady = false
@@ -58,6 +61,7 @@ public static class LobbyTestCases
                 new Player
                 {
                     UserId = "11875b18-8577-43a4-9685-9c4b00d3f5a1",
+                    Name = "Player1",
                     SelectedColour = Colour.Red,
                     IsOwner = true,
                     IsReady = true
@@ -65,6 +69,7 @@ public static class LobbyTestCases
                 new Player
                 {
                     UserId = "f4c62607-e16d-47e0-801d-6d77c454abea",
+                    Name = "Player2",
                     SelectedColour = Colour.Black,
                     IsOwner = false,
                     IsReady = true
@@ -72,6 +77,7 @@ public static class LobbyTestCases
                 new Player
                 {
                     UserId = "40023ae5-63d9-48ca-b8f3-bccaa948a6e7",
+                    Name = "Player3",
                     SelectedColour = Colour.Yellow,
                     IsOwner = true,
                     IsReady = true
@@ -89,6 +95,7 @@ public static class LobbyTestCases
                 new Player
                 {
                     UserId = "b373a291-ce78-47b3-801c-cc384b24fbfe",
+                    Name = "Player1",
                     SelectedColour = Colour.Green,
                     IsOwner = true,
                     IsReady = true
@@ -96,6 +103,7 @@ public static class LobbyTestCases
                 new Player
                 {
                     UserId = "85f3a4ad-67d8-436d-b552-edd409b178ab",
+                    Name = "Player2",
                     SelectedColour = Colour.Yellow,
                     IsOwner = false,
                     IsReady = true
