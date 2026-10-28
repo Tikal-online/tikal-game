@@ -10,6 +10,8 @@ public sealed class Player : Entity
 
     public required string UserId { get; set; }
 
+    public required string Name { get; set; }
+
     public required Colour SelectedColour { get; set; }
 
     public bool IsReady { get; set; }

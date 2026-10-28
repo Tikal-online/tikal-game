@@ -14,7 +14,6 @@ public sealed class CreateLobbyCommandHandlerTests
     // dependencies
     private readonly Mock<LobbyRepository> lobbyRepository;
     private readonly Mock<PlayerQueryContext> playerQueryContext;
-    private readonly Mock<UnitOfWork> unitOfWork;
     private readonly AccountContext accountContext;
 
     // under test
@@ -24,13 +23,11 @@ public sealed class CreateLobbyCommandHandlerTests
     {
         lobbyRepository = new Mock<LobbyRepository>();
         playerQueryContext = new Mock<PlayerQueryContext>();
-        unitOfWork = new Mock<UnitOfWork>();
         accountContext = AccountContextHelper.TestAccountContext;
 
         handler = new CreateLobbyCommandHandler(
             lobbyRepository.Object,
             playerQueryContext.Object,
-            unitOfWork.Object,
             accountContext
         );
     }
@@ -48,8 +45,6 @@ public sealed class CreateLobbyCommandHandlerTests
     )
     {
         // given
-        SetupHappyPath();
-
         playerQueryContext.Setup(p => p.PlayerExists(accountContext.Account.UserId)).ReturnsAsync(true);
 
         // when

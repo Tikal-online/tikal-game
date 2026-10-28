@@ -1,24 +1,31 @@
 using System.ComponentModel.DataAnnotations;
 using Lobbies.Contracts.Commands;
+using Lobbies.Contracts.Errors;
 using Lobbies.Contracts.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using OneOf;
+using OneOf.Types;
 using RestApi.Controllers.Lobbies.Dtos;
 using RestApi.Controllers.Lobbies.Mappers;
 using RestApi.Controllers.Shared.Dtos;
 using Shared.Api;
+using Wolverine;
 
 namespace RestApi.Controllers.Lobbies;
 
 [RequireAccount]
 public sealed partial class LobbiesController : ApiController
 {
+    private readonly IMessageBus bus;
+
     private readonly ISender sender;
 
-    public LobbiesController(ISender sender)
+    public LobbiesController(ISender sender, IMessageBus bus)
     {
         this.sender = sender;
+        this.bus = bus;
     }
 
     [HttpPost]
@@ -32,7 +39,7 @@ public sealed partial class LobbiesController : ApiController
     {
         var command = new CreateLobbyCommand(createLobbyDto.Name, createLobbyDto.MaxPlayers);
 
-        var result = await sender.Send(command, cancellationToken);
+        var result = await bus.InvokeAsync<OneOf<Success, PlayerAlreadyInALobby>>(command, cancellationToken);
 
         return result.Match<IActionResult>(
             _ => CreatedAtAction(nameof(GetLobbyForUser), new { }),

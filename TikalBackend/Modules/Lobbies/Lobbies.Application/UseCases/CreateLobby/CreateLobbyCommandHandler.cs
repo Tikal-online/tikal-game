@@ -5,32 +5,26 @@ using Lobbies.Domain.Entities;
 using OneOf;
 using OneOf.Types;
 using Shared.Application.Contexts;
-using Shared.Contracts.Messaging;
 using Shared.Domain.Enums;
 
 namespace Lobbies.Application.UseCases.CreateLobby;
 
-internal sealed class CreateLobbyCommandHandler
-    : CommandHandler<CreateLobbyCommand, OneOf<Success, PlayerAlreadyInALobby>>
+public sealed class CreateLobbyCommandHandler
 {
     private readonly LobbyRepository lobbyRepository;
 
     private readonly PlayerQueryContext playerQueryContext;
-
-    private readonly UnitOfWork unitOfWork;
 
     private readonly AccountContext accountContext;
 
     public CreateLobbyCommandHandler(
         LobbyRepository lobbyRepository,
         PlayerQueryContext playerQueryContext,
-        UnitOfWork unitOfWork,
         AccountContext accountContext
     )
     {
         this.lobbyRepository = lobbyRepository;
         this.playerQueryContext = playerQueryContext;
-        this.unitOfWork = unitOfWork;
         this.accountContext = accountContext;
     }
 
@@ -49,6 +43,7 @@ internal sealed class CreateLobbyCommandHandler
         var player = new Player
         {
             UserId = accountContext.Account.UserId,
+            Name = accountContext.Account.Name,
             SelectedColour = Colour.Red,
             IsOwner = true,
             IsReady = false
@@ -62,8 +57,6 @@ internal sealed class CreateLobbyCommandHandler
         };
 
         lobbyRepository.Create(lobby);
-
-        await unitOfWork.SaveChangesAsync(cancellationToken);
 
         return new Success();
     }
