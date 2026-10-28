@@ -16,7 +16,6 @@ public sealed class LeaveLobbyCommandHandlerTests
     // dependencies
     private readonly Mock<PlayerRepository> playerRepository;
     private readonly Mock<LobbyRepository> lobbyRepository;
-    private readonly Mock<UnitOfWork> unitOfWork;
     private readonly AccountContext accountContext;
 
     // under test
@@ -26,13 +25,11 @@ public sealed class LeaveLobbyCommandHandlerTests
     {
         playerRepository = new Mock<PlayerRepository>();
         lobbyRepository = new Mock<LobbyRepository>();
-        unitOfWork = new Mock<UnitOfWork>();
         accountContext = AccountContextHelper.TestAccountContext;
 
         handler = new LeaveLobbyCommandHandler(
             playerRepository.Object,
             lobbyRepository.Object,
-            unitOfWork.Object,
             accountContext
         );
     }
@@ -114,7 +111,6 @@ public sealed class LeaveLobbyCommandHandlerTests
         Assert.IsType<Success>(result.Value);
 
         playerRepository.Verify(r => r.Delete(It.IsAny<Player>()), Times.Once);
-        unitOfWork.Verify(u => u.SaveChangesAsync(CancellationToken.None), Times.Once);
     }
 
     [Theory]
@@ -134,6 +130,5 @@ public sealed class LeaveLobbyCommandHandlerTests
 
         playerRepository.Verify(r => r.Delete(It.IsAny<Player>()), Times.Once);
         lobbyRepository.Verify(r => r.Delete(lobby), Times.Once);
-        unitOfWork.Verify(u => u.SaveChangesAsync(CancellationToken.None), Times.Once);
     }
 }

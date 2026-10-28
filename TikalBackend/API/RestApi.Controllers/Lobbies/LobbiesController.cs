@@ -118,7 +118,7 @@ public sealed partial class LobbiesController : ApiController
     {
         var command = new LeaveLobbyCommand(Id);
 
-        var result = await sender.Send(command, cancellationToken);
+        var result = await bus.InvokeAsync<OneOf<Success, LobbyNotFound, PlayerNotInGivenLobby, LobbyInGame>>(command, cancellationToken);
 
         return result.Match<IActionResult>(
             _ => Ok(),
