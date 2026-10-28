@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Lobbies.Infrastructure.Repositories;
 
-internal sealed class DbPlayerRepository : PlayerRepository
+public sealed class DbPlayerRepository : PlayerRepository
 {
     private readonly LobbiesDbContext lobbiesDbContext;
 

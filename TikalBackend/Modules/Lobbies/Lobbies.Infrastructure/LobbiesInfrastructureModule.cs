@@ -1,3 +1,4 @@
+using Lobbies.Application;
 using Lobbies.Application.DataAccess;
 using Lobbies.Infrastructure.Database;
 using Lobbies.Infrastructure.QueryContexts;
@@ -5,6 +6,7 @@ using Lobbies.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.DependencyInjection;
+using Wolverine;
 
 namespace Lobbies.Infrastructure;
 
@@ -14,6 +16,13 @@ public static class LobbiesInfrastructureModule
     {
         public void AddLobbiesInfrastructure(string connectionString)
         {
+            services.ConfigureWolverine(opts =>
+            {
+                opts.Discovery.IncludeAssembly(AssemblyReference.Assembly);
+
+                opts.CodeGeneration.AlwaysUseServiceLocationFor<LobbiesDbContext>();
+            });
+
             services.AddDbContext<LobbiesDbContext>(optionsBuilder =>
             {
                 optionsBuilder.UseNpgsql(

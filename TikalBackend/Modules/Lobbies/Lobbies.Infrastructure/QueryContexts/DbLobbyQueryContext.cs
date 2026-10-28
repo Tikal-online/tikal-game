@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Lobbies.Infrastructure.QueryContexts;
 
-internal sealed class DbLobbyQueryContext : LobbyQueryContext
+public sealed class DbLobbyQueryContext : LobbyQueryContext
 {
     private readonly LobbiesDbContext lobbiesDbContext;
 
