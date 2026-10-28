@@ -1,11 +1,10 @@
 using Accounts.Application.DataAccess;
 using Accounts.Contracts.Models;
 using Accounts.Contracts.Queries;
-using Shared.Contracts.Messaging;
 
 namespace Accounts.Application.UseCases.GetAccount;
 
-internal sealed class GetAccountQueryHandler : QueryHandler<GetAccountQuery, AccountModel?>
+public sealed class GetAccountQueryHandler
 {
     private readonly AccountQueryContext accountQueryContext;
 

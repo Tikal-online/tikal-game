@@ -2,7 +2,6 @@ using Accounts.Contracts.Commands;
 using Accounts.Contracts.Errors;
 using Accounts.Contracts.Models;
 using Accounts.Contracts.Queries;
-using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OneOf;
@@ -13,13 +12,10 @@ namespace RestApi.Controllers.Accounts;
 
 public sealed partial class AccountsController : ApiController
 {
-    private readonly ISender sender;
-
     private readonly IMessageBus bus;
 
-    public AccountsController(ISender sender, IMessageBus bus)
+    public AccountsController(IMessageBus bus)
     {
-        this.sender = sender;
         this.bus = bus;
     }
 
@@ -33,7 +29,7 @@ public sealed partial class AccountsController : ApiController
 
         var query = new GetAccountQuery(userId);
 
-        var result = await sender.Send(query, cancellationToken);
+        var result = await bus.InvokeAsync<AccountModel?>(query, cancellationToken);
 
         if (result is null)
         {
