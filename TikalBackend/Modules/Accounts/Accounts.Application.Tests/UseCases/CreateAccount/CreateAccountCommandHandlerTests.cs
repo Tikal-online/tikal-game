@@ -12,17 +12,15 @@ public sealed class CreateAccountCommandHandlerTests
 {
     // dependencies
     private readonly Mock<AccountRepository> accountRepository;
-    private readonly Mock<UnitOfWork> unitOfWork;
 
     // under test
-    private CreateAccountCommandHandler handler;
+    private readonly CreateAccountCommandHandler handler;
 
     public CreateAccountCommandHandlerTests()
     {
         accountRepository = new Mock<AccountRepository>();
-        unitOfWork = new Mock<UnitOfWork>();
 
-        handler = new CreateAccountCommandHandler(accountRepository.Object, unitOfWork.Object);
+        handler = new CreateAccountCommandHandler(accountRepository.Object);
     }
 
     [Theory]
@@ -74,6 +72,5 @@ public sealed class CreateAccountCommandHandlerTests
         );
 
         accountRepository.Verify(r => r.Create(It.IsAny<Account>()), Times.Once);
-        unitOfWork.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
     }
 }

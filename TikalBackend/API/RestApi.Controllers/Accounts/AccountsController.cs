@@ -1,9 +1,13 @@
 using Accounts.Contracts.Commands;
+using Accounts.Contracts.Errors;
+using Accounts.Contracts.Models;
 using Accounts.Contracts.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using OneOf;
 using RestApi.Controllers.Accounts.Dtos;
+using Wolverine;
 
 namespace RestApi.Controllers.Accounts;
 
@@ -11,9 +15,12 @@ public sealed partial class AccountsController : ApiController
 {
     private readonly ISender sender;
 
-    public AccountsController(ISender sender)
+    private readonly IMessageBus bus;
+
+    public AccountsController(ISender sender, IMessageBus bus)
     {
         this.sender = sender;
+        this.bus = bus;
     }
 
     [HttpGet("me")]
@@ -51,7 +58,7 @@ public sealed partial class AccountsController : ApiController
 
         var command = new CreateAccountCommand(userId, createAccountDto.Name);
 
-        var result = await sender.Send(command, cancellationToken);
+        var result = await bus.InvokeAsync<OneOf<AccountModel, DuplicateUserId>>(command, cancellationToken);
 
         return result.Match<IActionResult>(
             accountModel => CreatedAtAction(nameof(GetMe), AccountDto.FromModel(accountModel)),
