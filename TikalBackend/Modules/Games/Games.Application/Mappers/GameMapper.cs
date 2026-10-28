@@ -7,7 +7,6 @@ namespace Games.Application.Mappers;
 [Mapper]
 internal static partial class GameMapper
 {
-    [MapperIgnoreTarget(nameof(GameModel.Players))]
     public static partial GameModel GameToGameModel(Game game);
 
     [MapDerivedType<EmptyTile, EmptyTileModel>]

@@ -5,7 +5,6 @@ using Games.Application.UseCases.GetGameForAuthenticatedPlayer;
 using Games.Contracts.Queries;
 using Games.Domain.Entities;
 using Games.Domain.Tests.Data;
-using MediatR;
 using Moq;
 using Shared.Application.Contexts;
 using Shared.Application.Tests;
@@ -17,7 +16,6 @@ public sealed class GetGameForAuthenticatedPlayerQueryHandlerTests
 {
     // dependencies
     private readonly Mock<GameQueryContext> gameQueryContext;
-    private readonly Mock<ISender> sender;
     private readonly AccountContext accountContext;
 
     // under test
@@ -26,12 +24,10 @@ public sealed class GetGameForAuthenticatedPlayerQueryHandlerTests
     public GetGameForAuthenticatedPlayerQueryHandlerTests()
     {
         gameQueryContext = new Mock<GameQueryContext>();
-        sender = new Mock<ISender>();
         accountContext = AccountContextHelper.TestAccountContext;
 
         handler = new GetGameForAuthenticatedPlayerQueryHandler(
             gameQueryContext.Object,
-            sender.Object,
             accountContext
         );
     }
@@ -60,16 +56,6 @@ public sealed class GetGameForAuthenticatedPlayerQueryHandlerTests
         gameQueryContext.Setup(q => q.GetByUserId(accountContext.Account.UserId))
             .ReturnsAsync(game);
 
-        sender.Setup(s => s.Send(
-            It.Is<GetAccountsQuery>(q => q.UserIds.SetEquals(game.Players.Select(p => p.UserId))),
-            It.IsAny<CancellationToken>()
-        )).ReturnsAsync((GetAccountsQuery accountsQuery, CancellationToken _) => [.. accountsQuery.UserIds.Select(id =>
-            new AccountModel
-            {
-                Name = "Test",
-                UserId = id
-            })]);
-
         var query = new GetGameForAuthenticatedPlayerQuery();
 
         // when
@@ -86,6 +72,7 @@ public sealed class GetGameForAuthenticatedPlayerQueryHandlerTests
                 {
                     Assert.Multiple(
                         () => Assert.Equal(game.Players.ElementAt(i).UserId, result?.Players.ElementAt(i).UserId),
+                        () => Assert.Equal(game.Players.ElementAt(i).Name, result?.Players.ElementAt(i).Name),
                         () => Assert.Equal((ColourModel)game.Players.ElementAt(i).Colour, result?.Players.ElementAt(i).Colour)
                     );
                 }

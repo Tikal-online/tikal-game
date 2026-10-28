@@ -1,5 +1,4 @@
 using Games.Application.DataAccess;
-using Games.Application.Mappers;
 using Games.Domain.Entities;
 using Games.Domain.Types;
 using Lobbies.Contracts.Notifications;
@@ -21,12 +20,11 @@ internal sealed class LobbyStartedNotificationHandler : INotificationHandler<Lob
 
     public Task Handle(LobbyStartedNotification notification, CancellationToken cancellationToken)
     {
-        var players = PlayerMapper.DictionaryToPlayers(notification.Players);
-
         var game = new Game
         {
             LobbyId = notification.LobbyId,
-            Players = players,
+            // TODO: read players from event
+            Players = [],
             Tiles =
             [
                 new EmptyTile
