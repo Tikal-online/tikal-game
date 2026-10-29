@@ -10,7 +10,7 @@ using Npgsql;
 using OpenTelemetry.Logs;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;
-using Shared.Application;
+using Shared.Api;
 using TikalBackend.WebHost.Configuration;
 using TikalBackend.WebHost.ExceptionHandlers;
 using TikalBackend.WebHost.Pipelines;
@@ -109,7 +109,7 @@ internal static class ServiceCollectionExtensions
 
             services.AddMediatR();
 
-            services.AddSharedApplication();
+            services.AddScoped<AccountContext>();
         }
 
         public void AddInfrastructure(IConfiguration configuration)

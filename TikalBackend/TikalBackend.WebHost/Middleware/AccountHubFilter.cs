@@ -2,7 +2,7 @@ using System.Security.Claims;
 using Accounts.Contracts.Models;
 using Accounts.Contracts.Queries;
 using Microsoft.AspNetCore.SignalR;
-using Shared.Application.Contexts;
+using Shared.Api;
 using Wolverine;
 
 namespace TikalBackend.WebHost.Middleware;

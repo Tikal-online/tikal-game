@@ -4,7 +4,6 @@ using Accounts.Contracts.Models;
 using Accounts.Contracts.Queries;
 using Microsoft.AspNetCore.Mvc;
 using Shared.Api;
-using Shared.Application.Contexts;
 using Wolverine;
 
 namespace TikalBackend.WebHost.Middleware;

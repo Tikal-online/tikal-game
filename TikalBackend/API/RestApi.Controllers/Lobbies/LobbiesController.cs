@@ -21,11 +21,14 @@ namespace RestApi.Controllers.Lobbies;
 [RequireAccount]
 public sealed partial class LobbiesController : ApiController
 {
+    private readonly AccountContext accountContext;
+
     private readonly IMessageBus bus;
 
-    public LobbiesController(IMessageBus bus)
+    public LobbiesController(IMessageBus bus, AccountContext accountContext)
     {
         this.bus = bus;
+        this.accountContext = accountContext;
     }
 
     [HttpPost]
@@ -93,7 +96,7 @@ public sealed partial class LobbiesController : ApiController
     [EndpointDescription("Gets the lobby for the currently authenticated user")]
     public async Task<IActionResult> GetLobbyForUser(CancellationToken cancellationToken)
     {
-        var query = new GetLobbyForAuthenticatedPlayerQuery();
+        var query = new GetLobbyForPlayerQuery(accountContext.Account.UserId);
 
         var result = await bus.InvokeAsync<LobbyModel?>(query, cancellationToken);
 
