@@ -4,7 +4,6 @@ using Lobbies.Contracts.Errors;
 using Lobbies.Domain.Entities;
 using OneOf;
 using OneOf.Types;
-using Shared.Application.Contexts;
 
 namespace Lobbies.Application.UseCases.JoinLobby;
 
@@ -14,17 +13,13 @@ public sealed class JoinLobbyCommandHandler
 
     private readonly PlayerQueryContext playerQueryContext;
 
-    private readonly AccountContext accountContext;
-
     public JoinLobbyCommandHandler(
         LobbyRepository lobbyRepository,
-        PlayerQueryContext playerQueryContext,
-        AccountContext accountContext
+        PlayerQueryContext playerQueryContext
     )
     {
         this.lobbyRepository = lobbyRepository;
         this.playerQueryContext = playerQueryContext;
-        this.accountContext = accountContext;
     }
 
     public async Task<OneOf<Success, PlayerAlreadyInALobby, LobbyNotFound, LobbyFull, LobbyInGame>> Handle(
@@ -32,7 +27,7 @@ public sealed class JoinLobbyCommandHandler
         CancellationToken cancellationToken
     )
     {
-        var playerAlreadyInALobby = await playerQueryContext.PlayerExists(accountContext.Account.UserId);
+        var playerAlreadyInALobby = await playerQueryContext.PlayerExists(request.UserId);
 
         if (playerAlreadyInALobby)
         {
@@ -60,8 +55,8 @@ public sealed class JoinLobbyCommandHandler
 
         var player = new Player
         {
-            UserId = accountContext.Account.UserId,
-            Name = accountContext.Account.Name,
+            UserId = request.UserId,
+            Name = request.Username,
             SelectedColour = colour,
             IsOwner = false,
             IsReady = false

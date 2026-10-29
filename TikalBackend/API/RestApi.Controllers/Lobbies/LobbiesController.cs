@@ -82,7 +82,7 @@ public sealed partial class LobbiesController : ApiController
     [EndpointDescription("Adds the currently authenticated user to the provided lobby")]
     public async Task<IActionResult> JoinLobby(long Id, CancellationToken cancellationToken)
     {
-        var query = new JoinLobbyCommand(Id);
+        var query = new JoinLobbyCommand(accountContext.Account.UserId, accountContext.Account.Name, Id);
 
         var result = await bus.InvokeAsync<OneOf<Success, PlayerAlreadyInALobby, LobbyNotFound, LobbyFull, LobbyInGame>>(query, cancellationToken);
 

@@ -1,3 +1,3 @@
 namespace Lobbies.Contracts.Commands;
 
-public sealed record JoinLobbyCommand(long LobbyId);
+public sealed record JoinLobbyCommand(string UserId, string Username, long LobbyId);

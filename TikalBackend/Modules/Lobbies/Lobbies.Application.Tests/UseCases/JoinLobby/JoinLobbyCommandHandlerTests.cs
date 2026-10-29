@@ -6,8 +6,6 @@ using Lobbies.Domain.Entities;
 using Lobbies.Domain.Tests.Data;
 using Moq;
 using OneOf.Types;
-using Shared.Application.Contexts;
-using Shared.Application.Tests;
 
 namespace Lobbies.Application.Tests.UseCases.JoinLobby;
 
@@ -16,7 +14,6 @@ public sealed class JoinLobbyCommandHandlerTests
     // dependencies
     private readonly Mock<LobbyRepository> lobbyRepository;
     private readonly Mock<PlayerQueryContext> playerQueryContext;
-    private readonly AccountContext accountContext;
 
     // under test
     private readonly JoinLobbyCommandHandler handler;
@@ -25,19 +22,17 @@ public sealed class JoinLobbyCommandHandlerTests
     {
         lobbyRepository = new Mock<LobbyRepository>();
         playerQueryContext = new Mock<PlayerQueryContext>();
-        accountContext = AccountContextHelper.TestAccountContext;
 
         handler = new JoinLobbyCommandHandler(
             lobbyRepository.Object,
-            playerQueryContext.Object,
-            accountContext
+            playerQueryContext.Object
         );
     }
 
-    private void SetupHappyPath(Lobby lobby)
+    private void SetupHappyPath(Lobby lobby, JoinLobbyCommand command)
     {
         // player is not in a lobby
-        playerQueryContext.Setup(p => p.PlayerExists(accountContext.Account.UserId)).ReturnsAsync(false);
+        playerQueryContext.Setup(p => p.PlayerExists(command.UserId)).ReturnsAsync(false);
 
         // lobby exists
         lobbyRepository.Setup(r => r.GetById(lobby.Id)).ReturnsAsync(lobby);
@@ -48,11 +43,11 @@ public sealed class JoinLobbyCommandHandlerTests
     public async Task GivenPlayerIsAlreadyInALobby_WhenHandle_ThenReturnsPlayerAlreadyInALobbyError(Lobby lobby)
     {
         // given
-        SetupHappyPath(lobby);
+        var command = new JoinLobbyCommand("userId", "username", lobby.Id);
 
-        playerQueryContext.Setup(p => p.PlayerExists(accountContext.Account.UserId)).ReturnsAsync(true);
+        SetupHappyPath(lobby, command);
 
-        var command = new JoinLobbyCommand(lobby.Id);
+        playerQueryContext.Setup(p => p.PlayerExists(command.UserId)).ReturnsAsync(true);
 
         // when
         var result = await handler.Handle(command, CancellationToken.None);
@@ -66,11 +61,11 @@ public sealed class JoinLobbyCommandHandlerTests
     public async Task GivenLobbyDoesntExist_WhenHandle_ThenReturnsLobbyNotFoundError(Lobby lobby)
     {
         // given
-        SetupHappyPath(lobby);
+        var command = new JoinLobbyCommand("userId", "username", lobby.Id);
+
+        SetupHappyPath(lobby, command);
 
         lobbyRepository.Setup(r => r.GetById(lobby.Id)).ReturnsAsync(default(Lobby));
-
-        var command = new JoinLobbyCommand(lobby.Id);
 
         // when
         var result = await handler.Handle(command, CancellationToken.None);
@@ -84,9 +79,9 @@ public sealed class JoinLobbyCommandHandlerTests
     public async Task GivenFullLobby_WhenHandle_ThenReturnsLobbyFullError(Lobby lobby)
     {
         // given
-        SetupHappyPath(lobby);
+        var command = new JoinLobbyCommand("userId", "username", lobby.Id);
 
-        var command = new JoinLobbyCommand(lobby.Id);
+        SetupHappyPath(lobby, command);
 
         // when
         var result = await handler.Handle(command, CancellationToken.None);
@@ -100,9 +95,9 @@ public sealed class JoinLobbyCommandHandlerTests
     public async Task GivenLobbyInGame_WhenHandle_ThenReturnsLobbyInGameError(Lobby lobby)
     {
         // given
-        SetupHappyPath(lobby);
+        var command = new JoinLobbyCommand("userId", "username", lobby.Id);
 
-        var command = new JoinLobbyCommand(lobby.Id);
+        SetupHappyPath(lobby, command);
 
         // when
         var result = await handler.Handle(command, CancellationToken.None);
@@ -116,15 +111,15 @@ public sealed class JoinLobbyCommandHandlerTests
     public async Task GivenNotFullLobby_WhenHandle_ThenAddsPlayerToLobby(Lobby lobby)
     {
         // given
-        SetupHappyPath(lobby);
+        var command = new JoinLobbyCommand("userId", "username", lobby.Id);
 
-        var command = new JoinLobbyCommand(lobby.Id);
+        SetupHappyPath(lobby, command);
 
         // when
         var result = await handler.Handle(command, CancellationToken.None);
 
         // then
-        var player = lobby.Players.FirstOrDefault(p => p.UserId == accountContext.Account.UserId);
+        var player = lobby.Players.FirstOrDefault(p => p.UserId == command.UserId);
 
         Assert.Multiple(
             () => Assert.NotNull(result.Value),
