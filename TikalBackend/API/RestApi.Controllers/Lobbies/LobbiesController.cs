@@ -58,7 +58,7 @@ public sealed partial class LobbiesController : ApiController
     {
         var query = new GetLobbyQuery(Id);
 
-        var result = await sender.Send(query, cancellationToken);
+        var result = await bus.InvokeAsync<LobbyModel?>(query, cancellationToken);
 
         if (result is null)
         {
