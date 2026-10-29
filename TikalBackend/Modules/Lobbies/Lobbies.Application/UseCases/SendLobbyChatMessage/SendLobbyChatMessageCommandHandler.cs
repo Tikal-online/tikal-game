@@ -4,7 +4,6 @@ using Lobbies.Contracts.Errors;
 using Lobbies.Contracts.Models;
 using Lobbies.Contracts.Notifications;
 using OneOf;
-using Shared.Application.Contexts;
 
 namespace Lobbies.Application.UseCases.SendLobbyChatMessage;
 
@@ -12,15 +11,9 @@ public sealed class SendLobbyChatMessageCommandHandler
 {
     private readonly LobbyQueryContext lobbyQueryContext;
 
-    private readonly AccountContext accountContext;
-
-    public SendLobbyChatMessageCommandHandler(
-        LobbyQueryContext lobbyQueryContext,
-        AccountContext accountContext
-    )
+    public SendLobbyChatMessageCommandHandler(LobbyQueryContext lobbyQueryContext)
     {
         this.lobbyQueryContext = lobbyQueryContext;
-        this.accountContext = accountContext;
     }
 
     public async Task<OneOf<LobbyChatMessageSentNotification, LobbyNotFound, PlayerNotInGivenLobby>> Handle(
@@ -35,7 +28,7 @@ public sealed class SendLobbyChatMessageCommandHandler
             return new LobbyNotFound(request.LobbyId);
         }
 
-        var player = lobby.GetPlayer(accountContext.Account.UserId);
+        var player = lobby.GetPlayer(request.UserId);
 
         if (player is null)
         {
@@ -44,8 +37,8 @@ public sealed class SendLobbyChatMessageCommandHandler
 
         var message = new ChatMessageModel
         {
-            UserId = accountContext.Account.UserId,
-            Username = accountContext.Account.Name,
+            UserId = player.UserId,
+            Username = player.Name,
             Content = request.MessageContent
         };
 

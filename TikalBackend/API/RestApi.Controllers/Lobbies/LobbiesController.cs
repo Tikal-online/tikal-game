@@ -143,7 +143,7 @@ public sealed partial class LobbiesController : ApiController
     public async Task<IActionResult> SendMessage(long Id, SendMessageDto sendMessageDto,
         CancellationToken cancellationToken)
     {
-        var command = new SendLobbyChatMessageCommand(Id, sendMessageDto.Message);
+        var command = new SendLobbyChatMessageCommand(accountContext.Account.UserId, Id, sendMessageDto.Message);
 
         var result = await bus.InvokeAsync<OneOf<LobbyChatMessageSentNotification, LobbyNotFound, PlayerNotInGivenLobby>>(command, cancellationToken);
 

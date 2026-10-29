@@ -1,3 +1,3 @@
 namespace Lobbies.Contracts.Commands;
 
-public sealed record SendLobbyChatMessageCommand(long LobbyId, string MessageContent);
+public sealed record SendLobbyChatMessageCommand(string UserId, long LobbyId, string MessageContent);
