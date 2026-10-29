@@ -1,21 +1,22 @@
+using Games.Contracts.Models;
 using Games.Contracts.Queries;
-using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RestApi.Controllers.Games.Dtos;
 using RestApi.Controllers.Games.Mappers;
 using Shared.Api;
+using Wolverine;
 
 namespace RestApi.Controllers.Games;
 
 [RequireAccount]
 public sealed partial class GamesController : ApiController
 {
-    private readonly ISender sender;
+    private readonly IMessageBus bus;
 
-    public GamesController(ISender sender)
+    public GamesController(IMessageBus bus)
     {
-        this.sender = sender;
+        this.bus = bus;
     }
 
     [HttpGet("me")]
@@ -26,7 +27,7 @@ public sealed partial class GamesController : ApiController
     {
         var query = new GetGameForAuthenticatedPlayerQuery();
 
-        var result = await sender.Send(query, cancellationToken);
+        var result = await bus.InvokeAsync<GameModel?>(query, cancellationToken);
 
         if (result is null)
         {
