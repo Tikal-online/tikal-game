@@ -2,11 +2,10 @@ using Games.Application.DataAccess;
 using Games.Domain.Entities;
 using Games.Domain.Types;
 using Lobbies.Contracts.Notifications;
-using MediatR;
 
 namespace Games.Application.UseCases.CreateGame;
 
-internal sealed class LobbyStartedNotificationHandler : INotificationHandler<LobbyStartedNotification>
+public sealed class LobbyStartedNotificationHandler
 {
     private readonly GameRepository gameRepository;
 

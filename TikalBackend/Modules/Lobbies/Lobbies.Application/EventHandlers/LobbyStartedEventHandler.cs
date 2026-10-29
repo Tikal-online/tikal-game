@@ -1,25 +1,15 @@
-using Lobbies.Application.Mappers;
 using Lobbies.Contracts.Notifications;
 using Lobbies.Domain.Events;
-using MediatR;
 
 namespace Lobbies.Application.EventHandlers;
 
-internal sealed class LobbyStartedEventHandler : INotificationHandler<LobbyStartedEvent>
+public sealed class LobbyStartedEventHandler
 {
-    private readonly IPublisher publisher;
-
-    public LobbyStartedEventHandler(IPublisher publisher)
+    public static LobbyStartedNotification Handle(LobbyStartedEvent notification, CancellationToken cancellationToken)
     {
-        this.publisher = publisher;
-    }
+        // TODO: pass players
+        var lobbyStartedNotification = new LobbyStartedNotification(notification.lobby.Id);
 
-    public Task Handle(LobbyStartedEvent notification, CancellationToken cancellationToken)
-    {
-        var players = PlayerMapper.PlayersToDictionary(notification.lobby.Players);
-
-        var lobbyStartedNotification = new LobbyStartedNotification(notification.lobby.Id, players);
-
-        return publisher.Publish(lobbyStartedNotification, cancellationToken);
+        return lobbyStartedNotification;
     }
 }
