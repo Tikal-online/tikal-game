@@ -1,6 +1,6 @@
 using Lobbies.Domain.Entities;
-using MediatR;
+using Shared.Domain.Entities;
 
 namespace Lobbies.Domain.Events;
 
-public sealed record PlayerJoinedEvent(Player Player) : INotification;
+public sealed record PlayerJoinedEvent(Player Player) : IDomainEvent;

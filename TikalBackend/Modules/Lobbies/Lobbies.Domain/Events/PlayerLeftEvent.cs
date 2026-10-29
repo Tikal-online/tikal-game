@@ -1,6 +1,6 @@
 using Lobbies.Domain.Entities;
-using MediatR;
+using Shared.Domain.Entities;
 
 namespace Lobbies.Domain.Events;
 
-public sealed record PlayerLeftEvent(Player Player) : INotification;
+public sealed record PlayerLeftEvent(Player Player) : IDomainEvent;
