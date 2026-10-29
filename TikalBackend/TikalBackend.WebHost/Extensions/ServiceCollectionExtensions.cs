@@ -128,6 +128,8 @@ internal static class ServiceCollectionExtensions
 
             services.AddWolverine(opts =>
             {
+                opts.Discovery.IncludeAssembly(SignalRApi.Hubs.AssemblyReference.Assembly);
+
                 opts.PersistMessagesWithPostgresql(dataSource, "wolverine");
                 opts.UseEntityFrameworkCoreTransactions();
 
