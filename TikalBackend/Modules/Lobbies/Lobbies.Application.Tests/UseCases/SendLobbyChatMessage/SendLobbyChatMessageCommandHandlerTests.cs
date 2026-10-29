@@ -5,7 +5,6 @@ using Lobbies.Contracts.Errors;
 using Lobbies.Contracts.Notifications;
 using Lobbies.Domain.Entities;
 using Lobbies.Domain.Tests.Data;
-using MediatR;
 using Moq;
 using Shared.Application.Contexts;
 using Shared.Application.Tests;
@@ -16,7 +15,6 @@ public sealed class SendLobbyChatMessageCommandHandlerTests
 {
     // dependencies
     private readonly Mock<LobbyQueryContext> lobbyQueryContext;
-    private readonly Mock<IPublisher> publisher;
     private readonly AccountContext accountContext;
 
     // under test
@@ -25,10 +23,9 @@ public sealed class SendLobbyChatMessageCommandHandlerTests
     public SendLobbyChatMessageCommandHandlerTests()
     {
         lobbyQueryContext = new Mock<LobbyQueryContext>();
-        publisher = new Mock<IPublisher>();
         accountContext = AccountContextHelper.TestAccountContext;
 
-        handler = new SendLobbyChatMessageCommandHandler(lobbyQueryContext.Object, publisher.Object, accountContext);
+        handler = new SendLobbyChatMessageCommandHandler(lobbyQueryContext.Object, accountContext);
     }
 
     private void SetupHappyPath(Lobby lobby)
@@ -78,7 +75,7 @@ public sealed class SendLobbyChatMessageCommandHandlerTests
 
     [Theory]
     [ClassData(typeof(ValidLobbies))]
-    public async Task GivenPlayerInLobby_WhenHandle_ThenPublishesMessageSentNotification(Lobby lobby)
+    public async Task GivenPlayerInLobby_WhenHandle_ThenReturnsLobbyChatMessageSentNotification(Lobby lobby)
     {
         // given
         SetupHappyPath(lobby);
@@ -86,13 +83,15 @@ public sealed class SendLobbyChatMessageCommandHandlerTests
         var command = new SendLobbyChatMessageCommand(lobby.Id, "my chat message");
 
         // when
-        await handler.Handle(command, CancellationToken.None);
+        var result = await handler.Handle(command, CancellationToken.None);
 
         // then
-        publisher.Verify(p => p.Publish(It.Is<LobbyChatMessageSentNotification>(n =>
-            n.ChatMessageModel.Content == command.MessageContent &&
-            n.ChatMessageModel.UserId == accountContext.Account.UserId &&
-            n.ChatMessageModel.Username == accountContext.Account.Name
-        )));
+        Assert.IsType<LobbyChatMessageSentNotification>(result.Value);
+
+        Assert.Multiple(
+            () => Assert.Equal(result.AsT0.ChatMessageModel.Content, command.MessageContent),
+            () => Assert.Equal(result.AsT0.ChatMessageModel.UserId, accountContext.Account.UserId),
+            () => Assert.Equal(result.AsT0.ChatMessageModel.Username, accountContext.Account.Name)
+        );
     }
 }

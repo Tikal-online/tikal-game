@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Lobbies.Contracts.Commands;
 using Lobbies.Contracts.Errors;
+using Lobbies.Contracts.Notifications;
 using Lobbies.Contracts.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -137,7 +138,7 @@ public sealed partial class LobbiesController : ApiController
     {
         var command = new SendLobbyChatMessageCommand(Id, sendMessageDto.Message);
 
-        var result = await sender.Send(command, cancellationToken);
+        var result = await bus.InvokeAsync<OneOf<LobbyChatMessageSentNotification, LobbyNotFound, PlayerNotInGivenLobby>>(command, cancellationToken);
 
         return result.Match<IActionResult>(
             _ => Ok(),
