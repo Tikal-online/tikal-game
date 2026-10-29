@@ -1,10 +1,6 @@
-using System.Transactions;
 using Lobbies.Application.DataAccess;
 using Lobbies.Domain.Entities;
-using Lobbies.Infrastructure.Extensions;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Shared.Domain.Entities;
 
 namespace Lobbies.Infrastructure.Database;
 
@@ -12,39 +8,13 @@ public sealed class LobbiesDbContext : DbContext, UnitOfWork
 {
     public const string Schema = "Lobbies";
 
-    private readonly IMediator mediator;
-
-    public LobbiesDbContext(DbContextOptions<LobbiesDbContext> options, IMediator mediator) : base(options)
+    public LobbiesDbContext(DbContextOptions<LobbiesDbContext> options) : base(options)
     {
-        this.mediator = mediator;
     }
 
     public DbSet<Player> Players { get; set; }
 
     public DbSet<Lobby> Lobbies { get; set; }
-
-    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
-    {
-        var entitiesWithEvents = ChangeTracker
-            .Entries<Entity>()
-            .Select(e => e.Entity)
-            .Where(e => e.DomainEvents.Count > 0)
-            .ToList();
-
-        using var transaction = new TransactionScope(
-            TransactionScopeOption.Required,
-            new TransactionOptions { IsolationLevel = IsolationLevel.ReadCommitted },
-            TransactionScopeAsyncFlowOption.Enabled
-        );
-
-        var result = await base.SaveChangesAsync(cancellationToken);
-
-        await mediator.DispatchDomainEventsAsync(entitiesWithEvents);
-
-        transaction.Complete();
-
-        return result;
-    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

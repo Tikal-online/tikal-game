@@ -101,9 +101,19 @@ internal sealed class CustomWebApplicationFactory : WebApplicationFactory<Progra
     {
         using var scope = services.BuildServiceProvider().CreateScope();
 
-        var databaseContext = scope.ServiceProvider.GetRequiredService<AccountsDbContext>();
+        var accountsDbContext = scope.ServiceProvider.GetRequiredService<AccountsDbContext>();
 
-        databaseContext.Database.DropTables();
-        databaseContext.Database.Migrate();
+        accountsDbContext.Database.DropTables();
+        accountsDbContext.Database.Migrate();
+
+        var lobbiesDbContext = scope.ServiceProvider.GetRequiredService<LobbiesDbContext>();
+
+        lobbiesDbContext.Database.DropTables();
+        lobbiesDbContext.Database.Migrate();
+
+        var gamesDbContext = scope.ServiceProvider.GetRequiredService<GamesDbContext>();
+
+        gamesDbContext.Database.DropTables();
+        gamesDbContext.Database.Migrate();
     }
 }
