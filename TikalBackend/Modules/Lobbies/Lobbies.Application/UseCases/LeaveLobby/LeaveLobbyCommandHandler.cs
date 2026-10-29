@@ -3,7 +3,6 @@ using Lobbies.Contracts.Commands;
 using Lobbies.Contracts.Errors;
 using OneOf;
 using OneOf.Types;
-using Shared.Application.Contexts;
 
 namespace Lobbies.Application.UseCases.LeaveLobby;
 
@@ -13,17 +12,13 @@ public sealed class LeaveLobbyCommandHandler
 
     private readonly LobbyRepository lobbyRepository;
 
-    private readonly AccountContext accountContext;
-
     public LeaveLobbyCommandHandler(
         PlayerRepository playerRepository,
-        LobbyRepository lobbyRepository,
-        AccountContext accountContext
+        LobbyRepository lobbyRepository
     )
     {
         this.playerRepository = playerRepository;
         this.lobbyRepository = lobbyRepository;
-        this.accountContext = accountContext;
     }
 
     public async Task<OneOf<Success, LobbyNotFound, PlayerNotInGivenLobby, LobbyInGame>> Handle(
@@ -38,7 +33,7 @@ public sealed class LeaveLobbyCommandHandler
             return new LobbyNotFound(request.LobbyId);
         }
 
-        var player = lobby.GetPlayer(accountContext.Account.UserId);
+        var player = lobby.GetPlayer(request.UserId);
 
         if (player is null)
         {

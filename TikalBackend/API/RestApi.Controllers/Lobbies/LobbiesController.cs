@@ -124,7 +124,7 @@ public sealed partial class LobbiesController : ApiController
     [EndpointDescription("Removes the currently authenticated user from the provided lobby")]
     public async Task<IActionResult> LeaveLobby(long Id, CancellationToken cancellationToken)
     {
-        var command = new LeaveLobbyCommand(Id);
+        var command = new LeaveLobbyCommand(accountContext.Account.UserId, Id);
 
         var result = await bus.InvokeAsync<OneOf<Success, LobbyNotFound, PlayerNotInGivenLobby, LobbyInGame>>(command, cancellationToken);
 
