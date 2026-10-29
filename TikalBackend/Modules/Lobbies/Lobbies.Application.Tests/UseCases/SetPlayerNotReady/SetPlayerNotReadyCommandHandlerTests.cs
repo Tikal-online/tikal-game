@@ -15,7 +15,6 @@ public sealed class SetPlayerNotReadyCommandHandlerTests
 {
     // dependencies
     private readonly Mock<PlayerRepository> playerRepository;
-    private readonly Mock<UnitOfWork> unitOfWork;
     private readonly AccountContext accountContext;
 
     // under test
@@ -24,10 +23,9 @@ public sealed class SetPlayerNotReadyCommandHandlerTests
     public SetPlayerNotReadyCommandHandlerTests()
     {
         playerRepository = new Mock<PlayerRepository>();
-        unitOfWork = new Mock<UnitOfWork>();
         accountContext = AccountContextHelper.TestAccountContext;
 
-        handler = new SetPlayerNotReadyCommandHandler(playerRepository.Object, unitOfWork.Object, accountContext);
+        handler = new SetPlayerNotReadyCommandHandler(playerRepository.Object, accountContext);
     }
 
     private void SetupHappyPath(Player player)
