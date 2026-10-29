@@ -1,11 +1,10 @@
 using Lobbies.Contracts.Notifications;
-using MediatR;
 using Microsoft.AspNetCore.SignalR;
 using SignalRApi.Hubs.Lobbies.Mappers;
 
 namespace SignalRApi.Hubs.Lobbies.ActiveLobby.NotificationHandlers;
 
-internal sealed class LobbyChatMessageSendNotificationHandler : INotificationHandler<LobbyChatMessageSentNotification>
+public sealed class LobbyChatMessageSendNotificationHandler
 {
     private readonly IHubContext<ActiveLobbyHub, ActiveLobbyClient> hubContext;
 
