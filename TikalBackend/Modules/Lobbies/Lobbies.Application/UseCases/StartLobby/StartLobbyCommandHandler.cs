@@ -5,28 +5,21 @@ using OneOf;
 using OneOf.Types;
 using Shared.Application.Contexts;
 using Shared.Contracts.Errors;
-using Shared.Contracts.Messaging;
 
 namespace Lobbies.Application.UseCases.StartLobby;
 
-internal sealed class StartLobbyCommandHandler
-    : CommandHandler<StartLobbyCommand,
-        OneOf<Success, LobbyNotFound, PlayerNotInGivenLobby, Unprivileged, LobbyCannotBeStarted>>
+public sealed class StartLobbyCommandHandler
 {
     private readonly LobbyRepository lobbyRepository;
-
-    private readonly UnitOfWork unitOfWork;
 
     private readonly AccountContext accountContext;
 
     public StartLobbyCommandHandler(
         LobbyRepository lobbyRepository,
-        UnitOfWork unitOfWork,
         AccountContext accountContext
     )
     {
         this.lobbyRepository = lobbyRepository;
-        this.unitOfWork = unitOfWork;
         this.accountContext = accountContext;
     }
 
@@ -60,8 +53,6 @@ internal sealed class StartLobbyCommandHandler
         }
 
         lobby.Start();
-
-        await unitOfWork.SaveChangesAsync(cancellationToken);
 
         return new Success();
     }

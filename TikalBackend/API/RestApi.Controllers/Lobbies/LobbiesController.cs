@@ -12,6 +12,7 @@ using RestApi.Controllers.Lobbies.Dtos;
 using RestApi.Controllers.Lobbies.Mappers;
 using RestApi.Controllers.Shared.Dtos;
 using Shared.Api;
+using Shared.Contracts.Errors;
 using Wolverine;
 
 namespace RestApi.Controllers.Lobbies;
@@ -156,7 +157,7 @@ public sealed partial class LobbiesController : ApiController
     {
         var command = new StartLobbyCommand(Id);
 
-        var result = await sender.Send(command, cancellationToken);
+        var result = await bus.InvokeAsync<OneOf<Success, LobbyNotFound, PlayerNotInGivenLobby, Unprivileged, LobbyCannotBeStarted>>(command, cancellationToken);
 
         return result.Match<IActionResult>(
             _ => Ok(),

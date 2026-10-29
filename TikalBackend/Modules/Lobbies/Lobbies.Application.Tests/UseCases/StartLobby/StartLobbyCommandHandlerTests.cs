@@ -16,7 +16,6 @@ public sealed class StartLobbyCommandHandlerTests
 {
     // dependencies
     private readonly Mock<LobbyRepository> lobbyRepository;
-    private readonly Mock<UnitOfWork> unitOfWork;
     private readonly AccountContext accountContext;
 
     // under test
@@ -25,14 +24,9 @@ public sealed class StartLobbyCommandHandlerTests
     public StartLobbyCommandHandlerTests()
     {
         lobbyRepository = new Mock<LobbyRepository>();
-        unitOfWork = new Mock<UnitOfWork>();
         accountContext = AccountContextHelper.TestAccountContext;
 
-        handler = new StartLobbyCommandHandler(
-            lobbyRepository.Object,
-            unitOfWork.Object,
-            accountContext
-        );
+        handler = new StartLobbyCommandHandler(lobbyRepository.Object, accountContext);
     }
 
     private void SetupHappyPath(Lobby lobby)
@@ -118,7 +112,7 @@ public sealed class StartLobbyCommandHandlerTests
 
     [Theory]
     [ClassData(typeof(StartableLobbies))]
-    public async Task GivenStartAbleLobby_WhenHandle_ThenStartsLobby(Lobby lobby)
+    public async Task GivenStartAbleLobby_WhenHandle_ThenReturnsSuccess(Lobby lobby)
     {
         // given
         SetupHappyPath(lobby);
@@ -130,7 +124,5 @@ public sealed class StartLobbyCommandHandlerTests
 
         // then
         Assert.IsType<Success>(result.Value);
-
-        unitOfWork.Verify(u => u.SaveChangesAsync(CancellationToken.None), Times.Once);
     }
 }
