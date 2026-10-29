@@ -2,13 +2,11 @@ using Lobbies.Application.DataAccess;
 using Lobbies.Application.Mappers;
 using Lobbies.Contracts.Models;
 using Lobbies.Contracts.Queries;
-using Shared.Contracts.Messaging;
 using Shared.Contracts.Queries;
 
 namespace Lobbies.Application.UseCases.GetPaginatedLobbies;
 
-internal sealed class GetPaginatedLobbiesQueryHandler
-    : QueryHandler<GetPaginatedLobbiesQuery, PaginatedResult<List<LobbySummaryModel>>>
+public sealed class GetPaginatedLobbiesQueryHandler
 {
     private readonly LobbyQueryContext lobbyQueryContext;
 

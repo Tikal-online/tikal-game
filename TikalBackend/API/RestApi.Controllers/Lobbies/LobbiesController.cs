@@ -4,7 +4,6 @@ using Lobbies.Contracts.Errors;
 using Lobbies.Contracts.Models;
 using Lobbies.Contracts.Notifications;
 using Lobbies.Contracts.Queries;
-using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OneOf;
@@ -14,6 +13,7 @@ using RestApi.Controllers.Lobbies.Mappers;
 using RestApi.Controllers.Shared.Dtos;
 using Shared.Api;
 using Shared.Contracts.Errors;
+using Shared.Contracts.Queries;
 using Wolverine;
 
 namespace RestApi.Controllers.Lobbies;
@@ -23,11 +23,8 @@ public sealed partial class LobbiesController : ApiController
 {
     private readonly IMessageBus bus;
 
-    private readonly ISender sender;
-
-    public LobbiesController(ISender sender, IMessageBus bus)
+    public LobbiesController(IMessageBus bus)
     {
-        this.sender = sender;
         this.bus = bus;
     }
 
@@ -183,7 +180,7 @@ public sealed partial class LobbiesController : ApiController
     {
         var query = new GetPaginatedLobbiesQuery(pageSize, pageNumber, searchText);
 
-        var paginatedResult = await sender.Send(query, cancellationToken);
+        var paginatedResult = await bus.InvokeAsync<PaginatedResult<List<LobbySummaryModel>>>(query, cancellationToken);
 
         var lobbySummaryDtos = LobbyModelMapper.LobbySummaryModelsToLobbySummaryDtos(paginatedResult.Data);
 
