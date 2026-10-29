@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Accounts.Infrastructure.QueryContexts;
 
-internal sealed class DbAccountQueryContext : AccountQueryContext
+public sealed class DbAccountQueryContext : AccountQueryContext
 {
     private readonly AccountsDbContext accountsDbContext;
 

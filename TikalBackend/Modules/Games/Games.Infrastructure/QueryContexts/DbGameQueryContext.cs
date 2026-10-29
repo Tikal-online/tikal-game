@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Games.Infrastructure.QueryContexts;
 
-internal sealed class DbGameQueryContext : GameQueryContext
+public sealed class DbGameQueryContext : GameQueryContext
 {
     private readonly GamesDbContext gamesDbContext;
 
