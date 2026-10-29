@@ -40,7 +40,12 @@ public sealed partial class LobbiesController : ApiController
         CancellationToken cancellationToken
     )
     {
-        var command = new CreateLobbyCommand(createLobbyDto.Name, createLobbyDto.MaxPlayers);
+        var command = new CreateLobbyCommand(
+            accountContext.Account.UserId,
+            accountContext.Account.Name,
+            createLobbyDto.Name,
+            createLobbyDto.MaxPlayers
+        );
 
         var result = await bus.InvokeAsync<OneOf<Success, PlayerAlreadyInALobby>>(command, cancellationToken);
 

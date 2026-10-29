@@ -4,7 +4,6 @@ using Lobbies.Contracts.Errors;
 using Lobbies.Domain.Entities;
 using OneOf;
 using OneOf.Types;
-using Shared.Application.Contexts;
 using Shared.Domain.Enums;
 
 namespace Lobbies.Application.UseCases.CreateLobby;
@@ -15,17 +14,13 @@ public sealed class CreateLobbyCommandHandler
 
     private readonly PlayerQueryContext playerQueryContext;
 
-    private readonly AccountContext accountContext;
-
     public CreateLobbyCommandHandler(
         LobbyRepository lobbyRepository,
-        PlayerQueryContext playerQueryContext,
-        AccountContext accountContext
+        PlayerQueryContext playerQueryContext
     )
     {
         this.lobbyRepository = lobbyRepository;
         this.playerQueryContext = playerQueryContext;
-        this.accountContext = accountContext;
     }
 
     public async Task<OneOf<Success, PlayerAlreadyInALobby>> Handle(
@@ -33,7 +28,7 @@ public sealed class CreateLobbyCommandHandler
         CancellationToken cancellationToken
     )
     {
-        var playerAlreadyInALobby = await playerQueryContext.PlayerExists(accountContext.Account.UserId);
+        var playerAlreadyInALobby = await playerQueryContext.PlayerExists(request.UserId);
 
         if (playerAlreadyInALobby)
         {
@@ -42,8 +37,8 @@ public sealed class CreateLobbyCommandHandler
 
         var player = new Player
         {
-            UserId = accountContext.Account.UserId,
-            Name = accountContext.Account.Name,
+            UserId = request.UserId,
+            Name = request.Username,
             SelectedColour = Colour.Red,
             IsOwner = true,
             IsReady = false
