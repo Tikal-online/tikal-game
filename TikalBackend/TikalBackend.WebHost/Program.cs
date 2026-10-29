@@ -2,7 +2,6 @@ using JasperFx.Resources;
 using Microsoft.AspNetCore.SignalR;
 using RestApi.Controllers;
 using SignalRApi.Hubs.Lobbies.ActiveLobby;
-using SignalRApi.Hubs.Lobbies.GlobalChat;
 using TikalBackend.WebHost.Extensions;
 using TikalBackend.WebHost.Middleware;
 using TikalBackend.WebHost.SchemaTransformers;
@@ -61,7 +60,6 @@ app.MapHealthChecks("/healthcheck");
 
 app.MapControllers();
 
-app.MapHub<GlobalChatHub>("/hub/globalChat").DisableHttpMetrics();
 app.MapHub<ActiveLobbyHub>("/hub/activeLobby").DisableHttpMetrics();
 
 await app.RunAsync();
