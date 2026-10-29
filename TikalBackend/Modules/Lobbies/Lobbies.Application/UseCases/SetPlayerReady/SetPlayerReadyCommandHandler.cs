@@ -4,27 +4,21 @@ using Lobbies.Contracts.Errors;
 using OneOf;
 using OneOf.Types;
 using Shared.Application.Contexts;
-using Shared.Contracts.Messaging;
 
 namespace Lobbies.Application.UseCases.SetPlayerReady;
 
-internal sealed class SetPlayerReadyCommandHandler
-    : CommandHandler<SetPlayerReadyCommand, OneOf<Success, PlayerNotInALobby>>
+public sealed class SetPlayerReadyCommandHandler
 {
     private readonly PlayerRepository playerRepository;
-
-    private readonly UnitOfWork unitOfWork;
 
     private readonly AccountContext accountContext;
 
     public SetPlayerReadyCommandHandler(
         PlayerRepository playerRepository,
-        UnitOfWork unitOfWork,
         AccountContext accountContext
     )
     {
         this.playerRepository = playerRepository;
-        this.unitOfWork = unitOfWork;
         this.accountContext = accountContext;
     }
 
@@ -41,8 +35,6 @@ internal sealed class SetPlayerReadyCommandHandler
         }
 
         player.ReadyUp();
-
-        await unitOfWork.SaveChangesAsync(cancellationToken);
 
         return new Success();
     }

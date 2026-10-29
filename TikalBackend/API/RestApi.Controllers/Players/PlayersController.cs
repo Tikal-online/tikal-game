@@ -1,6 +1,5 @@
 using Lobbies.Contracts.Commands;
 using Lobbies.Contracts.Errors;
-using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OneOf;
@@ -15,11 +14,8 @@ public sealed partial class PlayersController : ApiController
 {
     private readonly IMessageBus bus;
 
-    private readonly ISender sender;
-
-    public PlayersController(ISender sender, IMessageBus bus)
+    public PlayersController(IMessageBus bus)
     {
-        this.sender = sender;
         this.bus = bus;
     }
 
@@ -31,7 +27,7 @@ public sealed partial class PlayersController : ApiController
     {
         var command = new SetPlayerReadyCommand();
 
-        var result = await sender.Send(command, cancellationToken);
+        var result = await bus.InvokeAsync<OneOf<Success, PlayerNotInALobby>>(command, cancellationToken);
 
         return result.Match<IActionResult>(
             _ => Ok(),
