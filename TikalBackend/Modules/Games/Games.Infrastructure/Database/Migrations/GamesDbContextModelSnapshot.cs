@@ -18,7 +18,7 @@ namespace Games.Infrastructure.Database.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasDefaultSchema("Games")
-                .HasAnnotation("ProductVersion", "10.0.11")
+                .HasAnnotation("ProductVersion", "10.0.13")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -55,6 +55,10 @@ namespace Games.Infrastructure.Database.Migrations
 
                     b.Property<long>("GameId")
                         .HasColumnType("bigint");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<int>("Points")
                         .HasColumnType("integer");
@@ -113,7 +117,7 @@ namespace Games.Infrastructure.Database.Migrations
                                 .HasColumnType("integer")
                                 .HasColumnName("NorthEastCost");
 
-                            b1.Property<int>("Northwest")
+                            b1.Property<int>("NorthWest")
                                 .HasColumnType("integer")
                                 .HasColumnName("NorthWestCost");
 
