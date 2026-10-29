@@ -1,5 +1,3 @@
-using Accounts.Contracts.Models;
-using Accounts.Contracts.Queries;
 using Lobbies.Application.DataAccess;
 using Lobbies.Application.UseCases.GetLobbyForAuthenticatedPlayer;
 using Lobbies.Contracts.Queries;

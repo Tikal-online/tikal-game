@@ -1,5 +1,3 @@
-using Accounts.Contracts.Models;
-using Accounts.Contracts.Queries;
 using Games.Application.DataAccess;
 using Games.Application.UseCases.GetGameForAuthenticatedPlayer;
 using Games.Contracts.Queries;
