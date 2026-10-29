@@ -1,12 +1,10 @@
 using Lobbies.Application.DataAccess;
 using Lobbies.Contracts.Queries;
 using Shared.Application.Contexts;
-using Shared.Contracts.Messaging;
 
 namespace Lobbies.Application.UseCases.GetLobbyIdForAuthenticatedPlayer;
 
-internal sealed class GetLobbyIdForAuthenticatedPlayerQueryHandler
-    : QueryHandler<GetLobbyIdForAuthenticatedPlayerQuery, long?>
+public sealed class GetLobbyIdForAuthenticatedPlayerQueryHandler
 {
     private readonly LobbyQueryContext lobbyQueryContext;
 
