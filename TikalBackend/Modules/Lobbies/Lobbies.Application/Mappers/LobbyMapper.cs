@@ -7,7 +7,6 @@ namespace Lobbies.Application.Mappers;
 [Mapper]
 internal static partial class LobbyMapper
 {
-    [MapperIgnoreTarget(nameof(LobbyModel.Players))]
     public static partial LobbyModel LobbyToLobbyModel(Lobby lobby);
 
     public static partial List<LobbySummaryModel> LobbiesToLobbySummaryModels(List<Lobby> lobbies);

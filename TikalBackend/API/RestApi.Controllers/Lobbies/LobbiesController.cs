@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Lobbies.Contracts.Commands;
 using Lobbies.Contracts.Errors;
+using Lobbies.Contracts.Models;
 using Lobbies.Contracts.Notifications;
 using Lobbies.Contracts.Queries;
 using MediatR;
@@ -97,7 +98,7 @@ public sealed partial class LobbiesController : ApiController
     {
         var query = new GetLobbyForAuthenticatedPlayerQuery();
 
-        var result = await sender.Send(query, cancellationToken);
+        var result = await bus.InvokeAsync<LobbyModel?>(query, cancellationToken);
 
         if (result is null)
         {
