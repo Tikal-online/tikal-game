@@ -11,6 +11,7 @@ using OpenTelemetry.Logs;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;
 using Shared.Api;
+using Shared.Domain.Entities;
 using TikalBackend.WebHost.Configuration;
 using TikalBackend.WebHost.ExceptionHandlers;
 using TikalBackend.WebHost.Pipelines;
@@ -129,6 +130,8 @@ internal static class ServiceCollectionExtensions
             {
                 opts.PersistMessagesWithPostgresql(dataSource, "wolverine");
                 opts.UseEntityFrameworkCoreTransactions();
+
+                opts.PublishDomainEventsFromEntityFrameworkCore<Entity>(e => e.DomainEvents);
 
                 opts.Policies.AutoApplyTransactions();
                 opts.Policies.UseDurableLocalQueues();
