@@ -161,7 +161,7 @@ public sealed partial class LobbiesController : ApiController
     [EndpointDescription("Starts a lobby if there it contains at least 2 players and all of them are ready")]
     public async Task<IActionResult> StartLobby(long Id, CancellationToken cancellationToken)
     {
-        var command = new StartLobbyCommand(Id);
+        var command = new StartLobbyCommand(accountContext.Account.UserId, Id);
 
         var result = await bus.InvokeAsync<OneOf<Success, LobbyNotFound, PlayerNotInGivenLobby, Unprivileged, LobbyCannotBeStarted>>(command, cancellationToken);
 

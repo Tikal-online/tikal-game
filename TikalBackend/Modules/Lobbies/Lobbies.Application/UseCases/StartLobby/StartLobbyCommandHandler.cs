@@ -3,7 +3,6 @@ using Lobbies.Contracts.Commands;
 using Lobbies.Contracts.Errors;
 using OneOf;
 using OneOf.Types;
-using Shared.Application.Contexts;
 using Shared.Contracts.Errors;
 
 namespace Lobbies.Application.UseCases.StartLobby;
@@ -12,15 +11,9 @@ public sealed class StartLobbyCommandHandler
 {
     private readonly LobbyRepository lobbyRepository;
 
-    private readonly AccountContext accountContext;
-
-    public StartLobbyCommandHandler(
-        LobbyRepository lobbyRepository,
-        AccountContext accountContext
-    )
+    public StartLobbyCommandHandler(LobbyRepository lobbyRepository)
     {
         this.lobbyRepository = lobbyRepository;
-        this.accountContext = accountContext;
     }
 
     public async Task<OneOf<Success, LobbyNotFound, PlayerNotInGivenLobby, Unprivileged, LobbyCannotBeStarted>> Handle(
@@ -35,7 +28,7 @@ public sealed class StartLobbyCommandHandler
             return new LobbyNotFound(request.LobbyId);
         }
 
-        var player = lobby.GetPlayer(accountContext.Account.UserId);
+        var player = lobby.GetPlayer(request.UserId);
 
         if (player is null)
         {

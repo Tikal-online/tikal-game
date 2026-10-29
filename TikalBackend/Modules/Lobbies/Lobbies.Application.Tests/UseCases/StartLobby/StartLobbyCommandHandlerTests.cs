@@ -6,8 +6,6 @@ using Lobbies.Domain.Entities;
 using Lobbies.Domain.Tests.Data;
 using Moq;
 using OneOf.Types;
-using Shared.Application.Contexts;
-using Shared.Application.Tests;
 using Shared.Contracts.Errors;
 
 namespace Lobbies.Application.Tests.UseCases.StartLobby;
@@ -16,7 +14,6 @@ public sealed class StartLobbyCommandHandlerTests
 {
     // dependencies
     private readonly Mock<LobbyRepository> lobbyRepository;
-    private readonly AccountContext accountContext;
 
     // under test
     private readonly StartLobbyCommandHandler handler;
@@ -24,12 +21,11 @@ public sealed class StartLobbyCommandHandlerTests
     public StartLobbyCommandHandlerTests()
     {
         lobbyRepository = new Mock<LobbyRepository>();
-        accountContext = AccountContextHelper.TestAccountContext;
 
-        handler = new StartLobbyCommandHandler(lobbyRepository.Object, accountContext);
+        handler = new StartLobbyCommandHandler(lobbyRepository.Object);
     }
 
-    private void SetupHappyPath(Lobby lobby)
+    private void SetupHappyPath(Lobby lobby, StartLobbyCommand command)
     {
         // lobby exists
         lobbyRepository.Setup(r => r.GetById(lobby.Id))
@@ -37,7 +33,7 @@ public sealed class StartLobbyCommandHandlerTests
 
         // lobby contains authenticated player who is owner
         var player = lobby.Players.First();
-        player.UserId = accountContext.Account.UserId;
+        player.UserId = command.UserId;
         player.Lobby = lobby;
         player.IsOwner = true;
     }
@@ -46,10 +42,10 @@ public sealed class StartLobbyCommandHandlerTests
     public async Task GivenLobbyDoesntExist_WhenHandle_ThenReturnsLobbyNotFoundError()
     {
         // given
+        var command = new StartLobbyCommand("userId", 1);
+
         lobbyRepository.Setup(r => r.GetById(1))
             .ReturnsAsync(default(Lobby));
-
-        var command = new StartLobbyCommand(1);
 
         // when
         var result = await handler.Handle(command, CancellationToken.None);
@@ -63,10 +59,10 @@ public sealed class StartLobbyCommandHandlerTests
     public async Task GivenPlayerIsNotPartOfLobby_WhenHandle_ThenReturnsPlayerNotInGivenLobbyError(Lobby lobby)
     {
         // given
+        var command = new StartLobbyCommand("userId", lobby.Id);
+
         lobbyRepository.Setup(r => r.GetById(lobby.Id))
             .ReturnsAsync(lobby);
-
-        var command = new StartLobbyCommand(lobby.Id);
 
         // when
         var result = await handler.Handle(command, CancellationToken.None);
@@ -80,12 +76,12 @@ public sealed class StartLobbyCommandHandlerTests
     public async Task GivenPlayerIsNotLobbyOwner_WhenHandle_ThenReturnsUnprivilegedError(Lobby lobby)
     {
         // given
-        SetupHappyPath(lobby);
+        var command = new StartLobbyCommand("userId", lobby.Id);
 
-        var player = lobby.GetPlayer(accountContext.Account.UserId);
+        SetupHappyPath(lobby, command);
+
+        var player = lobby.GetPlayer(command.UserId);
         player?.IsOwner = false;
-
-        var command = new StartLobbyCommand(lobby.Id);
 
         // when
         var result = await handler.Handle(command, CancellationToken.None);
@@ -99,9 +95,9 @@ public sealed class StartLobbyCommandHandlerTests
     public async Task GivenLobbyIsNotStartAble_WhenHandle_ThenReturnsLobbyCannotBeStartedError(Lobby lobby)
     {
         // given
-        SetupHappyPath(lobby);
+        var command = new StartLobbyCommand("userId", lobby.Id);
 
-        var command = new StartLobbyCommand(lobby.Id);
+        SetupHappyPath(lobby, command);
 
         // when
         var result = await handler.Handle(command, CancellationToken.None);
@@ -115,9 +111,9 @@ public sealed class StartLobbyCommandHandlerTests
     public async Task GivenStartAbleLobby_WhenHandle_ThenReturnsSuccess(Lobby lobby)
     {
         // given
-        SetupHappyPath(lobby);
+        var command = new StartLobbyCommand("userId", lobby.Id);
 
-        var command = new StartLobbyCommand(lobby.Id);
+        SetupHappyPath(lobby, command);
 
         // when
         var result = await handler.Handle(command, CancellationToken.None);
