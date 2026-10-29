@@ -1,29 +1,17 @@
 using Lobbies.Application.Mappers;
 using Lobbies.Contracts.Notifications;
 using Lobbies.Domain.Events;
-using MediatR;
-using Shared.Application.Contexts;
 
 namespace Lobbies.Application.EventHandlers;
 
-internal sealed class PlayerJoinedEventHandler : INotificationHandler<PlayerJoinedEvent>
+public sealed class PlayerJoinedEventHandler
 {
-    private readonly IPublisher publisher;
-
-    private readonly AccountContext accountContext;
-
-    public PlayerJoinedEventHandler(IPublisher publisher, AccountContext accountContext)
+    public static PlayerJoinedNotification Handle(PlayerJoinedEvent notification, CancellationToken cancellationToken)
     {
-        this.publisher = publisher;
-        this.accountContext = accountContext;
-    }
-
-    public Task Handle(PlayerJoinedEvent notification, CancellationToken cancellationToken)
-    {
-        var playerModel = PlayerMapper.PlayerToLobbyPlayerModel(notification.Player, accountContext.Account);
+        var playerModel = PlayerMapper.PlayerToLobbyPlayerModel(notification.Player);
 
         var playerJoinedNotification = new PlayerJoinedNotification(playerModel, notification.Player.LobbyId);
 
-        return publisher.Publish(playerJoinedNotification, cancellationToken);
+        return playerJoinedNotification;
     }
 }
