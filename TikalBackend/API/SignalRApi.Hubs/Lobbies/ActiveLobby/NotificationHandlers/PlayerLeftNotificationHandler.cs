@@ -1,11 +1,10 @@
 using Lobbies.Contracts.Notifications;
-using MediatR;
 using Microsoft.AspNetCore.SignalR;
 using SignalRApi.Hubs.Lobbies.Mappers;
 
 namespace SignalRApi.Hubs.Lobbies.ActiveLobby.NotificationHandlers;
 
-internal sealed class PlayerLeftNotificationHandler : INotificationHandler<PlayerLeftNotification>
+public sealed class PlayerLeftNotificationHandler
 {
     private readonly IHubContext<ActiveLobbyHub, ActiveLobbyClient> hubContext;
 
