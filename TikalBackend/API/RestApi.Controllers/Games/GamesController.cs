@@ -12,11 +12,14 @@ namespace RestApi.Controllers.Games;
 [RequireAccount]
 public sealed partial class GamesController : ApiController
 {
+    private readonly AccountContext accountContext;
+
     private readonly IMessageBus bus;
 
-    public GamesController(IMessageBus bus)
+    public GamesController(IMessageBus bus, AccountContext accountContext)
     {
         this.bus = bus;
+        this.accountContext = accountContext;
     }
 
     [HttpGet("me")]
@@ -25,7 +28,7 @@ public sealed partial class GamesController : ApiController
     [EndpointDescription("Gets the game for the currently authenticated user")]
     public async Task<IActionResult> GetGameForUser(CancellationToken cancellationToken)
     {
-        var query = new GetGameForAuthenticatedPlayerQuery();
+        var query = new GetGameForPlayerQuery(accountContext.Account.UserId);
 
         var result = await bus.InvokeAsync<GameModel?>(query, cancellationToken);
 

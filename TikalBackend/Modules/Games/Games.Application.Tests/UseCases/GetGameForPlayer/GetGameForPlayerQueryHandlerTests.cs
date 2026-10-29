@@ -1,43 +1,36 @@
 using Games.Application.DataAccess;
-using Games.Application.UseCases.GetGameForAuthenticatedPlayer;
+using Games.Application.UseCases.GetGameForPlayer;
 using Games.Contracts.Queries;
 using Games.Domain.Entities;
 using Games.Domain.Tests.Data;
 using Moq;
-using Shared.Application.Contexts;
-using Shared.Application.Tests;
 using Shared.Contracts.Enums;
 
-namespace Games.Application.Tests.UseCases.GetGameForAuthenticatedPlayer;
+namespace Games.Application.Tests.UseCases.GetGameForPlayer;
 
-public sealed class GetGameForAuthenticatedPlayerQueryHandlerTests
+public sealed class GetGameForPlayerQueryHandlerTests
 {
     // dependencies
     private readonly Mock<GameQueryContext> gameQueryContext;
-    private readonly AccountContext accountContext;
 
     // under test
-    private readonly GetGameForAuthenticatedPlayerQueryHandler handler;
+    private readonly GetGameForPlayerQueryHandler handler;
 
-    public GetGameForAuthenticatedPlayerQueryHandlerTests()
+    public GetGameForPlayerQueryHandlerTests()
     {
         gameQueryContext = new Mock<GameQueryContext>();
-        accountContext = AccountContextHelper.TestAccountContext;
 
-        handler = new GetGameForAuthenticatedPlayerQueryHandler(
-            gameQueryContext.Object,
-            accountContext
-        );
+        handler = new GetGameForPlayerQueryHandler(gameQueryContext.Object);
     }
 
     [Fact]
     public async Task GivenAuthenticatedPlayerNotInGame_WhenHandle_ThenReturnsNull()
     {
         // given
-        gameQueryContext.Setup(q => q.GetByUserId(accountContext.Account.UserId))
-            .ReturnsAsync(default(Game));
+        var query = new GetGameForPlayerQuery("userId");
 
-        var query = new GetGameForAuthenticatedPlayerQuery();
+        gameQueryContext.Setup(q => q.GetByUserId(query.UserId))
+            .ReturnsAsync(default(Game));
 
         // when
         var result = await handler.Handle(query, CancellationToken.None);
@@ -51,10 +44,10 @@ public sealed class GetGameForAuthenticatedPlayerQueryHandlerTests
     public async Task GivenAuthenticatedPlayerInGame_WhenHandle_ThenReturnsGameModel(Game game)
     {
         // given
-        gameQueryContext.Setup(q => q.GetByUserId(accountContext.Account.UserId))
-            .ReturnsAsync(game);
+        var query = new GetGameForPlayerQuery("userId");
 
-        var query = new GetGameForAuthenticatedPlayerQuery();
+        gameQueryContext.Setup(q => q.GetByUserId(query.UserId))
+            .ReturnsAsync(game);
 
         // when
         var result = await handler.Handle(query, CancellationToken.None);
