@@ -1,3 +1,3 @@
 namespace Lobbies.Contracts.Commands;
 
-public sealed record SetPlayerNotReadyCommand;
+public sealed record SetPlayerNotReadyCommand(string UserId);

@@ -3,7 +3,6 @@ using Lobbies.Contracts.Commands;
 using Lobbies.Contracts.Errors;
 using OneOf;
 using OneOf.Types;
-using Shared.Application.Contexts;
 
 namespace Lobbies.Application.UseCases.SetPlayerNotReady;
 
@@ -11,15 +10,10 @@ public sealed class SetPlayerNotReadyCommandHandler
 {
     private readonly PlayerRepository playerRepository;
 
-    private readonly AccountContext accountContext;
 
-    public SetPlayerNotReadyCommandHandler(
-        PlayerRepository playerRepository,
-        AccountContext accountContext
-    )
+    public SetPlayerNotReadyCommandHandler(PlayerRepository playerRepository)
     {
         this.playerRepository = playerRepository;
-        this.accountContext = accountContext;
     }
 
     public async Task<OneOf<Success, PlayerNotInALobby>> Handle(
@@ -27,7 +21,7 @@ public sealed class SetPlayerNotReadyCommandHandler
         CancellationToken cancellationToken
     )
     {
-        var player = await playerRepository.GetByUserId(accountContext.Account.UserId);
+        var player = await playerRepository.GetByUserId(request.UserId);
 
         if (player is null)
         {
