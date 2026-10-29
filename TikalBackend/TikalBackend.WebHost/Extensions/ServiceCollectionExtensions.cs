@@ -19,6 +19,7 @@ using TikalBackend.WebHost.Telemetry;
 using Wolverine;
 using Wolverine.EntityFrameworkCore;
 using Wolverine.ErrorHandling;
+using Wolverine.Persistence;
 using Wolverine.Postgresql;
 
 namespace TikalBackend.WebHost.Extensions;
@@ -131,7 +132,7 @@ internal static class ServiceCollectionExtensions
                 opts.Discovery.IncludeAssembly(SignalRApi.Hubs.AssemblyReference.Assembly);
 
                 opts.PersistMessagesWithPostgresql(dataSource, "wolverine");
-                opts.UseEntityFrameworkCoreTransactions();
+                opts.UseEntityFrameworkCoreTransactions(TransactionMiddlewareMode.Lightweight);
 
                 opts.PublishDomainEventsFromEntityFrameworkCore<Entity>(e => e.DomainEvents);
 
