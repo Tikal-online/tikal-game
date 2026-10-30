@@ -12,11 +12,14 @@ namespace TikalBackend.IntegrationTests;
 
 public class TestContainerSetup : IAsyncLifetime
 {
-    public PostgreSqlContainer DatabaseContainer { get; } = PostgresDatabase.Instance;
+    private readonly PostgreSqlContainer databaseContainer = PostgresDatabase.Instance;
+
+    private CustomWebApplicationFactory customWebApplicationFactory;
 
     public async ValueTask InitializeAsync()
     {
-        await DatabaseContainer.StartAsync();
+        await databaseContainer.StartAsync();
+        customWebApplicationFactory = AppFactory.Instance;
     }
 
     public async ValueTask DisposeAsync()
@@ -29,7 +32,8 @@ public class TestContainerSetup : IAsyncLifetime
     {
         if (disposing)
         {
-            await DatabaseContainer.StopAsync();
+            await customWebApplicationFactory.DisposeAsync();
+            await databaseContainer.StopAsync();
         }
     }
 }

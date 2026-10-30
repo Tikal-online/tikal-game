@@ -7,7 +7,7 @@ public static class DatabaseFacadeExtensions
 {
     extension(DatabaseFacade databaseFacade)
     {
-        public void DropTables()
+        public Task DropTables()
         {
             const string sql =
                 """
@@ -25,7 +25,7 @@ public static class DatabaseFacadeExtensions
                 END $$;
                 """;
 
-            databaseFacade.ExecuteSqlRaw(sql);
+            return databaseFacade.ExecuteSqlRawAsync(sql);
         }
     }
 }

@@ -9,31 +9,26 @@ using TikalBackend.IntegrationTests.Utils;
 
 namespace TikalBackend.IntegrationTests;
 
-public abstract class IntegrationTestFixture : IDisposable
+public abstract class IntegrationTestFixture : IAsyncLifetime
 {
-    private readonly CustomWebApplicationFactory factory;
+    protected HttpClient Client;
 
-    protected readonly HttpClient Client;
-
-    public IntegrationTestFixture()
+    public async ValueTask InitializeAsync()
     {
-        factory = new CustomWebApplicationFactory(PostgresDatabase.Instance.GetConnectionString());
-        Client = factory.CreateDefaultClient();
+        await CustomWebApplicationFactory.RebuildDatabase(AppFactory.Instance.Services);
+
+        Client = AppFactory.Instance.CreateDefaultClient();
     }
 
-    public void Dispose()
+    public async ValueTask DisposeAsync()
     {
-        Dispose(true);
+        Client.Dispose();
         GC.SuppressFinalize(this);
     }
 
-    protected virtual void Dispose(bool disposing)
+    public IntegrationTestFixture()
     {
-        if (disposing)
-        {
-            Client.Dispose();
-            factory.Dispose();
-        }
+        Client = AppFactory.Instance.CreateDefaultClient();
     }
 
     protected Task CreateUserAccount(TestUser user)
@@ -54,7 +49,7 @@ public abstract class IntegrationTestFixture : IDisposable
             .WithUrl("wss://localhost/" + url,
                 options =>
                 {
-                    options.HttpMessageHandlerFactory = _ => factory.Server.CreateHandler();
+                    options.HttpMessageHandlerFactory = _ => AppFactory.Instance.Server.CreateHandler();
 
                     if (user is not null)
                     {
