@@ -26,11 +26,6 @@ public abstract class IntegrationTestFixture : IAsyncLifetime
         GC.SuppressFinalize(this);
     }
 
-    public IntegrationTestFixture()
-    {
-        Client = AppFactory.Instance.CreateDefaultClient();
-    }
-
     protected Task CreateUserAccount(TestUser user)
     {
         return Client.PostAsyncWithUser(AccountUrl.CreateAccount, user, new CreateAccountDto { Name = user.Name }, TestContext.Current.CancellationToken);

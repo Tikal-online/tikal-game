@@ -17,7 +17,7 @@ public static class DatabaseFacadeExtensions
                     FOR r IN (
                         SELECT nspname 
                         FROM pg_namespace 
-                        WHERE nspname NOT IN ('pg_catalog', 'information_schema', 'public')
+                        WHERE nspname NOT IN ('pg_catalog', 'information_schema', 'public', 'wolverine')
                           AND nspname NOT LIKE 'pg_%'
                     ) LOOP
                         EXECUTE 'DROP SCHEMA IF EXISTS ' || quote_ident(r.nspname) || ' CASCADE';

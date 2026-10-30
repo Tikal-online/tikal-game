@@ -61,12 +61,10 @@ internal sealed class CustomWebApplicationFactory : WebApplicationFactory<Progra
 
         var lobbiesDbContext = scope.ServiceProvider.GetRequiredService<LobbiesDbContext>();
 
-        await lobbiesDbContext.Database.DropTables();
         await lobbiesDbContext.Database.MigrateAsync();
 
         var gamesDbContext = scope.ServiceProvider.GetRequiredService<GamesDbContext>();
 
-        await gamesDbContext.Database.DropTables();
         await gamesDbContext.Database.MigrateAsync();
     }
 }
