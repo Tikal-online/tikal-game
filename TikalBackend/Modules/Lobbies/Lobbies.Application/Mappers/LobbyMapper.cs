@@ -1,5 +1,6 @@
 using Lobbies.Contracts.Models;
 using Lobbies.Domain.Entities;
+using Lobbies.Domain.EventData;
 using Riok.Mapperly.Abstractions;
 
 namespace Lobbies.Application.Mappers;
@@ -7,6 +8,7 @@ namespace Lobbies.Application.Mappers;
 [Mapper]
 internal static partial class LobbyMapper
 {
+    // Entity --> Model
     public static partial LobbyModel LobbyToLobbyModel(Lobby lobby);
 
     public static partial List<LobbySummaryModel> LobbiesToLobbySummaryModels(List<Lobby> lobbies);
@@ -18,4 +20,7 @@ internal static partial class LobbyMapper
     {
         return players.Count;
     }
+
+    // EventData --> Model
+    public static partial LobbyModel LobbyEventDataToLobbyModel(LobbyEventData lobby);
 }

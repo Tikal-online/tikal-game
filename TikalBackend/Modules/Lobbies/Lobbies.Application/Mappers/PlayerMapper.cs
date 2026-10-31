@@ -1,4 +1,3 @@
-using Accounts.Contracts.Models;
 using Lobbies.Contracts.Models;
 using Lobbies.Domain.Entities;
 using Shared.Contracts.Enums;
@@ -17,32 +16,5 @@ internal static class PlayerMapper
             IsReady = player.IsReady,
             IsOwner = player.IsOwner
         };
-    }
-
-    public static LobbyPlayerModel PlayerToLobbyPlayerModel(Player player, AccountModel account)
-    {
-        return new LobbyPlayerModel
-        {
-            UserId = player.UserId,
-            Name = account.Name,
-            SelectedColour = (ColourModel)player.SelectedColour,
-            IsReady = player.IsReady,
-            IsOwner = player.IsOwner
-        };
-    }
-
-    public static List<LobbyPlayerModel> PlayersToLobbyPlayerModels(
-        IEnumerable<Player> players,
-        IEnumerable<AccountModel> accounts
-    )
-    {
-        var accountDictionary = accounts.ToDictionary(a => a.UserId);
-
-        return players.Select(p => PlayerToLobbyPlayerModel(p, accountDictionary[p.UserId])).ToList();
-    }
-
-    public static Dictionary<ColourModel, string> PlayersToDictionary(ICollection<Player> players)
-    {
-        return players.ToDictionary(p => (ColourModel)p.SelectedColour, p => p.UserId);
     }
 }

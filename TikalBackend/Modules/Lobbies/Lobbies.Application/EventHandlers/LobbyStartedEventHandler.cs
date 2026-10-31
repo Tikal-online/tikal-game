@@ -1,3 +1,4 @@
+using Lobbies.Application.Mappers;
 using Lobbies.Contracts.Notifications;
 using Lobbies.Domain.Events;
 
@@ -7,8 +8,9 @@ public sealed class LobbyStartedEventHandler
 {
     public static LobbyStartedNotification Handle(LobbyStartedEvent notification, CancellationToken cancellationToken)
     {
-        // TODO: pass players
-        var lobbyStartedNotification = new LobbyStartedNotification(notification.lobby.Id);
+        var lobbyModel = LobbyMapper.LobbyEventDataToLobbyModel(notification.Lobby);
+
+        var lobbyStartedNotification = new LobbyStartedNotification(lobbyModel);
 
         return lobbyStartedNotification;
     }

@@ -62,6 +62,9 @@ public sealed class GetGameForAuthenticatedPlayerTests : IntegrationTestFixture
 
         await Client.PostAsyncWithUser(LobbyUrl.StartLobby(lobby.Id), TestUser.Default, null, TestContext.Current.CancellationToken);
 
+        // TODO: fix this
+        await Task.Delay(1000, TestContext.Current.CancellationToken);
+
         // when
         var response = await Client.GetAsyncWithUser(GameUrl.GetActiveGame, TestUser.Default, TestContext.Current.CancellationToken);
 

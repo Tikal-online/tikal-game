@@ -1,4 +1,5 @@
 using Games.Application.DataAccess;
+using Games.Application.Mappers;
 using Games.Domain.Entities;
 using Games.Domain.Types;
 using Lobbies.Contracts.Notifications;
@@ -9,21 +10,19 @@ public sealed class LobbyStartedNotificationHandler
 {
     private readonly GameRepository gameRepository;
 
-    private readonly UnitOfWork unitOfWork;
-
-    public LobbyStartedNotificationHandler(GameRepository gameRepository, UnitOfWork unitOfWork)
+    public LobbyStartedNotificationHandler(GameRepository gameRepository)
     {
         this.gameRepository = gameRepository;
-        this.unitOfWork = unitOfWork;
     }
 
-    public Task Handle(LobbyStartedNotification notification, CancellationToken cancellationToken)
+    public void Handle(LobbyStartedNotification notification, CancellationToken cancellationToken)
     {
+        var players = PlayerMapper.LobbyPlayerModelsToPlayers(notification.Lobby.Players);
+
         var game = new Game
         {
-            LobbyId = notification.LobbyId,
-            // TODO: read players from event
-            Players = [],
+            LobbyId = notification.Lobby.Id,
+            Players = players,
             Tiles =
             [
                 new EmptyTile
@@ -52,7 +51,5 @@ public sealed class LobbyStartedNotificationHandler
         };
 
         gameRepository.Create(game);
-
-        return unitOfWork.SaveChangesAsync(cancellationToken);
     }
 }

@@ -1,5 +1,6 @@
 using FluentValidation;
 using Lobbies.Domain.Events;
+using Lobbies.Domain.Mappers;
 using Shared.Domain.Entities;
 using Shared.Domain.Enums;
 
@@ -64,7 +65,7 @@ public sealed class Lobby : Entity
     public void Start()
     {
         InGame = true;
-        AddDomainEvent(new LobbyStartedEvent(this));
+        AddDomainEvent(new LobbyStartedEvent(LobbyMapper.LobbyToLobbyEventData(this)));
     }
 }
 
