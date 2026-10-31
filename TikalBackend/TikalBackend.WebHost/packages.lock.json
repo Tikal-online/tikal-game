@@ -188,11 +188,6 @@
         "resolved": "2.96.0",
         "contentHash": "VjDCrrUkEeGqx9Ir0PFYVZiZYD0D9Z1uA5HZWkNW2s+c2pHWd/YBX56KTCYi+l/2SxBsTcbDJ7IETul4kU5Z2w=="
       },
-      "MediatR.Contracts": {
-        "type": "Transitive",
-        "resolved": "2.0.1",
-        "contentHash": "FYv95bNT4UwcNA+G/J1oX5OpRiSUxteXaUt2BJbRSdRNiIUNbggJF69wy6mnk2wYToaanpdXZdCwVylt96MpwQ=="
-      },
       "Microsoft.Bcl.AsyncInterfaces": {
         "type": "Transitive",
         "resolved": "9.0.0",
@@ -634,8 +629,7 @@
           "Accounts.Contracts": "[1.0.0, )",
           "Games.Contracts": "[1.0.0, )",
           "Games.Domain": "[1.0.0, )",
-          "Lobbies.Contracts": "[1.0.0, )",
-          "Shared.Application": "[1.0.0, )"
+          "Lobbies.Contracts": "[1.0.0, )"
         }
       },
       "games.contracts": {
@@ -669,8 +663,7 @@
           "Accounts.Contracts": "[1.0.0, )",
           "Games.Contracts": "[1.0.0, )",
           "Lobbies.Contracts": "[1.0.0, )",
-          "Lobbies.Domain": "[1.0.0, )",
-          "Shared.Application": "[1.0.0, )"
+          "Lobbies.Domain": "[1.0.0, )"
         }
       },
       "lobbies.contracts": {
@@ -710,21 +703,11 @@
       "shared.api": {
         "type": "Project"
       },
-      "shared.application": {
+      "shared.contracts": {
         "type": "Project"
       },
-      "shared.contracts": {
-        "type": "Project",
-        "dependencies": {
-          "MediatR": "[14.2.0, )",
-          "OneOf": "[3.0.271, )"
-        }
-      },
       "shared.domain": {
-        "type": "Project",
-        "dependencies": {
-          "MediatR": "[14.2.0, )"
-        }
+        "type": "Project"
       },
       "signalrapi.hubs": {
         "type": "Project",
@@ -740,16 +723,6 @@
         "requested": "[12.2.0, )",
         "resolved": "12.2.0",
         "contentHash": "DR3lFbdnKucaaj1/8zMNOACMz/64igzox1yVZSFVsLxYB5mxAB+wFP1WZ8fjwrZnbU1KA1DoMzHKYKxUfuZ4wQ=="
-      },
-      "MediatR": {
-        "type": "CentralTransitive",
-        "requested": "[14.2.0, )",
-        "resolved": "14.2.0",
-        "contentHash": "1vqNVS6ijU0IF78vDfIE99pi0iTa+M/1ztRlM98P+KL+Loi/O4knaR2+ex0AqbT5xBl01VFryjuYUAFtvGwzOQ==",
-        "dependencies": {
-          "MediatR.Contracts": "[2.0.1, 3.0.0)",
-          "Microsoft.IdentityModel.JsonWebTokens": "8.14.0"
-        }
       },
       "Microsoft.EntityFrameworkCore": {
         "type": "CentralTransitive",
