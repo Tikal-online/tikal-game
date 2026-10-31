@@ -17,6 +17,7 @@ using TikalBackend.WebHost.Telemetry;
 using Wolverine;
 using Wolverine.EntityFrameworkCore;
 using Wolverine.ErrorHandling;
+using Wolverine.FluentValidation;
 using Wolverine.Persistence;
 using Wolverine.Postgresql;
 
@@ -56,7 +57,6 @@ internal static class ServiceCollectionExtensions
                 {
                     tracing
                         .AddSource(ActivitySources.ControllerSourceName)
-                        .AddSource(ActivitySources.MediatRSourceName)
                         .AddAspNetCoreInstrumentation()
                         .AddHttpClientInstrumentation()
                         .AddNpgsql()
@@ -78,9 +78,20 @@ internal static class ServiceCollectionExtensions
                 });
         }
 
+        private void AddValidators()
+        {
+            services.AddValidatorsFromAssemblies([
+                AssemblyReference.Assembly,
+                Lobbies.Application.AssemblyReference.Assembly,
+                Games.Application.AssemblyReference.Assembly
+            ]);
+        }
+
         public void AddApplication()
         {
-            // Event handlers and validators are part of the wolverine setup
+            // Event handler registration are part of the wolverine setup
+            services.AddValidators();
+
             services.AddScoped<AccountContext>();
         }
 
@@ -109,13 +120,15 @@ internal static class ServiceCollectionExtensions
                 opts.Policies.AutoApplyTransactions();
                 opts.Policies.UseDurableLocalQueues();
 
+                opts.UseFluentValidation(RegistrationBehavior.ExplicitRegistration);
+
                 opts.MultipleHandlerBehavior = MultipleHandlerBehavior.Separated;
                 opts.Durability.Mode = DurabilityMode.Solo;
                 opts.Durability.MessageIdentity = MessageIdentity.IdAndDestination;
 
                 opts.Durability.DurabilityMetricsEnabled = false;
 
-                opts.OnException<Exception>()
+                opts.OnException<Exception>(ex => ex is not ValidationException)
                     .RetryWithCooldown(100.Milliseconds(), 500.Milliseconds(), 1.Seconds())
                     .Then.MoveToErrorQueue();
             });
