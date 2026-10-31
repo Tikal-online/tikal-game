@@ -37,8 +37,6 @@ public static class AccountsInfrastructureModule
             services.AddScoped<AccountQueryContext, DbAccountQueryContext>();
 
             services.AddScoped<AccountRepository, DbAccountRepository>();
-
-            services.AddScoped<UnitOfWork>(sp => sp.GetRequiredService<AccountsDbContext>());
         }
     }
 }

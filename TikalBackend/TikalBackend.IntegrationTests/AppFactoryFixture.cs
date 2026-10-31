@@ -1,25 +1,25 @@
 using Testcontainers.PostgreSql;
 using TikalBackend.IntegrationTests;
-using TikalBackend.IntegrationTests.Utils;
 using Xunit.Sdk;
 using Xunit.v3;
 
-[assembly: AssemblyFixture(typeof(TestContainerSetup))]
+[assembly: AssemblyFixture(typeof(AppFactoryFixture))]
 [assembly: Parallelization(Mode = ParallelMode.None)]
 
 namespace TikalBackend.IntegrationTests;
 
-
-public class TestContainerSetup : IAsyncLifetime
+public class AppFactoryFixture : IAsyncLifetime
 {
-    private readonly PostgreSqlContainer databaseContainer = PostgresDatabase.Instance;
+    private const string imageTag = "postgres:17.5";
 
-    private CustomWebApplicationFactory customWebApplicationFactory;
+    private readonly PostgreSqlContainer databaseContainer = new PostgreSqlBuilder(imageTag).Build();
+
+    public CustomWebApplicationFactory WebApplicationFactory { get; private set; }
 
     public async ValueTask InitializeAsync()
     {
         await databaseContainer.StartAsync();
-        customWebApplicationFactory = AppFactory.Instance;
+        WebApplicationFactory = new CustomWebApplicationFactory(databaseContainer.GetConnectionString());
     }
 
     public async ValueTask DisposeAsync()
@@ -32,7 +32,7 @@ public class TestContainerSetup : IAsyncLifetime
     {
         if (disposing)
         {
-            await customWebApplicationFactory.DisposeAsync();
+            await WebApplicationFactory.DisposeAsync();
             await databaseContainer.StopAsync();
         }
     }

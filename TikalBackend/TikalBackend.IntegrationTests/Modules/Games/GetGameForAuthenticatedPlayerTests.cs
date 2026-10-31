@@ -8,7 +8,7 @@ using TikalBackend.IntegrationTests.Modules.Lobbies.Dtos;
 
 namespace TikalBackend.IntegrationTests.Modules.Games;
 
-public sealed class GetGameForAuthenticatedPlayerTests : IntegrationTestFixture
+public sealed class GetGameForAuthenticatedPlayerTests(AppFactoryFixture fixture) : IntegrationTestFixture(fixture)
 {
     [Fact]
     public async Task GivenUnauthenticatedUser_WhenGetGameForAuthenticatedPlayer_ThenReturnsUnauthorized()

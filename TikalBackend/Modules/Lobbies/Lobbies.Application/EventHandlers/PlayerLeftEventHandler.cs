@@ -8,9 +8,9 @@ public static class PlayerLeftEventHandler
 {
     public static PlayerLeftNotification Handle(PlayerLeftEvent notification, CancellationToken cancellationToken)
     {
-        var playerModel = PlayerMapper.PlayerToLobbyPlayerModel(notification.Player);
+        var playerModel = PlayerMapper.PlayerEventDataToLobbyPlayerModel(notification.Player);
 
-        var playerLeftNotification = new PlayerLeftNotification(playerModel, notification.Player.LobbyId);
+        var playerLeftNotification = new PlayerLeftNotification(playerModel, notification.LobbyId);
 
         return playerLeftNotification;
     }

@@ -1,10 +1,9 @@
-using Lobbies.Application.DataAccess;
 using Lobbies.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Lobbies.Infrastructure.Database;
 
-public sealed class LobbiesDbContext : DbContext, UnitOfWork
+public sealed class LobbiesDbContext : DbContext
 {
     public const string Schema = "Lobbies";
 

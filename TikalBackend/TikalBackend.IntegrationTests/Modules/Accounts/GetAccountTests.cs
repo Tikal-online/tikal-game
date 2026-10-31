@@ -7,7 +7,7 @@ using TikalBackend.IntegrationTests.Modules.Accounts.Dtos;
 
 namespace TikalBackend.IntegrationTests.Modules.Accounts;
 
-public sealed class GetAccountTests : IntegrationTestFixture
+public sealed class GetAccountTests(AppFactoryFixture fixture) : IntegrationTestFixture(fixture)
 {
     [Fact]
     public async Task GivenUnauthenticatedUser_WhenGetAccount_ThenReturnsUnauthorized()

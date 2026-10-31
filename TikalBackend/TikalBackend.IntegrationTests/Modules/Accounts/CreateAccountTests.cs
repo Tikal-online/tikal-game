@@ -7,7 +7,7 @@ using TikalBackend.IntegrationTests.Modules.Accounts.Dtos;
 
 namespace TikalBackend.IntegrationTests.Modules.Accounts;
 
-public sealed class CreateAccountTests : IntegrationTestFixture
+public sealed class CreateAccountTests(AppFactoryFixture fixture) : IntegrationTestFixture(fixture)
 {
     [Theory]
     [ClassData(typeof(ValidCreateAccountDtos))]

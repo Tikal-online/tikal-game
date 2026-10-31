@@ -27,7 +27,7 @@ public sealed class Lobby : Entity
     public void RemovePlayer(Player player)
     {
         Players.Remove(player);
-        AddDomainEvent(new PlayerLeftEvent(player));
+        AddDomainEvent(new PlayerLeftEvent(PlayerMapper.PlayerToPlayerEventData(player), Id));
 
         if (IsEmpty || Players.Any(p => p.IsOwner))
         {
