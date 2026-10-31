@@ -36,8 +36,6 @@ public static class GamesInfrastructureModule
             services.AddScoped<GameRepository, DbGameRepository>();
 
             services.AddScoped<GameQueryContext, DbGameQueryContext>();
-
-            services.AddScoped<UnitOfWork>(sp => sp.GetRequiredService<GamesDbContext>());
         }
     }
 }

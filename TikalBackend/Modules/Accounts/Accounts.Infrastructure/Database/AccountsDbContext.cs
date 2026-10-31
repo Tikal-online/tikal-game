@@ -1,10 +1,9 @@
-using Accounts.Application.DataAccess;
 using Accounts.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Accounts.Infrastructure.Database;
 
-public sealed class AccountsDbContext : DbContext, UnitOfWork
+public sealed class AccountsDbContext : DbContext
 {
     public const string Schema = "Accounts";
 

@@ -1,10 +1,9 @@
-using Games.Application.DataAccess;
 using Games.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Games.Infrastructure.Database;
 
-public sealed class GamesDbContext : DbContext, UnitOfWork
+public sealed class GamesDbContext : DbContext
 {
     public const string Schema = "Games";
 
