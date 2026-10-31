@@ -4,7 +4,7 @@ using Lobbies.Domain.Events;
 
 namespace Lobbies.Application.EventHandlers;
 
-public static class PlayerJoinedEventHandler
+public static class PlayerJoinedDomainEventHandler
 {
     public static PlayerJoinedNotification Handle(PlayerJoinedDomainEvent notification, CancellationToken cancellationToken)
     {
