@@ -5,10 +5,15 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\Accounts\Accounts.Contracts\Accounts.Contracts.csproj"/>
         <ProjectReference Include="..\..\Lobbies\Lobbies.Contracts\Lobbies.Contracts.csproj"/>
         <ProjectReference Include="..\Games.Contracts\Games.Contracts.csproj"/>
         <ProjectReference Include="..\Games.Domain\Games.Domain.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="OneOf"/>
+        <PackageReference Include="FluentValidation"/>
+        <PackageReference Include="Riok.Mapperly"/>
     </ItemGroup>
 
     <ItemGroup>

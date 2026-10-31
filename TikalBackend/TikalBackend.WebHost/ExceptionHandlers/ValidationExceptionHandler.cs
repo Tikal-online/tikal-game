@@ -1,7 +1,7 @@
 using System.Diagnostics;
+using FluentValidation;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using TikalBackend.WebHost.Pipelines;
 
 namespace TikalBackend.WebHost.ExceptionHandlers;
 
@@ -20,8 +20,7 @@ internal sealed class ValidationExceptionHandler : IExceptionHandler
 
         httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
 
-        var errorDictionary =
-            validationException.Errors.ToDictionary(error => error.PropertyName, error => error.ErrorMessages);
+        var errorDictionary = validationException.Errors.ToDictionary(error => error.PropertyName, error => error.ErrorMessage);
 
         var problemDetails = new ProblemDetails
         {

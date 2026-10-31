@@ -219,11 +219,6 @@
         "resolved": "2.96.0",
         "contentHash": "VjDCrrUkEeGqx9Ir0PFYVZiZYD0D9Z1uA5HZWkNW2s+c2pHWd/YBX56KTCYi+l/2SxBsTcbDJ7IETul4kU5Z2w=="
       },
-      "MediatR.Contracts": {
-        "type": "Transitive",
-        "resolved": "2.0.1",
-        "contentHash": "FYv95bNT4UwcNA+G/J1oX5OpRiSUxteXaUt2BJbRSdRNiIUNbggJF69wy6mnk2wYToaanpdXZdCwVylt96MpwQ=="
-      },
       "Microsoft.ApplicationInsights": {
         "type": "Transitive",
         "resolved": "2.23.0",
@@ -1092,8 +1087,7 @@
         "type": "Project",
         "dependencies": {
           "OneOf": "[3.0.271, )",
-          "Shared.Contracts": "[1.0.0, )",
-          "WolverineFx": "[6.56.0, )"
+          "Shared.Contracts": "[1.0.0, )"
         }
       },
       "accounts.domain": {
@@ -1115,11 +1109,12 @@
       "games.application": {
         "type": "Project",
         "dependencies": {
-          "Accounts.Contracts": "[1.0.0, )",
+          "FluentValidation": "[12.2.0, )",
           "Games.Contracts": "[1.0.0, )",
           "Games.Domain": "[1.0.0, )",
           "Lobbies.Contracts": "[1.0.0, )",
-          "Shared.Application": "[1.0.0, )"
+          "OneOf": "[3.0.271, )",
+          "Riok.Mapperly": "[4.3.1, )"
         }
       },
       "games.contracts": {
@@ -1150,11 +1145,12 @@
       "lobbies.application": {
         "type": "Project",
         "dependencies": {
-          "Accounts.Contracts": "[1.0.0, )",
+          "FluentValidation": "[12.2.0, )",
           "Games.Contracts": "[1.0.0, )",
           "Lobbies.Contracts": "[1.0.0, )",
           "Lobbies.Domain": "[1.0.0, )",
-          "Shared.Application": "[1.0.0, )"
+          "OneOf": "[3.0.271, )",
+          "Riok.Mapperly": "[4.3.1, )"
         }
       },
       "lobbies.contracts": {
@@ -1178,7 +1174,8 @@
           "Microsoft.EntityFrameworkCore": "[10.0.13, )",
           "Microsoft.EntityFrameworkCore.Relational": "[10.0.13, )",
           "Npgsql.EntityFrameworkCore.PostgreSQL": "[10.0.3, )",
-          "WolverineFX.EntityFrameworkCore": "[6.56.0, )"
+          "WolverineFX.EntityFrameworkCore": "[6.56.0, )",
+          "WolverineFX.FluentValidation": "[6.56.0, )"
         }
       },
       "restapi.controllers": {
@@ -1188,30 +1185,18 @@
           "Games.Contracts": "[1.0.0, )",
           "Lobbies.Contracts": "[1.0.0, )",
           "Riok.Mapperly": "[4.3.1, )",
-          "Shared.Api": "[1.0.0, )"
+          "Shared.Api": "[1.0.0, )",
+          "WolverineFX": "[6.56.0, )"
         }
       },
       "shared.api": {
         "type": "Project"
       },
-      "shared.application": {
-        "type": "Project",
-        "dependencies": {
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "[10.0.13, )"
-        }
-      },
       "shared.contracts": {
-        "type": "Project",
-        "dependencies": {
-          "MediatR": "[14.2.0, )",
-          "OneOf": "[3.0.271, )"
-        }
+        "type": "Project"
       },
       "shared.domain": {
-        "type": "Project",
-        "dependencies": {
-          "MediatR": "[14.2.0, )"
-        }
+        "type": "Project"
       },
       "signalrapi.hubs": {
         "type": "Project",
@@ -1219,7 +1204,8 @@
           "Accounts.Contracts": "[1.0.0, )",
           "Lobbies.Contracts": "[1.0.0, )",
           "Riok.Mapperly": "[4.3.1, )",
-          "Shared.Api": "[1.0.0, )"
+          "Shared.Api": "[1.0.0, )",
+          "WolverineFX": "[6.56.0, )"
         }
       },
       "tikalbackend.webhost": {
@@ -1241,9 +1227,10 @@
           "OpenTelemetry.Instrumentation.Http": "[1.20.0, )",
           "RestApi.Controllers": "[1.0.0, )",
           "Scalar.AspNetCore": "[2.18.0, )",
-          "Shared.Application": "[1.0.0, )",
           "SignalRApi.Hubs": "[1.0.0, )",
+          "WolverineFX": "[6.56.0, )",
           "WolverineFX.EntityFrameworkCore": "[6.56.0, )",
+          "WolverineFX.FluentValidation": "[6.56.0, )",
           "WolverineFX.Postgresql": "[6.56.0, )",
           "WolverineFX.RuntimeCompilation": "[6.56.0, )"
         }
@@ -1262,18 +1249,6 @@
         "dependencies": {
           "FluentValidation": "12.2.0",
           "Microsoft.Extensions.DependencyInjection.Abstractions": "2.1.0"
-        }
-      },
-      "MediatR": {
-        "type": "CentralTransitive",
-        "requested": "[14.2.0, )",
-        "resolved": "14.2.0",
-        "contentHash": "1vqNVS6ijU0IF78vDfIE99pi0iTa+M/1ztRlM98P+KL+Loi/O4knaR2+ex0AqbT5xBl01VFryjuYUAFtvGwzOQ==",
-        "dependencies": {
-          "MediatR.Contracts": "[2.0.1, 3.0.0)",
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "10.0.0",
-          "Microsoft.Extensions.Logging.Abstractions": "10.0.0",
-          "Microsoft.IdentityModel.JsonWebTokens": "8.14.0"
         }
       },
       "Microsoft.AspNetCore.Authentication.JwtBearer": {
@@ -1434,6 +1409,16 @@
           "Microsoft.EntityFrameworkCore.Relational": "10.0.4",
           "Weasel.EntityFrameworkCore": "9.47.0",
           "WolverineFx.RDBMS": "6.56.0"
+        }
+      },
+      "WolverineFx.FluentValidation": {
+        "type": "CentralTransitive",
+        "requested": "[6.56.0, )",
+        "resolved": "6.56.0",
+        "contentHash": "R89XaiFIy+dWSb4uPfvHcgPvp9h8sI+tHfKkZ3RZMoj1fCkNVFYETK5hvikQVwaY3oGoqU/wAfm9vRwXfYfrBg==",
+        "dependencies": {
+          "FluentValidation": "12.0.0",
+          "WolverineFx": "6.56.0"
         }
       },
       "WolverineFx.Postgresql": {
