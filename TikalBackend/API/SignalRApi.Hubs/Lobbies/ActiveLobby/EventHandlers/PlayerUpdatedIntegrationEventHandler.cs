@@ -2,13 +2,13 @@ using Lobbies.Contracts.Events;
 using Microsoft.AspNetCore.SignalR;
 using SignalRApi.Hubs.Lobbies.Mappers;
 
-namespace SignalRApi.Hubs.Lobbies.ActiveLobby.NotificationHandlers;
+namespace SignalRApi.Hubs.Lobbies.ActiveLobby.EventHandlers;
 
-public sealed class PlayerUpdatedNotificationHandler
+public sealed class PlayerUpdatedIntegrationEventHandler
 {
     private readonly IHubContext<ActiveLobbyHub, ActiveLobbyClient> hubContext;
 
-    public PlayerUpdatedNotificationHandler(IHubContext<ActiveLobbyHub, ActiveLobbyClient> hubContext)
+    public PlayerUpdatedIntegrationEventHandler(IHubContext<ActiveLobbyHub, ActiveLobbyClient> hubContext)
     {
         this.hubContext = hubContext;
     }

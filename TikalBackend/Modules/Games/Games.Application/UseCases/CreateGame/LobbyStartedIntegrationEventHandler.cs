@@ -6,11 +6,11 @@ using Lobbies.Contracts.Events;
 
 namespace Games.Application.UseCases.CreateGame;
 
-public sealed class LobbyStartedNotificationHandler
+public sealed class LobbyStartedIntegrationEventHandler
 {
     private readonly GameRepository gameRepository;
 
-    public LobbyStartedNotificationHandler(GameRepository gameRepository)
+    public LobbyStartedIntegrationEventHandler(GameRepository gameRepository)
     {
         this.gameRepository = gameRepository;
     }

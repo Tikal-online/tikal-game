@@ -2,13 +2,13 @@ using Lobbies.Contracts.Events;
 using Microsoft.AspNetCore.SignalR;
 using SignalRApi.Hubs.Lobbies.Mappers;
 
-namespace SignalRApi.Hubs.Lobbies.ActiveLobby.NotificationHandlers;
+namespace SignalRApi.Hubs.Lobbies.ActiveLobby.EventHandlers;
 
-public sealed class PlayerLeftNotificationHandler
+public sealed class PlayerLeftIntegrationEventHandler
 {
     private readonly IHubContext<ActiveLobbyHub, ActiveLobbyClient> hubContext;
 
-    public PlayerLeftNotificationHandler(IHubContext<ActiveLobbyHub, ActiveLobbyClient> hubContext)
+    public PlayerLeftIntegrationEventHandler(IHubContext<ActiveLobbyHub, ActiveLobbyClient> hubContext)
     {
         this.hubContext = hubContext;
     }
