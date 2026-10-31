@@ -4,7 +4,7 @@ using Lobbies.Domain.Events;
 
 namespace Lobbies.Application.EventHandlers;
 
-public sealed class LobbyStartedEventHandler
+public static class LobbyStartedEventHandler
 {
     public static LobbyStartedNotification Handle(LobbyStartedEvent notification, CancellationToken cancellationToken)
     {

@@ -4,7 +4,7 @@ using Lobbies.Domain.Events;
 
 namespace Lobbies.Application.EventHandlers;
 
-public sealed class PlayerLeftEventHandler
+public static class PlayerLeftEventHandler
 {
     public static PlayerLeftNotification Handle(PlayerLeftEvent notification, CancellationToken cancellationToken)
     {
