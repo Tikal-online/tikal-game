@@ -9,6 +9,7 @@ using TikalBackend.IntegrationTests.Extensions;
 using TikalBackend.IntegrationTests.Modules.Accounts;
 using TikalBackend.IntegrationTests.Modules.Lobbies;
 using TikalBackend.IntegrationTests.Utils;
+using Wolverine.Tracking;
 
 namespace TikalBackend.IntegrationTests;
 
@@ -41,7 +42,15 @@ public abstract class IntegrationTestFixture : IAsyncLifetime
         return (await response.Content.ReadFromJsonAsync<LobbyDto>())!;
     }
 
-    protected async Task<HubConnection> CreateConnection(string url, TestUser? user = null, bool startConnection = true)
+    protected static Task<ITrackedSession> RunTracked(Func<Task> action)
+    {
+        return AppFactory.Instance.Services
+            .TrackActivity()
+            .Timeout(TimeSpan.FromSeconds(5))
+            .ExecuteAndWaitAsync(_ => action());
+    }
+
+    protected static async Task<HubConnection> CreateConnection(string url, TestUser? user = null, bool startConnection = true)
     {
         var connection = new HubConnectionBuilder()
             .WithUrl("http://localhost/" + url,

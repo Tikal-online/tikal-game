@@ -15,11 +15,14 @@ public sealed class CreateAccountTests : IntegrationTestFixture
         CreateAccountDto createAccountDto
     )
     {
-        // when
-        var response = await Client.PostAsJsonAsync(AccountUrl.CreateAccount, createAccountDto, TestContext.Current.CancellationToken);
+        await RunTracked(async () =>
+        {
+            // when
+            var response = await Client.PostAsJsonAsync(AccountUrl.CreateAccount, createAccountDto, TestContext.Current.CancellationToken);
 
-        // then
-        Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
+            // then
+            Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
+        });
     }
 
     [Theory]
@@ -28,11 +31,14 @@ public sealed class CreateAccountTests : IntegrationTestFixture
         CreateAccountDto createAccountDto
     )
     {
-        // when
-        var response = await Client.PostAsyncWithUser(AccountUrl.CreateAccount, TestUser.Default, createAccountDto, TestContext.Current.CancellationToken);
+        await RunTracked(async () =>
+        {
+            // when
+            var response = await Client.PostAsyncWithUser(AccountUrl.CreateAccount, TestUser.Default, createAccountDto, TestContext.Current.CancellationToken);
 
-        // then
-        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            // then
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        });
     }
 
     [Theory]
@@ -41,14 +47,17 @@ public sealed class CreateAccountTests : IntegrationTestFixture
         CreateAccountDto createAccountDto
     )
     {
-        // given
-        await Client.PostAsyncWithUser(AccountUrl.CreateAccount, TestUser.Default, createAccountDto, TestContext.Current.CancellationToken);
+        await RunTracked(async () =>
+        {
+            // given
+            await Client.PostAsyncWithUser(AccountUrl.CreateAccount, TestUser.Default, createAccountDto, TestContext.Current.CancellationToken);
 
-        // when
-        var response = await Client.PostAsyncWithUser(AccountUrl.CreateAccount, TestUser.Default, createAccountDto, TestContext.Current.CancellationToken);
+            // when
+            var response = await Client.PostAsyncWithUser(AccountUrl.CreateAccount, TestUser.Default, createAccountDto, TestContext.Current.CancellationToken);
 
-        // then
-        Assert.Equal(HttpStatusCode.Conflict, response.StatusCode);
+            // then
+            Assert.Equal(HttpStatusCode.Conflict, response.StatusCode);
+        });
     }
 
     [Theory]
@@ -57,17 +66,20 @@ public sealed class CreateAccountTests : IntegrationTestFixture
         CreateAccountDto createAccountDto
     )
     {
-        // when
-        var response = await Client.PostAsyncWithUser(AccountUrl.CreateAccount, TestUser.Default, createAccountDto, TestContext.Current.CancellationToken);
+        await RunTracked(async () =>
+        {
+            // when
+            var response = await Client.PostAsyncWithUser(AccountUrl.CreateAccount, TestUser.Default, createAccountDto, TestContext.Current.CancellationToken);
 
-        var account = await response.Content.ReadFromJsonAsync<AccountModel>(TestContext.Current.CancellationToken);
+            var account = await response.Content.ReadFromJsonAsync<AccountModel>(TestContext.Current.CancellationToken);
 
-        // then
-        Assert.Multiple(
-            () => Assert.Equal(HttpStatusCode.Created, response.StatusCode),
-            () => Assert.NotNull(account),
-            () => Assert.Equal(TestUser.Default.UserId, account?.UserId),
-            () => Assert.Equal(createAccountDto.Name, account?.Name)
-        );
+            // then
+            Assert.Multiple(
+                () => Assert.Equal(HttpStatusCode.Created, response.StatusCode),
+                () => Assert.NotNull(account),
+                () => Assert.Equal(TestUser.Default.UserId, account?.UserId),
+                () => Assert.Equal(createAccountDto.Name, account?.Name)
+            );
+        });
     }
 }

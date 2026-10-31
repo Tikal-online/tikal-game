@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TikalBackend.IntegrationTests.Extensions;
 using TikalBackend.IntegrationTests.Utils;
+using Wolverine.Runtime;
 
 namespace TikalBackend.IntegrationTests;
 
@@ -66,5 +67,9 @@ internal sealed class CustomWebApplicationFactory : WebApplicationFactory<Progra
         var gamesDbContext = scope.ServiceProvider.GetRequiredService<GamesDbContext>();
 
         await gamesDbContext.Database.MigrateAsync();
+
+        var host = scope.ServiceProvider.GetRequiredService<IHost>();
+
+        await host.ClearAllWolverineStorageAsync();
     }
 }

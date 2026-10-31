@@ -50,20 +50,20 @@ public sealed class GetGameForAuthenticatedPlayerTests : IntegrationTestFixture
     )
     {
         // given
-        await CreateUserAccount(TestUser.Default);
-        await CreateUserAccount(TestUser.TestUser1);
+        await RunTracked(async () =>
+        {
+            await CreateUserAccount(TestUser.Default);
+            await CreateUserAccount(TestUser.TestUser1);
 
-        var lobby = await CreateAndGetLobby(createLobbyDto, TestUser.Default);
+            var lobby = await CreateAndGetLobby(createLobbyDto, TestUser.Default);
 
-        await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.TestUser1, null, TestContext.Current.CancellationToken);
+            await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.TestUser1, null, TestContext.Current.CancellationToken);
 
-        await Client.PutAsyncWithUser(LobbyUrl.SetPlayerReady, TestUser.Default, null, TestContext.Current.CancellationToken);
-        await Client.PutAsyncWithUser(LobbyUrl.SetPlayerReady, TestUser.TestUser1, null, TestContext.Current.CancellationToken);
+            await Client.PutAsyncWithUser(LobbyUrl.SetPlayerReady, TestUser.Default, null, TestContext.Current.CancellationToken);
+            await Client.PutAsyncWithUser(LobbyUrl.SetPlayerReady, TestUser.TestUser1, null, TestContext.Current.CancellationToken);
 
-        await Client.PostAsyncWithUser(LobbyUrl.StartLobby(lobby.Id), TestUser.Default, null, TestContext.Current.CancellationToken);
-
-        // TODO: fix this
-        await Task.Delay(1000, TestContext.Current.CancellationToken);
+            await Client.PostAsyncWithUser(LobbyUrl.StartLobby(lobby.Id), TestUser.Default, null, TestContext.Current.CancellationToken);
+        });
 
         // when
         var response = await Client.GetAsyncWithUser(GameUrl.GetActiveGame, TestUser.Default, TestContext.Current.CancellationToken);
