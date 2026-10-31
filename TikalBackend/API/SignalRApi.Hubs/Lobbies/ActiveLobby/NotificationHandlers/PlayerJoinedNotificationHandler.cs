@@ -1,4 +1,4 @@
-using Lobbies.Contracts.Notifications;
+using Lobbies.Contracts.Events;
 using Microsoft.AspNetCore.SignalR;
 using SignalRApi.Hubs.Lobbies.Mappers;
 
@@ -13,7 +13,7 @@ public sealed class PlayerJoinedNotificationHandler
         this.hubContext = hubContext;
     }
 
-    public Task Handle(PlayerJoinedNotification notification, CancellationToken cancellationToken)
+    public Task Handle(PlayerJoinedIntegrationEvent notification, CancellationToken cancellationToken)
     {
         var lobbyPlayerDto = LobbyPlayerModelMapper.LobbyPlayerModelToLobbyPlayerDto(notification.LobbyPlayerModel);
 

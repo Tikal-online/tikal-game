@@ -2,7 +2,7 @@ using Games.Application.DataAccess;
 using Games.Application.Mappers;
 using Games.Domain.Entities;
 using Games.Domain.Types;
-using Lobbies.Contracts.Notifications;
+using Lobbies.Contracts.Events;
 
 namespace Games.Application.UseCases.CreateGame;
 
@@ -15,7 +15,7 @@ public sealed class LobbyStartedNotificationHandler
         this.gameRepository = gameRepository;
     }
 
-    public void Handle(LobbyStartedNotification notification, CancellationToken cancellationToken)
+    public void Handle(LobbyStartedIntegrationEvent notification, CancellationToken cancellationToken)
     {
         var players = PlayerMapper.LobbyPlayerModelsToPlayers(notification.Lobby.Players);
 
