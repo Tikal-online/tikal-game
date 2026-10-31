@@ -1,4 +1,7 @@
 using System.Net.Http.Json;
+using System.Net.WebSockets;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Connections;
 using Microsoft.AspNetCore.SignalR.Client;
 using RestApi.Controllers.Accounts.Dtos;
 using RestApi.Controllers.Lobbies.Dtos;
@@ -41,15 +44,29 @@ public abstract class IntegrationTestFixture : IAsyncLifetime
     protected async Task<HubConnection> CreateConnection(string url, TestUser? user = null, bool startConnection = true)
     {
         var connection = new HubConnectionBuilder()
-            .WithUrl("wss://localhost/" + url,
+            .WithUrl("http://localhost/" + url,
                 options =>
                 {
-                    options.HttpMessageHandlerFactory = _ => AppFactory.Instance.Server.CreateHandler();
+                    options.Transports = HttpTransportType.WebSockets;
+                    options.SkipNegotiation = true;
 
-                    if (user is not null)
+                    options.WebSocketFactory = (context, cancellationToken) =>
                     {
-                        options.Headers["X-Test-UserId"] = user.UserId;
-                    }
+                        var webSocketClient = AppFactory.Instance.Server.CreateWebSocketClient();
+
+                        webSocketClient.ConfigureRequest = request =>
+                        {
+                            if (user is not null)
+                            {
+                                request.Headers.Append("X-Test-UserId", user.UserId);
+                            }
+                        };
+
+                        return new ValueTask<WebSocket>(
+                            webSocketClient.ConnectAsync(
+                                context.Uri,
+                                cancellationToken));
+                    };
                 })
             .Build();
 

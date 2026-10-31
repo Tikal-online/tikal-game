@@ -43,7 +43,7 @@ public sealed class Lobby : Entity
     public void AddPlayer(Player player)
     {
         Players.Add(player);
-        AddDomainEvent(new PlayerJoinedEvent(player));
+        AddDomainEvent(new PlayerJoinedEvent(PlayerMapper.PlayerToPlayerEventData(player), Id));
     }
 
     public Player? GetPlayer(string userId)

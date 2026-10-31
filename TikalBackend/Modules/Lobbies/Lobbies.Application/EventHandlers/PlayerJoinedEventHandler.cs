@@ -8,9 +8,9 @@ public sealed class PlayerJoinedEventHandler
 {
     public static PlayerJoinedNotification Handle(PlayerJoinedEvent notification, CancellationToken cancellationToken)
     {
-        var playerModel = PlayerMapper.PlayerToLobbyPlayerModel(notification.Player);
+        var playerModel = PlayerMapper.PlayerEventDataToLobbyPlayerModel(notification.Player);
 
-        var playerJoinedNotification = new PlayerJoinedNotification(playerModel, notification.Player.LobbyId);
+        var playerJoinedNotification = new PlayerJoinedNotification(playerModel, notification.LobbyId);
 
         return playerJoinedNotification;
     }

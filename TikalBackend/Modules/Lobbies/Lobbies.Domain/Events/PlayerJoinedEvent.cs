@@ -1,6 +1,6 @@
-using Lobbies.Domain.Entities;
+using Lobbies.Domain.EventData;
 using Shared.Domain.Entities;
 
 namespace Lobbies.Domain.Events;
 
-public sealed record PlayerJoinedEvent(Player Player) : IDomainEvent;
+public sealed record PlayerJoinedEvent(PlayerEventData Player, long LobbyId) : IDomainEvent;
