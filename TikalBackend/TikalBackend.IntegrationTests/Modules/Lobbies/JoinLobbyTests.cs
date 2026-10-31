@@ -5,7 +5,7 @@ using TikalBackend.IntegrationTests.Modules.Lobbies.Dtos;
 
 namespace TikalBackend.IntegrationTests.Modules.Lobbies;
 
-public sealed class JoinLobbyTests : IntegrationTestFixture
+public sealed class JoinLobbyTests(AppFactoryFixture fixture) : IntegrationTestFixture(fixture)
 {
     [Fact]
     public Task GivenUnauthenticatedUser_WhenJoinLobby_ThenReturnsUnauthorized()

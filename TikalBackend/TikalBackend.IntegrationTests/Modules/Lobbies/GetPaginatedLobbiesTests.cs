@@ -7,7 +7,7 @@ using TikalBackend.IntegrationTests.Extensions;
 
 namespace TikalBackend.IntegrationTests.Modules.Lobbies;
 
-public sealed class GetPaginatedLobbiesTests : IntegrationTestFixture
+public sealed class GetPaginatedLobbiesTests(AppFactoryFixture fixture) : IntegrationTestFixture(fixture)
 {
     [Fact]
     public async Task GivenUnauthenticatedUser_WhenGetPaginatedLobbies_ThenReturnsUnauthorized()

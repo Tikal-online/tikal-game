@@ -6,7 +6,7 @@ using TikalBackend.IntegrationTests.Modules.Lobbies.Dtos;
 
 namespace TikalBackend.IntegrationTests.Modules.Lobbies;
 
-public sealed class CreateLobbyTests : IntegrationTestFixture
+public sealed class CreateLobbyTests(AppFactoryFixture fixture) : IntegrationTestFixture(fixture)
 {
     [Theory]
     [ClassData(typeof(ValidCreateLobbyDtos))]

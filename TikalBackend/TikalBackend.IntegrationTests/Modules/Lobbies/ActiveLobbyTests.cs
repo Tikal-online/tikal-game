@@ -6,7 +6,7 @@ using LobbyPlayerDto = SignalRApi.Hubs.Lobbies.Dtos.LobbyPlayerDto;
 
 namespace TikalBackend.IntegrationTests.Modules.Lobbies;
 
-public sealed class ActiveLobbyTests : IntegrationTestFixture
+public sealed class ActiveLobbyTests(AppFactoryFixture fixture) : IntegrationTestFixture(fixture)
 {
     [Fact]
     public async Task GivenUnauthenticatedUser_WhenConnect_ThenThrowsInvalidOperation()

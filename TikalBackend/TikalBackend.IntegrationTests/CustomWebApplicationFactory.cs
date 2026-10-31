@@ -14,7 +14,7 @@ using Wolverine.Runtime;
 
 namespace TikalBackend.IntegrationTests;
 
-internal sealed class CustomWebApplicationFactory : WebApplicationFactory<Program>
+public sealed class CustomWebApplicationFactory : WebApplicationFactory<Program>
 {
     private readonly string databaseConnectionString;
 
@@ -51,9 +51,9 @@ internal sealed class CustomWebApplicationFactory : WebApplicationFactory<Progra
         });
     }
 
-    public static async Task RebuildDatabase(IServiceProvider services)
+    public async Task RebuildDatabase()
     {
-        using var scope = services.CreateScope();
+        using var scope = Services.CreateScope();
 
         var accountsDbContext = scope.ServiceProvider.GetRequiredService<AccountsDbContext>();
 

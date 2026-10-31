@@ -5,7 +5,7 @@ using TikalBackend.IntegrationTests.Modules.Lobbies.Dtos;
 
 namespace TikalBackend.IntegrationTests.Modules.Lobbies;
 
-public sealed class SetPlayerReadyTests : IntegrationTestFixture
+public sealed class SetPlayerReadyTests(AppFactoryFixture fixture) : IntegrationTestFixture(fixture)
 {
     [Fact]
     public Task GivenUnauthenticatedUser_WhenSetPlayerReady_ThenReturnsUnauthorized()

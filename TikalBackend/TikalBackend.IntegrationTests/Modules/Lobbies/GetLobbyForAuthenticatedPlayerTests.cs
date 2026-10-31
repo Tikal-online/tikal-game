@@ -6,7 +6,7 @@ using TikalBackend.IntegrationTests.Modules.Lobbies.Dtos;
 
 namespace TikalBackend.IntegrationTests.Modules.Lobbies;
 
-public sealed class GetLobbyForAuthenticatedPlayerTests : IntegrationTestFixture
+public sealed class GetLobbyForAuthenticatedPlayerTests(AppFactoryFixture fixture) : IntegrationTestFixture(fixture)
 {
     [Fact]
     public async Task GivenUnauthenticatedUser_WhenGetLobbyForAuthenticatedPlayer_ThenReturnsUnauthorized()

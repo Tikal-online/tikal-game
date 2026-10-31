@@ -8,20 +8,19 @@ using RestApi.Controllers.Lobbies.Dtos;
 using TikalBackend.IntegrationTests.Extensions;
 using TikalBackend.IntegrationTests.Modules.Accounts;
 using TikalBackend.IntegrationTests.Modules.Lobbies;
-using TikalBackend.IntegrationTests.Utils;
 using Wolverine.Tracking;
 
 namespace TikalBackend.IntegrationTests;
 
-public abstract class IntegrationTestFixture : IAsyncLifetime
+public abstract class IntegrationTestFixture(AppFactoryFixture appFactoryFixture) : IAsyncLifetime
 {
     protected HttpClient Client;
 
     public async ValueTask InitializeAsync()
     {
-        await CustomWebApplicationFactory.RebuildDatabase(AppFactory.Instance.Services);
+        await appFactoryFixture.WebApplicationFactory.RebuildDatabase();
 
-        Client = AppFactory.Instance.CreateDefaultClient();
+        Client = appFactoryFixture.WebApplicationFactory.CreateDefaultClient();
     }
 
     public async ValueTask DisposeAsync()
@@ -42,15 +41,15 @@ public abstract class IntegrationTestFixture : IAsyncLifetime
         return (await response.Content.ReadFromJsonAsync<LobbyDto>())!;
     }
 
-    protected static Task<ITrackedSession> RunTracked(Func<Task> action)
+    protected Task<ITrackedSession> RunTracked(Func<Task> action)
     {
-        return AppFactory.Instance.Services
+        return appFactoryFixture.WebApplicationFactory.Services
             .TrackActivity()
             .Timeout(TimeSpan.FromSeconds(30))
             .ExecuteAndWaitAsync(_ => action());
     }
 
-    protected static async Task<HubConnection> CreateConnection(string url, TestUser? user = null, bool startConnection = true)
+    protected async Task<HubConnection> CreateConnection(string url, TestUser? user = null, bool startConnection = true)
     {
         var connection = new HubConnectionBuilder()
             .WithUrl("http://localhost/" + url,
@@ -61,7 +60,7 @@ public abstract class IntegrationTestFixture : IAsyncLifetime
 
                     options.WebSocketFactory = (context, cancellationToken) =>
                     {
-                        var webSocketClient = AppFactory.Instance.Server.CreateWebSocketClient();
+                        var webSocketClient = appFactoryFixture.WebApplicationFactory.Server.CreateWebSocketClient();
 
                         webSocketClient.ConfigureRequest = request =>
                         {
@@ -71,10 +70,7 @@ public abstract class IntegrationTestFixture : IAsyncLifetime
                             }
                         };
 
-                        return new ValueTask<WebSocket>(
-                            webSocketClient.ConnectAsync(
-                                context.Uri,
-                                cancellationToken));
+                        return new ValueTask<WebSocket>(webSocketClient.ConnectAsync(context.Uri, cancellationToken));
                     };
                 })
             .Build();
