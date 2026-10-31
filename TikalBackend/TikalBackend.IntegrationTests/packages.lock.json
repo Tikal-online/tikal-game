@@ -1087,8 +1087,7 @@
         "type": "Project",
         "dependencies": {
           "OneOf": "[3.0.271, )",
-          "Shared.Contracts": "[1.0.0, )",
-          "WolverineFx": "[6.56.0, )"
+          "Shared.Contracts": "[1.0.0, )"
         }
       },
       "accounts.domain": {
@@ -1110,10 +1109,12 @@
       "games.application": {
         "type": "Project",
         "dependencies": {
-          "Accounts.Contracts": "[1.0.0, )",
+          "FluentValidation": "[12.2.0, )",
           "Games.Contracts": "[1.0.0, )",
           "Games.Domain": "[1.0.0, )",
-          "Lobbies.Contracts": "[1.0.0, )"
+          "Lobbies.Contracts": "[1.0.0, )",
+          "OneOf": "[3.0.271, )",
+          "Riok.Mapperly": "[4.3.1, )"
         }
       },
       "games.contracts": {
@@ -1144,10 +1145,12 @@
       "lobbies.application": {
         "type": "Project",
         "dependencies": {
-          "Accounts.Contracts": "[1.0.0, )",
+          "FluentValidation": "[12.2.0, )",
           "Games.Contracts": "[1.0.0, )",
           "Lobbies.Contracts": "[1.0.0, )",
-          "Lobbies.Domain": "[1.0.0, )"
+          "Lobbies.Domain": "[1.0.0, )",
+          "OneOf": "[3.0.271, )",
+          "Riok.Mapperly": "[4.3.1, )"
         }
       },
       "lobbies.contracts": {
@@ -1181,7 +1184,8 @@
           "Games.Contracts": "[1.0.0, )",
           "Lobbies.Contracts": "[1.0.0, )",
           "Riok.Mapperly": "[4.3.1, )",
-          "Shared.Api": "[1.0.0, )"
+          "Shared.Api": "[1.0.0, )",
+          "WolverineFX": "[6.56.0, )"
         }
       },
       "shared.api": {
@@ -1199,7 +1203,8 @@
           "Accounts.Contracts": "[1.0.0, )",
           "Lobbies.Contracts": "[1.0.0, )",
           "Riok.Mapperly": "[4.3.1, )",
-          "Shared.Api": "[1.0.0, )"
+          "Shared.Api": "[1.0.0, )",
+          "WolverineFX": "[6.56.0, )"
         }
       },
       "tikalbackend.webhost": {
@@ -1222,7 +1227,9 @@
           "RestApi.Controllers": "[1.0.0, )",
           "Scalar.AspNetCore": "[2.18.0, )",
           "SignalRApi.Hubs": "[1.0.0, )",
+          "WolverineFX": "[6.56.0, )",
           "WolverineFX.EntityFrameworkCore": "[6.56.0, )",
+          "WolverineFX.FluentValidation": "[6.56.0, )",
           "WolverineFX.Postgresql": "[6.56.0, )",
           "WolverineFX.RuntimeCompilation": "[6.56.0, )"
         }
@@ -1401,6 +1408,16 @@
           "Microsoft.EntityFrameworkCore.Relational": "10.0.4",
           "Weasel.EntityFrameworkCore": "9.47.0",
           "WolverineFx.RDBMS": "6.56.0"
+        }
+      },
+      "WolverineFx.FluentValidation": {
+        "type": "CentralTransitive",
+        "requested": "[6.56.0, )",
+        "resolved": "6.56.0",
+        "contentHash": "R89XaiFIy+dWSb4uPfvHcgPvp9h8sI+tHfKkZ3RZMoj1fCkNVFYETK5hvikQVwaY3oGoqU/wAfm9vRwXfYfrBg==",
+        "dependencies": {
+          "FluentValidation": "12.0.0",
+          "WolverineFx": "6.56.0"
         }
       },
       "WolverineFx.Postgresql": {

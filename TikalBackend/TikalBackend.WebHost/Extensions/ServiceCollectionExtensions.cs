@@ -5,7 +5,6 @@ using FluentValidation;
 using Games.Infrastructure;
 using Humanizer;
 using Lobbies.Infrastructure;
-using MediatR;
 using Npgsql;
 using OpenTelemetry.Logs;
 using OpenTelemetry.Metrics;
@@ -14,7 +13,6 @@ using Shared.Api;
 using Shared.Domain.Entities;
 using TikalBackend.WebHost.Configuration;
 using TikalBackend.WebHost.ExceptionHandlers;
-using TikalBackend.WebHost.Pipelines;
 using TikalBackend.WebHost.Telemetry;
 using Wolverine;
 using Wolverine.EntityFrameworkCore;
@@ -80,37 +78,9 @@ internal static class ServiceCollectionExtensions
                 });
         }
 
-        private void AddMediatR()
-        {
-            services.AddMediatR(c =>
-            {
-                c.RegisterServicesFromAssemblies(
-                    AssemblyReference.Assembly,
-                    Lobbies.Application.AssemblyReference.Assembly,
-                    Games.Application.AssemblyReference.Assembly,
-                    SignalRApi.Hubs.AssemblyReference.Assembly
-                );
-
-                c.AddBehavior(typeof(IPipelineBehavior<,>), typeof(TracingPipeline<,>));
-                c.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationPipeline<,>));
-            });
-        }
-
-        private void AddValidators()
-        {
-            services.AddValidatorsFromAssemblies([
-                AssemblyReference.Assembly,
-                Lobbies.Application.AssemblyReference.Assembly,
-                Games.Application.AssemblyReference.Assembly
-            ]);
-        }
-
         public void AddApplication()
         {
-            services.AddValidators();
-
-            services.AddMediatR();
-
+            // Event handlers and validators are part of the wolverine setup
             services.AddScoped<AccountContext>();
         }
 

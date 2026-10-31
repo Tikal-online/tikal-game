@@ -632,21 +632,15 @@
           "WolverineFx": "6.56.0"
         }
       },
-      "accounts.contracts": {
-        "type": "Project",
-        "dependencies": {
-          "OneOf": "[3.0.271, )",
-          "Shared.Contracts": "[1.0.0, )",
-          "WolverineFx": "[6.56.0, )"
-        }
-      },
       "games.application": {
         "type": "Project",
         "dependencies": {
-          "Accounts.Contracts": "[1.0.0, )",
+          "FluentValidation": "[12.2.0, )",
           "Games.Contracts": "[1.0.0, )",
           "Games.Domain": "[1.0.0, )",
-          "Lobbies.Contracts": "[1.0.0, )"
+          "Lobbies.Contracts": "[1.0.0, )",
+          "OneOf": "[3.0.271, )",
+          "Riok.Mapperly": "[4.3.1, )"
         }
       },
       "games.contracts": {

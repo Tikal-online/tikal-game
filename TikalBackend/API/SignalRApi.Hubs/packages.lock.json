@@ -8,6 +8,19 @@
         "resolved": "4.3.1",
         "contentHash": "oSE+OVLHyiojrws0QVbQaAT2YKsYbyHqJXPdV7EhGseR/dYgeWS2x1T5qY5I4E+RJkJqMSG+FyZOq4SljWgJWQ=="
       },
+      "WolverineFx": {
+        "type": "Direct",
+        "requested": "[6.56.0, )",
+        "resolved": "6.56.0",
+        "contentHash": "F01r8vMO5GSD1e1aL8v1umocCLBOGQNGM2jT3uMcpnIUiI1otVHXIJF9JpN40NbTwQiGonaqoNxY75YjwevNHQ==",
+        "dependencies": {
+          "Cronos": "0.11.0",
+          "JasperFx": "2.96.0",
+          "JasperFx.Events": "2.96.0",
+          "JasperFx.SourceGenerator": "2.96.0",
+          "NewId": "4.0.1"
+        }
+      },
       "Cronos": {
         "type": "Transitive",
         "resolved": "0.11.0",
@@ -86,8 +99,7 @@
         "type": "Project",
         "dependencies": {
           "OneOf": "[3.0.271, )",
-          "Shared.Contracts": "[1.0.0, )",
-          "WolverineFx": "[6.56.0, )"
+          "Shared.Contracts": "[1.0.0, )"
         }
       },
       "lobbies.contracts": {
@@ -107,19 +119,6 @@
         "requested": "[3.0.271, )",
         "resolved": "3.0.271",
         "contentHash": "pqpqeK8xQGggExhr4tesVgJkjdn+9HQAO0QgrYV2hFjE3y90okzk1kQMntMiUOGfV7FrCUfKPaVvPBD4IANqKg=="
-      },
-      "WolverineFx": {
-        "type": "CentralTransitive",
-        "requested": "[6.56.0, )",
-        "resolved": "6.56.0",
-        "contentHash": "F01r8vMO5GSD1e1aL8v1umocCLBOGQNGM2jT3uMcpnIUiI1otVHXIJF9JpN40NbTwQiGonaqoNxY75YjwevNHQ==",
-        "dependencies": {
-          "Cronos": "0.11.0",
-          "JasperFx": "2.96.0",
-          "JasperFx.Events": "2.96.0",
-          "JasperFx.SourceGenerator": "2.96.0",
-          "NewId": "4.0.1"
-        }
       }
     }
   }

@@ -19,7 +19,9 @@
         <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore"/>
         <PackageReference Include="OpenTelemetry.Instrumentation.Http"/>
         <PackageReference Include="Scalar.AspNetCore"/>
+        <PackageReference Include="WolverineFX" />
         <PackageReference Include="WolverineFX.EntityFrameworkCore"/>
+        <PackageReference Include="WolverineFX.FluentValidation"/>
         <PackageReference Include="WolverineFX.RuntimeCompilation" />
         <PackageReference Include="WolverineFX.Postgresql"/>
     </ItemGroup>
