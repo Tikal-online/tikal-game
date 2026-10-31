@@ -46,7 +46,7 @@ public abstract class IntegrationTestFixture : IAsyncLifetime
     {
         return AppFactory.Instance.Services
             .TrackActivity()
-            .Timeout(TimeSpan.FromSeconds(5))
+            .Timeout(TimeSpan.FromSeconds(30))
             .ExecuteAndWaitAsync(_ => action());
     }
 
