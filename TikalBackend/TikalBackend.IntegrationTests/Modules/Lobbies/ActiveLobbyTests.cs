@@ -65,157 +65,172 @@ public sealed class ActiveLobbyTests : IntegrationTestFixture
 
     [Theory]
     [ClassData(typeof(ValidCreateLobbyDtos))]
-    public async Task GivenLobby_WhenPlayerJoinsLobby_ThenSendsPlayerJoinedMessage(CreateLobbyDto createLobbyDto)
+    public Task GivenLobby_WhenPlayerJoinsLobby_ThenSendsPlayerJoinedMessage(CreateLobbyDto createLobbyDto)
     {
-        // given
-        await CreateUserAccount(TestUser.Default);
-        var lobby = await CreateAndGetLobby(createLobbyDto, TestUser.Default);
-        await using var connection = await CreateConnection(LobbyUrl.ActiveLobbyHub, TestUser.Default);
+        return RunTracked(async () =>
+        {
+            // given
+            await CreateUserAccount(TestUser.Default);
+            var lobby = await CreateAndGetLobby(createLobbyDto, TestUser.Default);
+            await using var connection = await CreateConnection(LobbyUrl.ActiveLobbyHub, TestUser.Default);
 
-        var joinedPlayerSource = new TaskCompletionSource<LobbyPlayerDto>();
-        connection.On<LobbyPlayerDto>("PlayerJoined", joinedPlayerSource.SetResult);
+            var joinedPlayerSource = new TaskCompletionSource<LobbyPlayerDto>();
+            connection.On<LobbyPlayerDto>("PlayerJoined", joinedPlayerSource.SetResult);
 
-        // when
-        await CreateUserAccount(TestUser.TestUser1);
-        await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.TestUser1, null, TestContext.Current.CancellationToken);
+            // when
+            await CreateUserAccount(TestUser.TestUser1);
+            await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.TestUser1, null, TestContext.Current.CancellationToken);
 
-        // then
-        var joinedPlayer = await joinedPlayerSource.Task.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken);
+            // then
+            var joinedPlayer = await joinedPlayerSource.Task.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken);
 
-        Assert.Multiple(
-            () => Assert.NotNull(joinedPlayer),
-            () => Assert.Equal(TestUser.TestUser1.UserId, joinedPlayer.UserId),
-            () => Assert.Equal(TestUser.TestUser1.Name, joinedPlayer.Name)
-        );
+            Assert.Multiple(
+                () => Assert.NotNull(joinedPlayer),
+                () => Assert.Equal(TestUser.TestUser1.UserId, joinedPlayer.UserId),
+                () => Assert.Equal(TestUser.TestUser1.Name, joinedPlayer.Name)
+            );
+        });
     }
 
     [Theory]
     [ClassData(typeof(ValidCreateLobbyDtos))]
-    public async Task GivenLobby_WhenPlayerLeavesLobby_ThenSendsPlayerLeftMessage(CreateLobbyDto createLobbyDto)
+    public Task GivenLobby_WhenPlayerLeavesLobby_ThenSendsPlayerLeftMessage(CreateLobbyDto createLobbyDto)
     {
-        // given
-        await CreateUserAccount(TestUser.Default);
-        var lobby = await CreateAndGetLobby(createLobbyDto, TestUser.Default);
-        await using var connection = await CreateConnection(LobbyUrl.ActiveLobbyHub, TestUser.Default);
+        return RunTracked(async () =>
+        {
+            // given
+            await CreateUserAccount(TestUser.Default);
+            var lobby = await CreateAndGetLobby(createLobbyDto, TestUser.Default);
+            await using var connection = await CreateConnection(LobbyUrl.ActiveLobbyHub, TestUser.Default);
 
-        var leftPlayerSource = new TaskCompletionSource<LobbyPlayerDto>();
-        connection.On<LobbyPlayerDto>("PlayerLeft", leftPlayerSource.SetResult);
+            var leftPlayerSource = new TaskCompletionSource<LobbyPlayerDto>();
+            connection.On<LobbyPlayerDto>("PlayerLeft", leftPlayerSource.SetResult);
 
-        await CreateUserAccount(TestUser.TestUser1);
-        await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.TestUser1, null, TestContext.Current.CancellationToken);
+            await CreateUserAccount(TestUser.TestUser1);
+            await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.TestUser1, null, TestContext.Current.CancellationToken);
 
-        // when
-        await Client.DeleteAsyncWithUser(LobbyUrl.LeaveLobby(lobby.Id), TestUser.TestUser1, TestContext.Current.CancellationToken);
+            // when
+            await Client.DeleteAsyncWithUser(LobbyUrl.LeaveLobby(lobby.Id), TestUser.TestUser1, TestContext.Current.CancellationToken);
 
-        // then
-        var leftPlayer = await leftPlayerSource.Task.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken);
+            // then
+            var leftPlayer = await leftPlayerSource.Task.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken);
 
-        Assert.Multiple(
-            () => Assert.NotNull(leftPlayer),
-            () => Assert.Equal(TestUser.TestUser1.UserId, leftPlayer.UserId),
-            () => Assert.Equal(TestUser.TestUser1.Name, leftPlayer.Name)
-        );
+            Assert.Multiple(
+                () => Assert.NotNull(leftPlayer),
+                () => Assert.Equal(TestUser.TestUser1.UserId, leftPlayer.UserId),
+                () => Assert.Equal(TestUser.TestUser1.Name, leftPlayer.Name)
+            );
+        });
     }
 
     [Theory]
     [ClassData(typeof(ValidCreateLobbyDtos))]
-    public async Task GivenLobby_WhenLastOwnerLeavesLobby_ThenPromotesPlayerAndSendsPlayerUpdatedNotification(
+    public Task GivenLobby_WhenLastOwnerLeavesLobby_ThenPromotesPlayerAndSendsPlayerUpdatedNotification(
         CreateLobbyDto createLobbyDto
     )
     {
-        // given
-        await CreateUserAccount(TestUser.Default);
-        var lobby = await CreateAndGetLobby(createLobbyDto, TestUser.Default);
+        return RunTracked(async () =>
+        {
+            // given
+            await CreateUserAccount(TestUser.Default);
+            var lobby = await CreateAndGetLobby(createLobbyDto, TestUser.Default);
 
-        await CreateUserAccount(TestUser.TestUser1);
-        await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.TestUser1, null, TestContext.Current.CancellationToken);
+            await CreateUserAccount(TestUser.TestUser1);
+            await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.TestUser1, null, TestContext.Current.CancellationToken);
 
-        await using var connection = await CreateConnection(LobbyUrl.ActiveLobbyHub, TestUser.TestUser1);
-        await Client.GetAsyncWithUser(LobbyUrl.GetActiveLobby, TestUser.TestUser1, TestContext.Current.CancellationToken);
+            await using var connection = await CreateConnection(LobbyUrl.ActiveLobbyHub, TestUser.TestUser1);
+            await Client.GetAsyncWithUser(LobbyUrl.GetActiveLobby, TestUser.TestUser1, TestContext.Current.CancellationToken);
 
-        var updatedPlayerSource = new TaskCompletionSource<LobbyPlayerDto>();
-        connection.On<LobbyPlayerDto>("PlayerUpdated", updatedPlayerSource.SetResult);
+            var updatedPlayerSource = new TaskCompletionSource<LobbyPlayerDto>();
+            connection.On<LobbyPlayerDto>("PlayerUpdated", updatedPlayerSource.SetResult);
 
-        // when
-        await Client.DeleteAsyncWithUser(LobbyUrl.LeaveLobby(lobby.Id), TestUser.Default, TestContext.Current.CancellationToken);
+            // when
+            await Client.DeleteAsyncWithUser(LobbyUrl.LeaveLobby(lobby.Id), TestUser.Default, TestContext.Current.CancellationToken);
 
-        // then
-        var updatedPlayer = await updatedPlayerSource.Task.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken);
+            // then
+            var updatedPlayer = await updatedPlayerSource.Task.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken);
 
-        Assert.Multiple(
-            () => Assert.NotNull(updatedPlayer),
-            () => Assert.Equal(TestUser.TestUser1.UserId, updatedPlayer.UserId),
-            () => Assert.Equal(TestUser.TestUser1.Name, updatedPlayer.Name),
-            () => Assert.True(updatedPlayer.IsOwner)
-        );
+            Assert.Multiple(
+                () => Assert.NotNull(updatedPlayer),
+                () => Assert.Equal(TestUser.TestUser1.UserId, updatedPlayer.UserId),
+                () => Assert.Equal(TestUser.TestUser1.Name, updatedPlayer.Name),
+                () => Assert.True(updatedPlayer.IsOwner)
+            );
+        });
     }
 
     [Theory]
     [ClassData(typeof(ValidCreateLobbyDtos))]
-    public async Task GivenLobby_WhenPlayerReadyUp_ThenSetsPlayerToReadyAndSendsPlayerUpdatedNotification(
+    public Task GivenLobby_WhenPlayerReadyUp_ThenSetsPlayerToReadyAndSendsPlayerUpdatedNotification(
         CreateLobbyDto createLobbyDto
     )
     {
-        // given
-        await CreateUserAccount(TestUser.Default);
-        var lobby = await CreateAndGetLobby(createLobbyDto, TestUser.Default);
-        await using var connection = await CreateConnection(LobbyUrl.ActiveLobbyHub, TestUser.Default);
+        return RunTracked(async () =>
+        {
+            // given
+            await CreateUserAccount(TestUser.Default);
+            var lobby = await CreateAndGetLobby(createLobbyDto, TestUser.Default);
+            await using var connection = await CreateConnection(LobbyUrl.ActiveLobbyHub, TestUser.Default);
 
-        var updatedPlayerSource = new TaskCompletionSource<LobbyPlayerDto>();
-        connection.On<LobbyPlayerDto>("PlayerUpdated", updatedPlayerSource.SetResult);
+            var updatedPlayerSource = new TaskCompletionSource<LobbyPlayerDto>();
+            connection.On<LobbyPlayerDto>("PlayerUpdated", updatedPlayerSource.SetResult);
 
-        await CreateUserAccount(TestUser.TestUser1);
-        await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.TestUser1, null, TestContext.Current.CancellationToken);
+            await CreateUserAccount(TestUser.TestUser1);
+            await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.TestUser1, null, TestContext.Current.CancellationToken);
 
-        // when
-        await Client.PutAsyncWithUser(LobbyUrl.SetPlayerReady, TestUser.TestUser1, null, TestContext.Current.CancellationToken);
+            // when
+            await Client.PutAsyncWithUser(LobbyUrl.SetPlayerReady, TestUser.TestUser1, null, TestContext.Current.CancellationToken);
 
-        // then
-        var updatedPlayer = await updatedPlayerSource.Task.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken);
+            // then
+            var updatedPlayer = await updatedPlayerSource.Task.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken);
 
-        Assert.Multiple(
-            () => Assert.NotNull(updatedPlayer),
-            () => Assert.Equal(TestUser.TestUser1.UserId, updatedPlayer.UserId),
-            () => Assert.Equal(TestUser.TestUser1.Name, updatedPlayer.Name),
-            () => Assert.True(updatedPlayer.IsReady)
-        );
+            Assert.Multiple(
+                () => Assert.NotNull(updatedPlayer),
+                () => Assert.Equal(TestUser.TestUser1.UserId, updatedPlayer.UserId),
+                () => Assert.Equal(TestUser.TestUser1.Name, updatedPlayer.Name),
+                () => Assert.True(updatedPlayer.IsReady)
+            );
+        });
     }
 
     [Theory]
     [ClassData(typeof(ValidCreateLobbyDtos))]
-    public async Task GivenLobby_WhenPlayerReadyDown_ThenSetsPlayerToNotReadyAndSendsPlayerUpdatedNotification(
+    public Task GivenLobby_WhenPlayerReadyDown_ThenSetsPlayerToNotReadyAndSendsPlayerUpdatedNotification(
         CreateLobbyDto createLobbyDto
     )
     {
-        // given
-        await CreateUserAccount(TestUser.Default);
-        var lobby = await CreateAndGetLobby(createLobbyDto, TestUser.Default);
-        await using var connection = await CreateConnection(LobbyUrl.ActiveLobbyHub, TestUser.Default);
+        return RunTracked(async () =>
+        {
+            // given
+            await CreateUserAccount(TestUser.Default);
+            var lobby = await CreateAndGetLobby(createLobbyDto, TestUser.Default);
+            await using var connection = await CreateConnection(LobbyUrl.ActiveLobbyHub, TestUser.Default);
 
-        await CreateUserAccount(TestUser.TestUser1);
-        await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.TestUser1, null, TestContext.Current.CancellationToken);
+            await CreateUserAccount(TestUser.TestUser1);
+            await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.TestUser1, null, TestContext.Current.CancellationToken);
 
-        var firstUpdate = new TaskCompletionSource();
-        connection.On<LobbyPlayerDto>("PlayerUpdated", _ => firstUpdate.SetResult());
+            var firstUpdate = new TaskCompletionSource();
+            connection.On<LobbyPlayerDto>("PlayerUpdated", _ => firstUpdate.SetResult());
 
-        await Client.PutAsyncWithUser(LobbyUrl.SetPlayerReady, TestUser.TestUser1, null, TestContext.Current.CancellationToken);
+            await Client.PutAsyncWithUser(LobbyUrl.SetPlayerReady, TestUser.TestUser1, null, TestContext.Current.CancellationToken);
 
-        await firstUpdate.Task.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken);
+            await firstUpdate.Task.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken);
 
-        var updatedPlayerSource = new TaskCompletionSource<LobbyPlayerDto>();
-        connection.On<LobbyPlayerDto>("PlayerUpdated", updatedPlayerSource.SetResult);
+            var updatedPlayerSource = new TaskCompletionSource<LobbyPlayerDto>();
+            connection.On<LobbyPlayerDto>("PlayerUpdated", updatedPlayerSource.SetResult);
 
-        // when
-        await Client.DeleteAsyncWithUser(LobbyUrl.SetPlayerNotReady, TestUser.TestUser1, TestContext.Current.CancellationToken);
+            // when
+            await Client.DeleteAsyncWithUser(LobbyUrl.SetPlayerNotReady, TestUser.TestUser1, TestContext.Current.CancellationToken);
 
-        // then
-        var updatedPlayer = await updatedPlayerSource.Task.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken);
+            // then
+            var updatedPlayer = await updatedPlayerSource.Task.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken);
 
-        Assert.Multiple(
-            () => Assert.NotNull(updatedPlayer),
-            () => Assert.Equal(TestUser.TestUser1.UserId, updatedPlayer.UserId),
-            () => Assert.Equal(TestUser.TestUser1.Name, updatedPlayer.Name),
-            () => Assert.False(updatedPlayer.IsReady)
-        );
+            Assert.Multiple(
+                () => Assert.NotNull(updatedPlayer),
+                () => Assert.Equal(TestUser.TestUser1.UserId, updatedPlayer.UserId),
+                () => Assert.Equal(TestUser.TestUser1.Name, updatedPlayer.Name),
+                () => Assert.False(updatedPlayer.IsReady)
+            );
+        });
     }
 }

@@ -36,7 +36,10 @@ public sealed class GetAccountTests : IntegrationTestFixture
     )
     {
         // given
-        await Client.PostAsyncWithUser(AccountUrl.CreateAccount, TestUser.Default, createAccountDto, TestContext.Current.CancellationToken);
+        await RunTracked(() =>
+        {
+            return Client.PostAsyncWithUser(AccountUrl.CreateAccount, TestUser.Default, createAccountDto, TestContext.Current.CancellationToken);
+        });
 
         // when
         var response = await Client.GetAsyncWithUser(AccountUrl.GetAccount, TestUser.Default, TestContext.Current.CancellationToken);

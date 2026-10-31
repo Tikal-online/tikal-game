@@ -10,68 +10,81 @@ public sealed class CreateLobbyTests : IntegrationTestFixture
 {
     [Theory]
     [ClassData(typeof(ValidCreateLobbyDtos))]
-    public async Task GivenUnauthenticatedUser_WhenCreateLobby_ThenReturnsUnauthorized(CreateLobbyDto createLobbyDto)
+    public Task GivenUnauthenticatedUser_WhenCreateLobby_ThenReturnsUnauthorized(CreateLobbyDto createLobbyDto)
     {
-        // when
-        var response = await Client.PostAsJsonAsync(LobbyUrl.CreateLobby, createLobbyDto, TestContext.Current.CancellationToken);
+        return RunTracked(async () =>
+        {
+            // when
+            var response = await Client.PostAsJsonAsync(LobbyUrl.CreateLobby, createLobbyDto, TestContext.Current.CancellationToken);
 
-        // then
-        Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
+            // then
+            Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
+        });
     }
 
     [Theory]
     [ClassData(typeof(InvalidCreateLobbyDtos))]
-    public async Task GivenInvalidCreateLobbyDto_WhenCreateLobby_ThenReturnsBadRequest(CreateLobbyDto createLobbyDto)
+    public Task GivenInvalidCreateLobbyDto_WhenCreateLobby_ThenReturnsBadRequest(CreateLobbyDto createLobbyDto)
     {
-        // given
-        await CreateUserAccount(TestUser.Default);
+        return RunTracked(async () =>
+        {
+            // given
+            await CreateUserAccount(TestUser.Default);
 
-        // when
-        var response = await Client.PostAsyncWithUser(LobbyUrl.CreateLobby, TestUser.Default, createLobbyDto, TestContext.Current.CancellationToken);
+            // when
+            var response = await Client.PostAsyncWithUser(LobbyUrl.CreateLobby, TestUser.Default, createLobbyDto, TestContext.Current.CancellationToken);
 
-        // then
-        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            // then
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        });
     }
 
     [Theory]
     [ClassData(typeof(ValidCreateLobbyDtos))]
-    public async Task GivenUserWithoutAccount_WhenCreateLobby_ThenReturnsUnauthorized(CreateLobbyDto createLobbyDto)
+    public Task GivenUserWithoutAccount_WhenCreateLobby_ThenReturnsUnauthorized(CreateLobbyDto createLobbyDto)
     {
-        // when
-        var response = await Client.PostAsyncWithUser(LobbyUrl.CreateLobby, TestUser.Default, createLobbyDto, TestContext.Current.CancellationToken);
+        return RunTracked(async () =>
+        {
+            // when
+            var response = await Client.PostAsyncWithUser(LobbyUrl.CreateLobby, TestUser.Default, createLobbyDto, TestContext.Current.CancellationToken);
 
-        // then
-        Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
+            // then
+            Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
+        });
     }
 
     [Theory]
     [ClassData(typeof(ValidCreateLobbyDtos))]
-    public async Task GivenUserNotInLobby_WhenCreateLobby_ThenReturnsCreated(
-        CreateLobbyDto createLobbyDto
-    )
+    public Task GivenUserNotInLobby_WhenCreateLobby_ThenReturnsCreated(CreateLobbyDto createLobbyDto)
     {
-        // given
-        await CreateUserAccount(TestUser.Default);
+        return RunTracked(async () =>
+        {
+            // given
+            await CreateUserAccount(TestUser.Default);
 
-        // when
-        var response = await Client.PostAsyncWithUser(LobbyUrl.CreateLobby, TestUser.Default, createLobbyDto, TestContext.Current.CancellationToken);
+            // when
+            var response = await Client.PostAsyncWithUser(LobbyUrl.CreateLobby, TestUser.Default, createLobbyDto, TestContext.Current.CancellationToken);
 
-        // then
-        Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+            // then
+            Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+        });
     }
 
     [Theory]
     [ClassData(typeof(ValidCreateLobbyDtos))]
-    public async Task GivenUserAlreadyInALobby_WhenCreateLobby_ThenReturnsConflict(CreateLobbyDto createLobbyDto)
+    public Task GivenUserAlreadyInALobby_WhenCreateLobby_ThenReturnsConflict(CreateLobbyDto createLobbyDto)
     {
-        // given
-        await CreateUserAccount(TestUser.Default);
-        await Client.PostAsyncWithUser(LobbyUrl.CreateLobby, TestUser.Default, createLobbyDto, TestContext.Current.CancellationToken);
+        return RunTracked(async () =>
+        {
+            // given
+            await CreateUserAccount(TestUser.Default);
+            await Client.PostAsyncWithUser(LobbyUrl.CreateLobby, TestUser.Default, createLobbyDto, TestContext.Current.CancellationToken);
 
-        // when
-        var response = await Client.PostAsyncWithUser(LobbyUrl.CreateLobby, TestUser.Default, createLobbyDto, TestContext.Current.CancellationToken);
+            // when
+            var response = await Client.PostAsyncWithUser(LobbyUrl.CreateLobby, TestUser.Default, createLobbyDto, TestContext.Current.CancellationToken);
 
-        // then
-        Assert.Equal(HttpStatusCode.Conflict, response.StatusCode);
+            // then
+            Assert.Equal(HttpStatusCode.Conflict, response.StatusCode);
+        });
     }
 }

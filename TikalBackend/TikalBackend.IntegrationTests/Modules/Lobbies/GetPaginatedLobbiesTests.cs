@@ -52,42 +52,45 @@ public sealed class GetPaginatedLobbiesTests : IntegrationTestFixture
     public async Task GivenLobbiesAndSearchString_WhenGetPaginatedLobbies_ThenReturnsLobbiesWithMatchingNames()
     {
         // given
-        await CreateUserAccount(TestUser.Default);
-        await CreateUserAccount(TestUser.TestUser1);
-        await CreateUserAccount(TestUser.TestUser2);
+        await RunTracked(async () =>
+        {
+            await CreateUserAccount(TestUser.Default);
+            await CreateUserAccount(TestUser.TestUser1);
+            await CreateUserAccount(TestUser.TestUser2);
 
-        await Client.PostAsyncWithUser(
-            LobbyUrl.CreateLobby,
-            TestUser.Default,
-            new CreateLobbyDto
-            {
-                Name = "Lobby1",
-                MaxPlayers = 2
-            },
-            TestContext.Current.CancellationToken
-        );
+            await Client.PostAsyncWithUser(
+                LobbyUrl.CreateLobby,
+                TestUser.Default,
+                new CreateLobbyDto
+                {
+                    Name = "Lobby1",
+                    MaxPlayers = 2
+                },
+                TestContext.Current.CancellationToken
+            );
 
-        await Client.PostAsyncWithUser(
-            LobbyUrl.CreateLobby,
-            TestUser.TestUser1,
-            new CreateLobbyDto
-            {
-                Name = "Lobby2",
-                MaxPlayers = 3
-            },
-            TestContext.Current.CancellationToken
-        );
+            await Client.PostAsyncWithUser(
+                LobbyUrl.CreateLobby,
+                TestUser.TestUser1,
+                new CreateLobbyDto
+                {
+                    Name = "Lobby2",
+                    MaxPlayers = 3
+                },
+                TestContext.Current.CancellationToken
+            );
 
-        await Client.PostAsyncWithUser(
-            LobbyUrl.CreateLobby,
-            TestUser.TestUser2,
-            new CreateLobbyDto
-            {
-                Name = "Lobby3",
-                MaxPlayers = 4
-            },
-            TestContext.Current.CancellationToken
-        );
+            await Client.PostAsyncWithUser(
+                LobbyUrl.CreateLobby,
+                TestUser.TestUser2,
+                new CreateLobbyDto
+                {
+                    Name = "Lobby3",
+                    MaxPlayers = 4
+                },
+                TestContext.Current.CancellationToken
+            );
+        });
 
         var queryParams = new Dictionary<string, string?>
         {

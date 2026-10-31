@@ -35,7 +35,10 @@ public sealed class GetLobbyTests : IntegrationTestFixture
     public async Task GivenNoLobbyWithId_WhenGetLobby_ThenReturnsNotFound(long lobbyId)
     {
         // given
-        await CreateUserAccount(TestUser.Default);
+        await RunTracked(async () =>
+        {
+            await CreateUserAccount(TestUser.Default);
+        });
 
         // when
         var response = await Client.GetAsyncWithUser(LobbyUrl.GetLobby(lobbyId), TestUser.Default, TestContext.Current.CancellationToken);
@@ -49,9 +52,12 @@ public sealed class GetLobbyTests : IntegrationTestFixture
     public async Task GivenLobbyWithId_WhenGetLobby_ThenReturnsLobby(CreateLobbyDto createLobbyDto)
     {
         // given
-        await CreateUserAccount(TestUser.Default);
+        await RunTracked(async () =>
+        {
+            await CreateUserAccount(TestUser.Default);
 
-        await Client.PostAsyncWithUser(LobbyUrl.CreateLobby, TestUser.Default, createLobbyDto, TestContext.Current.CancellationToken);
+            await Client.PostAsyncWithUser(LobbyUrl.CreateLobby, TestUser.Default, createLobbyDto, TestContext.Current.CancellationToken);
+        });
 
         var createdLobbyResponse = await Client.GetAsyncWithUser(LobbyUrl.GetActiveLobby, TestUser.Default, TestContext.Current.CancellationToken);
 

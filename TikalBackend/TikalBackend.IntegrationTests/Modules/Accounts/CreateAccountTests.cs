@@ -11,11 +11,11 @@ public sealed class CreateAccountTests : IntegrationTestFixture
 {
     [Theory]
     [ClassData(typeof(ValidCreateAccountDtos))]
-    public async Task GivenUnauthenticatedUser_WhenCreateAccount_ThenReturnsUnauthorized(
+    public Task GivenUnauthenticatedUser_WhenCreateAccount_ThenReturnsUnauthorized(
         CreateAccountDto createAccountDto
     )
     {
-        await RunTracked(async () =>
+        return RunTracked(async () =>
         {
             // when
             var response = await Client.PostAsJsonAsync(AccountUrl.CreateAccount, createAccountDto, TestContext.Current.CancellationToken);
@@ -27,11 +27,11 @@ public sealed class CreateAccountTests : IntegrationTestFixture
 
     [Theory]
     [ClassData(typeof(InvalidCreateAccountDtos))]
-    public async Task GivenInvalidCreateAccountDto_WhenCreateAccount_ThenReturnsBadRequest(
+    public Task GivenInvalidCreateAccountDto_WhenCreateAccount_ThenReturnsBadRequest(
         CreateAccountDto createAccountDto
     )
     {
-        await RunTracked(async () =>
+        return RunTracked(async () =>
         {
             // when
             var response = await Client.PostAsyncWithUser(AccountUrl.CreateAccount, TestUser.Default, createAccountDto, TestContext.Current.CancellationToken);
@@ -43,11 +43,11 @@ public sealed class CreateAccountTests : IntegrationTestFixture
 
     [Theory]
     [ClassData(typeof(ValidCreateAccountDtos))]
-    public async Task GivenExistingAccountForUser_WhenCreateAccount_ThenReturnsConflict(
+    public Task GivenExistingAccountForUser_WhenCreateAccount_ThenReturnsConflict(
         CreateAccountDto createAccountDto
     )
     {
-        await RunTracked(async () =>
+        return RunTracked(async () =>
         {
             // given
             await Client.PostAsyncWithUser(AccountUrl.CreateAccount, TestUser.Default, createAccountDto, TestContext.Current.CancellationToken);
@@ -62,11 +62,11 @@ public sealed class CreateAccountTests : IntegrationTestFixture
 
     [Theory]
     [ClassData(typeof(ValidCreateAccountDtos))]
-    public async Task GivenNoAccountForUser_WhenCreateAccount_ThenReturnsCreatedAccount(
+    public Task GivenNoAccountForUser_WhenCreateAccount_ThenReturnsCreatedAccount(
         CreateAccountDto createAccountDto
     )
     {
-        await RunTracked(async () =>
+        return RunTracked(async () =>
         {
             // when
             var response = await Client.PostAsyncWithUser(AccountUrl.CreateAccount, TestUser.Default, createAccountDto, TestContext.Current.CancellationToken);
