@@ -2,11 +2,10 @@ using Accounts.Application.DataAccess;
 using Accounts.Application.Mappers;
 using Accounts.Contracts.Models;
 using Accounts.Contracts.Queries;
-using Shared.Contracts.Messaging;
 
 namespace Accounts.Application.UseCases.GetAccounts;
 
-internal sealed class GetAccountsQueryHandler : QueryHandler<GetAccountsQuery, List<AccountModel>>
+public sealed class GetAccountsQueryHandler
 {
     private readonly AccountQueryContext accountQueryContext;
 

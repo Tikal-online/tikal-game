@@ -8,6 +8,8 @@ public sealed class Player
 
     public required string UserId { get; set; }
 
+    public required string Name { get; set; }
+
     public required Colour Colour { get; set; }
 
     public required int Points { get; set; }

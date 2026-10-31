@@ -1,24 +1,34 @@
 using System.ComponentModel.DataAnnotations;
 using Lobbies.Contracts.Commands;
+using Lobbies.Contracts.Errors;
+using Lobbies.Contracts.Models;
+using Lobbies.Contracts.Notifications;
 using Lobbies.Contracts.Queries;
-using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using OneOf;
+using OneOf.Types;
 using RestApi.Controllers.Lobbies.Dtos;
 using RestApi.Controllers.Lobbies.Mappers;
 using RestApi.Controllers.Shared.Dtos;
 using Shared.Api;
+using Shared.Contracts.Errors;
+using Shared.Contracts.Queries;
+using Wolverine;
 
 namespace RestApi.Controllers.Lobbies;
 
 [RequireAccount]
 public sealed partial class LobbiesController : ApiController
 {
-    private readonly ISender sender;
+    private readonly AccountContext accountContext;
 
-    public LobbiesController(ISender sender)
+    private readonly IMessageBus bus;
+
+    public LobbiesController(IMessageBus bus, AccountContext accountContext)
     {
-        this.sender = sender;
+        this.bus = bus;
+        this.accountContext = accountContext;
     }
 
     [HttpPost]
@@ -30,9 +40,14 @@ public sealed partial class LobbiesController : ApiController
         CancellationToken cancellationToken
     )
     {
-        var command = new CreateLobbyCommand(createLobbyDto.Name, createLobbyDto.MaxPlayers);
+        var command = new CreateLobbyCommand(
+            accountContext.Account.UserId,
+            accountContext.Account.Name,
+            createLobbyDto.Name,
+            createLobbyDto.MaxPlayers
+        );
 
-        var result = await sender.Send(command, cancellationToken);
+        var result = await bus.InvokeAsync<OneOf<Success, PlayerAlreadyInALobby>>(command, cancellationToken);
 
         return result.Match<IActionResult>(
             _ => CreatedAtAction(nameof(GetLobbyForUser), new { }),
@@ -48,7 +63,7 @@ public sealed partial class LobbiesController : ApiController
     {
         var query = new GetLobbyQuery(Id);
 
-        var result = await sender.Send(query, cancellationToken);
+        var result = await bus.InvokeAsync<LobbyModel?>(query, cancellationToken);
 
         if (result is null)
         {
@@ -67,9 +82,9 @@ public sealed partial class LobbiesController : ApiController
     [EndpointDescription("Adds the currently authenticated user to the provided lobby")]
     public async Task<IActionResult> JoinLobby(long Id, CancellationToken cancellationToken)
     {
-        var query = new JoinLobbyCommand(Id);
+        var query = new JoinLobbyCommand(accountContext.Account.UserId, accountContext.Account.Name, Id);
 
-        var result = await sender.Send(query, cancellationToken);
+        var result = await bus.InvokeAsync<OneOf<Success, PlayerAlreadyInALobby, LobbyNotFound, LobbyFull, LobbyInGame>>(query, cancellationToken);
 
         return result.Match<IActionResult>(
             _ => Ok(),
@@ -86,9 +101,9 @@ public sealed partial class LobbiesController : ApiController
     [EndpointDescription("Gets the lobby for the currently authenticated user")]
     public async Task<IActionResult> GetLobbyForUser(CancellationToken cancellationToken)
     {
-        var query = new GetLobbyForAuthenticatedPlayerQuery();
+        var query = new GetLobbyForPlayerQuery(accountContext.Account.UserId);
 
-        var result = await sender.Send(query, cancellationToken);
+        var result = await bus.InvokeAsync<LobbyModel?>(query, cancellationToken);
 
         if (result is null)
         {
@@ -109,9 +124,9 @@ public sealed partial class LobbiesController : ApiController
     [EndpointDescription("Removes the currently authenticated user from the provided lobby")]
     public async Task<IActionResult> LeaveLobby(long Id, CancellationToken cancellationToken)
     {
-        var command = new LeaveLobbyCommand(Id);
+        var command = new LeaveLobbyCommand(accountContext.Account.UserId, Id);
 
-        var result = await sender.Send(command, cancellationToken);
+        var result = await bus.InvokeAsync<OneOf<Success, LobbyNotFound, PlayerNotInGivenLobby, LobbyInGame>>(command, cancellationToken);
 
         return result.Match<IActionResult>(
             _ => Ok(),
@@ -128,9 +143,9 @@ public sealed partial class LobbiesController : ApiController
     public async Task<IActionResult> SendMessage(long Id, SendMessageDto sendMessageDto,
         CancellationToken cancellationToken)
     {
-        var command = new SendLobbyChatMessageCommand(Id, sendMessageDto.Message);
+        var command = new SendLobbyChatMessageCommand(accountContext.Account.UserId, Id, sendMessageDto.Message);
 
-        var result = await sender.Send(command, cancellationToken);
+        var result = await bus.InvokeAsync<OneOf<LobbyChatMessageSentNotification, LobbyNotFound, PlayerNotInGivenLobby>>(command, cancellationToken);
 
         return result.Match<IActionResult>(
             _ => Ok(),
@@ -146,9 +161,9 @@ public sealed partial class LobbiesController : ApiController
     [EndpointDescription("Starts a lobby if there it contains at least 2 players and all of them are ready")]
     public async Task<IActionResult> StartLobby(long Id, CancellationToken cancellationToken)
     {
-        var command = new StartLobbyCommand(Id);
+        var command = new StartLobbyCommand(accountContext.Account.UserId, Id);
 
-        var result = await sender.Send(command, cancellationToken);
+        var result = await bus.InvokeAsync<OneOf<Success, LobbyNotFound, PlayerNotInGivenLobby, Unprivileged, LobbyCannotBeStarted>>(command, cancellationToken);
 
         return result.Match<IActionResult>(
             _ => Ok(),
@@ -173,7 +188,7 @@ public sealed partial class LobbiesController : ApiController
     {
         var query = new GetPaginatedLobbiesQuery(pageSize, pageNumber, searchText);
 
-        var paginatedResult = await sender.Send(query, cancellationToken);
+        var paginatedResult = await bus.InvokeAsync<PaginatedResult<List<LobbySummaryModel>>>(query, cancellationToken);
 
         var lobbySummaryDtos = LobbyModelMapper.LobbySummaryModelsToLobbySummaryDtos(paginatedResult.Data);
 

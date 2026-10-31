@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Lobbies.Infrastructure.Repositories;
 
-internal sealed class DbLobbyRepository : LobbyRepository
+public sealed class DbLobbyRepository : LobbyRepository
 {
     private readonly LobbiesDbContext lobbiesDbContext;
 

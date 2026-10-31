@@ -1,23 +1,27 @@
 using Lobbies.Contracts.Queries;
-using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
+using Shared.Api;
+using Wolverine;
 
 namespace SignalRApi.Hubs.Lobbies.ActiveLobby;
 
 [Authorize]
 public sealed class ActiveLobbyHub : Hub<ActiveLobbyClient>
 {
-    private readonly ISender sender;
+    private readonly AccountContext accountContext;
 
-    public ActiveLobbyHub(ISender sender)
+    private readonly IMessageBus bus;
+
+    public ActiveLobbyHub(IMessageBus bus, AccountContext accountContext)
     {
-        this.sender = sender;
+        this.bus = bus;
+        this.accountContext = accountContext;
     }
 
     public override async Task OnConnectedAsync()
     {
-        var lobbyId = await sender.Send(new GetLobbyIdForAuthenticatedPlayerQuery());
+        var lobbyId = await bus.InvokeAsync<long?>(new GetLobbyIdForPlayerQuery(accountContext.Account.UserId));
 
         if (lobbyId is null)
         {

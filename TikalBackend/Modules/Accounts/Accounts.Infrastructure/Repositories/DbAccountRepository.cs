@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Accounts.Infrastructure.Repositories;
 
-internal sealed class DbAccountRepository : AccountRepository
+public sealed class DbAccountRepository : AccountRepository
 {
     private readonly AccountsDbContext accountsDbContext;
 

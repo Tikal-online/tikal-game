@@ -6,8 +6,6 @@ using Lobbies.Domain.Entities;
 using Lobbies.Domain.Tests.Data;
 using Moq;
 using OneOf.Types;
-using Shared.Application.Contexts;
-using Shared.Application.Tests;
 
 namespace Lobbies.Application.Tests.UseCases.SetPlayerReady;
 
@@ -15,8 +13,6 @@ public sealed class SetPlayerReadyCommandHandlerTests
 {
     // dependencies   
     private readonly Mock<PlayerRepository> playerRepository;
-    private readonly Mock<UnitOfWork> unitOfWork;
-    private readonly AccountContext accountContext;
 
     // under test
     private readonly SetPlayerReadyCommandHandler handler;
@@ -24,16 +20,14 @@ public sealed class SetPlayerReadyCommandHandlerTests
     public SetPlayerReadyCommandHandlerTests()
     {
         playerRepository = new Mock<PlayerRepository>();
-        unitOfWork = new Mock<UnitOfWork>();
-        accountContext = AccountContextHelper.TestAccountContext;
 
-        handler = new SetPlayerReadyCommandHandler(playerRepository.Object, unitOfWork.Object, accountContext);
+        handler = new SetPlayerReadyCommandHandler(playerRepository.Object);
     }
 
     private void SetupHappyPath(Player player)
     {
         // player exists
-        playerRepository.Setup(r => r.GetByUserId(accountContext.Account.UserId))
+        playerRepository.Setup(r => r.GetByUserId(player.UserId))
             .ReturnsAsync(player);
     }
 
@@ -41,10 +35,10 @@ public sealed class SetPlayerReadyCommandHandlerTests
     public async Task GivenNonExistingPlayer_WhenHandle_ThenReturnsPlayerNotInALobbyError()
     {
         // given
-        playerRepository.Setup(r => r.GetByUserId(accountContext.Account.UserId))
-            .ReturnsAsync(default(Player));
+        var command = new SetPlayerReadyCommand("userId");
 
-        var command = new SetPlayerReadyCommand();
+        playerRepository.Setup(r => r.GetByUserId(command.UserId))
+            .ReturnsAsync(default(Player));
 
         // when
         var result = await handler.Handle(command, CancellationToken.None);
@@ -58,9 +52,9 @@ public sealed class SetPlayerReadyCommandHandlerTests
     public async Task GivenExistingPlayer_WhenHandle_ThenReturnsSuccessAndPlayerIsReady(Player player)
     {
         // given
-        SetupHappyPath(player);
+        var command = new SetPlayerReadyCommand(player.UserId);
 
-        var command = new SetPlayerReadyCommand();
+        SetupHappyPath(player);
 
         // when
         var result = await handler.Handle(command, CancellationToken.None);

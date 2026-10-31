@@ -3,29 +3,25 @@ using Games.Application.Mappers;
 using Games.Domain.Entities;
 using Games.Domain.Types;
 using Lobbies.Contracts.Notifications;
-using MediatR;
 
 namespace Games.Application.UseCases.CreateGame;
 
-internal sealed class LobbyStartedNotificationHandler : INotificationHandler<LobbyStartedNotification>
+public sealed class LobbyStartedNotificationHandler
 {
     private readonly GameRepository gameRepository;
 
-    private readonly UnitOfWork unitOfWork;
-
-    public LobbyStartedNotificationHandler(GameRepository gameRepository, UnitOfWork unitOfWork)
+    public LobbyStartedNotificationHandler(GameRepository gameRepository)
     {
         this.gameRepository = gameRepository;
-        this.unitOfWork = unitOfWork;
     }
 
-    public Task Handle(LobbyStartedNotification notification, CancellationToken cancellationToken)
+    public void Handle(LobbyStartedNotification notification, CancellationToken cancellationToken)
     {
-        var players = PlayerMapper.DictionaryToPlayers(notification.Players);
+        var players = PlayerMapper.LobbyPlayerModelsToPlayers(notification.Lobby.Players);
 
         var game = new Game
         {
-            LobbyId = notification.LobbyId,
+            LobbyId = notification.Lobby.Id,
             Players = players,
             Tiles =
             [
@@ -55,7 +51,5 @@ internal sealed class LobbyStartedNotificationHandler : INotificationHandler<Lob
         };
 
         gameRepository.Create(game);
-
-        return unitOfWork.SaveChangesAsync(cancellationToken);
     }
 }

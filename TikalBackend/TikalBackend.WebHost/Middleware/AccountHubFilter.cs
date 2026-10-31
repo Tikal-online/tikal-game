@@ -1,8 +1,9 @@
 using System.Security.Claims;
+using Accounts.Contracts.Models;
 using Accounts.Contracts.Queries;
-using MediatR;
 using Microsoft.AspNetCore.SignalR;
-using Shared.Application.Contexts;
+using Shared.Api;
+using Wolverine;
 
 namespace TikalBackend.WebHost.Middleware;
 
@@ -10,12 +11,12 @@ internal sealed class AccountHubFilter : IHubFilter
 {
     private readonly AccountContext accountContext;
 
-    private readonly ISender sender;
+    private readonly IMessageBus bus;
 
-    public AccountHubFilter(AccountContext accountContext, ISender sender)
+    public AccountHubFilter(AccountContext accountContext, IMessageBus bus)
     {
         this.accountContext = accountContext;
-        this.sender = sender;
+        this.bus = bus;
     }
 
     public async Task OnConnectedAsync(HubLifetimeContext context, Func<HubLifetimeContext, Task> next)
@@ -27,7 +28,7 @@ internal sealed class AccountHubFilter : IHubFilter
             throw new HubException("Could not read userid from claims");
         }
 
-        var accountModel = await sender.Send(new GetAccountQuery(userId));
+        var accountModel = await bus.InvokeAsync<AccountModel?>(new GetAccountQuery(userId));
 
         if (accountModel is null)
         {

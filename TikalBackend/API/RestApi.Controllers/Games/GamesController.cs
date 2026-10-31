@@ -1,21 +1,25 @@
+using Games.Contracts.Models;
 using Games.Contracts.Queries;
-using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RestApi.Controllers.Games.Dtos;
 using RestApi.Controllers.Games.Mappers;
 using Shared.Api;
+using Wolverine;
 
 namespace RestApi.Controllers.Games;
 
 [RequireAccount]
 public sealed partial class GamesController : ApiController
 {
-    private readonly ISender sender;
+    private readonly AccountContext accountContext;
 
-    public GamesController(ISender sender)
+    private readonly IMessageBus bus;
+
+    public GamesController(IMessageBus bus, AccountContext accountContext)
     {
-        this.sender = sender;
+        this.bus = bus;
+        this.accountContext = accountContext;
     }
 
     [HttpGet("me")]
@@ -24,9 +28,9 @@ public sealed partial class GamesController : ApiController
     [EndpointDescription("Gets the game for the currently authenticated user")]
     public async Task<IActionResult> GetGameForUser(CancellationToken cancellationToken)
     {
-        var query = new GetGameForAuthenticatedPlayerQuery();
+        var query = new GetGameForPlayerQuery(accountContext.Account.UserId);
 
-        var result = await sender.Send(query, cancellationToken);
+        var result = await bus.InvokeAsync<GameModel?>(query, cancellationToken);
 
         if (result is null)
         {

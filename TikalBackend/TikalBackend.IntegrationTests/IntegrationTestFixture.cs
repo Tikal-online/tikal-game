@@ -1,4 +1,7 @@
 using System.Net.Http.Json;
+using System.Net.WebSockets;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Connections;
 using Microsoft.AspNetCore.SignalR.Client;
 using RestApi.Controllers.Accounts.Dtos;
 using RestApi.Controllers.Lobbies.Dtos;
@@ -6,34 +9,25 @@ using TikalBackend.IntegrationTests.Extensions;
 using TikalBackend.IntegrationTests.Modules.Accounts;
 using TikalBackend.IntegrationTests.Modules.Lobbies;
 using TikalBackend.IntegrationTests.Utils;
+using Wolverine.Tracking;
 
 namespace TikalBackend.IntegrationTests;
 
-public abstract class IntegrationTestFixture : IDisposable
+public abstract class IntegrationTestFixture : IAsyncLifetime
 {
-    private readonly CustomWebApplicationFactory factory;
+    protected HttpClient Client;
 
-    protected readonly HttpClient Client;
-
-    public IntegrationTestFixture()
+    public async ValueTask InitializeAsync()
     {
-        factory = new CustomWebApplicationFactory(PostgresDatabase.Instance.GetConnectionString());
-        Client = factory.CreateDefaultClient();
+        await CustomWebApplicationFactory.RebuildDatabase(AppFactory.Instance.Services);
+
+        Client = AppFactory.Instance.CreateDefaultClient();
     }
 
-    public void Dispose()
+    public async ValueTask DisposeAsync()
     {
-        Dispose(true);
+        Client.Dispose();
         GC.SuppressFinalize(this);
-    }
-
-    protected virtual void Dispose(bool disposing)
-    {
-        if (disposing)
-        {
-            Client.Dispose();
-            factory.Dispose();
-        }
     }
 
     protected Task CreateUserAccount(TestUser user)
@@ -48,18 +42,40 @@ public abstract class IntegrationTestFixture : IDisposable
         return (await response.Content.ReadFromJsonAsync<LobbyDto>())!;
     }
 
-    protected async Task<HubConnection> CreateConnection(string url, TestUser? user = null, bool startConnection = true)
+    protected static Task<ITrackedSession> RunTracked(Func<Task> action)
+    {
+        return AppFactory.Instance.Services
+            .TrackActivity()
+            .Timeout(TimeSpan.FromSeconds(30))
+            .ExecuteAndWaitAsync(_ => action());
+    }
+
+    protected static async Task<HubConnection> CreateConnection(string url, TestUser? user = null, bool startConnection = true)
     {
         var connection = new HubConnectionBuilder()
-            .WithUrl("wss://localhost/" + url,
+            .WithUrl("http://localhost/" + url,
                 options =>
                 {
-                    options.HttpMessageHandlerFactory = _ => factory.Server.CreateHandler();
+                    options.Transports = HttpTransportType.WebSockets;
+                    options.SkipNegotiation = true;
 
-                    if (user is not null)
+                    options.WebSocketFactory = (context, cancellationToken) =>
                     {
-                        options.Headers["X-Test-UserId"] = user.UserId;
-                    }
+                        var webSocketClient = AppFactory.Instance.Server.CreateWebSocketClient();
+
+                        webSocketClient.ConfigureRequest = request =>
+                        {
+                            if (user is not null)
+                            {
+                                request.Headers.Append("X-Test-UserId", user.UserId);
+                            }
+                        };
+
+                        return new ValueTask<WebSocket>(
+                            webSocketClient.ConnectAsync(
+                                context.Uri,
+                                cancellationToken));
+                    };
                 })
             .Build();
 

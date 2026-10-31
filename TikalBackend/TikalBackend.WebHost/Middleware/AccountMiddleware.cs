@@ -1,10 +1,10 @@
 using System.Diagnostics;
 using System.Security.Claims;
+using Accounts.Contracts.Models;
 using Accounts.Contracts.Queries;
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Shared.Api;
-using Shared.Application.Contexts;
+using Wolverine;
 
 namespace TikalBackend.WebHost.Middleware;
 
@@ -17,7 +17,7 @@ internal sealed class AccountMiddleware
         this.next = next;
     }
 
-    public async Task InvokeAsync(HttpContext context, AccountContext accountContext, ISender sender)
+    public async Task InvokeAsync(HttpContext context, AccountContext accountContext, IMessageBus bus)
     {
         var endpoint = context.GetEndpoint();
 
@@ -32,7 +32,7 @@ internal sealed class AccountMiddleware
 
         var userId = context.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-        var accountModel = await sender.Send(new GetAccountQuery(userId!));
+        var accountModel = await bus.InvokeAsync<AccountModel?>(new GetAccountQuery(userId!));
 
         if (accountModel is null)
         {

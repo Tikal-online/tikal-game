@@ -32,7 +32,10 @@ public sealed class GetLobbyForAuthenticatedPlayerTests : IntegrationTestFixture
     public async Task GivenPlayerNotInALobby_WhenGetLobbyForAuthenticatedPlayer_ThenReturnsNotFound()
     {
         // given
-        await CreateUserAccount(TestUser.Default);
+        await RunTracked(async () =>
+        {
+            await CreateUserAccount(TestUser.Default);
+        });
 
         // when
         var response = await Client.GetAsyncWithUser(LobbyUrl.GetActiveLobby, TestUser.Default, TestContext.Current.CancellationToken);
@@ -48,9 +51,12 @@ public sealed class GetLobbyForAuthenticatedPlayerTests : IntegrationTestFixture
     )
     {
         // given
-        await CreateUserAccount(TestUser.Default);
+        await RunTracked(async () =>
+        {
+            await CreateUserAccount(TestUser.Default);
 
-        await Client.PostAsyncWithUser(LobbyUrl.CreateLobby, TestUser.Default, createLobbyDto, TestContext.Current.CancellationToken);
+            await Client.PostAsyncWithUser(LobbyUrl.CreateLobby, TestUser.Default, createLobbyDto, TestContext.Current.CancellationToken);
+        });
 
         // when
         var response = await Client.GetAsyncWithUser(LobbyUrl.GetActiveLobby, TestUser.Default, TestContext.Current.CancellationToken);

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Lobbies.Infrastructure.QueryContexts;
 
-internal sealed class DbPlayerQueryContext : PlayerQueryContext
+public sealed class DbPlayerQueryContext : PlayerQueryContext
 {
     private readonly LobbiesDbContext lobbiesDbContext;
 

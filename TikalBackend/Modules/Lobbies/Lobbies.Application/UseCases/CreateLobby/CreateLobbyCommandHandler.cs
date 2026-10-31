@@ -4,34 +4,23 @@ using Lobbies.Contracts.Errors;
 using Lobbies.Domain.Entities;
 using OneOf;
 using OneOf.Types;
-using Shared.Application.Contexts;
-using Shared.Contracts.Messaging;
 using Shared.Domain.Enums;
 
 namespace Lobbies.Application.UseCases.CreateLobby;
 
-internal sealed class CreateLobbyCommandHandler
-    : CommandHandler<CreateLobbyCommand, OneOf<Success, PlayerAlreadyInALobby>>
+public sealed class CreateLobbyCommandHandler
 {
     private readonly LobbyRepository lobbyRepository;
 
     private readonly PlayerQueryContext playerQueryContext;
 
-    private readonly UnitOfWork unitOfWork;
-
-    private readonly AccountContext accountContext;
-
     public CreateLobbyCommandHandler(
         LobbyRepository lobbyRepository,
-        PlayerQueryContext playerQueryContext,
-        UnitOfWork unitOfWork,
-        AccountContext accountContext
+        PlayerQueryContext playerQueryContext
     )
     {
         this.lobbyRepository = lobbyRepository;
         this.playerQueryContext = playerQueryContext;
-        this.unitOfWork = unitOfWork;
-        this.accountContext = accountContext;
     }
 
     public async Task<OneOf<Success, PlayerAlreadyInALobby>> Handle(
@@ -39,7 +28,7 @@ internal sealed class CreateLobbyCommandHandler
         CancellationToken cancellationToken
     )
     {
-        var playerAlreadyInALobby = await playerQueryContext.PlayerExists(accountContext.Account.UserId);
+        var playerAlreadyInALobby = await playerQueryContext.PlayerExists(request.UserId);
 
         if (playerAlreadyInALobby)
         {
@@ -48,7 +37,8 @@ internal sealed class CreateLobbyCommandHandler
 
         var player = new Player
         {
-            UserId = accountContext.Account.UserId,
+            UserId = request.UserId,
+            Name = request.Username,
             SelectedColour = Colour.Red,
             IsOwner = true,
             IsReady = false
@@ -62,8 +52,6 @@ internal sealed class CreateLobbyCommandHandler
         };
 
         lobbyRepository.Create(lobby);
-
-        await unitOfWork.SaveChangesAsync(cancellationToken);
 
         return new Success();
     }

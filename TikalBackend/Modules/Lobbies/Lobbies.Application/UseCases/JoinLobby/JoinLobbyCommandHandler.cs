@@ -4,33 +4,22 @@ using Lobbies.Contracts.Errors;
 using Lobbies.Domain.Entities;
 using OneOf;
 using OneOf.Types;
-using Shared.Application.Contexts;
-using Shared.Contracts.Messaging;
 
 namespace Lobbies.Application.UseCases.JoinLobby;
 
-internal sealed class JoinLobbyCommandHandler
-    : CommandHandler<JoinLobbyCommand, OneOf<Success, PlayerAlreadyInALobby, LobbyNotFound, LobbyFull, LobbyInGame>>
+public sealed class JoinLobbyCommandHandler
 {
     private readonly LobbyRepository lobbyRepository;
 
     private readonly PlayerQueryContext playerQueryContext;
 
-    private readonly UnitOfWork unitOfWork;
-
-    private readonly AccountContext accountContext;
-
     public JoinLobbyCommandHandler(
         LobbyRepository lobbyRepository,
-        PlayerQueryContext playerQueryContext,
-        UnitOfWork unitOfWork,
-        AccountContext accountContext
+        PlayerQueryContext playerQueryContext
     )
     {
         this.lobbyRepository = lobbyRepository;
         this.playerQueryContext = playerQueryContext;
-        this.unitOfWork = unitOfWork;
-        this.accountContext = accountContext;
     }
 
     public async Task<OneOf<Success, PlayerAlreadyInALobby, LobbyNotFound, LobbyFull, LobbyInGame>> Handle(
@@ -38,7 +27,7 @@ internal sealed class JoinLobbyCommandHandler
         CancellationToken cancellationToken
     )
     {
-        var playerAlreadyInALobby = await playerQueryContext.PlayerExists(accountContext.Account.UserId);
+        var playerAlreadyInALobby = await playerQueryContext.PlayerExists(request.UserId);
 
         if (playerAlreadyInALobby)
         {
@@ -66,15 +55,14 @@ internal sealed class JoinLobbyCommandHandler
 
         var player = new Player
         {
-            UserId = accountContext.Account.UserId,
+            UserId = request.UserId,
+            Name = request.Username,
             SelectedColour = colour,
             IsOwner = false,
             IsReady = false
         };
 
         lobby.AddPlayer(player);
-
-        await unitOfWork.SaveChangesAsync(cancellationToken);
 
         return new Success();
     }

@@ -5,10 +5,12 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using TikalBackend.IntegrationTests.Extensions;
 using TikalBackend.IntegrationTests.Utils;
+using Wolverine.Runtime;
 
 namespace TikalBackend.IntegrationTests;
 
@@ -19,6 +21,19 @@ internal sealed class CustomWebApplicationFactory : WebApplicationFactory<Progra
     public CustomWebApplicationFactory(string databaseConnectionString)
     {
         this.databaseConnectionString = databaseConnectionString;
+    }
+
+    protected override IHost CreateHost(IHostBuilder builder)
+    {
+        builder.ConfigureHostConfiguration(config =>
+        {
+            config.AddInMemoryCollection(new Dictionary<string, string?>
+            {
+                ["ConnectionStrings:backendDb"] = databaseConnectionString
+            });
+        });
+
+        return base.CreateHost(builder);
     }
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
@@ -32,78 +47,29 @@ internal sealed class CustomWebApplicationFactory : WebApplicationFactory<Progra
                 options.DefaultChallengeScheme = TestAuthHandler.SchemeName;
             });
 
-            services.AddAuthentication()
-                .AddScheme<AuthenticationSchemeOptions, TestAuthHandler>(TestAuthHandler.SchemeName, _ => { });
-
-            // configure test db contexts
-            var accountContextOptionsDescriptor =
-                services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<AccountsDbContext>));
-
-            if (accountContextOptionsDescriptor != null)
-            {
-                services.Remove(accountContextOptionsDescriptor);
-            }
-
-            services.AddDbContext<AccountsDbContext>(options =>
-            {
-                options.UseNpgsql(
-                    databaseConnectionString,
-                    npgOptions => npgOptions.MigrationsHistoryTable(
-                        HistoryRepository.DefaultTableName,
-                        AccountsDbContext.Schema
-                    )
-                );
-            });
-
-            var lobbiesContextOptionsDescriptor =
-                services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<LobbiesDbContext>));
-
-            if (lobbiesContextOptionsDescriptor != null)
-            {
-                services.Remove(lobbiesContextOptionsDescriptor);
-            }
-
-            services.AddDbContext<LobbiesDbContext>(options =>
-            {
-                options.UseNpgsql(
-                    databaseConnectionString,
-                    npgOptions => npgOptions.MigrationsHistoryTable(
-                        HistoryRepository.DefaultTableName,
-                        LobbiesDbContext.Schema
-                    )
-                );
-            });
-
-            var gamesContextOptionsDescriptor =
-                services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<GamesDbContext>));
-
-            if (gamesContextOptionsDescriptor != null)
-            {
-                services.Remove(gamesContextOptionsDescriptor);
-            }
-
-            services.AddDbContext<GamesDbContext>(options =>
-            {
-                options.UseNpgsql(
-                    databaseConnectionString,
-                    npgOptions => npgOptions.MigrationsHistoryTable(
-                        HistoryRepository.DefaultTableName,
-                        GamesDbContext.Schema
-                    )
-                );
-            });
-
-            RebuildDatabase(services);
+            services.AddAuthentication().AddScheme<AuthenticationSchemeOptions, TestAuthHandler>(TestAuthHandler.SchemeName, _ => { });
         });
     }
 
-    private static void RebuildDatabase(IServiceCollection services)
+    public static async Task RebuildDatabase(IServiceProvider services)
     {
-        using var scope = services.BuildServiceProvider().CreateScope();
+        using var scope = services.CreateScope();
 
-        var databaseContext = scope.ServiceProvider.GetRequiredService<AccountsDbContext>();
+        var accountsDbContext = scope.ServiceProvider.GetRequiredService<AccountsDbContext>();
 
-        databaseContext.Database.DropTables();
-        databaseContext.Database.Migrate();
+        await accountsDbContext.Database.DropTables();
+        await accountsDbContext.Database.MigrateAsync();
+
+        var lobbiesDbContext = scope.ServiceProvider.GetRequiredService<LobbiesDbContext>();
+
+        await lobbiesDbContext.Database.MigrateAsync();
+
+        var gamesDbContext = scope.ServiceProvider.GetRequiredService<GamesDbContext>();
+
+        await gamesDbContext.Database.MigrateAsync();
+
+        var host = scope.ServiceProvider.GetRequiredService<IHost>();
+
+        await host.ClearAllWolverineStorageAsync();
     }
 }

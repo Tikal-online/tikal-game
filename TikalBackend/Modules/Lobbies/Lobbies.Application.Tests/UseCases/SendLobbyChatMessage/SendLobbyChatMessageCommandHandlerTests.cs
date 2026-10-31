@@ -5,10 +5,7 @@ using Lobbies.Contracts.Errors;
 using Lobbies.Contracts.Notifications;
 using Lobbies.Domain.Entities;
 using Lobbies.Domain.Tests.Data;
-using MediatR;
 using Moq;
-using Shared.Application.Contexts;
-using Shared.Application.Tests;
 
 namespace Lobbies.Application.Tests.UseCases.SendLobbyChatMessage;
 
@@ -16,8 +13,6 @@ public sealed class SendLobbyChatMessageCommandHandlerTests
 {
     // dependencies
     private readonly Mock<LobbyQueryContext> lobbyQueryContext;
-    private readonly Mock<IPublisher> publisher;
-    private readonly AccountContext accountContext;
 
     // under test
     private readonly SendLobbyChatMessageCommandHandler handler;
@@ -25,13 +20,11 @@ public sealed class SendLobbyChatMessageCommandHandlerTests
     public SendLobbyChatMessageCommandHandlerTests()
     {
         lobbyQueryContext = new Mock<LobbyQueryContext>();
-        publisher = new Mock<IPublisher>();
-        accountContext = AccountContextHelper.TestAccountContext;
 
-        handler = new SendLobbyChatMessageCommandHandler(lobbyQueryContext.Object, publisher.Object, accountContext);
+        handler = new SendLobbyChatMessageCommandHandler(lobbyQueryContext.Object);
     }
 
-    private void SetupHappyPath(Lobby lobby)
+    private void SetupHappyPath(Lobby lobby, SendLobbyChatMessageCommand command)
     {
         // lobby exists
         lobbyQueryContext.Setup(r => r.GetById(lobby.Id))
@@ -39,7 +32,7 @@ public sealed class SendLobbyChatMessageCommandHandlerTests
 
         // lobby contains authenticated player
         var player = lobby.Players.First();
-        player.UserId = accountContext.Account.UserId;
+        player.UserId = command.UserId;
         player.Lobby = lobby;
     }
 
@@ -47,10 +40,10 @@ public sealed class SendLobbyChatMessageCommandHandlerTests
     public async Task GivenLobbyDoesntExist_WhenHandle_ThenReturnsLobbyNotFoundError()
     {
         // given
+        var command = new SendLobbyChatMessageCommand("userId", 1, "My chat message");
+
         lobbyQueryContext.Setup(r => r.GetById(1))
             .ReturnsAsync(default(Lobby));
-
-        var command = new SendLobbyChatMessageCommand(1, "My chat message");
 
         // when
         var result = await handler.Handle(command, CancellationToken.None);
@@ -64,10 +57,10 @@ public sealed class SendLobbyChatMessageCommandHandlerTests
     public async Task GivenPlayerIsNotPartOfLobby_WhenHandle_ThenReturnsPlayerNotInGivenLobbyError(Lobby lobby)
     {
         // given
+        var command = new SendLobbyChatMessageCommand("userId", lobby.Id, "My chat message");
+
         lobbyQueryContext.Setup(r => r.GetById(lobby.Id))
             .ReturnsAsync(lobby);
-
-        var command = new SendLobbyChatMessageCommand(lobby.Id, "My chat message");
 
         // when
         var result = await handler.Handle(command, CancellationToken.None);
@@ -78,21 +71,25 @@ public sealed class SendLobbyChatMessageCommandHandlerTests
 
     [Theory]
     [ClassData(typeof(ValidLobbies))]
-    public async Task GivenPlayerInLobby_WhenHandle_ThenPublishesMessageSentNotification(Lobby lobby)
+    public async Task GivenPlayerInLobby_WhenHandle_ThenReturnsLobbyChatMessageSentNotification(Lobby lobby)
     {
         // given
-        SetupHappyPath(lobby);
+        var command = new SendLobbyChatMessageCommand("userId", lobby.Id, "My chat message");
 
-        var command = new SendLobbyChatMessageCommand(lobby.Id, "my chat message");
+        SetupHappyPath(lobby, command);
 
         // when
-        await handler.Handle(command, CancellationToken.None);
+        var result = await handler.Handle(command, CancellationToken.None);
 
         // then
-        publisher.Verify(p => p.Publish(It.Is<LobbyChatMessageSentNotification>(n =>
-            n.ChatMessageModel.Content == command.MessageContent &&
-            n.ChatMessageModel.UserId == accountContext.Account.UserId &&
-            n.ChatMessageModel.Username == accountContext.Account.Name
-        )));
+        var expectedPlayer = lobby.Players.First(p => p.UserId == command.UserId);
+
+        Assert.IsType<LobbyChatMessageSentNotification>(result.Value);
+
+        Assert.Multiple(
+            () => Assert.Equal(result.AsT0.ChatMessageModel.Content, command.MessageContent),
+            () => Assert.Equal(result.AsT0.ChatMessageModel.UserId, expectedPlayer.UserId),
+            () => Assert.Equal(result.AsT0.ChatMessageModel.Username, expectedPlayer.Name)
+        );
     }
 }

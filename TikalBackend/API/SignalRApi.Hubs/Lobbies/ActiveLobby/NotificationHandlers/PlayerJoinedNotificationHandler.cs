@@ -1,11 +1,10 @@
 using Lobbies.Contracts.Notifications;
-using MediatR;
 using Microsoft.AspNetCore.SignalR;
 using SignalRApi.Hubs.Lobbies.Mappers;
 
 namespace SignalRApi.Hubs.Lobbies.ActiveLobby.NotificationHandlers;
 
-internal sealed class PlayerJoinedNotificationHandler : INotificationHandler<PlayerJoinedNotification>
+public sealed class PlayerJoinedNotificationHandler
 {
     private readonly IHubContext<ActiveLobbyHub, ActiveLobbyClient> hubContext;
 
@@ -16,7 +15,7 @@ internal sealed class PlayerJoinedNotificationHandler : INotificationHandler<Pla
 
     public Task Handle(PlayerJoinedNotification notification, CancellationToken cancellationToken)
     {
-        var lobbyPlayerDto = LobbyPlayerModelMapper.LobbyPlayerModelToLobbyPlayerDto(notification.lobbyPlayerModel);
+        var lobbyPlayerDto = LobbyPlayerModelMapper.LobbyPlayerModelToLobbyPlayerDto(notification.LobbyPlayerModel);
 
         return hubContext.Clients.Group($"{notification.LobbyId}").PlayerJoined(lobbyPlayerDto);
     }

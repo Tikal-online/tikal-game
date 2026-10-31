@@ -8,4 +8,9 @@
         <ProjectReference Include="..\..\..\Shared\Shared.Contracts\Shared.Contracts.csproj"/>
     </ItemGroup>
 
+   <ItemGroup>
+        <PackageReference Include="WolverineFx"/>
+        <PackageReference Include="OneOf"/>
+    </ItemGroup>
+
 </Project>

@@ -18,6 +18,7 @@ public class InGameLobbies : TheoryData<Lobby>
                 new Player
                 {
                     UserId = "db3e91e9-71d1-40d1-a8f6-516d803fd28e",
+                    Name = "Player1",
                     SelectedColour = Colour.Green,
                     IsOwner = true,
                     IsReady = true
@@ -25,6 +26,7 @@ public class InGameLobbies : TheoryData<Lobby>
                 new Player
                 {
                     UserId = "ad0aa8f7-8187-4aca-88bb-a2a4ef981370",
+                    Name = "Player2",
                     SelectedColour = Colour.Yellow,
                     IsOwner = false,
                     IsReady = true
@@ -32,6 +34,7 @@ public class InGameLobbies : TheoryData<Lobby>
                 new Player
                 {
                     UserId = "4aea119e-acd9-4f73-84ab-1a348910768f",
+                    Name = "Player3",
                     SelectedColour = Colour.Red,
                     IsOwner = false,
                     IsReady = true

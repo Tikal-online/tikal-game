@@ -1,5 +1,6 @@
 using FluentValidation;
 using Lobbies.Domain.Events;
+using Lobbies.Domain.Mappers;
 using Shared.Domain.Entities;
 using Shared.Domain.Enums;
 
@@ -36,13 +37,13 @@ public sealed class Lobby : Entity
         var firstPlayer = Players.First();
 
         firstPlayer.IsOwner = true;
-        AddDomainEvent(new PlayerUpdatedEvent(firstPlayer));
+        AddDomainEvent(new PlayerUpdatedEvent(PlayerMapper.PlayerToPlayerEventData(firstPlayer), Id));
     }
 
     public void AddPlayer(Player player)
     {
         Players.Add(player);
-        AddDomainEvent(new PlayerJoinedEvent(player));
+        AddDomainEvent(new PlayerJoinedEvent(PlayerMapper.PlayerToPlayerEventData(player), Id));
     }
 
     public Player? GetPlayer(string userId)
@@ -64,7 +65,7 @@ public sealed class Lobby : Entity
     public void Start()
     {
         InGame = true;
-        AddDomainEvent(new LobbyStartedEvent(this));
+        AddDomainEvent(new LobbyStartedEvent(LobbyMapper.LobbyToLobbyEventData(this)));
     }
 }
 

@@ -3,33 +3,22 @@ using Lobbies.Contracts.Commands;
 using Lobbies.Contracts.Errors;
 using OneOf;
 using OneOf.Types;
-using Shared.Application.Contexts;
-using Shared.Contracts.Messaging;
 
 namespace Lobbies.Application.UseCases.LeaveLobby;
 
-internal sealed class LeaveLobbyCommandHandler
-    : CommandHandler<LeaveLobbyCommand, OneOf<Success, LobbyNotFound, PlayerNotInGivenLobby, LobbyInGame>>
+public sealed class LeaveLobbyCommandHandler
 {
     private readonly PlayerRepository playerRepository;
 
     private readonly LobbyRepository lobbyRepository;
 
-    private readonly UnitOfWork unitOfWork;
-
-    private readonly AccountContext accountContext;
-
     public LeaveLobbyCommandHandler(
         PlayerRepository playerRepository,
-        LobbyRepository lobbyRepository,
-        UnitOfWork unitOfWork,
-        AccountContext accountContext
+        LobbyRepository lobbyRepository
     )
     {
         this.playerRepository = playerRepository;
         this.lobbyRepository = lobbyRepository;
-        this.unitOfWork = unitOfWork;
-        this.accountContext = accountContext;
     }
 
     public async Task<OneOf<Success, LobbyNotFound, PlayerNotInGivenLobby, LobbyInGame>> Handle(
@@ -44,7 +33,7 @@ internal sealed class LeaveLobbyCommandHandler
             return new LobbyNotFound(request.LobbyId);
         }
 
-        var player = lobby.GetPlayer(accountContext.Account.UserId);
+        var player = lobby.GetPlayer(request.UserId);
 
         if (player is null)
         {
@@ -63,8 +52,6 @@ internal sealed class LeaveLobbyCommandHandler
         {
             lobbyRepository.Delete(player.Lobby);
         }
-
-        await unitOfWork.SaveChangesAsync(cancellationToken);
 
         return new Success();
     }

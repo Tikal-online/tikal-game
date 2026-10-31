@@ -4,7 +4,7 @@ using Games.Infrastructure.Database;
 
 namespace Games.Infrastructure.Repositories;
 
-internal sealed class DbGameRepository : GameRepository
+public sealed class DbGameRepository : GameRepository
 {
     private readonly GamesDbContext gamesDbContext;
 

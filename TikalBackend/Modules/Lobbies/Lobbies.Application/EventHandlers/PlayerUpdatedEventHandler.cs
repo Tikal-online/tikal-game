@@ -1,31 +1,17 @@
-using Accounts.Contracts.Queries;
 using Lobbies.Application.Mappers;
 using Lobbies.Contracts.Notifications;
 using Lobbies.Domain.Events;
-using MediatR;
 
 namespace Lobbies.Application.EventHandlers;
 
-internal sealed class PlayerUpdatedEventHandler : INotificationHandler<PlayerUpdatedEvent>
+public static class PlayerUpdatedEventHandler
 {
-    private readonly IPublisher publisher;
-
-    private readonly ISender sender;
-
-    public PlayerUpdatedEventHandler(ISender sender, IPublisher publisher)
+    public static PlayerUpdatedNotification Handle(PlayerUpdatedEvent notification, CancellationToken cancellationToken)
     {
-        this.sender = sender;
-        this.publisher = publisher;
-    }
+        var playerModel = PlayerMapper.PlayerEventDataToLobbyPlayerModel(notification.Player);
 
-    public async Task Handle(PlayerUpdatedEvent notification, CancellationToken cancellationToken)
-    {
-        var playerAccount = await sender.Send(new GetAccountQuery(notification.Player.UserId), cancellationToken);
+        var playerUpdatedNotification = new PlayerUpdatedNotification(playerModel, notification.LobbyId);
 
-        var playerModel = PlayerMapper.PlayerToLobbyPlayerModel(notification.Player, playerAccount!);
-
-        var playerUpdatedNotification = new PlayerUpdatedNotification(playerModel, notification.Player.LobbyId);
-
-        await publisher.Publish(playerUpdatedNotification, cancellationToken);
+        return playerUpdatedNotification;
     }
 }

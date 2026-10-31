@@ -3,31 +3,17 @@ using Lobbies.Contracts.Commands;
 using Lobbies.Contracts.Errors;
 using OneOf;
 using OneOf.Types;
-using Shared.Application.Contexts;
 using Shared.Contracts.Errors;
-using Shared.Contracts.Messaging;
 
 namespace Lobbies.Application.UseCases.StartLobby;
 
-internal sealed class StartLobbyCommandHandler
-    : CommandHandler<StartLobbyCommand,
-        OneOf<Success, LobbyNotFound, PlayerNotInGivenLobby, Unprivileged, LobbyCannotBeStarted>>
+public sealed class StartLobbyCommandHandler
 {
     private readonly LobbyRepository lobbyRepository;
 
-    private readonly UnitOfWork unitOfWork;
-
-    private readonly AccountContext accountContext;
-
-    public StartLobbyCommandHandler(
-        LobbyRepository lobbyRepository,
-        UnitOfWork unitOfWork,
-        AccountContext accountContext
-    )
+    public StartLobbyCommandHandler(LobbyRepository lobbyRepository)
     {
         this.lobbyRepository = lobbyRepository;
-        this.unitOfWork = unitOfWork;
-        this.accountContext = accountContext;
     }
 
     public async Task<OneOf<Success, LobbyNotFound, PlayerNotInGivenLobby, Unprivileged, LobbyCannotBeStarted>> Handle(
@@ -42,7 +28,7 @@ internal sealed class StartLobbyCommandHandler
             return new LobbyNotFound(request.LobbyId);
         }
 
-        var player = lobby.GetPlayer(accountContext.Account.UserId);
+        var player = lobby.GetPlayer(request.UserId);
 
         if (player is null)
         {
@@ -60,8 +46,6 @@ internal sealed class StartLobbyCommandHandler
         }
 
         lobby.Start();
-
-        await unitOfWork.SaveChangesAsync(cancellationToken);
 
         return new Success();
     }

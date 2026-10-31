@@ -1,18 +1,26 @@
+using System.Diagnostics;
 using Accounts.Application;
 using Accounts.Infrastructure;
 using FluentValidation;
 using Games.Infrastructure;
+using Humanizer;
 using Lobbies.Infrastructure;
 using MediatR;
 using Npgsql;
 using OpenTelemetry.Logs;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;
-using Shared.Application;
+using Shared.Api;
+using Shared.Domain.Entities;
 using TikalBackend.WebHost.Configuration;
 using TikalBackend.WebHost.ExceptionHandlers;
 using TikalBackend.WebHost.Pipelines;
 using TikalBackend.WebHost.Telemetry;
+using Wolverine;
+using Wolverine.EntityFrameworkCore;
+using Wolverine.ErrorHandling;
+using Wolverine.Persistence;
+using Wolverine.Postgresql;
 
 namespace TikalBackend.WebHost.Extensions;
 
@@ -54,6 +62,7 @@ internal static class ServiceCollectionExtensions
                         .AddAspNetCoreInstrumentation()
                         .AddHttpClientInstrumentation()
                         .AddNpgsql()
+                        .AddSource("Wolverine")
                         .AddOtlpExporter();
                 })
                 .WithMetrics(metrics =>
@@ -102,12 +111,44 @@ internal static class ServiceCollectionExtensions
 
             services.AddMediatR();
 
-            services.AddSharedApplication();
+            services.AddScoped<AccountContext>();
         }
 
         public void AddInfrastructure(IConfiguration configuration)
         {
             var connectionString = GetConnectionString(configuration);
+
+            // wolverine runs background jobs which run db queries and do not run under an activity
+            // ignore them to make the dashboard cleaner
+            var dataSource = new NpgsqlDataSourceBuilder(connectionString)
+                .ConfigureTracing(tracing => tracing
+                    .ConfigureCommandFilter(_ => Activity.Current is not null)
+                    .ConfigureBatchFilter(_ => Activity.Current is not null)
+                    .EnablePhysicalOpenTracing(false))
+                .Build();
+
+            services.AddWolverine(opts =>
+            {
+                opts.Discovery.IncludeAssembly(SignalRApi.Hubs.AssemblyReference.Assembly);
+
+                opts.PersistMessagesWithPostgresql(dataSource, "wolverine");
+                opts.UseEntityFrameworkCoreTransactions(TransactionMiddlewareMode.Lightweight);
+
+                opts.PublishDomainEventsFromEntityFrameworkCore<Entity>(e => e.DomainEvents);
+
+                opts.Policies.AutoApplyTransactions();
+                opts.Policies.UseDurableLocalQueues();
+
+                opts.MultipleHandlerBehavior = MultipleHandlerBehavior.Separated;
+                opts.Durability.Mode = DurabilityMode.Solo;
+                opts.Durability.MessageIdentity = MessageIdentity.IdAndDestination;
+
+                opts.Durability.DurabilityMetricsEnabled = false;
+
+                opts.OnException<Exception>()
+                    .RetryWithCooldown(100.Milliseconds(), 500.Milliseconds(), 1.Seconds())
+                    .Then.MoveToErrorQueue();
+            });
 
             services.AddAccountsInfrastructure(connectionString);
 

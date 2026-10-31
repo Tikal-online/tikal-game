@@ -1,4 +1,5 @@
 using Lobbies.Domain.Events;
+using Lobbies.Domain.Mappers;
 using Shared.Domain.Entities;
 using Shared.Domain.Enums;
 
@@ -9,6 +10,8 @@ public sealed class Player : Entity
     public long Id { get; set; }
 
     public required string UserId { get; set; }
+
+    public required string Name { get; set; }
 
     public required Colour SelectedColour { get; set; }
 
@@ -28,7 +31,7 @@ public sealed class Player : Entity
         }
 
         IsReady = true;
-        AddDomainEvent(new PlayerUpdatedEvent(this));
+        AddDomainEvent(new PlayerUpdatedEvent(PlayerMapper.PlayerToPlayerEventData(this), LobbyId));
     }
 
     public void ReadyDown()
@@ -39,6 +42,6 @@ public sealed class Player : Entity
         }
 
         IsReady = false;
-        AddDomainEvent(new PlayerUpdatedEvent(this));
+        AddDomainEvent(new PlayerUpdatedEvent(PlayerMapper.PlayerToPlayerEventData(this), LobbyId));
     }
 }

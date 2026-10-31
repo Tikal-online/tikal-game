@@ -1,6 +1,6 @@
-using Lobbies.Domain.Entities;
-using MediatR;
+using Lobbies.Domain.EventData;
+using Shared.Domain.Entities;
 
 namespace Lobbies.Domain.Events;
 
-public sealed record LobbyStartedEvent(Lobby lobby) : INotification;
+public sealed record LobbyStartedEvent(LobbyEventData Lobby) : IDomainEvent;
