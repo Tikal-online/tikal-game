@@ -37,7 +37,7 @@ public sealed class Lobby : Entity
         var firstPlayer = Players.First();
 
         firstPlayer.IsOwner = true;
-        AddDomainEvent(new PlayerUpdatedEvent(PlayerMapper.PlayerToPlayerEventData(player), Id));
+        AddDomainEvent(new PlayerUpdatedEvent(PlayerMapper.PlayerToPlayerEventData(firstPlayer), Id));
     }
 
     public void AddPlayer(Player player)

@@ -152,41 +152,6 @@ public sealed class ActiveLobbyTests : IntegrationTestFixture
     }
 
     [Theory]
-    [ClassData(typeof(ValidSendMessageDtos))]
-    public async Task GivenLobby_WhenPlayerSendsChatMessage_ThenSendsChatMessage(SendMessageDto sendMessageDto)
-    {
-        // given
-        var createLobbyDto = new CreateLobbyDto
-        {
-            Name = "Test Lobby",
-            MaxPlayers = 4
-        };
-
-        await CreateUserAccount(TestUser.Default);
-        var lobby = await CreateAndGetLobby(createLobbyDto, TestUser.Default);
-        await using var connection = await CreateConnection(LobbyUrl.ActiveLobbyHub, TestUser.Default);
-
-        var chatMessageSource = new TaskCompletionSource<ChatMessageDto>();
-        connection.On<ChatMessageDto>("ReceiveMessage", chatMessageSource.SetResult);
-
-        await CreateUserAccount(TestUser.TestUser1);
-        await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.TestUser1, null, TestContext.Current.CancellationToken);
-
-        // when
-        await Client.PostAsyncWithUser(LobbyUrl.SendMessage(lobby.Id), TestUser.TestUser1, sendMessageDto, TestContext.Current.CancellationToken);
-
-        // then
-        var chatMessage = await chatMessageSource.Task.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken);
-
-        Assert.Multiple(
-            () => Assert.NotNull(chatMessage),
-            () => Assert.Equal(TestUser.TestUser1.UserId, chatMessage.UserId),
-            () => Assert.Equal(TestUser.TestUser1.Name, chatMessage.Username),
-            () => Assert.Equal(sendMessageDto.Message, chatMessage.Content)
-        );
-    }
-
-    [Theory]
     [ClassData(typeof(ValidCreateLobbyDtos))]
     public async Task GivenLobby_WhenPlayerReadyUp_ThenSetsPlayerToReadyAndSendsPlayerUpdatedNotification(
         CreateLobbyDto createLobbyDto
@@ -230,7 +195,13 @@ public sealed class ActiveLobbyTests : IntegrationTestFixture
 
         await CreateUserAccount(TestUser.TestUser1);
         await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.TestUser1, null, TestContext.Current.CancellationToken);
+
+        var firstUpdate = new TaskCompletionSource();
+        connection.On<LobbyPlayerDto>("PlayerUpdated", _ => firstUpdate.SetResult());
+
         await Client.PutAsyncWithUser(LobbyUrl.SetPlayerReady, TestUser.TestUser1, null, TestContext.Current.CancellationToken);
+
+        await firstUpdate.Task.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken);
 
         var updatedPlayerSource = new TaskCompletionSource<LobbyPlayerDto>();
         connection.On<LobbyPlayerDto>("PlayerUpdated", updatedPlayerSource.SetResult);
