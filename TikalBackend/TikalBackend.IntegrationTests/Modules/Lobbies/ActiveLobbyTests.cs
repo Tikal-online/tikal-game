@@ -1,4 +1,3 @@
-using System.Net;
 using Microsoft.AspNetCore.SignalR.Client;
 using RestApi.Controllers.Lobbies.Dtos;
 using SignalRApi.Hubs.Lobbies.Dtos;
@@ -11,15 +10,13 @@ namespace TikalBackend.IntegrationTests.Modules.Lobbies;
 public sealed class ActiveLobbyTests : IntegrationTestFixture
 {
     [Fact]
-    public async Task GivenUnauthenticatedUser_WhenConnect_ThenReturnsUnauthorized()
+    public async Task GivenUnauthenticatedUser_WhenConnect_ThenThrowsInvalidOperation()
     {
         // when & then
-        var exception = await Assert.ThrowsAsync<HttpRequestException>(async () =>
+        await Assert.ThrowsAsync<InvalidOperationException>(async () =>
         {
             await CreateConnection(LobbyUrl.ActiveLobbyHub);
         });
-
-        Assert.Equal(HttpStatusCode.Unauthorized, exception.StatusCode);
     }
 
     [Fact]

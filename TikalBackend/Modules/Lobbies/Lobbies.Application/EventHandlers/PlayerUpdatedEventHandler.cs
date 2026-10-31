@@ -8,9 +8,9 @@ public sealed class PlayerUpdatedEventHandler
 {
     public static PlayerUpdatedNotification Handle(PlayerUpdatedEvent notification, CancellationToken cancellationToken)
     {
-        var playerModel = PlayerMapper.PlayerToLobbyPlayerModel(notification.Player);
+        var playerModel = PlayerMapper.PlayerEventDataToLobbyPlayerModel(notification.Player);
 
-        var playerUpdatedNotification = new PlayerUpdatedNotification(playerModel, notification.Player.LobbyId);
+        var playerUpdatedNotification = new PlayerUpdatedNotification(playerModel, notification.LobbyId);
 
         return playerUpdatedNotification;
     }
