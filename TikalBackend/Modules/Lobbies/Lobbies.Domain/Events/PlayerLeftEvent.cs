@@ -1,6 +1,6 @@
-using Lobbies.Domain.Entities;
+using Lobbies.Domain.EventData;
 using Shared.Domain.Entities;
 
 namespace Lobbies.Domain.Events;
 
-public sealed record PlayerLeftEvent(Player Player) : IDomainEvent;
+public sealed record PlayerLeftEvent(PlayerEventData Player, long LobbyId) : IDomainEvent;

@@ -36,7 +36,7 @@ public sealed class LobbyTests
 
         Assert.Multiple(
             () => Assert.NotNull(domainEvent),
-            () => Assert.Equal(playerToRemove, domainEvent?.Player)
+            () => Assert.Equal(playerToRemove.UserId, domainEvent?.Player.UserId)
         );
     }
 
@@ -81,8 +81,10 @@ public sealed class LobbyTests
         // then
         var domainEvent = lobby.DomainEvents.OfType<PlayerJoinedEvent>().SingleOrDefault();
 
-        // TODO: fix assertion to include player data
-        Assert.NotNull(domainEvent); ;
+        Assert.Multiple(
+            () => Assert.NotNull(domainEvent),
+            () => Assert.Equal(playerToAdd.UserId, domainEvent?.Player.UserId)
+        );
     }
 
     [Theory]
@@ -120,8 +122,10 @@ public sealed class LobbyTests
         var domainEvent = lobby.DomainEvents.OfType<PlayerUpdatedEvent>().SingleOrDefault();
         var promotedPlayer = lobby.Players.First(p => p.IsOwner);
 
-        // TODO: fix assertion to include player data
-        Assert.NotNull(domainEvent);
+        Assert.Multiple(
+            () => Assert.NotNull(domainEvent),
+            () => Assert.Equal(promotedPlayer.UserId, domainEvent?.Player.UserId)
+        );
     }
 
     [Theory]
