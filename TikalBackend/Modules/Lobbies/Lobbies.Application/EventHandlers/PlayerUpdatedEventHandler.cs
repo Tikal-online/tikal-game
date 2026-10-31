@@ -6,7 +6,7 @@ namespace Lobbies.Application.EventHandlers;
 
 public static class PlayerUpdatedEventHandler
 {
-    public static PlayerUpdatedNotification Handle(PlayerUpdatedEvent notification, CancellationToken cancellationToken)
+    public static PlayerUpdatedNotification Handle(PlayerUpdatedDomainEvent notification, CancellationToken cancellationToken)
     {
         var playerModel = PlayerMapper.PlayerEventDataToLobbyPlayerModel(notification.Player);
 

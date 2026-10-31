@@ -6,7 +6,7 @@ namespace Lobbies.Application.EventHandlers;
 
 public static class LobbyStartedEventHandler
 {
-    public static LobbyStartedNotification Handle(LobbyStartedEvent notification, CancellationToken cancellationToken)
+    public static LobbyStartedNotification Handle(LobbyStartedDomainEvent notification, CancellationToken cancellationToken)
     {
         var lobbyModel = LobbyMapper.LobbyEventDataToLobbyModel(notification.Lobby);
 

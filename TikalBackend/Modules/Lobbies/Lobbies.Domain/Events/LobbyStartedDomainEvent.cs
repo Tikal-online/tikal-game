@@ -3,4 +3,4 @@ using Shared.Domain.Entities;
 
 namespace Lobbies.Domain.Events;
 
-public sealed record PlayerUpdatedEvent(PlayerEventData Player, long LobbyId) : IDomainEvent;
+public sealed record LobbyStartedDomainEvent(LobbyEventData Lobby) : IDomainEvent;

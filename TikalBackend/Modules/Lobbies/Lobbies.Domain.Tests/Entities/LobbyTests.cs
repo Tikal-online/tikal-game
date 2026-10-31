@@ -32,7 +32,7 @@ public sealed class LobbyTests
         lobby.RemovePlayer(playerToRemove);
 
         // then
-        var domainEvent = lobby.DomainEvents.OfType<PlayerLeftEvent>().SingleOrDefault();
+        var domainEvent = lobby.DomainEvents.OfType<PlayerLeftDomainEvent>().SingleOrDefault();
 
         Assert.Multiple(
             () => Assert.NotNull(domainEvent),
@@ -79,7 +79,7 @@ public sealed class LobbyTests
         lobby.AddPlayer(playerToAdd);
 
         // then
-        var domainEvent = lobby.DomainEvents.OfType<PlayerJoinedEvent>().SingleOrDefault();
+        var domainEvent = lobby.DomainEvents.OfType<PlayerJoinedDomainEvent>().SingleOrDefault();
 
         Assert.Multiple(
             () => Assert.NotNull(domainEvent),
@@ -119,7 +119,7 @@ public sealed class LobbyTests
         lobby.RemovePlayer(playerToRemove);
 
         // then
-        var domainEvent = lobby.DomainEvents.OfType<PlayerUpdatedEvent>().SingleOrDefault();
+        var domainEvent = lobby.DomainEvents.OfType<PlayerUpdatedDomainEvent>().SingleOrDefault();
         var promotedPlayer = lobby.Players.First(p => p.IsOwner);
 
         Assert.Multiple(

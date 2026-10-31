@@ -6,7 +6,7 @@ namespace Lobbies.Application.EventHandlers;
 
 public static class PlayerLeftEventHandler
 {
-    public static PlayerLeftNotification Handle(PlayerLeftEvent notification, CancellationToken cancellationToken)
+    public static PlayerLeftNotification Handle(PlayerLeftDomainEvent notification, CancellationToken cancellationToken)
     {
         var playerModel = PlayerMapper.PlayerEventDataToLobbyPlayerModel(notification.Player);
 
