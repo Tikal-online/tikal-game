@@ -2,7 +2,6 @@ using System.ComponentModel.DataAnnotations;
 using Lobbies.Contracts.Commands;
 using Lobbies.Contracts.Errors;
 using Lobbies.Contracts.Models;
-using Lobbies.Contracts.Notifications;
 using Lobbies.Contracts.Queries;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -133,24 +132,6 @@ public sealed partial class LobbiesController : ApiController
             _ => LobbyNotFound(Id),
             _ => PlayerNotInGivenLobby(Id),
             _ => LobbyInGame(Id)
-        );
-    }
-
-    [HttpPost("{Id:long}/Messages")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [EndpointDescription("Sends a message to the lobby")]
-    public async Task<IActionResult> SendMessage(long Id, SendMessageDto sendMessageDto,
-        CancellationToken cancellationToken)
-    {
-        var command = new SendLobbyChatMessageCommand(accountContext.Account.UserId, Id, sendMessageDto.Message);
-
-        var result = await bus.InvokeAsync<OneOf<LobbyChatMessageSentNotification, LobbyNotFound, PlayerNotInGivenLobby>>(command, cancellationToken);
-
-        return result.Match<IActionResult>(
-            _ => Ok(),
-            _ => LobbyNotFound(Id),
-            _ => PlayerNotInGivenLobby(Id)
         );
     }
 

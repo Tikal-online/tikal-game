@@ -27,7 +27,7 @@ public sealed class Lobby : Entity
     public void RemovePlayer(Player player)
     {
         Players.Remove(player);
-        AddDomainEvent(new PlayerLeftEvent(PlayerMapper.PlayerToPlayerEventData(player), Id));
+        AddDomainEvent(new PlayerLeftDomainEvent(PlayerMapper.PlayerToPlayerEventData(player), Id));
 
         if (IsEmpty || Players.Any(p => p.IsOwner))
         {
@@ -37,13 +37,13 @@ public sealed class Lobby : Entity
         var firstPlayer = Players.First();
 
         firstPlayer.IsOwner = true;
-        AddDomainEvent(new PlayerUpdatedEvent(PlayerMapper.PlayerToPlayerEventData(firstPlayer), Id));
+        AddDomainEvent(new PlayerUpdatedDomainEvent(PlayerMapper.PlayerToPlayerEventData(firstPlayer), Id));
     }
 
     public void AddPlayer(Player player)
     {
         Players.Add(player);
-        AddDomainEvent(new PlayerJoinedEvent(PlayerMapper.PlayerToPlayerEventData(player), Id));
+        AddDomainEvent(new PlayerJoinedDomainEvent(PlayerMapper.PlayerToPlayerEventData(player), Id));
     }
 
     public Player? GetPlayer(string userId)
@@ -65,7 +65,7 @@ public sealed class Lobby : Entity
     public void Start()
     {
         InGame = true;
-        AddDomainEvent(new LobbyStartedEvent(LobbyMapper.LobbyToLobbyEventData(this)));
+        AddDomainEvent(new LobbyStartedDomainEvent(LobbyMapper.LobbyToLobbyEventData(this)));
     }
 }
 
