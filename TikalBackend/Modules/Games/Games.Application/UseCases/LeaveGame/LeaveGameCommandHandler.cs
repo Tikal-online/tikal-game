@@ -1,6 +1,6 @@
 using Games.Application.DataAccess;
 using Games.Contracts.Commands;
-using Games.Domain.Errors;
+using Games.Contracts.Errors;
 using OneOf;
 using OneOf.Types;
 

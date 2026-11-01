@@ -67,6 +67,11 @@ public sealed class Lobby : Entity
         InGame = true;
         AddDomainEvent(new LobbyStartedDomainEvent(LobbyMapper.LobbyToLobbyEventData(this)));
     }
+
+    public void Stop()
+    {
+        InGame = false;
+    }
 }
 
 public static class LobbyValidationRules

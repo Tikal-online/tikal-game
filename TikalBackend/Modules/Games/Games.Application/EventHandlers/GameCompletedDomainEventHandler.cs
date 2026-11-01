@@ -6,7 +6,7 @@ namespace Games.Application.EventHandlers;
 
 public static class GameCompletedDomainEventHandler
 {
-    public static GameCompletedIntegrationEvent Handle(GameCompletedDomainEvent domainEvent)
+    public static GameCompletedIntegrationEvent Handle(GameCompletedDomainEvent domainEvent, CancellationToken cancellationToken)
     {
         var gameModel = GameMapper.GameEventDataToGameModel(domainEvent.Game);
 
