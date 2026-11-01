@@ -4,6 +4,7 @@ using Accounts.Infrastructure;
 using FluentValidation;
 using Games.Infrastructure;
 using Humanizer;
+using JasperFx.CodeGeneration;
 using Lobbies.Infrastructure;
 using Npgsql;
 using OpenTelemetry.Logs;
@@ -14,6 +15,7 @@ using Shared.Domain.Entities;
 using TikalBackend.WebHost.Configuration;
 using TikalBackend.WebHost.ExceptionHandlers;
 using TikalBackend.WebHost.Telemetry;
+using TikalBackend.WebHost.Utils;
 using Wolverine;
 using Wolverine.EntityFrameworkCore;
 using Wolverine.ErrorHandling;
@@ -89,7 +91,7 @@ internal static class ServiceCollectionExtensions
 
         public void AddApplication()
         {
-            // Event handler registration are part of the wolverine setup
+            // Event handler registrations are part of the wolverine setup
             services.AddValidators();
 
             services.AddScoped<AccountContext>();
@@ -97,23 +99,28 @@ internal static class ServiceCollectionExtensions
 
         public void AddInfrastructure(IConfiguration configuration)
         {
-            var connectionString = GetConnectionString(configuration);
+            var connectionString = CodeGeneration.IsRunningGeneration()
+                ? "Host=localhost;Port=5432;Database=wolverine_codegen;Username=postgres;Password=unused"
+                : GetConnectionString(configuration);
 
-            // wolverine runs background jobs which run db queries and do not run under an activity
-            // ignore them to make the dashboard cleaner
-            var dataSource = new NpgsqlDataSourceBuilder(connectionString)
-                .ConfigureTracing(tracing => tracing
-                    .ConfigureCommandFilter(_ => Activity.Current is not null)
-                    .ConfigureBatchFilter(_ => Activity.Current is not null)
-                    .EnablePhysicalOpenTracing(false))
-                .Build();
-
-            services.AddWolverine(opts =>
+            services.AddWolverine(ExtensionDiscovery.Automatic, opts =>
             {
-                opts.Discovery.IncludeAssembly(SignalRApi.Hubs.AssemblyReference.Assembly);
+                // wolverine runs background jobs which run db queries and do not run under an activity
+                // ignore them to make the dashboard cleaner
+                var dataSource = new NpgsqlDataSourceBuilder(connectionString)
+                    .ConfigureTracing(tracing => tracing
+                        .ConfigureCommandFilter(_ => Activity.Current is not null)
+                        .ConfigureBatchFilter(_ => Activity.Current is not null)
+                        .EnablePhysicalOpenTracing(false))
+                    .Build();
 
                 opts.PersistMessagesWithPostgresql(dataSource, "wolverine");
+
                 opts.UseEntityFrameworkCoreTransactions(TransactionMiddlewareMode.Lightweight);
+
+                opts.CodeGeneration.TypeLoadMode = TypeLoadMode.Dynamic;
+
+                opts.Discovery.IncludeAssembly(SignalRApi.Hubs.AssemblyReference.Assembly);
 
                 opts.PublishDomainEventsFromEntityFrameworkCore<Entity>(e => e.DomainEvents);
 

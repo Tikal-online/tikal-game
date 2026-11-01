@@ -10,14 +10,14 @@
       },
       "WolverineFx": {
         "type": "Direct",
-        "requested": "[6.56.0, )",
-        "resolved": "6.56.0",
-        "contentHash": "F01r8vMO5GSD1e1aL8v1umocCLBOGQNGM2jT3uMcpnIUiI1otVHXIJF9JpN40NbTwQiGonaqoNxY75YjwevNHQ==",
+        "requested": "[6.60.0, )",
+        "resolved": "6.60.0",
+        "contentHash": "PfH3GOcBcGwGH5UhQmsT20mEtkKOdphFZLzb88j5Ci6iZAQtBkiSV85W4SHD70hqodJy912Ntok4uArYG/dtVw==",
         "dependencies": {
           "Cronos": "0.11.0",
-          "JasperFx": "2.96.0",
-          "JasperFx.Events": "2.96.0",
-          "JasperFx.SourceGenerator": "2.96.0",
+          "JasperFx": "2.97.0",
+          "JasperFx.Events": "2.97.0",
+          "JasperFx.SourceGenerator": "2.97.0",
           "NewId": "4.0.1"
         }
       },
@@ -38,8 +38,8 @@
       },
       "JasperFx": {
         "type": "Transitive",
-        "resolved": "2.96.0",
-        "contentHash": "qHmvYDBwg7oC08SDVzjkV/HWpMfFs2kWVJ8oWPLL8Vkdd78Q54OMMS2x6oyG602Hz6FjcQlO06mKz6n2RAVs3g==",
+        "resolved": "2.97.0",
+        "contentHash": "LZlh0kWctuAFozrOQY/CaJm+IPDJmi7tKCkf1aLhconSwzbUQJ6YpHkOomOsniTEgpEZ5CT+oX6WT7iKl8udUw==",
         "dependencies": {
           "FastExpressionCompiler": "5.4.1",
           "ImTools": "4.0.0",
@@ -51,16 +51,16 @@
       },
       "JasperFx.Events": {
         "type": "Transitive",
-        "resolved": "2.96.0",
-        "contentHash": "gsl4UY6BuzXe+Jm2AwKk6oN3xunP3LPXam1H7RU0QHa4ufVFQgZdUZEVWW/q/bTHkSnTOFCq0CmEeea2USje6w==",
+        "resolved": "2.97.0",
+        "contentHash": "PAqMFEvr1xmK+0aFiT0n/WvJEvqgeDv79d4kVAGANzqPFLTDrnno+z7FQqSXbmMuCybnWRkKaco1RBYZul0weA==",
         "dependencies": {
-          "JasperFx": "2.96.0"
+          "JasperFx": "2.97.0"
         }
       },
       "JasperFx.SourceGenerator": {
         "type": "Transitive",
-        "resolved": "2.96.0",
-        "contentHash": "VjDCrrUkEeGqx9Ir0PFYVZiZYD0D9Z1uA5HZWkNW2s+c2pHWd/YBX56KTCYi+l/2SxBsTcbDJ7IETul4kU5Z2w=="
+        "resolved": "2.97.0",
+        "contentHash": "oUbeHCcoD8sNgZ4Sq6/UeZ7xKzsoRQ7mDD5UyKcQWRM+ukhdD0smCuAJ8q8fGIhng6vq2jjGK2eHeJisvaM70A=="
       },
       "Microsoft.Bcl.TimeProvider": {
         "type": "Transitive",

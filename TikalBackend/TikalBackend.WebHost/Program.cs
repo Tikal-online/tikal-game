@@ -1,3 +1,4 @@
+using JasperFx;
 using JasperFx.Resources;
 using Microsoft.AspNetCore.SignalR;
 using RestApi.Controllers;
@@ -5,6 +6,7 @@ using SignalRApi.Hubs.Lobbies.ActiveLobby;
 using TikalBackend.WebHost.Extensions;
 using TikalBackend.WebHost.Middleware;
 using TikalBackend.WebHost.SchemaTransformers;
+using TikalBackend.WebHost.Utils;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,7 +42,7 @@ if (args.Contains("migrate", StringComparer.OrdinalIgnoreCase))
     return;
 }
 
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() && !CodeGeneration.IsRunningGeneration())
 {
     app.ApplyMigrations();
     app.UseScalarUi();
@@ -62,4 +64,4 @@ app.MapControllers();
 
 app.MapHub<ActiveLobbyHub>("/hub/activeLobby").DisableHttpMetrics();
 
-await app.RunAsync();
+await app.RunJasperFxCommands(args);
