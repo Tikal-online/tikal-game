@@ -97,30 +97,42 @@ internal static class ServiceCollectionExtensions
             services.AddScoped<AccountContext>();
         }
 
-        public void AddInfrastructure(IConfiguration configuration)
+        public void AddInfrastructure(IConfiguration configuration, IWebHostEnvironment environment)
         {
+            // TODO: during code generation we do not have a connection string
+            // but we need one otherwise the datasource will throw and we cannot exclude the datasource since the generated code will be wrong othersise
+            // for now we just provide a dummy since there is no db connection established during code generation
+            // there has to be a better way
             var connectionString = CodeGeneration.IsRunningGeneration()
                 ? "Host=localhost;Port=5432;Database=wolverine_codegen;Username=postgres;Password=unused"
                 : GetConnectionString(configuration);
 
-            services.AddWolverine(ExtensionDiscovery.Automatic, opts =>
+            // wolverine runs background jobs which run db queries and do not run under an activity
+            // ignore them to make the dashboard cleaner
+            var dataSource = new NpgsqlDataSourceBuilder(connectionString)
+                .ConfigureTracing(tracing => tracing
+                    .ConfigureCommandFilter(_ => Activity.Current is not null)
+                    .ConfigureBatchFilter(_ => Activity.Current is not null)
+                    .EnablePhysicalOpenTracing(false))
+                .Build();
+
+            services.AddWolverine(ExtensionDiscovery.ManualOnly, opts =>
             {
-                // wolverine runs background jobs which run db queries and do not run under an activity
-                // ignore them to make the dashboard cleaner
-                var dataSource = new NpgsqlDataSourceBuilder(connectionString)
-                    .ConfigureTracing(tracing => tracing
-                        .ConfigureCommandFilter(_ => Activity.Current is not null)
-                        .ConfigureBatchFilter(_ => Activity.Current is not null)
-                        .EnablePhysicalOpenTracing(false))
-                    .Build();
+                opts.ApplicationAssembly = typeof(Program).Assembly;
+                opts.Discovery.IncludeAssembly(SignalRApi.Hubs.AssemblyReference.Assembly);
 
                 opts.PersistMessagesWithPostgresql(dataSource, "wolverine");
-
                 opts.UseEntityFrameworkCoreTransactions(TransactionMiddlewareMode.Lightweight);
 
-                opts.CodeGeneration.TypeLoadMode = TypeLoadMode.Dynamic;
-
-                opts.Discovery.IncludeAssembly(SignalRApi.Hubs.AssemblyReference.Assembly);
+                if (environment.IsDevelopment())
+                {
+                    opts.UseRuntimeCompilation();
+                    opts.CodeGeneration.TypeLoadMode = TypeLoadMode.Dynamic;
+                }
+                else
+                {
+                    opts.CodeGeneration.TypeLoadMode = TypeLoadMode.Static;
+                }
 
                 opts.PublishDomainEventsFromEntityFrameworkCore<Entity>(e => e.DomainEvents);
 

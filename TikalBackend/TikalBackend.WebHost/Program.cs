@@ -21,7 +21,7 @@ builder.Services.AddSignalR(options => { options.AddFilter<AccountHubFilter>(); 
 
 builder.Services.AddApplication();
 
-builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddInfrastructure(builder.Configuration, builder.Environment);
 
 builder.Services.AddExceptionHandlers();
 
