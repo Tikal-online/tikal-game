@@ -100,7 +100,7 @@ internal static class ServiceCollectionExtensions
         public void AddInfrastructure(IConfiguration configuration, IWebHostEnvironment environment)
         {
             // TODO: during code generation we do not have a connection string
-            // but we need one otherwise the datasource will throw and we cannot exclude the datasource since the generated code will be wrong othersise
+            // but we need one otherwise the datasource will throw and we cannot exclude the datasource since the generated code will be wrong
             // for now we just provide a dummy since there is no db connection established during code generation
             // there has to be a better way
             var connectionString = CodeGeneration.IsRunningGeneration()
