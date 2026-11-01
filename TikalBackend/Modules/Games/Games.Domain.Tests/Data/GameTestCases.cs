@@ -1,0 +1,51 @@
+using Games.Domain.Entities;
+using Games.Domain.Types;
+using Shared.Domain.Enums;
+
+namespace Games.Domain.Tests.Data;
+
+public static class GameTestCases
+{
+    public static IEnumerable<Game> ValidGames()
+    {
+        yield return new()
+        {
+            LobbyId = 1,
+            Players =
+            [
+                new Player
+                {
+                    UserId = "ebb73b46-d8fd-460e-ae24-848d8c20141f",
+                    Name = "Player1",
+                    Colour = Colour.Red,
+                    Points = 10
+                },
+                new Player
+                {
+                    UserId = "1a6a2a19-d2a3-46eb-b732-da1550ccc8d1",
+                    Name = "Player2",
+                    Colour = Colour.Black,
+                    Points = 0
+                }
+            ],
+            Tiles =
+            [
+                new EmptyTile
+                {
+                    Costs = new TravelCosts(NorthEast: 1),
+                    Coordinate = new HexCoordinate(0, 0)
+                },
+                new EmptyTile
+                {
+                    Costs = new TravelCosts(SouthWest: 1),
+                    Coordinate = new HexCoordinate(1, -1)
+                },
+                new VolcanoTile
+                {
+                    Costs = new TravelCosts(),
+                    Coordinate = new HexCoordinate(2, -1)
+                }
+            ]
+        };
+    }
+}
