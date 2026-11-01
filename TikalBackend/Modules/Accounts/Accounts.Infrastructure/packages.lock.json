@@ -644,8 +644,7 @@
         "type": "Project",
         "dependencies": {
           "OneOf": "[3.0.271, )",
-          "Shared.Contracts": "[1.0.0, )",
-          "WolverineFx": "[6.56.0, )"
+          "Shared.Contracts": "[1.0.0, )"
         }
       },
       "accounts.domain": {

@@ -1,3 +1,4 @@
+using JasperFx.CommandLine;
 using Testcontainers.PostgreSql;
 using TikalBackend.IntegrationTests;
 using Xunit.Sdk;
@@ -18,6 +19,9 @@ public class AppFactoryFixture : IAsyncLifetime
 
     public async ValueTask InitializeAsync()
     {
+        // Tell JasperFx to start the web host instead of interpreting WebApplicationFactory's arguments as CLI arguments.
+        JasperFxEnvironment.AutoStartHost = true;
+
         await databaseContainer.StartAsync();
         WebApplicationFactory = new CustomWebApplicationFactory(databaseContainer.GetConnectionString());
     }

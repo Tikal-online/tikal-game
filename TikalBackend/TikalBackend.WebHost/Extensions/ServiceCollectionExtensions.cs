@@ -4,6 +4,7 @@ using Accounts.Infrastructure;
 using FluentValidation;
 using Games.Infrastructure;
 using Humanizer;
+using JasperFx.CodeGeneration;
 using Lobbies.Infrastructure;
 using Npgsql;
 using OpenTelemetry.Logs;
@@ -14,6 +15,7 @@ using Shared.Domain.Entities;
 using TikalBackend.WebHost.Configuration;
 using TikalBackend.WebHost.ExceptionHandlers;
 using TikalBackend.WebHost.Telemetry;
+using TikalBackend.WebHost.Utils;
 using Wolverine;
 using Wolverine.EntityFrameworkCore;
 using Wolverine.ErrorHandling;
@@ -89,15 +91,21 @@ internal static class ServiceCollectionExtensions
 
         public void AddApplication()
         {
-            // Event handler registration are part of the wolverine setup
+            // Event handler registrations are part of the wolverine setup
             services.AddValidators();
 
             services.AddScoped<AccountContext>();
         }
 
-        public void AddInfrastructure(IConfiguration configuration)
+        public void AddInfrastructure(IConfiguration configuration, IWebHostEnvironment environment)
         {
-            var connectionString = GetConnectionString(configuration);
+            // TODO: during code generation we do not have a connection string
+            // but we need one otherwise the datasource will throw and we cannot exclude the datasource since the generated code will be wrong
+            // for now we just provide a dummy since there is no db connection established during code generation
+            // there has to be a better way
+            var connectionString = CodeGeneration.IsRunningGeneration()
+                ? "Host=localhost;Port=5432;Database=wolverine_codegen;Username=postgres;Password=unused"
+                : GetConnectionString(configuration);
 
             // wolverine runs background jobs which run db queries and do not run under an activity
             // ignore them to make the dashboard cleaner
@@ -108,12 +116,23 @@ internal static class ServiceCollectionExtensions
                     .EnablePhysicalOpenTracing(false))
                 .Build();
 
-            services.AddWolverine(opts =>
+            services.AddWolverine(ExtensionDiscovery.ManualOnly, opts =>
             {
+                opts.ApplicationAssembly = typeof(Program).Assembly;
                 opts.Discovery.IncludeAssembly(SignalRApi.Hubs.AssemblyReference.Assembly);
 
                 opts.PersistMessagesWithPostgresql(dataSource, "wolverine");
                 opts.UseEntityFrameworkCoreTransactions(TransactionMiddlewareMode.Lightweight);
+
+                if (environment.IsDevelopment())
+                {
+                    opts.UseRuntimeCompilation();
+                    opts.CodeGeneration.TypeLoadMode = TypeLoadMode.Dynamic;
+                }
+                else
+                {
+                    opts.CodeGeneration.TypeLoadMode = TypeLoadMode.Static;
+                }
 
                 opts.PublishDomainEventsFromEntityFrameworkCore<Entity>(e => e.DomainEvents);
 
