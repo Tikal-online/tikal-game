@@ -24,7 +24,7 @@
     "@jsverse/transloco": "~8.4.0",
     "@microsoft/signalr": "~10.0.11",
     "@ngrx/operators": "^22.0.1",
-    "@ngrx/signals": "~21.1.0",
+    "@ngrx/signals": "~22.0.1",
     "@primeuix/themes": "^3.0.0",
     "neverthrow": "^8.2.0",
     "primeng": "^22.1.0",
@@ -48,12 +48,6 @@
     "typescript": "~6.0.0",
     "typescript-eslint": "~8.67.0",
     "vitest": "~4.1.7"
-  },
-  "overrides": {
-    "@ngrx/signals": {
-      "@angular/common": "$@angular/common",
-      "@angular/core": "$@angular/core"
-    }
   },
   "allowScripts": {
     "@parcel/watcher@2.6.0": true,
