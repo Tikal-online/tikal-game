@@ -17,6 +17,7 @@ RUN dotnet build "./TikalBackend.WebHost.csproj" -c $BUILD_CONFIGURATION -o /app
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
+RUN dotnet run -- codegen write
 RUN dotnet publish "./TikalBackend.WebHost.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
