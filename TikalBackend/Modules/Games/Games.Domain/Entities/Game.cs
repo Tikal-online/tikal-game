@@ -26,4 +26,9 @@ public sealed class Game : Entity
 
         AddDomainEvent(new GameCompletedDomainEvent(GameMapper.GameToGameEventData(this)));
     }
+
+    public Player? GetPlayer(string userId)
+    {
+        return Players.FirstOrDefault(p => p.UserId == userId);
+    }
 }
