@@ -67,6 +67,16 @@ public sealed class Lobby : Entity
         InGame = true;
         AddDomainEvent(new LobbyStartedDomainEvent(LobbyMapper.LobbyToLobbyEventData(this)));
     }
+
+    public void Stop()
+    {
+        foreach (var player in Players)
+        {
+            player.ReadyDown();
+        }
+
+        InGame = false;
+    }
 }
 
 public static class LobbyValidationRules

@@ -1,7 +1,11 @@
+using Games.Contracts.Commands;
+using Games.Contracts.Errors;
 using Games.Contracts.Models;
 using Games.Contracts.Queries;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using OneOf;
+using OneOf.Types;
 using RestApi.Controllers.Games.Dtos;
 using RestApi.Controllers.Games.Mappers;
 using Shared.Api;
@@ -43,4 +47,22 @@ public sealed partial class GamesController : ApiController
 
         return Ok(gameDto);
     }
+
+    [HttpDelete("{Id:long}/Players/me")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [EndpointDescription("Removes the currently authenticated user from the provided game")]
+    public async Task<IActionResult> LeaveGame(long Id, CancellationToken cancellationToken)
+    {
+        var command = new LeaveGameCommand(accountContext.Account.UserId, Id);
+
+        var result = await bus.InvokeAsync<OneOf<Success, GameNotFound, PlayerNotInGivenGame>>(command, cancellationToken);
+
+        return result.Match<IActionResult>(
+            _ => Ok(),
+            _ => GameNotFound(Id),
+            _ => PlayerNotInGivenGame(Id)
+        );
+    }
+
 }
