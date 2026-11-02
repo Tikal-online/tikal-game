@@ -4,7 +4,7 @@ namespace Accounts.Application.DataAccess;
 
 public interface AccountQueryContext
 {
-    Task<Account?> GetByUserId(string userId);
+    Task<Account?> GetByUserId(string userId, CancellationToken cancellationToken);
 
-    Task<List<Account>> GetByUserIds(ISet<string> userIds);
+    Task<List<Account>> GetByUserIds(ISet<string> userIds, CancellationToken cancellationToken);
 }
