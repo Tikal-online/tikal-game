@@ -19,10 +19,10 @@ public sealed class DbPlayerRepository : PlayerRepository
         lobbiesDbContext.Remove(player);
     }
 
-    public Task<Player?> GetByUserId(string userId)
+    public Task<Player?> GetByUserId(string userId, CancellationToken cancellationToken)
     {
         return lobbiesDbContext.Players
             .Where(p => p.UserId == userId)
-            .FirstOrDefaultAsync();
+            .FirstOrDefaultAsync(cancellationToken);
     }
 }

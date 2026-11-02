@@ -6,5 +6,5 @@ public interface PlayerRepository
 {
     void Delete(Player player);
 
-    Task<Player?> GetByUserId(string userId);
+    Task<Player?> GetByUserId(string userId, CancellationToken cancellationToken);
 }
