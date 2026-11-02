@@ -70,6 +70,11 @@ public sealed class Lobby : Entity
 
     public void Stop()
     {
+        foreach (var player in Players)
+        {
+            player.ReadyDown();
+        }
+
         InGame = false;
     }
 }

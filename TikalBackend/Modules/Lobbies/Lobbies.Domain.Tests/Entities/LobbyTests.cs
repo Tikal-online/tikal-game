@@ -141,4 +141,53 @@ public sealed class LobbyTests
         // then
         Assert.DoesNotContain(unusedColour, usedColours);
     }
+
+    [Theory]
+    [ClassData(typeof(ValidLobbies))]
+    public void GivenLobby_WhenStart_ThenSetsInGameToTrue(Lobby lobby)
+    {
+        // when
+        lobby.Start();
+
+        // then;
+        Assert.True(lobby.InGame);
+    }
+
+    [Theory]
+    [ClassData(typeof(ValidLobbies))]
+    public void GivenLobby_WhenStart_ThenAddsLobbyStartedEvent(Lobby lobby)
+    {
+        // when
+        lobby.Start();
+
+        // then
+        var domainEvent = lobby.DomainEvents.OfType<LobbyStartedDomainEvent>().SingleOrDefault();
+
+        Assert.Multiple(
+            () => Assert.NotNull(domainEvent),
+            () => Assert.Equal(lobby.Id, domainEvent?.Lobby.Id)
+        );
+    }
+
+    [Theory]
+    [ClassData(typeof(InGameLobbies))]
+    public void GivenLobby_WhenStop_ThenSetsInGameToFalse(Lobby lobby)
+    {
+        // when
+        lobby.Stop();
+
+        // thenFalse
+        Assert.False(lobby.InGame);
+    }
+
+    [Theory]
+    [ClassData(typeof(InGameLobbies))]
+    public void GivenLobby_WhenStop_ThenSetsAllPlayersToNotReady(Lobby lobby)
+    {
+        // when
+        lobby.Stop();
+
+        // thenFalse
+        Assert.DoesNotContain(lobby.Players, p => p.IsReady);
+    }
 }
