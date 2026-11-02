@@ -8,5 +8,5 @@ public interface LobbyRepository
 
     void Delete(Lobby lobby);
 
-    Task<Lobby?> GetById(long id);
+    Task<Lobby?> GetById(long id, CancellationToken cancellationToken);
 }

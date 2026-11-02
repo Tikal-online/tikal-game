@@ -34,7 +34,7 @@ public sealed class JoinLobbyCommandHandler
             return new PlayerAlreadyInALobby();
         }
 
-        var lobby = await lobbyRepository.GetById(request.LobbyId);
+        var lobby = await lobbyRepository.GetById(request.LobbyId, cancellationToken);
 
         if (lobby is null)
         {

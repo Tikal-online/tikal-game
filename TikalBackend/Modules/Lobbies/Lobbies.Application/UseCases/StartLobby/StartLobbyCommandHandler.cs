@@ -21,7 +21,7 @@ public sealed class StartLobbyCommandHandler
         CancellationToken cancellationToken
     )
     {
-        var lobby = await lobbyRepository.GetById(request.LobbyId);
+        var lobby = await lobbyRepository.GetById(request.LobbyId, cancellationToken);
 
         if (lobby is null)
         {

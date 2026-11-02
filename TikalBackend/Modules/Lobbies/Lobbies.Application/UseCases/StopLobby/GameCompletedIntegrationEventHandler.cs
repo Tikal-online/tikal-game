@@ -14,7 +14,7 @@ public sealed class GameCompletedIntegrationEventHandler
 
     public async Task Handle(GameCompletedIntegrationEvent integrationEvent, CancellationToken cancellationToken)
     {
-        var lobby = await lobbyRepository.GetById(integrationEvent.Game.LobbyId);
+        var lobby = await lobbyRepository.GetById(integrationEvent.Game.LobbyId, cancellationToken);
 
         lobby?.Stop();
     }
