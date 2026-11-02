@@ -1,4 +1,5 @@
 using Games.Domain.Events;
+using Games.Domain.Mappers;
 using Shared.Domain.Entities;
 
 namespace Games.Domain.Entities;
