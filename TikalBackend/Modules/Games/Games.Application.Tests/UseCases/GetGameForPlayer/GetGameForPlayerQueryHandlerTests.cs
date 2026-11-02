@@ -29,11 +29,11 @@ public sealed class GetGameForPlayerQueryHandlerTests
         // given
         var query = new GetGameForPlayerQuery("userId");
 
-        gameQueryContext.Setup(q => q.GetByUserId(query.UserId))
+        gameQueryContext.Setup(q => q.GetByUserId(query.UserId, TestContext.Current.CancellationToken))
             .ReturnsAsync(default(Game));
 
         // when
-        var result = await handler.Handle(query, CancellationToken.None);
+        var result = await handler.Handle(query, TestContext.Current.CancellationToken);
 
         // then
         Assert.Null(result);
@@ -46,11 +46,11 @@ public sealed class GetGameForPlayerQueryHandlerTests
         // given
         var query = new GetGameForPlayerQuery("userId");
 
-        gameQueryContext.Setup(q => q.GetByUserId(query.UserId))
+        gameQueryContext.Setup(q => q.GetByUserId(query.UserId, TestContext.Current.CancellationToken))
             .ReturnsAsync(game);
 
         // when
-        var result = await handler.Handle(query, CancellationToken.None);
+        var result = await handler.Handle(query, TestContext.Current.CancellationToken);
 
         // then
         Assert.Multiple(

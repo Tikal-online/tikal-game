@@ -14,13 +14,13 @@ public sealed class DbGameQueryContext : GameQueryContext
         this.gamesDbContext = gamesDbContext;
     }
 
-    public Task<Game?> GetByUserId(string userId)
+    public Task<Game?> GetByUserId(string userId, CancellationToken cancellationToken)
     {
         return gamesDbContext.Games.AsNoTracking()
             .Include(game => game.Players)
             .Include(game => game.Tiles)
             .ThenInclude(tile => tile.TroopAssignments)
             .AsSplitQuery()
-            .SingleOrDefaultAsync(g => g.Players.Any(p => p.UserId == userId));
+            .SingleOrDefaultAsync(g => g.Players.Any(p => p.UserId == userId), cancellationToken);
     }
 }

@@ -19,7 +19,7 @@ public sealed class GetGameForPlayerQueryHandler
         CancellationToken cancellationToken
     )
     {
-        var game = await gameQueryContext.GetByUserId(request.UserId);
+        var game = await gameQueryContext.GetByUserId(request.UserId, cancellationToken);
 
         if (game is null)
         {
