@@ -37,11 +37,11 @@ public sealed class CreateAccountCommandHandlerTests
         };
 
         accountRepository
-            .Setup(r => r.GetByUserId(command.UserId))
+            .Setup(r => r.GetByUserId(command.UserId, TestContext.Current.CancellationToken))
             .ReturnsAsync(existingAccount);
 
         // when
-        var result = await handler.Handle(command, CancellationToken.None);
+        var result = await handler.Handle(command, TestContext.Current.CancellationToken);
 
         // then
         Assert.Multiple(
@@ -58,11 +58,11 @@ public sealed class CreateAccountCommandHandlerTests
     {
         // given
         accountRepository
-            .Setup(r => r.GetByUserId(command.UserId))
+            .Setup(r => r.GetByUserId(command.UserId, TestContext.Current.CancellationToken))
             .ReturnsAsync(default(Account));
 
         // when
-        var result = await handler.Handle(command, CancellationToken.None);
+        var result = await handler.Handle(command, TestContext.Current.CancellationToken);
 
         // then
         Assert.Multiple(

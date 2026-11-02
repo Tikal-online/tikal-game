@@ -21,7 +21,7 @@ public sealed class CreateAccountCommandHandler
         CancellationToken cancellationToken
     )
     {
-        var existingAccount = await accountRepository.GetByUserId(request.UserId);
+        var existingAccount = await accountRepository.GetByUserId(request.UserId, cancellationToken);
 
         if (existingAccount is not null)
         {
