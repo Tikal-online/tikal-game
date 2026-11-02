@@ -28,7 +28,7 @@ public sealed class CreateLobbyCommandHandler
         CancellationToken cancellationToken
     )
     {
-        var playerAlreadyInALobby = await playerQueryContext.PlayerExists(request.UserId);
+        var playerAlreadyInALobby = await playerQueryContext.PlayerExists(request.UserId, cancellationToken);
 
         if (playerAlreadyInALobby)
         {

@@ -30,7 +30,8 @@ public sealed class CreateLobbyCommandHandlerTests
     private void SetupHappyPath(CreateLobbyCommand command)
     {
         // player is not in a lobby
-        playerQueryContext.Setup(p => p.PlayerExists(command.UserId)).ReturnsAsync(false);
+        playerQueryContext.Setup(p => p.PlayerExists(command.UserId, TestContext.Current.CancellationToken))
+            .ReturnsAsync(false);
     }
 
     [Theory]
@@ -40,10 +41,11 @@ public sealed class CreateLobbyCommandHandlerTests
     )
     {
         // given
-        playerQueryContext.Setup(p => p.PlayerExists(command.UserId)).ReturnsAsync(true);
+        playerQueryContext.Setup(p => p.PlayerExists(command.UserId, TestContext.Current.CancellationToken))
+            .ReturnsAsync(true);
 
         // when
-        var result = await handler.Handle(command, CancellationToken.None);
+        var result = await handler.Handle(command, TestContext.Current.CancellationToken);
 
         // then
         Assert.IsType<PlayerAlreadyInALobby>(result.Value);
@@ -57,7 +59,7 @@ public sealed class CreateLobbyCommandHandlerTests
         SetupHappyPath(command);
 
         // when
-        var result = await handler.Handle(command, CancellationToken.None);
+        var result = await handler.Handle(command, TestContext.Current.CancellationToken);
 
         // then
         Assert.IsType<Success>(result.Value);

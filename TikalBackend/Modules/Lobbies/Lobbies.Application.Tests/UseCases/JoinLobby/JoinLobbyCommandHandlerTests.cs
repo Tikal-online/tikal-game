@@ -32,7 +32,8 @@ public sealed class JoinLobbyCommandHandlerTests
     private void SetupHappyPath(Lobby lobby, JoinLobbyCommand command)
     {
         // player is not in a lobby
-        playerQueryContext.Setup(p => p.PlayerExists(command.UserId)).ReturnsAsync(false);
+        playerQueryContext.Setup(p => p.PlayerExists(command.UserId, TestContext.Current.CancellationToken))
+            .ReturnsAsync(false);
 
         // lobby exists
         lobbyRepository.Setup(r => r.GetById(lobby.Id, TestContext.Current.CancellationToken)).ReturnsAsync(lobby);
@@ -47,7 +48,8 @@ public sealed class JoinLobbyCommandHandlerTests
 
         SetupHappyPath(lobby, command);
 
-        playerQueryContext.Setup(p => p.PlayerExists(command.UserId)).ReturnsAsync(true);
+        playerQueryContext.Setup(p => p.PlayerExists(command.UserId, TestContext.Current.CancellationToken))
+            .ReturnsAsync(true);
 
         // when
         var result = await handler.Handle(command, TestContext.Current.CancellationToken);
@@ -65,7 +67,8 @@ public sealed class JoinLobbyCommandHandlerTests
 
         SetupHappyPath(lobby, command);
 
-        lobbyRepository.Setup(r => r.GetById(lobby.Id, TestContext.Current.CancellationToken)).ReturnsAsync(default(Lobby));
+        lobbyRepository.Setup(r => r.GetById(lobby.Id, TestContext.Current.CancellationToken))
+            .ReturnsAsync(default(Lobby));
 
         // when
         var result = await handler.Handle(command, TestContext.Current.CancellationToken);
