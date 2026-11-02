@@ -27,7 +27,7 @@ public sealed class SetPlayerNotReadyCommandHandlerTests
     private void SetupHappyPath(Player player)
     {
         // player exists
-        playerRepository.Setup(r => r.GetByUserId(player.UserId))
+        playerRepository.Setup(r => r.GetByUserId(player.UserId, TestContext.Current.CancellationToken))
             .ReturnsAsync(player);
     }
 
@@ -37,11 +37,11 @@ public sealed class SetPlayerNotReadyCommandHandlerTests
         // given
         var command = new SetPlayerNotReadyCommand("userId");
 
-        playerRepository.Setup(r => r.GetByUserId(command.UserId))
+        playerRepository.Setup(r => r.GetByUserId(command.UserId, TestContext.Current.CancellationToken))
             .ReturnsAsync(default(Player));
 
         // when
-        var result = await handler.Handle(command, CancellationToken.None);
+        var result = await handler.Handle(command, TestContext.Current.CancellationToken);
 
         // then
         Assert.IsType<PlayerNotInALobby>(result.Value);
@@ -57,7 +57,7 @@ public sealed class SetPlayerNotReadyCommandHandlerTests
         SetupHappyPath(player);
 
         // when
-        var result = await handler.Handle(command, CancellationToken.None);
+        var result = await handler.Handle(command, TestContext.Current.CancellationToken);
 
         // then
         Assert.Multiple(

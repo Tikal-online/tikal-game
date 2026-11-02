@@ -32,7 +32,7 @@ public sealed class LeaveGameCommandHandlerTests
     private void SetupHappyPath(Game game, LeaveGameCommand command)
     {
         // game exists
-        gameRepository.Setup(r => r.GetById(game.Id))
+        gameRepository.Setup(r => r.GetById(game.Id, TestContext.Current.CancellationToken))
             .ReturnsAsync(game);
 
         // game contains authenticated player
@@ -47,7 +47,7 @@ public sealed class LeaveGameCommandHandlerTests
         // given
         var command = new LeaveGameCommand("userId", 1);
 
-        gameRepository.Setup(r => r.GetById(1))
+        gameRepository.Setup(r => r.GetById(1, TestContext.Current.CancellationToken))
             .ReturnsAsync(default(Game));
 
         // when
@@ -64,7 +64,7 @@ public sealed class LeaveGameCommandHandlerTests
         // given
         var command = new LeaveGameCommand("userId", game.Id);
 
-        gameRepository.Setup(r => r.GetById(game.Id))
+        gameRepository.Setup(r => r.GetById(game.Id, TestContext.Current.CancellationToken))
             .ReturnsAsync(game);
 
         // when

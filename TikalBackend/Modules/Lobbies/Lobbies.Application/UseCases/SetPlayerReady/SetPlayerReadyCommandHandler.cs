@@ -21,7 +21,7 @@ public sealed class SetPlayerReadyCommandHandler
         CancellationToken cancellationToken
     )
     {
-        var player = await playerRepository.GetByUserId(request.UserId);
+        var player = await playerRepository.GetByUserId(request.UserId, cancellationToken);
 
         if (player is null)
         {

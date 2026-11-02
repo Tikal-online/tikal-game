@@ -19,8 +19,8 @@ public sealed class DbAccountRepository : AccountRepository
         accountsDbContext.Add(account);
     }
 
-    public Task<Account?> GetByUserId(string userId)
+    public Task<Account?> GetByUserId(string userId, CancellationToken cancellationToken)
     {
-        return accountsDbContext.Accounts.FirstOrDefaultAsync(x => x.UserId == userId);
+        return accountsDbContext.Accounts.FirstOrDefaultAsync(x => x.UserId == userId, cancellationToken);
     }
 }

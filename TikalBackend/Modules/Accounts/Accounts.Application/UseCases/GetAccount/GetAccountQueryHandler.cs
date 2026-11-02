@@ -15,7 +15,7 @@ public sealed class GetAccountQueryHandler
 
     public async Task<AccountModel?> Handle(GetAccountQuery request, CancellationToken cancellationToken)
     {
-        var account = await accountQueryContext.GetByUserId(request.UserId);
+        var account = await accountQueryContext.GetByUserId(request.UserId, cancellationToken);
 
         return account is null ? null : new AccountModel { UserId = account.UserId, Name = account.Name };
     }

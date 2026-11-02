@@ -16,7 +16,7 @@ public sealed class GetAccountsQueryHandler
 
     public async Task<List<AccountModel>> Handle(GetAccountsQuery request, CancellationToken cancellationToken)
     {
-        var accounts = await accountQueryContext.GetByUserIds(request.UserIds);
+        var accounts = await accountQueryContext.GetByUserIds(request.UserIds, cancellationToken);
 
         var accountModels = AccountMapper.AccountsToAccountModels(accounts);
 

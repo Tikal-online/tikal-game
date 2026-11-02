@@ -24,13 +24,13 @@ public sealed class DbGameRepository : GameRepository
         gamesDbContext.Remove(game);
     }
 
-    public Task<Game?> GetById(long id)
+    public Task<Game?> GetById(long id, CancellationToken cancellationToken)
     {
         return gamesDbContext.Games
             .Include(game => game.Players)
             .Include(game => game.Tiles)
             .ThenInclude(tile => tile.TroopAssignments)
             .AsSplitQuery()
-            .SingleOrDefaultAsync(g => g.Id == id);
+            .SingleOrDefaultAsync(g => g.Id == id, cancellationToken);
     }
 }

@@ -14,13 +14,13 @@ public sealed class DbAccountQueryContext : AccountQueryContext
         this.accountsDbContext = accountsDbContext;
     }
 
-    public Task<Account?> GetByUserId(string userId)
+    public Task<Account?> GetByUserId(string userId, CancellationToken cancellationToken)
     {
-        return accountsDbContext.Accounts.AsNoTracking().FirstOrDefaultAsync(x => x.UserId == userId);
+        return accountsDbContext.Accounts.AsNoTracking().FirstOrDefaultAsync(x => x.UserId == userId, cancellationToken);
     }
 
-    public Task<List<Account>> GetByUserIds(ISet<string> userIds)
+    public Task<List<Account>> GetByUserIds(ISet<string> userIds, CancellationToken cancellationToken)
     {
-        return accountsDbContext.Accounts.AsNoTracking().Where(x => userIds.Contains(x.UserId)).ToListAsync();
+        return accountsDbContext.Accounts.AsNoTracking().Where(x => userIds.Contains(x.UserId)).ToListAsync(cancellationToken);
     }
 }

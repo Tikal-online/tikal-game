@@ -27,11 +27,11 @@ public sealed class GetLobbyQueryHandlerTests
     public async Task GivenNoLobbyWithId_WhenHandle_ThenReturnsNull(GetLobbyQuery query)
     {
         // given
-        lobbyQueryContext.Setup(q => q.GetById(query.Id))
+        lobbyQueryContext.Setup(q => q.GetById(query.Id, TestContext.Current.CancellationToken))
             .ReturnsAsync(default(Lobby));
 
         // when
-        var result = await handler.Handle(query, CancellationToken.None);
+        var result = await handler.Handle(query, TestContext.Current.CancellationToken);
 
         // then
         Assert.Null(result);
@@ -44,11 +44,11 @@ public sealed class GetLobbyQueryHandlerTests
         // given
         var query = new GetLobbyQuery(lobby.Id);
 
-        lobbyQueryContext.Setup(q => q.GetById(query.Id))
+        lobbyQueryContext.Setup(q => q.GetById(query.Id, TestContext.Current.CancellationToken))
             .ReturnsAsync(lobby);
 
         // when
-        var result = await handler.Handle(query, CancellationToken.None);
+        var result = await handler.Handle(query, TestContext.Current.CancellationToken);
 
         // then
         Assert.Multiple(

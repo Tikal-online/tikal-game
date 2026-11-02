@@ -13,8 +13,8 @@ public sealed class DbPlayerQueryContext : PlayerQueryContext
         this.lobbiesDbContext = lobbiesDbContext;
     }
 
-    public Task<bool> PlayerExists(string UserId)
+    public Task<bool> PlayerExists(string UserId, CancellationToken cancellationToken)
     {
-        return lobbiesDbContext.Players.AsNoTracking().AnyAsync(x => x.UserId == UserId);
+        return lobbiesDbContext.Players.AsNoTracking().AnyAsync(x => x.UserId == UserId, cancellationToken);
     }
 }

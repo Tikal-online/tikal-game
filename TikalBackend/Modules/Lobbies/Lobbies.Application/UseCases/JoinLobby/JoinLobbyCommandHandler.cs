@@ -27,14 +27,14 @@ public sealed class JoinLobbyCommandHandler
         CancellationToken cancellationToken
     )
     {
-        var playerAlreadyInALobby = await playerQueryContext.PlayerExists(request.UserId);
+        var playerAlreadyInALobby = await playerQueryContext.PlayerExists(request.UserId, cancellationToken);
 
         if (playerAlreadyInALobby)
         {
             return new PlayerAlreadyInALobby();
         }
 
-        var lobby = await lobbyRepository.GetById(request.LobbyId);
+        var lobby = await lobbyRepository.GetById(request.LobbyId, cancellationToken);
 
         if (lobby is null)
         {

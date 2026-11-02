@@ -32,10 +32,11 @@ public sealed class JoinLobbyCommandHandlerTests
     private void SetupHappyPath(Lobby lobby, JoinLobbyCommand command)
     {
         // player is not in a lobby
-        playerQueryContext.Setup(p => p.PlayerExists(command.UserId)).ReturnsAsync(false);
+        playerQueryContext.Setup(p => p.PlayerExists(command.UserId, TestContext.Current.CancellationToken))
+            .ReturnsAsync(false);
 
         // lobby exists
-        lobbyRepository.Setup(r => r.GetById(lobby.Id)).ReturnsAsync(lobby);
+        lobbyRepository.Setup(r => r.GetById(lobby.Id, TestContext.Current.CancellationToken)).ReturnsAsync(lobby);
     }
 
     [Theory]
@@ -47,10 +48,11 @@ public sealed class JoinLobbyCommandHandlerTests
 
         SetupHappyPath(lobby, command);
 
-        playerQueryContext.Setup(p => p.PlayerExists(command.UserId)).ReturnsAsync(true);
+        playerQueryContext.Setup(p => p.PlayerExists(command.UserId, TestContext.Current.CancellationToken))
+            .ReturnsAsync(true);
 
         // when
-        var result = await handler.Handle(command, CancellationToken.None);
+        var result = await handler.Handle(command, TestContext.Current.CancellationToken);
 
         // then
         Assert.IsType<PlayerAlreadyInALobby>(result.Value);
@@ -65,10 +67,11 @@ public sealed class JoinLobbyCommandHandlerTests
 
         SetupHappyPath(lobby, command);
 
-        lobbyRepository.Setup(r => r.GetById(lobby.Id)).ReturnsAsync(default(Lobby));
+        lobbyRepository.Setup(r => r.GetById(lobby.Id, TestContext.Current.CancellationToken))
+            .ReturnsAsync(default(Lobby));
 
         // when
-        var result = await handler.Handle(command, CancellationToken.None);
+        var result = await handler.Handle(command, TestContext.Current.CancellationToken);
 
         // then
         Assert.IsType<LobbyNotFound>(result.Value);
@@ -84,7 +87,7 @@ public sealed class JoinLobbyCommandHandlerTests
         SetupHappyPath(lobby, command);
 
         // when
-        var result = await handler.Handle(command, CancellationToken.None);
+        var result = await handler.Handle(command, TestContext.Current.CancellationToken);
 
         // then
         Assert.IsType<LobbyFull>(result.Value);
@@ -100,7 +103,7 @@ public sealed class JoinLobbyCommandHandlerTests
         SetupHappyPath(lobby, command);
 
         // when
-        var result = await handler.Handle(command, CancellationToken.None);
+        var result = await handler.Handle(command, TestContext.Current.CancellationToken);
 
         // then
         Assert.IsType<LobbyInGame>(result.Value);
@@ -116,7 +119,7 @@ public sealed class JoinLobbyCommandHandlerTests
         SetupHappyPath(lobby, command);
 
         // when
-        var result = await handler.Handle(command, CancellationToken.None);
+        var result = await handler.Handle(command, TestContext.Current.CancellationToken);
 
         // then
         var player = lobby.Players.FirstOrDefault(p => p.UserId == command.UserId);

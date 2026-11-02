@@ -4,5 +4,5 @@ namespace Games.Application.DataAccess;
 
 public interface GameQueryContext
 {
-    Task<Game?> GetByUserId(string userId);
+    Task<Game?> GetByUserId(string userId, CancellationToken cancellationToken);
 }

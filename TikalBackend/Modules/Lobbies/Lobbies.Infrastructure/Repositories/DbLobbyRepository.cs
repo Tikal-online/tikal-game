@@ -24,10 +24,10 @@ public sealed class DbLobbyRepository : LobbyRepository
         lobbiesDbContext.Remove(lobby);
     }
 
-    public Task<Lobby?> GetById(long id)
+    public Task<Lobby?> GetById(long id, CancellationToken cancellationToken)
     {
         return lobbiesDbContext.Lobbies
             .Include(l => l.Players)
-            .FirstOrDefaultAsync(l => l.Id == id);
+            .FirstOrDefaultAsync(l => l.Id == id, cancellationToken);
     }
 }

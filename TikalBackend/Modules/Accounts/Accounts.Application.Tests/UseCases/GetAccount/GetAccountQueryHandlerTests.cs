@@ -28,11 +28,11 @@ public sealed class GetAccountQueryHandlerTests
     {
         // given
         accountQueryContext
-            .Setup(q => q.GetByUserId(query.UserId))
+            .Setup(q => q.GetByUserId(query.UserId, TestContext.Current.CancellationToken))
             .ReturnsAsync(default(Account));
 
         // when
-        var result = await handler.Handle(query, CancellationToken.None);
+        var result = await handler.Handle(query, TestContext.Current.CancellationToken);
 
         // then
         Assert.Null(result);
@@ -44,13 +44,13 @@ public sealed class GetAccountQueryHandlerTests
     {
         // given
         accountQueryContext
-            .Setup(q => q.GetByUserId(account.UserId))
+            .Setup(q => q.GetByUserId(account.UserId, TestContext.Current.CancellationToken))
             .ReturnsAsync(account);
 
         var query = new GetAccountQuery(account.UserId);
 
         // when
-        var result = await handler.Handle(query, CancellationToken.None);
+        var result = await handler.Handle(query, TestContext.Current.CancellationToken);
 
         // then
         Assert.Multiple(

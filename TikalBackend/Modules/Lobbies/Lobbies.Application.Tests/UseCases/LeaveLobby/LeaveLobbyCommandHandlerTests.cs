@@ -32,7 +32,7 @@ public sealed class LeaveLobbyCommandHandlerTests
     private void SetupHappyPath(Lobby lobby, LeaveLobbyCommand command)
     {
         // lobby exists
-        lobbyRepository.Setup(r => r.GetById(lobby.Id))
+        lobbyRepository.Setup(r => r.GetById(lobby.Id, TestContext.Current.CancellationToken))
             .ReturnsAsync(lobby);
 
         // lobby contains authenticated player
@@ -47,11 +47,11 @@ public sealed class LeaveLobbyCommandHandlerTests
         // given
         var command = new LeaveLobbyCommand("userId", 1);
 
-        lobbyRepository.Setup(r => r.GetById(1))
+        lobbyRepository.Setup(r => r.GetById(1, TestContext.Current.CancellationToken))
             .ReturnsAsync(default(Lobby));
 
         // when
-        var result = await handler.Handle(command, CancellationToken.None);
+        var result = await handler.Handle(command, TestContext.Current.CancellationToken);
 
         // then
         Assert.IsType<LobbyNotFound>(result.Value);
@@ -64,11 +64,11 @@ public sealed class LeaveLobbyCommandHandlerTests
         // given
         var command = new LeaveLobbyCommand("userId", lobby.Id);
 
-        lobbyRepository.Setup(r => r.GetById(lobby.Id))
+        lobbyRepository.Setup(r => r.GetById(lobby.Id, TestContext.Current.CancellationToken))
             .ReturnsAsync(lobby);
 
         // when
-        var result = await handler.Handle(command, CancellationToken.None);
+        var result = await handler.Handle(command, TestContext.Current.CancellationToken);
 
         // then
         Assert.IsType<PlayerNotInGivenLobby>(result.Value);
@@ -84,7 +84,7 @@ public sealed class LeaveLobbyCommandHandlerTests
         SetupHappyPath(lobby, command);
 
         // when
-        var result = await handler.Handle(command, CancellationToken.None);
+        var result = await handler.Handle(command, TestContext.Current.CancellationToken);
 
         // then
         Assert.IsType<LobbyInGame>(result.Value);
@@ -100,7 +100,7 @@ public sealed class LeaveLobbyCommandHandlerTests
         SetupHappyPath(lobby, command);
 
         // when
-        var result = await handler.Handle(command, CancellationToken.None);
+        var result = await handler.Handle(command, TestContext.Current.CancellationToken);
 
         // then
         Assert.IsType<Success>(result.Value);
@@ -118,7 +118,7 @@ public sealed class LeaveLobbyCommandHandlerTests
         SetupHappyPath(lobby, command);
 
         // when
-        var result = await handler.Handle(command, CancellationToken.None);
+        var result = await handler.Handle(command, TestContext.Current.CancellationToken);
 
         // then
         Assert.IsType<Success>(result.Value);

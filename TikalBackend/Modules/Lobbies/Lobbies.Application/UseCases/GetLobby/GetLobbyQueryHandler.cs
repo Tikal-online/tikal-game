@@ -16,7 +16,7 @@ public sealed class GetLobbyQueryHandler
 
     public async Task<LobbyModel?> Handle(GetLobbyQuery request, CancellationToken cancellationToken)
     {
-        var lobby = await lobbyQueryContext.GetById(request.Id);
+        var lobby = await lobbyQueryContext.GetById(request.Id, cancellationToken);
 
         if (lobby is null)
         {

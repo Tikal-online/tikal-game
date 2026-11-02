@@ -14,6 +14,6 @@ public sealed class GetLobbyIdForPlayerQueryHandler
 
     public Task<long?> Handle(GetLobbyIdForPlayerQuery request, CancellationToken cancellationToken)
     {
-        return lobbyQueryContext.GetIdByUserId(request.UserId);
+        return lobbyQueryContext.GetIdByUserId(request.UserId, cancellationToken);
     }
 }

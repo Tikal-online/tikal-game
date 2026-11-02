@@ -28,7 +28,7 @@ public sealed class StartLobbyCommandHandlerTests
     private void SetupHappyPath(Lobby lobby, StartLobbyCommand command)
     {
         // lobby exists
-        lobbyRepository.Setup(r => r.GetById(lobby.Id))
+        lobbyRepository.Setup(r => r.GetById(lobby.Id, TestContext.Current.CancellationToken))
             .ReturnsAsync(lobby);
 
         // lobby contains authenticated player who is owner
@@ -44,11 +44,11 @@ public sealed class StartLobbyCommandHandlerTests
         // given
         var command = new StartLobbyCommand("userId", 1);
 
-        lobbyRepository.Setup(r => r.GetById(1))
+        lobbyRepository.Setup(r => r.GetById(1, TestContext.Current.CancellationToken))
             .ReturnsAsync(default(Lobby));
 
         // when
-        var result = await handler.Handle(command, CancellationToken.None);
+        var result = await handler.Handle(command, TestContext.Current.CancellationToken);
 
         // then
         Assert.IsType<LobbyNotFound>(result.Value);
@@ -61,11 +61,11 @@ public sealed class StartLobbyCommandHandlerTests
         // given
         var command = new StartLobbyCommand("userId", lobby.Id);
 
-        lobbyRepository.Setup(r => r.GetById(lobby.Id))
+        lobbyRepository.Setup(r => r.GetById(lobby.Id, TestContext.Current.CancellationToken))
             .ReturnsAsync(lobby);
 
         // when
-        var result = await handler.Handle(command, CancellationToken.None);
+        var result = await handler.Handle(command, TestContext.Current.CancellationToken);
 
         // then
         Assert.IsType<PlayerNotInGivenLobby>(result.Value);
@@ -84,7 +84,7 @@ public sealed class StartLobbyCommandHandlerTests
         player?.IsOwner = false;
 
         // when
-        var result = await handler.Handle(command, CancellationToken.None);
+        var result = await handler.Handle(command, TestContext.Current.CancellationToken);
 
         // then
         Assert.IsType<Unprivileged>(result.Value);
@@ -100,7 +100,7 @@ public sealed class StartLobbyCommandHandlerTests
         SetupHappyPath(lobby, command);
 
         // when
-        var result = await handler.Handle(command, CancellationToken.None);
+        var result = await handler.Handle(command, TestContext.Current.CancellationToken);
 
         // then
         Assert.IsType<LobbyCannotBeStarted>(result.Value);
@@ -116,7 +116,7 @@ public sealed class StartLobbyCommandHandlerTests
         SetupHappyPath(lobby, command);
 
         // when
-        var result = await handler.Handle(command, CancellationToken.None);
+        var result = await handler.Handle(command, TestContext.Current.CancellationToken);
 
         // then
         Assert.IsType<Success>(result.Value);

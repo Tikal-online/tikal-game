@@ -26,7 +26,7 @@ public sealed class LeaveGameCommandHandler
         CancellationToken cancellationToken
     )
     {
-        var game = await gameRepository.GetById(command.GameId);
+        var game = await gameRepository.GetById(command.GameId, cancellationToken);
 
         if (game is null)
         {
