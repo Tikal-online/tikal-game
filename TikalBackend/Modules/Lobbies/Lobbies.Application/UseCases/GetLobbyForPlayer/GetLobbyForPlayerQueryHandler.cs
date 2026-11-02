@@ -19,7 +19,7 @@ public sealed class GetLobbyForPlayerQueryHandler
         CancellationToken cancellationToken
     )
     {
-        var lobby = await lobbyQueryContext.GetByUserId(request.UserId);
+        var lobby = await lobbyQueryContext.GetByUserId(request.UserId, cancellationToken);
 
         if (lobby is null)
         {

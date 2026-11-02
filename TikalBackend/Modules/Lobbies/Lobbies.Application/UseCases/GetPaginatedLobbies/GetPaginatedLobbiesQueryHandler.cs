@@ -23,12 +23,13 @@ public sealed class GetPaginatedLobbiesQueryHandler
         var lobbies = await lobbyQueryContext.GetPaginated(
             request.PageSize,
             request.PageNumber,
-            request.SearchText
+            request.SearchText,
+            cancellationToken
         );
 
         var lobbySummaryModels = LobbyMapper.LobbiesToLobbySummaryModels(lobbies);
 
-        var lobbyCount = await lobbyQueryContext.GetCount(request.SearchText);
+        var lobbyCount = await lobbyQueryContext.GetCount(request.SearchText, cancellationToken);
 
         return new PaginatedResult<List<LobbySummaryModel>>
         {

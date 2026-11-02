@@ -28,11 +28,11 @@ public sealed class GetLobbyForPlayerQueryHandlerTests
         // given
         var query = new GetLobbyForPlayerQuery("userId");
 
-        lobbyQueryContext.Setup(q => q.GetByUserId(query.UserId))
+        lobbyQueryContext.Setup(q => q.GetByUserId(query.UserId, TestContext.Current.CancellationToken))
             .ReturnsAsync(default(Lobby));
 
         // when
-        var result = await handler.Handle(query, CancellationToken.None);
+        var result = await handler.Handle(query, TestContext.Current.CancellationToken);
 
         // then
         Assert.Null(result);
@@ -45,11 +45,11 @@ public sealed class GetLobbyForPlayerQueryHandlerTests
         // given
         var query = new GetLobbyForPlayerQuery("userId");
 
-        lobbyQueryContext.Setup(q => q.GetByUserId(query.UserId))
+        lobbyQueryContext.Setup(q => q.GetByUserId(query.UserId, TestContext.Current.CancellationToken))
             .ReturnsAsync(lobby);
 
-        // when
-        var result = await handler.Handle(query, CancellationToken.None);
+        // TestContext.Current.CancellationToken
+        var result = await handler.Handle(query, TestContext.Current.CancellationToken);
 
         // then
         Assert.Multiple(
