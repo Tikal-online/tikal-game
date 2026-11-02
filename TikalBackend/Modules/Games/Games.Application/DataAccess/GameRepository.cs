@@ -8,5 +8,5 @@ public interface GameRepository
 
     void Delete(Game game);
 
-    Task<Game?> GetById(long id);
+    Task<Game?> GetById(long id, CancellationToken cancellationToken);
 }
