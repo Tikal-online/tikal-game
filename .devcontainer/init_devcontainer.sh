@@ -23,6 +23,15 @@ rm dotnet-install.sh
 export DOTNET_ROOT="$HOME/.dotnet"
 export PATH="$DOTNET_ROOT:$PATH"
 
+if ! grep -q 'DOTNET_ROOT="$HOME/.dotnet"' /home/vscode/.bashrc 2>/dev/null; then
+  cat >> /home/vscode/.bashrc <<'EOF'
+
+# .NET
+export DOTNET_ROOT="$HOME/.dotnet"
+export PATH="$DOTNET_ROOT:$PATH"
+EOF
+fi
+
 echo "Importing development certificate..."
 dotnet dev-certs https --import /.aspnet/dev-certs/dotnet-dev-cert.pfx --clean -p secret
 
@@ -35,8 +44,14 @@ curl -LO https://github.com/neovim/neovim/releases/download/v0.12.5/nvim-linux-x
 sudo rm -rf /opt/nvim-linux-x86_64
 sudo tar -C /opt -xzf nvim-linux-x86_64.tar.gz
 sudo rm -rf nvim-linux-x86_64.tar.gz
-sudo rm -rf nvim-linux-x86_64
-echo "export PATH="$PATH:/opt/nvim-linux-x86_64/bin"" >> /home/vscode/.bashrc
+
+if ! grep -q '/opt/nvim-linux-x86_64/bin' /home/vscode/.bashrc 2>/dev/null; then
+  cat >> /home/vscode/.bashrc <<'EOF'
+
+# Neovim
+export PATH="$PATH:/opt/nvim-linux-x86_64/bin"
+EOF
+fi
 
 echo "Installing Neovim dependencies"
 sudo apt update
@@ -48,3 +63,6 @@ sudo bash -c 'cat > /etc/default/locale' <<EOF
 LANG=en_GB.UTF-8
 EOF
 
+
+echo "Installing Playwright Chromium for UI inspection (TikalFrontend/ui-tools)"
+(cd TikalFrontend && npm ci && npx playwright install --with-deps chromium)
