@@ -39,6 +39,7 @@ jobs:
             -Dsonar.projectKey=${{ inputs.project-directory }}
             -Dsonar.organization=fmahdi09
             -Dsonar.javascript.lcov.reportPaths=./lcov.info
+            -Dsonar.exclusions=**/ui-tools/**
 
       - name: Create SonarQube Summary
         if: github.ref == 'refs/heads/main'

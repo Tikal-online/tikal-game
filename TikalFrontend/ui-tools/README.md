@@ -1,5 +1,9 @@
 # UI tools
 
+> [!WARNING]
+> This tool is entirely AI-generated and has not been reviewed to the project's usual standards.
+> It is a local development aid only — not production code — and is excluded from SonarQube analysis.
+
 Headless Playwright helper to look at and interact with the locally running frontend
 (start the Aspire AppHost first). Used for design work by humans and AI agents alike.
 
