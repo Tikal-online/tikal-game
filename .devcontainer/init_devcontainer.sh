@@ -63,3 +63,6 @@ sudo bash -c 'cat > /etc/default/locale' <<EOF
 LANG=en_GB.UTF-8
 EOF
 
+
+echo "Installing Playwright Chromium for UI inspection (TikalFrontend/ui-tools)"
+(cd TikalFrontend && npm ci && npx playwright install --with-deps chromium)
