@@ -1,5 +1,6 @@
 <button
   pButton
+  [attr.aria-label]="ariaLabel()"
   [attr.form]="form()"
   [disabled]="isLoading()"
   [iconOnly]="!label()"

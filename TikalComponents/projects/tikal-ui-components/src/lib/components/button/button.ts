@@ -33,6 +33,9 @@ export class ButtonComponent {
   /** What text should the button display? */
   readonly label = input<string>();
 
+  /** How should assistive technology announce the button? Required for buttons without a label. */
+  readonly ariaLabel = input<string>();
+
   /** Is the action related to the button currently running? */
   readonly isLoading = input<boolean>(false);
 
