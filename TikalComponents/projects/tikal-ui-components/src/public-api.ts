@@ -31,3 +31,6 @@ export * from './lib/components/player-slot-list/player-slot-list';
 
 // Max player select
 export * from './lib/components/max-player-select/max-player-select';
+
+// Nav link
+export * from './lib/components/nav-link/nav-link';
