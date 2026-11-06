@@ -64,5 +64,6 @@ LANG=en_GB.UTF-8
 EOF
 
 
-echo "Installing Playwright Chromium for UI inspection (TikalFrontend/ui-tools)"
+echo "Installing Playwright Chromium for UI inspection (TikalFrontend/ui-tools, TikalComponents/ui-tools)"
 (cd TikalFrontend && npm ci && npx playwright install --with-deps chromium)
+(cd TikalComponents && npm ci && npx playwright install chromium)

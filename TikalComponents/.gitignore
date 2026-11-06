@@ -48,3 +48,6 @@ Thumbs.db
 
 *storybook.log
 storybook-static
+
+# UI inspection tool output (screenshots)
+/ui-tools/.screenshots
