@@ -1,0 +1,27 @@
+// PrimeNG's outlined secondary button styles read these variables, so they are overridden on the link itself
+a {
+  --p-button-outlined-secondary-color: var(--p-text-color);
+  --p-button-outlined-secondary-border-color: var(--p-form-field-border-color);
+  --p-button-outlined-secondary-hover-background: var(--p-content-hover-background);
+
+  background-color: var(--p-content-background);
+
+  font-weight: 600;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+a.active {
+  --p-button-outlined-secondary-border-color: var(--p-primary-color);
+}
+
+.dot {
+  flex-shrink: 0;
+
+  width: 0.5rem;
+  height: 0.5rem;
+
+  border-radius: 50%;
+
+  background-color: var(--p-primary-color);
+}

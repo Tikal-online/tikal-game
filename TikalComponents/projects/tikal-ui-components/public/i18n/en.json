@@ -9,5 +9,9 @@
   },
   "player-slot-list": {
     "players": "Players"
+  },
+  "active-session-link": {
+    "lobby": "Your lobby: {{name}}",
+    "game": "Your game: {{name}}"
   }
 }
