@@ -31,14 +31,12 @@ type ActiveLobbyState = {
   lobby: Lobby | null;
   connectionStatus: ConnectionStatus;
   loadingStatus: 'initial' | 'loading' | 'loaded' | 'error';
-  showCreateLobbyDialog: boolean;
 };
 
 const initialStatus: ActiveLobbyState = {
   lobby: null,
   connectionStatus: 'Disconnected',
   loadingStatus: 'initial',
-  showCreateLobbyDialog: false,
 };
 
 export const ActiveLobbyStore = signalStore(
@@ -67,10 +65,6 @@ export const ActiveLobbyStore = signalStore(
 
     disconnect(): Promise<void> {
       return store._activeLobbyConnection.disconnect();
-    },
-
-    toggleCreateLobbyDialog(): void {
-      patchState(store, (state) => ({ showCreateLobbyDialog: !state.showCreateLobbyDialog }));
     },
 
     readyUp: rxMethod<void>(

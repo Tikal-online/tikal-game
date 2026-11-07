@@ -1,5 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
-import { DialogModule } from 'primeng/dialog';
+import { DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ButtonComponent, InputComponent, MaxPlayerSelectComponent } from 'tikal-ui-components';
 import { disabled, form, FormField, FormRoot, maxLength, required } from '@angular/forms/signals';
 import { Router } from '@angular/router';
@@ -14,7 +14,6 @@ type LobbyData = {
 @Component({
   selector: 'tikal-create-lobby-dialog',
   imports: [
-    DialogModule,
     ButtonComponent,
     FormRoot,
     FormField,
@@ -28,9 +27,11 @@ type LobbyData = {
 export class CreateLobbyDialog {
   private readonly router = inject(Router);
 
-  readonly activeLobbyStore = inject(ActiveLobbyStore);
+  private readonly activeLobbyStore = inject(ActiveLobbyStore);
 
   private readonly lobbyData = signal<LobbyData>({ name: '', maxPlayers: 4 });
+
+  readonly dialogRef = inject(DynamicDialogRef);
 
   readonly lobbyForm = form(
     this.lobbyData,
@@ -46,6 +47,7 @@ export class CreateLobbyDialog {
           const result = await this.activeLobbyStore.createLobby(field().value());
 
           if (result.isOk()) {
+            this.dialogRef.close();
             await this.router.navigate(['/Lobbies/me']);
           }
         },

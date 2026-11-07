@@ -16,10 +16,6 @@
       [outline]="true"
       (clicked)="lobbiesSummaryStore.refresh()"
     />
-    <tikal-button
-      icon="plus"
-      [label]="t('create-button-label')"
-      (clicked)="activeLobbyStore.toggleCreateLobbyDialog()"
-    />
+    <tikal-button icon="plus" [label]="t('create-button-label')" (clicked)="showCreateDialog()" />
   </div>
 </ng-container>
