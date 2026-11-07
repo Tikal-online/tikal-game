@@ -1,36 +1,16 @@
 import { Component, computed, inject, ChangeDetectionStrategy } from '@angular/core';
-import { RouterOutlet, RouterLinkWithHref, RouterLinkActive } from '@angular/router';
+import { RouterOutlet } from '@angular/router';
+import { HeaderComponent, HeaderLink } from 'tikal-ui-components';
 import { AccountStore } from './core/stores/account-store/account-store';
 import { AuthStore } from './core/stores/auth-store/auth-store';
-import { SidebarModule } from 'primeng/sidebar';
-import { ButtonModule } from 'primeng/button';
-import { User } from '@primeicons/angular/user';
-import { Home } from '@primeicons/angular/home';
-import { Sidebar } from '@primeicons/angular/sidebar';
-import { Crown } from '@primeicons/angular/crown';
-import { Trophy } from '@primeicons/angular/trophy';
-import { ButtonComponent } from 'tikal-ui-components';
 import { ThemeStore } from './core/stores/theme-store/theme-store';
 import { ActiveLobbyStore } from './modules/lobbies/stores/active-lobby/active-lobby-store';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-root',
-  imports: [
-    RouterOutlet,
-    SidebarModule,
-    ButtonModule,
-    ButtonComponent,
-    Home,
-    User,
-    Crown,
-    Trophy,
-    Sidebar,
-    RouterLinkWithHref,
-    RouterLinkActive,
-  ],
+  imports: [RouterOutlet, HeaderComponent],
   templateUrl: './app.html',
-  styleUrl: './app.scss',
 })
 export class App {
   private readonly accountStore = inject(AccountStore);
@@ -39,7 +19,12 @@ export class App {
 
   private readonly themeStore = inject(ThemeStore);
 
-  readonly activeLobbyStore = inject(ActiveLobbyStore);
+  private readonly activeLobbyStore = inject(ActiveLobbyStore);
+
+  readonly links: readonly HeaderLink[] = [
+    { label: 'Lobbies', route: '/Lobbies' },
+    { label: 'Profile', route: '/Profile' },
+  ];
 
   readonly initializationFailed = computed(
     () => this.accountStore.initializationFailed() || this.authStore.initializationFailed(),
