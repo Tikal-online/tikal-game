@@ -19,13 +19,15 @@ import {
 import { ActiveLobbyConnection } from '../../services/active-lobby/active-lobby-connection';
 import { ConnectionStatus } from '../../../../core/types/connection-status';
 import { ActivePlayerService } from '../../services/active-lobby/active-player-service';
+import { Result } from 'neverthrow';
+import { PlayerAlreadyInLobby } from '../../errors/lobby-errors';
 
 type ActiveLobbyState = {
   lobby: Lobby | null;
   connectionStatus: ConnectionStatus;
   loadingStatus: 'initial' | 'loading' | 'loaded' | 'error';
   leavingStatus: 'initial' | 'leaving' | 'left' | 'error';
-  creationStatus: 'initial' | 'creating' | 'created' | 'error';
+  isCreating: boolean;
   startingStatus: 'initial' | 'starting' | 'started' | 'error';
   showCreateLobbyDialog: boolean;
 };
@@ -35,7 +37,7 @@ const initialStatus: ActiveLobbyState = {
   connectionStatus: 'Disconnected',
   loadingStatus: 'initial',
   leavingStatus: 'initial',
-  creationStatus: 'initial',
+  isCreating: false,
   startingStatus: 'initial',
   showCreateLobbyDialog: false,
 };
@@ -51,12 +53,10 @@ export const ActiveLobbyStore = signalStore(
     _activeLobbyConnection: inject(ActiveLobbyConnection),
   })),
 
-  withComputed(({ loadingStatus, leavingStatus, creationStatus, lobby }) => ({
+  withComputed(({ loadingStatus, leavingStatus, lobby }) => ({
     isLoading: computed(() => loadingStatus() === 'loading'),
 
     isLeaving: computed(() => leavingStatus() === 'leaving'),
-
-    isCreating: computed(() => creationStatus() === 'creating'),
 
     activePlayer: computed(() => lobby()?.players.find((p) => p.isMe)),
 
@@ -98,7 +98,6 @@ export const ActiveLobbyStore = signalStore(
           patchState(store, {
             loadingStatus: 'loading',
             leavingStatus: 'initial',
-            creationStatus: 'initial',
             startingStatus: 'initial',
           }),
         ),
@@ -125,7 +124,6 @@ export const ActiveLobbyStore = signalStore(
                   lobby: null,
                   leavingStatus: 'left',
                   loadingStatus: 'initial',
-                  creationStatus: 'initial',
                   startingStatus: 'initial',
                 }),
               error: () => patchState(store, { leavingStatus: 'error' }),
@@ -150,19 +148,15 @@ export const ActiveLobbyStore = signalStore(
       ),
     ),
 
-    createLobby: rxMethod<CreateLobbyData>(
-      pipe(
-        tap(() => patchState(store, { creationStatus: 'creating', showCreateLobbyDialog: false })),
-        switchMap((data) => {
-          return store._activeLobbyService.createLobby(data).pipe(
-            tapResponse({
-              next: () => patchState(store, { creationStatus: 'created' }),
-              error: () => patchState(store, { creationStatus: 'error' }),
-            }),
-          );
-        }),
-      ),
-    ),
+    createLobby(data: CreateLobbyData): Promise<Result<void, PlayerAlreadyInLobby>> {
+      patchState(store, { isCreating: true, showCreateLobbyDialog: false });
+
+      try {
+        return store._activeLobbyService.createLobby(data);
+      } finally {
+        patchState(store, { isCreating: false });
+      }
+    },
 
     watchJoinedPlayers: rxMethod<void>(
       pipe(
@@ -186,7 +180,6 @@ export const ActiveLobbyStore = signalStore(
               lobby: null,
               leavingStatus: 'left',
               loadingStatus: 'initial',
-              creationStatus: 'initial',
               startingStatus: 'initial',
             });
           } else {

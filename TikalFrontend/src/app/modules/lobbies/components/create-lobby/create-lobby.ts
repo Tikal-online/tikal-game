@@ -1,4 +1,4 @@
-import { Component, effect, inject, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonComponent, InputComponent, MaxPlayerSelectComponent } from 'tikal-ui-components';
 import { disabled, form, FormField, FormRoot, maxLength, required } from '@angular/forms/signals';
@@ -32,30 +32,22 @@ export class CreateLobbyDialog {
 
   private readonly lobbyData = signal<LobbyData>({ name: '', maxPlayers: 4 });
 
-  constructor() {
-    effect(() => {
-      if (this.activeLobbyStore.creationStatus() === 'created') {
-        this.router.navigate(['/Lobbies/me']);
-      }
-    });
-  }
-
   readonly lobbyForm = form(
     this.lobbyData,
     (schemaPath) => {
       required(schemaPath.name);
       required(schemaPath.maxPlayers);
       maxLength(schemaPath.name, 30);
-      disabled(schemaPath, { when: () => this.activeLobbyStore.isCreating() });
+      disabled(schemaPath, { when: () => this.lobbyForm().submitting() });
     },
     {
       submission: {
-        action: (field) => {
-          const data = field().value();
+        action: async (field) => {
+          const result = await this.activeLobbyStore.createLobby(field().value());
 
-          this.activeLobbyStore.createLobby(data);
-
-          return Promise.resolve();
+          if (result.isOk()) {
+            await this.router.navigate(['/Lobbies/me']);
+          }
         },
       },
     },

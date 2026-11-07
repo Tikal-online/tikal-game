@@ -98,7 +98,6 @@ describe('ActiveLobbyStore', () => {
     // then
     expect(store.loadingStatus()).toEqual('loaded');
     expect(store.leavingStatus()).toEqual('initial');
-    expect(store.creationStatus()).toEqual('initial');
     expect(store.startingStatus()).toEqual('initial');
     expect(store.lobby()).toBeNull();
   });
@@ -119,7 +118,6 @@ describe('ActiveLobbyStore', () => {
     // then
     expect(store.loadingStatus()).toEqual('error');
     expect(store.leavingStatus()).toEqual('initial');
-    expect(store.creationStatus()).toEqual('initial');
     expect(store.startingStatus()).toEqual('initial');
     expect(store.lobby()).toBeNull();
   });
@@ -140,7 +138,6 @@ describe('ActiveLobbyStore', () => {
       // then
       expect(store.loadingStatus()).toEqual('loaded');
       expect(store.leavingStatus()).toEqual('initial');
-      expect(store.creationStatus()).toEqual('initial');
       expect(store.startingStatus()).toEqual('initial');
       expect(store.lobby()).toEqual(lobby);
     },
@@ -197,7 +194,6 @@ describe('ActiveLobbyStore', () => {
       // then
       expect(store.leavingStatus()).toEqual('left');
       expect(store.loadingStatus()).toEqual('initial');
-      expect(store.creationStatus()).toEqual('initial');
       expect(store.startingStatus()).toEqual('initial');
       expect(store.lobby()).toBeNull();
     },
@@ -295,7 +291,6 @@ describe('ActiveLobbyStore', () => {
       // then
       expect(store.leavingStatus()).toEqual('left');
       expect(store.loadingStatus()).toEqual('initial');
-      expect(store.creationStatus()).toEqual('initial');
       expect(store.startingStatus()).toEqual('initial');
       expect(store.lobby()).toBeNull();
     },

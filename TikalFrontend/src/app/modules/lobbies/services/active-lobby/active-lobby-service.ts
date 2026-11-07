@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { inject, Service } from '@angular/core';
-import { catchError, map, Observable, of, throwError } from 'rxjs';
+import { catchError, firstValueFrom, map, Observable, of, throwError } from 'rxjs';
 import { Lobby, markAuthenticatedPlayer } from '../../models/lobby';
 import { err, ok, Result } from 'neverthrow';
 import {
@@ -56,17 +56,19 @@ export class ActiveLobbyService {
     );
   }
 
-  createLobby(data: CreateLobbyData): Observable<Result<void, PlayerAlreadyInLobby>> {
-    return this.http.post(this.url, data).pipe(
+  createLobby(data: CreateLobbyData): Promise<Result<void, PlayerAlreadyInLobby>> {
+    const request = this.http.post(this.url, data).pipe(
       map(() => ok()),
       catchError((error: HttpErrorResponse) => {
         if (error.status === 409) {
-          return err({ type: 'PlayerAlreadyInLobby' } as const);
+          return of(err({ type: 'PlayerAlreadyInLobby' } as const));
         }
 
         return throwError(() => error);
       }),
     );
+
+    return firstValueFrom(request);
   }
 
   startLobby(id: number): Observable<Result<void, PlayerNotInLobby | LobbyInGame>> {
