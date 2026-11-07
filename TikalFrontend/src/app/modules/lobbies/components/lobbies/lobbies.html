@@ -2,17 +2,29 @@
 <ng-container *transloco="let t; prefix: 'lobbies.list'">
   <p-table
     scrollHeight="flex"
+    [dt]="tableTokens"
     [lazy]="true"
     [paginator]="lobbiesSummaryStore.hasMultiplePages()"
     [rows]="lobbiesSummaryStore.filter.pageSize()"
     [rowsPerPageOptions]="[10, 15, 25, 50]"
     [scrollable]="true"
     [selectionMode]="this.lobbiesSummaryStore.noLobbiesFound() ? null : 'single'"
-    [showCurrentPageReport]="true"
+    [showFirstLastIcon]="false"
     [totalRecords]="lobbiesSummaryStore.totalCount()"
     [value]="lobbiesSummaryStore.displayLobbies()"
     (onLazyLoad)="onPageChanged($event)"
   >
+    <ng-template #paginatorleft let-state>
+      <span class="page-report">
+        {{
+          t('page-report', {
+            first: state.first + 1,
+            last: min(state.first + state.rows, state.totalRecords),
+            total: state.totalRecords,
+          })
+        }}
+      </span>
+    </ng-template>
     <ng-template #header>
       <tr>
         <th scope="col" style="width: 30%">{{ t('columns.name') }}</th>
