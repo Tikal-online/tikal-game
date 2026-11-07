@@ -3,6 +3,9 @@ body {
   margin: 0;
   padding: 0;
 
+  background-color: light-dark(var(--p-surface-100), var(--p-surface-950));
+  color: var(--p-text-color);
+
   font-family: Inter, sans-serif;
   font-feature-settings:
     'liga' 1,

@@ -1,53 +1,6 @@
-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+:host {
+  display: block;
 
-  min-height: 3rem;
-  gap: 0.5rem;
-
-  padding: 0 1rem 0 0.5rem;
-
-  border-bottom: 1px solid var(--p-sidebar-border-color);
-}
-
-.header-button {
-  padding: 0.25rem !important;
-}
-
-.header-icon {
-  display: flex;
-  flex-shrink: 0;
-
-  align-items: center;
-  justify-content: center;
-
-  width: 1.5rem;
-  height: 1.5rem;
-
-  background-color: var(--p-surface-900);
-
-  border-radius: 9999px;
-}
-
-:host-context(.dark) .header-icon {
-  background-color: var(--p-surface-0);
-}
-
-.header-icon-content {
-  color: var(--p-surface-0);
-}
-
-:host-context(.dark) .header-icon-content {
-  color: var(--p-surface-900);
-}
-
-.header-icon-label {
-  font-weight: 600;
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-}
-
-p-sidebar-main {
-  height: 100vh;
+  max-width: 75rem;
+  margin: 0 auto;
 }
