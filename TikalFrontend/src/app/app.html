@@ -1,11 +1,15 @@
 @if (initializationFailed()) {
   <p>Initialization Failed</p>
 } @else {
-  <tikal-header
-    homeRoute="/Lobbies"
-    [darkMode]="usesDarkMode()"
-    [links]="links"
-    (darkModeToggled)="toggleDarkMode()"
-  />
-  <router-outlet />
+  <header>
+    <tikal-header
+      homeRoute="/Lobbies"
+      [darkMode]="usesDarkMode()"
+      [links]="links"
+      (darkModeToggled)="toggleDarkMode()"
+    />
+  </header>
+  <main>
+    <router-outlet />
+  </main>
 }

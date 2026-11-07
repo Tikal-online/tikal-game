@@ -1,6 +1,10 @@
-:host {
-  display: block;
+header {
+  border-bottom: 1px solid var(--p-content-border-color);
 
+  background-color: var(--p-content-background);
+}
+
+main {
   max-width: 75rem;
   margin: 0 auto;
 }
