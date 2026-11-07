@@ -27,7 +27,6 @@ td {
 
   /* the table is a card */
   border: 1px solid var(--p-content-border-color);
-  border-radius: var(--p-content-border-radius);
 
   /* the paginator is a separate primeng component which the table tokens do not reach. css variables are inherited, so they are scoped to this table here */
   --p-paginator-background: light-dark(var(--p-surface-50), var(--p-surface-950));
