@@ -9,7 +9,7 @@ import { Lobby } from '../../models/lobby';
 import { DEFAULT_TEST_LOBBY, LOBBY_TESTCASES } from '../../tests/data/lobby-test-cases';
 import { PLAYER_TESTCASES } from '../../tests/data/player-test-cases';
 import { ActivePlayerService } from '../../services/active-lobby/active-player-service';
-import { ok } from 'neverthrow';
+import { err, ok } from 'neverthrow';
 
 describe('ActiveLobbyStore', () => {
   // dependencies
@@ -97,7 +97,6 @@ describe('ActiveLobbyStore', () => {
 
     // then
     expect(store.loadingStatus()).toEqual('loaded');
-    expect(store.leavingStatus()).toEqual('initial');
     expect(store.startingStatus()).toEqual('initial');
     expect(store.lobby()).toBeNull();
   });
@@ -117,7 +116,6 @@ describe('ActiveLobbyStore', () => {
 
     // then
     expect(store.loadingStatus()).toEqual('error');
-    expect(store.leavingStatus()).toEqual('initial');
     expect(store.startingStatus()).toEqual('initial');
     expect(store.lobby()).toBeNull();
   });
@@ -137,65 +135,94 @@ describe('ActiveLobbyStore', () => {
 
       // then
       expect(store.loadingStatus()).toEqual('loaded');
-      expect(store.leavingStatus()).toEqual('initial');
       expect(store.startingStatus()).toEqual('initial');
       expect(store.lobby()).toEqual(lobby);
     },
   );
 
-  test('given no active lobby when leaveLobby then does not call leaveLobby', async () => {
+  test('given no active lobby when leaveActiveLobby then returns PlayerNotInLobby without calling leaveLobby', async () => {
     // given
     const store = TestBed.inject(ActiveLobbyStore);
 
     // when
-    TestBed.runInInjectionContext(() => {
-      store.leaveActiveLobby();
-    });
+    const result = await store.leaveActiveLobby();
 
     // then
+    expect(result).toEqual(err({ type: 'PlayerNotInLobby' }));
     expect(activeLobbyService.leaveLobby).not.toHaveBeenCalled();
   });
 
   test.for<Lobby>(LOBBY_TESTCASES)(
-    'given leaving fails when leaveLobby then sets leavingStatus to error',
-    (lobby: Lobby) => {
+    'given leaving succeeds when leaveActiveLobby then returns ok and resets state',
+    async (lobby: Lobby) => {
       // given
       const store = TestBed.inject(ActiveLobbyStore);
 
       activeLobbyService.getActiveLobby.mockReturnValueOnce(of(lobby));
-      activeLobbyService.leaveLobby.mockReturnValueOnce(throwError(() => new Error('test error')));
+      activeLobbyService.leaveLobby.mockResolvedValueOnce(ok());
 
-      // when
       TestBed.runInInjectionContext(() => {
         store.loadActiveLobby();
-        store.leaveActiveLobby();
       });
 
+      // when
+      const promise = store.leaveActiveLobby();
+
       // then
-      expect(store.leavingStatus()).toEqual('error');
+      expect(store.isLeaving()).toBe(true);
+
+      const result = await promise;
+
+      expect(result.isOk()).toBe(true);
+      expect(activeLobbyService.leaveLobby).toHaveBeenCalledWith(lobby.id);
+      expect(store.isLeaving()).toBe(false);
+      expect(store.loadingStatus()).toEqual('initial');
+      expect(store.startingStatus()).toEqual('initial');
+      expect(store.lobby()).toBeNull();
     },
   );
 
   test.for<Lobby>(LOBBY_TESTCASES)(
-    'given leaving succeeds when leaveLobby then sets leavingStatus to left and resets state',
-    (lobby: Lobby) => {
+    'given leaving returns an expected error when leaveActiveLobby then returns the error and keeps the lobby',
+    async (lobby: Lobby) => {
       // given
       const store = TestBed.inject(ActiveLobbyStore);
 
       activeLobbyService.getActiveLobby.mockReturnValueOnce(of(lobby));
-      activeLobbyService.leaveLobby.mockReturnValueOnce(of(null));
+      activeLobbyService.leaveLobby.mockResolvedValueOnce(err({ type: 'LobbyInGame' }));
 
-      // when
       TestBed.runInInjectionContext(() => {
         store.loadActiveLobby();
-        store.leaveActiveLobby();
       });
 
+      // when
+      const result = await store.leaveActiveLobby();
+
       // then
-      expect(store.leavingStatus()).toEqual('left');
-      expect(store.loadingStatus()).toEqual('initial');
-      expect(store.startingStatus()).toEqual('initial');
-      expect(store.lobby()).toBeNull();
+      expect(result).toEqual(err({ type: 'LobbyInGame' }));
+      expect(store.isLeaving()).toBe(false);
+      expect(store.lobby()).toEqual(lobby);
+    },
+  );
+
+  test.for<Lobby>(LOBBY_TESTCASES)(
+    'given leaving fails unexpectedly when leaveActiveLobby then rejects, keeps the lobby and resets isLeaving',
+    async (lobby: Lobby) => {
+      // given
+      const store = TestBed.inject(ActiveLobbyStore);
+
+      activeLobbyService.getActiveLobby.mockReturnValueOnce(of(lobby));
+      activeLobbyService.leaveLobby.mockRejectedValueOnce(new Error('test error'));
+
+      TestBed.runInInjectionContext(() => {
+        store.loadActiveLobby();
+      });
+
+      // when & then
+      await expect(store.leaveActiveLobby()).rejects.toThrow('test error');
+
+      expect(store.isLeaving()).toBe(false);
+      expect(store.lobby()).toEqual(lobby);
     },
   );
 
@@ -271,7 +298,7 @@ describe('ActiveLobbyStore', () => {
   );
 
   test.for<Lobby>(LOBBY_TESTCASES)(
-    'given active lobby when leftPlayers$ emits me then sets leavingStatus to left and resets state',
+    'given active lobby when leftPlayers$ emits me then resets state',
     (lobby: Lobby) => {
       // given
       const store = TestBed.inject(ActiveLobbyStore);
@@ -289,7 +316,6 @@ describe('ActiveLobbyStore', () => {
       activeLobbyConnection.leftPlayers$.next(player);
 
       // then
-      expect(store.leavingStatus()).toEqual('left');
       expect(store.loadingStatus()).toEqual('initial');
       expect(store.startingStatus()).toEqual('initial');
       expect(store.lobby()).toBeNull();

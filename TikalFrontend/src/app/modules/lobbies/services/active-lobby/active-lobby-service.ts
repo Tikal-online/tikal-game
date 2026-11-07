@@ -37,23 +37,25 @@ export class ActiveLobbyService {
     );
   }
 
-  leaveLobby(id: number): Observable<Result<void, LobbyNotFound | PlayerNotInLobby | LobbyInGame>> {
-    return this.http.delete<void>(`${this.url}/${id}/Players/me`).pipe(
+  leaveLobby(id: number): Promise<Result<void, LobbyNotFound | PlayerNotInLobby | LobbyInGame>> {
+    const request = this.http.delete<void>(`${this.url}/${id}/Players/me`).pipe(
       map(() => ok()),
       catchError((error: HttpErrorResponse) => {
         if (error.status === 404) {
           if (error.error.title === 'Lobby not found') {
-            return err({ type: 'LobbyNotFound' } as const);
+            return of(err({ type: 'LobbyNotFound' } as const));
           } else {
-            return err({ type: 'PlayerNotInLobby' } as const);
+            return of(err({ type: 'PlayerNotInLobby' } as const));
           }
         } else if (error.status === 409) {
-          return err({ type: 'LobbyInGame' } as const);
+          return of(err({ type: 'LobbyInGame' } as const));
         }
 
         return throwError(() => error);
       }),
     );
+
+    return firstValueFrom(request);
   }
 
   createLobby(data: CreateLobbyData): Promise<Result<void, PlayerAlreadyInLobby>> {

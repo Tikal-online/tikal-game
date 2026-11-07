@@ -21,10 +21,19 @@ export class ActiveLobbyComponent {
 
     inject(DestroyRef).onDestroy(() => this.activeLobbyStore.disconnect());
 
+    // still covers having no active lobby on page load and being removed via SignalR
     effect(() => {
       if (!this.activeLobbyStore.lobby() && !this.activeLobbyStore.isLoading()) {
         this.router.navigate(['/Lobbies']);
       }
     });
+  }
+
+  async leave(): Promise<void> {
+    const result = await this.activeLobbyStore.leaveActiveLobby();
+
+    if (result.isOk()) {
+      await this.router.navigate(['/Lobbies']);
+    }
   }
 }

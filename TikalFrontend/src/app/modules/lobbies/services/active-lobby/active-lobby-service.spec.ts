@@ -87,7 +87,7 @@ describe('ActiveLobbyService', () => {
     'leaveLobby returns success when DELETE /Api/Lobbies/%i/Players/me returns Success',
     async (id) => {
       // given
-      const promise = firstValueFrom(service.leaveLobby(id));
+      const promise = service.leaveLobby(id);
 
       // when & then
       const req = http.expectOne({ method: 'DELETE', url: `/Api/Lobbies/${id}/Players/me` });
@@ -103,7 +103,7 @@ describe('ActiveLobbyService', () => {
     'leaveLobby returns LobbyNotFound when DELETE /Api/Lobbies/%i/Players/me returns 404 with matching title',
     async (id) => {
       // given
-      const promise = firstValueFrom(service.leaveLobby(id));
+      const promise = service.leaveLobby(id);
 
       // when & then
       const req = http.expectOne({ method: 'DELETE', url: `/Api/Lobbies/${id}/Players/me` });
@@ -122,7 +122,7 @@ describe('ActiveLobbyService', () => {
     'leaveLobby returns PlayerNotInLobby when DELETE /Api/Lobbies/%i/Players/me returns 404 with matching title',
     async (id) => {
       // given
-      const promise = firstValueFrom(service.leaveLobby(id));
+      const promise = service.leaveLobby(id);
 
       // when & then
       const req = http.expectOne({ method: 'DELETE', url: `/Api/Lobbies/${id}/Players/me` });
@@ -141,7 +141,7 @@ describe('ActiveLobbyService', () => {
     'leaveLobby returns LobbyInGame when DELETE /Api/Lobbies/%i/Players/me returns 409',
     async (id) => {
       // given
-      const promise = firstValueFrom(service.leaveLobby(id));
+      const promise = service.leaveLobby(id);
 
       // when & then
       const req = http.expectOne({ method: 'DELETE', url: `/Api/Lobbies/${id}/Players/me` });
@@ -157,27 +157,16 @@ describe('ActiveLobbyService', () => {
   );
 
   test.for<HttpResponseData>(ERROR_RESPONSES.filter((error) => ![404, 409].includes(error.status)))(
-    'leaveLobby throws error when DELETE /Api/Lobbies/id/Players/me returns $status',
+    'leaveLobby rejects when DELETE /Api/Lobbies/id/Players/me returns $status',
     async (error: HttpResponseData) => {
       // given
-      let capturedError: HttpErrorResponse;
-
-      const promise = firstValueFrom(
-        service.leaveLobby(1).pipe(
-          catchError((httpError) => {
-            capturedError = httpError;
-            return of(httpError);
-          }),
-        ),
-      );
+      const promise = service.leaveLobby(1);
 
       // when & then
       const req = http.expectOne({ method: 'DELETE', url: `/Api/Lobbies/${1}/Players/me` });
       req.flush('', error);
 
-      await promise;
-
-      expect(capturedError!.status).toEqual(error.status);
+      await expect(promise).rejects.toMatchObject({ status: error.status });
     },
   );
 

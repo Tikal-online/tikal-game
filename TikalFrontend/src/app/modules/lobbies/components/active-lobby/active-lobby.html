@@ -12,7 +12,7 @@
       type="button"
       [isLoading]="activeLobbyStore.isLeaving()"
       [label]="t('leave-button-label')"
-      (clicked)="activeLobbyStore.leaveActiveLobby()"
+      (clicked)="leave()"
     />
     @if (activeLobbyStore.activePlayer()?.isReady) {
       <tikal-button
