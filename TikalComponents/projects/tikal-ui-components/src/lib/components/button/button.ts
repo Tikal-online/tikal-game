@@ -3,7 +3,7 @@ import { PIcon, Spinner } from '@primeicons/angular';
 import { ButtonModule } from 'primeng/button';
 import { EnumMapPipe } from '../../../pipes/enum-map';
 
-export type ButtonColour = 'primary' | 'secondary';
+export type ButtonColour = 'primary' | 'secondary' | 'contrast';
 
 export type ButtonSize = 'small' | 'normal' | 'large';
 
