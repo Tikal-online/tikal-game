@@ -1,6 +1,6 @@
 <ng-container *transloco="let t; prefix: 'lobbies.list'">
   <h1>{{ t('header') }}</h1>
-  <div class="search-items">
+  <div class="actions">
     <tikal-input
       [label]="t('searchtext-input-label')"
       [maxLength]="200"
@@ -9,10 +9,17 @@
       (valueChange)="lobbiesSummaryStore.updateSearchText($event)"
     />
     <tikal-button
+      colour="secondary"
       icon="refresh"
+      [ariaLabel]="t('refresh-button-label')"
       [isLoading]="lobbiesSummaryStore.isLoading()"
       [outline]="true"
       (clicked)="lobbiesSummaryStore.refresh()"
+    />
+    <tikal-button
+      icon="plus"
+      [label]="t('create-button-label')"
+      (clicked)="activeLobbyStore.toggleCreateLobbyDialog()"
     />
   </div>
 </ng-container>

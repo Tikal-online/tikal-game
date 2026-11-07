@@ -10,6 +10,8 @@
       "header": "Lobbies",
       "searchtext-input-label": "lobby-name",
       "searchtext-input-placeholder": "Search by name...",
+      "refresh-button-label": "Refresh",
+      "create-button-label": "Create lobby",
       "columns": {
         "name": "Name",
         "players": "Players",
