@@ -1,4 +1,4 @@
-import { Component, effect, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { PreviewLobbyStore } from '../../stores/lobby/preview-lobby-store';
 import { PlayerSlotListComponent, ButtonComponent } from 'tikal-ui-components';
@@ -15,17 +15,25 @@ export class LobbyPreviewComponent {
 
   private readonly route = inject(ActivatedRoute);
 
-  readonly previewLobbyStore = inject(PreviewLobbyStore);
+  private readonly previewLobbyStore = inject(PreviewLobbyStore);
+
+  readonly isJoining = signal(false);
 
   constructor() {
     const id = Number(this.route.snapshot.paramMap.get('id'));
 
     this.previewLobbyStore.loadLobby(id);
+  }
 
-    effect(() => {
-      if (this.previewLobbyStore.joiningStatus() === 'joined') {
-        this.router.navigate(['/Lobbies/me']);
-      }
-    });
+  async join(): Promise<void> {
+    this.isJoining.set(true);
+
+    const result = await this.previewLobbyStore
+      .joinLobby()
+      .finally(() => this.isJoining.set(false));
+
+    if (result.isOk()) {
+      await this.router.navigate(['/Lobbies/me']);
+    }
   }
 }

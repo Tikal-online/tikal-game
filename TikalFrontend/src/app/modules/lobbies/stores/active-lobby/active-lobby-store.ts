@@ -26,11 +26,12 @@ import {
   PlayerAlreadyInLobby,
   PlayerNotInLobby,
 } from '../../errors/lobby-errors';
+import { LoadingStatus } from '../../../../core/types/loading-status';
 
 type ActiveLobbyState = {
   lobby: Lobby | null;
   connectionStatus: ConnectionStatus;
-  loadingStatus: 'initial' | 'loading' | 'loaded' | 'error';
+  loadingStatus: LoadingStatus;
 };
 
 const initialStatus: ActiveLobbyState = {
@@ -67,22 +68,6 @@ export const ActiveLobbyStore = signalStore(
       return store._activeLobbyConnection.disconnect();
     },
 
-    readyUp: rxMethod<void>(
-      pipe(
-        switchMap(() => {
-          return store._activePlayerService.readyUp();
-        }),
-      ),
-    ),
-
-    readyDown: rxMethod<void>(
-      pipe(
-        switchMap(() => {
-          return store._activePlayerService.readyDown();
-        }),
-      ),
-    ),
-
     loadActiveLobby: rxMethod<void>(
       pipe(
         tap(() =>
@@ -101,6 +86,14 @@ export const ActiveLobbyStore = signalStore(
         }),
       ),
     ),
+
+    readyUp(): Promise<Result<void, PlayerNotInLobby>> {
+      return store._activePlayerService.readyUp();
+    },
+
+    readyDown(): Promise<Result<void, PlayerNotInLobby>> {
+      return store._activePlayerService.readyDown();
+    },
 
     leaveActiveLobby(): Promise<Result<void, LobbyNotFound | PlayerNotInLobby | LobbyInGame>> {
       const lobby = store.lobby();
@@ -131,8 +124,15 @@ export const ActiveLobbyStore = signalStore(
         switchMap(() => store._activeLobbyConnection.joinedPlayers$),
         tap((player) =>
           patchState(store, (state) => ({
+            // a player rejoining must replace their existing entry instead of being duplicated
             lobby: state.lobby
-              ? { ...state.lobby, players: [...state.lobby.players, player] }
+              ? {
+                  ...state.lobby,
+                  players: [
+                    ...state.lobby.players.filter((p) => p.userId !== player.userId),
+                    player,
+                  ],
+                }
               : null,
           })),
         ),

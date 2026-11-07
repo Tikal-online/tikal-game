@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { inject, Service } from '@angular/core';
 import { err, ok, Result } from 'neverthrow';
-import { catchError, map, Observable, throwError } from 'rxjs';
+import { catchError, firstValueFrom, map, throwError } from 'rxjs';
 import { PlayerNotInLobby } from '../../errors/lobby-errors';
 
 @Service()
@@ -10,8 +10,8 @@ export class ActivePlayerService {
 
   private readonly http = inject(HttpClient);
 
-  readyUp(): Observable<Result<void, PlayerNotInLobby>> {
-    return this.http.put(`${this.url}/ready`, {}).pipe(
+  readyUp(): Promise<Result<void, PlayerNotInLobby>> {
+    const request = this.http.put(`${this.url}/ready`, {}).pipe(
       map(() => ok()),
       catchError((error: HttpErrorResponse) => {
         if (error.status === 404) {
@@ -21,10 +21,12 @@ export class ActivePlayerService {
         return throwError(() => error);
       }),
     );
+
+    return firstValueFrom(request);
   }
 
-  readyDown(): Observable<Result<void, PlayerNotInLobby>> {
-    return this.http.delete(`${this.url}/ready`, {}).pipe(
+  readyDown(): Promise<Result<void, PlayerNotInLobby>> {
+    const request = this.http.delete(`${this.url}/ready`, {}).pipe(
       map(() => ok()),
       catchError((error: HttpErrorResponse) => {
         if (error.status === 404) {
@@ -34,5 +36,7 @@ export class ActivePlayerService {
         return throwError(() => error);
       }),
     );
+
+    return firstValueFrom(request);
   }
 }

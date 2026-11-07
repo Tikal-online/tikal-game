@@ -124,7 +124,7 @@ describe('LobbyService', () => {
     'joinLobby returns success when POST /Api/Lobbies/%i/Players returns Success',
     async (id) => {
       // given
-      const promise = firstValueFrom(service.joinLobby(id));
+      const promise = service.joinLobby(id);
 
       // when & then
       const req = http.expectOne({ method: 'POST', url: `/Api/Lobbies/${id}/Players` });
@@ -140,7 +140,7 @@ describe('LobbyService', () => {
     'joinLobby returns PlayerAlreadyInLobby when POST /Api/Lobbies/%i/Players returns 409 with matching title',
     async (id) => {
       // given
-      const promise = firstValueFrom(service.joinLobby(id));
+      const promise = service.joinLobby(id);
 
       // when & then
       const req = http.expectOne({ method: 'POST', url: `/Api/Lobbies/${id}/Players` });
@@ -159,7 +159,7 @@ describe('LobbyService', () => {
     'joinLobby returns LobbyFull when POST /Api/Lobbies/%i/Players returns 409 with matching title',
     async (id) => {
       // given
-      const promise = firstValueFrom(service.joinLobby(id));
+      const promise = service.joinLobby(id);
 
       // when & then
       const req = http.expectOne({ method: 'POST', url: `/Api/Lobbies/${id}/Players` });
@@ -178,7 +178,7 @@ describe('LobbyService', () => {
     'joinLobby returns LobbyNotFound when POST /Api/Lobbies/%i/Players returns 404',
     async (id) => {
       // given
-      const promise = firstValueFrom(service.joinLobby(id));
+      const promise = service.joinLobby(id);
 
       // when & then
       const req = http.expectOne({ method: 'POST', url: `/Api/Lobbies/${id}/Players` });
@@ -194,27 +194,16 @@ describe('LobbyService', () => {
   );
 
   test.for<HttpResponseData>(ERROR_RESPONSES.filter((error) => ![404, 409].includes(error.status)))(
-    'joinLobby throws error when GET /Api/Lobbies/id returns $status',
+    'joinLobby rejects when GET /Api/Lobbies/id returns $status',
     async (error: HttpResponseData) => {
       // given
-      let capturedError: HttpErrorResponse;
-
-      const promise = firstValueFrom(
-        service.joinLobby(1).pipe(
-          catchError((httpError) => {
-            capturedError = httpError;
-            return of(httpError);
-          }),
-        ),
-      );
+      const promise = service.joinLobby(1);
 
       // when & then
       const req = http.expectOne({ method: 'POST', url: `/Api/Lobbies/${1}/Players` });
       req.flush('', error);
 
-      await promise;
-
-      expect(capturedError!.status).toEqual(error.status);
+      await expect(promise).rejects.toMatchObject({ status: error.status });
     },
   );
 });

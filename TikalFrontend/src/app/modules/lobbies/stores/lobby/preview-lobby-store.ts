@@ -12,18 +12,18 @@ import { LobbyService } from '../../services/lobby/lobby-service';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { pipe, switchMap, tap } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
+import { LoadingStatus } from '../../../../core/types/loading-status';
+import { err, Result } from 'neverthrow';
+import { LobbyFull, LobbyNotFound, PlayerAlreadyInLobby } from '../../errors/lobby-errors';
 
 type PreviewLobbyState = {
   lobby: Lobby | null;
-  status: 'initial' | 'loading' | 'loaded' | 'error';
-  joiningStatus:
-    'initial' | 'joining' | 'joined' | 'notFound' | 'full' | 'alreadyInLobby' | 'error';
+  status: LoadingStatus;
 };
 
 const initialStatus: PreviewLobbyState = {
   lobby: null,
   status: 'initial',
-  joiningStatus: 'initial',
 };
 
 export const PreviewLobbyStore = signalStore(
@@ -35,16 +35,14 @@ export const PreviewLobbyStore = signalStore(
     _lobbyService: inject(LobbyService),
   })),
 
-  withComputed(({ status, joiningStatus }) => ({
+  withComputed(({ status }) => ({
     isLoading: computed(() => status() === 'loading'),
-
-    isJoining: computed(() => joiningStatus() === 'joining'),
   })),
 
   withMethods((store) => ({
     loadLobby: rxMethod<number>(
       pipe(
-        tap(() => patchState(store, { status: 'loading', joiningStatus: 'initial' })),
+        tap(() => patchState(store, { status: 'loading' })),
         switchMap((id) => {
           return store._lobbyService.getLobby(id).pipe(
             tapResponse({
@@ -56,34 +54,14 @@ export const PreviewLobbyStore = signalStore(
       ),
     ),
 
-    joinLobby: rxMethod<void>(
-      pipe(
-        tap(() => patchState(store, { joiningStatus: 'joining' })),
-        switchMap(() => {
-          return store._lobbyService.joinLobby(store.lobby()!.id).pipe(
-            tapResponse({
-              next: (result) => {
-                if (result.isErr()) {
-                  switch (result.error.type) {
-                    case 'PlayerAlreadyInLobby':
-                      patchState(store, { joiningStatus: 'alreadyInLobby' });
-                      break;
-                    case 'LobbyNotFound':
-                      patchState(store, { joiningStatus: 'notFound' });
-                      break;
-                    case 'LobbyFull':
-                      patchState(store, { joiningStatus: 'full' });
-                      break;
-                  }
-                } else {
-                  patchState(store, { joiningStatus: 'joined' });
-                }
-              },
-              error: () => patchState(store, { joiningStatus: 'error' }),
-            }),
-          );
-        }),
-      ),
-    ),
+    joinLobby(): Promise<Result<void, PlayerAlreadyInLobby | LobbyNotFound | LobbyFull>> {
+      const lobby = store.lobby();
+
+      if (!lobby) {
+        return Promise.resolve(err({ type: 'LobbyNotFound' } as const));
+      }
+
+      return store._lobbyService.joinLobby(lobby.id);
+    },
   })),
 );
