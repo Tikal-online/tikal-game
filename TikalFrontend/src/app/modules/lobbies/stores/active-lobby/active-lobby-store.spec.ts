@@ -153,7 +153,7 @@ describe('ActiveLobbyStore', () => {
   });
 
   test.for<Lobby>(LOBBY_TESTCASES)(
-    'given leaving succeeds when leaveActiveLobby then returns ok and resets state',
+    'given leaving succeeds when leaveActiveLobby then returns ok',
     async (lobby: Lobby) => {
       // given
       const store = TestBed.inject(ActiveLobbyStore);
@@ -169,21 +169,15 @@ describe('ActiveLobbyStore', () => {
       const promise = store.leaveActiveLobby();
 
       // then
-      expect(store.isLeaving()).toBe(true);
-
       const result = await promise;
 
       expect(result.isOk()).toBe(true);
       expect(activeLobbyService.leaveLobby).toHaveBeenCalledWith(lobby.id);
-      expect(store.isLeaving()).toBe(false);
-      expect(store.loadingStatus()).toEqual('initial');
-      expect(store.startingStatus()).toEqual('initial');
-      expect(store.lobby()).toBeNull();
     },
   );
 
   test.for<Lobby>(LOBBY_TESTCASES)(
-    'given leaving returns an expected error when leaveActiveLobby then returns the error and keeps the lobby',
+    'given leaving returns an expected error when leaveActiveLobby then returns the error',
     async (lobby: Lobby) => {
       // given
       const store = TestBed.inject(ActiveLobbyStore);
@@ -200,13 +194,11 @@ describe('ActiveLobbyStore', () => {
 
       // then
       expect(result).toEqual(err({ type: 'LobbyInGame' }));
-      expect(store.isLeaving()).toBe(false);
-      expect(store.lobby()).toEqual(lobby);
     },
   );
 
   test.for<Lobby>(LOBBY_TESTCASES)(
-    'given leaving fails unexpectedly when leaveActiveLobby then rejects, keeps the lobby and resets isLeaving',
+    'given leaving fails unexpectedly when leaveActiveLobby then rejects',
     async (lobby: Lobby) => {
       // given
       const store = TestBed.inject(ActiveLobbyStore);
@@ -220,9 +212,6 @@ describe('ActiveLobbyStore', () => {
 
       // when & then
       await expect(store.leaveActiveLobby()).rejects.toThrow('test error');
-
-      expect(store.isLeaving()).toBe(false);
-      expect(store.lobby()).toEqual(lobby);
     },
   );
 

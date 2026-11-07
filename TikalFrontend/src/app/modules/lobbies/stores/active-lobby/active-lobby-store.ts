@@ -31,7 +31,6 @@ type ActiveLobbyState = {
   lobby: Lobby | null;
   connectionStatus: ConnectionStatus;
   loadingStatus: 'initial' | 'loading' | 'loaded' | 'error';
-  isLeaving: boolean;
   startingStatus: 'initial' | 'starting' | 'started' | 'error';
   showCreateLobbyDialog: boolean;
 };
@@ -40,7 +39,6 @@ const initialStatus: ActiveLobbyState = {
   lobby: null,
   connectionStatus: 'Disconnected',
   loadingStatus: 'initial',
-  isLeaving: false,
   startingStatus: 'initial',
   showCreateLobbyDialog: false,
 };
@@ -112,28 +110,14 @@ export const ActiveLobbyStore = signalStore(
       ),
     ),
 
-    async leaveActiveLobby(): Promise<
-      Result<void, LobbyNotFound | PlayerNotInLobby | LobbyInGame>
-    > {
+    leaveActiveLobby(): Promise<Result<void, LobbyNotFound | PlayerNotInLobby | LobbyInGame>> {
       const lobby = store.lobby();
 
       if (!lobby) {
         return Promise.resolve(err({ type: 'PlayerNotInLobby' } as const));
       }
 
-      patchState(store, { isLeaving: true });
-
-      try {
-        const result = await store._activeLobbyService.leaveLobby(lobby.id);
-
-        if (result.isOk()) {
-          patchState(store, { lobby: null, loadingStatus: 'initial', startingStatus: 'initial' });
-        }
-
-        return result;
-      } finally {
-        patchState(store, { isLeaving: false });
-      }
+      return store._activeLobbyService.leaveLobby(lobby.id);
     },
 
     startActiveLobby: rxMethod<void>(

@@ -10,7 +10,7 @@
     <tikal-button
       size="large"
       type="button"
-      [isLoading]="activeLobbyStore.isLeaving()"
+      [isLoading]="isLeaving()"
       [label]="t('leave-button-label')"
       (clicked)="leave()"
     />
