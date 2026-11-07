@@ -24,6 +24,7 @@ const meta: Meta<ButtonComponent> = {
     ariaLabel: 'Button',
     icon: 'check',
     isLoading: false,
+    disabled: false,
     outline: false,
     text: false,
   },
@@ -115,5 +116,29 @@ export const TextButton: Story = {
     isLoading: false,
     outline: false,
     text: true,
+  },
+};
+
+export const Disabled: Story = {
+  name: 'Disabled',
+  args: {
+    colour: 'primary',
+    size: 'normal',
+    type: 'button',
+    label: 'Button',
+    icon: 'check',
+    disabled: true,
+  },
+};
+
+export const DangerOutlined: Story = {
+  name: 'Danger outlined',
+  args: {
+    colour: 'danger',
+    size: 'normal',
+    type: 'button',
+    label: 'Leave lobby',
+    icon: '',
+    outline: true,
   },
 };
