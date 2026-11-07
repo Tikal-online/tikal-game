@@ -11,6 +11,7 @@ import { ActiveLobbyStore } from './modules/lobbies/stores/active-lobby/active-l
   selector: 'app-root',
   imports: [RouterOutlet, HeaderComponent],
   templateUrl: './app.html',
+  styleUrl: './app.scss',
 })
 export class App {
   private readonly accountStore = inject(AccountStore);
