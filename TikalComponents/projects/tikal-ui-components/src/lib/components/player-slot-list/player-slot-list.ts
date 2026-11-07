@@ -1,8 +1,8 @@
-import { Component, input } from '@angular/core';
+import { Component, contentChildren, input } from '@angular/core';
 import { PlayerColour, PlayerSlotComponent } from '../player-slot/player-slot';
 import { EmptyPlayerSlotComponent } from '../empty-player-slot/empty-player-slot';
-import { User } from '@primeicons/angular';
 import { TranslocoDirective } from '@jsverse/transloco';
+import { ButtonComponent } from '../button/button';
 
 export type PlayerSlotData = {
   name: string;
@@ -14,7 +14,7 @@ export type PlayerSlotData = {
 
 @Component({
   selector: 'tikal-player-slot-list',
-  imports: [PlayerSlotComponent, EmptyPlayerSlotComponent, User, TranslocoDirective],
+  imports: [PlayerSlotComponent, EmptyPlayerSlotComponent, TranslocoDirective],
   templateUrl: './player-slot-list.html',
   styleUrl: './player-slot-list.scss',
 })
@@ -27,4 +27,7 @@ export class PlayerSlotListComponent {
 
   /** Are the players currenlty loading? */
   readonly isLoading = input<boolean>(false);
+
+  /** @ignore the buttons projected into the footer, the footer is only shown when there are any */
+  readonly footerButtons = contentChildren(ButtonComponent);
 }
