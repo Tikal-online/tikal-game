@@ -21,4 +21,9 @@
       <tikal-empty-player-slot />
     }
   }
+  @if (footerButtons().length > 0) {
+    <div class="footer">
+      <ng-content select="tikal-button" />
+    </div>
+  }
 </ng-container>

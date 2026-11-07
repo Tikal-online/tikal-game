@@ -31,3 +31,14 @@
 .count {
   color: var(--p-text-muted-color);
 }
+
+.footer {
+  display: grid;
+  // buttons share the row equally and wrap onto new rows when there is not enough space
+  grid-template-columns: repeat(auto-fit, minmax(8.75rem, 1fr));
+  gap: 0.625rem;
+
+  padding: 1rem 1.25rem;
+
+  background-color: light-dark(var(--p-surface-50), var(--p-surface-950));
+}

@@ -1,0 +1,8 @@
+// lets the button fill its host when the host is stretched by a parent layout, e.g. a grid cell
+:host {
+  display: inline-flex;
+}
+
+button {
+  flex: 1;
+}

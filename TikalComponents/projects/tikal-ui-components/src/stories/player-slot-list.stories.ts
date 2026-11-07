@@ -1,5 +1,5 @@
-import { applicationConfig, Meta, StoryObj } from '@storybook/angular-vite';
-import { PlayerSlotListComponent } from '../public-api';
+import { applicationConfig, Meta, moduleMetadata, StoryObj } from '@storybook/angular-vite';
+import { ButtonComponent, PlayerSlotListComponent } from '../public-api';
 
 const meta: Meta<PlayerSlotListComponent> = {
   title: 'Molecules/Player-Slot-List',
@@ -106,4 +106,18 @@ export const Loading: Story = {
     isLoading: true,
     players: [],
   },
+};
+
+export const WithFooterButtons: Story = {
+  name: 'With footer buttons',
+  decorators: [moduleMetadata({ imports: [ButtonComponent] })],
+  render: (args) => ({
+    props: args,
+    template: `
+      <tikal-player-slot-list [maxPlayers]="maxPlayers" [players]="players" [isLoading]="isLoading">
+        <tikal-button label="I'm ready" size="large" />
+        <tikal-button colour="secondary" label="Start game" size="large" />
+      </tikal-player-slot-list>
+    `,
+  }),
 };
