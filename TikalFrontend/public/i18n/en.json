@@ -24,7 +24,8 @@
         "title": "No lobbies found",
         "detail": "There are no active lobbies matching your search criteria",
         "button": "Create Lobby"
-      }
+      },
+      "page-report": "Showing {{first}}–{{last}} of {{total}} lobbies"
     },
     "preview": {
       "loading-header": "Loading...",
@@ -46,7 +47,7 @@
       "create-button-label": "Create"
     }
   },
-  "player-slot" : {
+  "player-slot": {
     "ready": "Ready",
     "not-ready": "Not Ready",
     "you": "You"

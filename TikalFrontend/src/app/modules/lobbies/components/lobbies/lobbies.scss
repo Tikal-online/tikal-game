@@ -11,7 +11,11 @@
 }
 
 td {
-  height: 2.5rem;
+  height: 3.5rem;
+}
+
+.page-report {
+  color: var(--p-text-muted-color);
 }
 
 /* Fix to make the table not take more space than it is given by its parent */
@@ -20,6 +24,20 @@ td {
   flex-direction: column;
   height: 100%;
   min-height: 0;
+
+  /* the table is a card */
+  border: 1px solid var(--p-content-border-color);
+
+  /* the paginator is a separate primeng component which the table tokens do not reach. css variables are inherited, so they are scoped to this table here */
+  --p-paginator-background: light-dark(var(--p-surface-50), var(--p-surface-950));
+  --p-paginator-padding: 0.75rem 1rem;
+  --p-paginator-border-radius: 0;
+  --p-paginator-nav-button-width: 2.5rem;
+  --p-paginator-nav-button-height: 2.5rem;
+  --p-paginator-nav-button-border-radius: var(--p-border-radius-lg);
+  --p-paginator-nav-button-color: var(--p-text-color);
+  --p-paginator-nav-button-selected-background: var(--p-primary-color);
+  --p-paginator-nav-button-selected-color: var(--p-primary-contrast-color);
 }
 
 .p-datatable-wrapper {
