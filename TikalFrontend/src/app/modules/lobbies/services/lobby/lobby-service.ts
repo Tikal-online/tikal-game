@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { inject, Service } from '@angular/core';
-import { catchError, map, Observable, of, throwError } from 'rxjs';
+import { catchError, firstValueFrom, map, Observable, of, throwError } from 'rxjs';
 import { PaginatedResult } from '../../../../core/dtos/paginated-result';
 import { Lobby } from '../../models/lobby';
 import { err, ok, Result } from 'neverthrow';
@@ -46,10 +46,8 @@ export class LobbyService {
     );
   }
 
-  joinLobby(
-    id: number,
-  ): Observable<Result<void, PlayerAlreadyInLobby | LobbyNotFound | LobbyFull>> {
-    return this.http.post<void>(this.url + `/${id}/Players`, '').pipe(
+  joinLobby(id: number): Promise<Result<void, PlayerAlreadyInLobby | LobbyNotFound | LobbyFull>> {
+    const request = this.http.post<void>(this.url + `/${id}/Players`, '').pipe(
       map(() => ok()),
       catchError((error: HttpErrorResponse) => {
         // TODO: improve problem response error handling
@@ -66,5 +64,7 @@ export class LobbyService {
         return throwError(() => error);
       }),
     );
+
+    return firstValueFrom(request);
   }
 }
