@@ -3,7 +3,7 @@ import { PIcon, Spinner } from '@primeicons/angular';
 import { ButtonModule } from 'primeng/button';
 import { EnumMapPipe } from '../../../pipes/enum-map';
 
-export type ButtonColour = 'primary' | 'secondary' | 'contrast';
+export type ButtonColour = 'primary' | 'secondary' | 'contrast' | 'danger';
 
 export type ButtonSize = 'small' | 'normal' | 'large';
 
@@ -38,6 +38,9 @@ export class ButtonComponent {
 
   /** Is the action related to the button currently running? */
   readonly isLoading = input<boolean>(false);
+
+  /** Can the button currently not be used? */
+  readonly disabled = input<boolean>(false);
 
   /** Should the button have an outline? */
   readonly outline = input<boolean>(false);
