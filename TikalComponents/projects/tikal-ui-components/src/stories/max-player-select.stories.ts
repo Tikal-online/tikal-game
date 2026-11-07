@@ -1,5 +1,5 @@
 import { applicationConfig, Meta, StoryObj } from '@storybook/angular-vite';
-import { MaxPlayerSelectComponent } from '../lib/components/max-player-select/max-player-select';
+import { MaxPlayerSelectComponent } from '../public-api';
 
 const meta: Meta<MaxPlayerSelectComponent> = {
   title: 'Atoms/Max-Player-Select',

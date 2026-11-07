@@ -1,5 +1,5 @@
 import { applicationConfig, Meta, StoryObj } from '@storybook/angular-vite';
-import { EmptyPlayerSlotComponent } from '../lib/components/empty-player-slot/empty-player-slot';
+import { EmptyPlayerSlotComponent } from '../public-api';
 
 const meta: Meta<EmptyPlayerSlotComponent> = {
   title: 'Atoms/Empty-Player-Slot',

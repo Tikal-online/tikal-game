@@ -1,5 +1,5 @@
 import { applicationConfig, Meta, StoryObj } from '@storybook/angular-vite';
-import { InputComponent } from '../lib/components/input/input';
+import { InputComponent } from '../public-api';
 
 const meta: Meta<InputComponent> = {
   title: 'Atoms/Input',

@@ -1,5 +1,5 @@
 import { applicationConfig, Meta, StoryObj } from '@storybook/angular-vite';
-import { ChatFormComponent } from '../lib/components/chat-form/chat-form';
+import { ChatFormComponent } from '../public-api';
 
 const meta: Meta<ChatFormComponent> = {
   title: 'Molecules/Chat-Form',

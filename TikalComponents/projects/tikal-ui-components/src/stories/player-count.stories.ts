@@ -1,5 +1,5 @@
 import { applicationConfig, Meta, StoryObj } from '@storybook/angular-vite';
-import { PlayerCountComponent } from '../lib/components/player-count/player-count';
+import { PlayerCountComponent } from '../public-api';
 
 const meta: Meta<PlayerCountComponent> = {
   title: 'Atoms/Player-Count',

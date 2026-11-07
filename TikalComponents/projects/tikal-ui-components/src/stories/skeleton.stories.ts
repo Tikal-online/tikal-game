@@ -1,5 +1,5 @@
 import { applicationConfig, Meta, StoryObj } from '@storybook/angular-vite';
-import { SkeletonComponent } from '../lib/components/skeleton/skeleton';
+import { SkeletonComponent } from '../public-api';
 
 const meta: Meta<SkeletonComponent> = {
   title: 'Atoms/Skeleton',

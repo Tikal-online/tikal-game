@@ -1,5 +1,5 @@
 import { applicationConfig, Meta, StoryObj } from '@storybook/angular-vite';
-import { ButtonComponent } from '../lib/components/button/button';
+import { ButtonComponent } from '../public-api';
 
 const meta: Meta<ButtonComponent> = {
   title: 'Atoms/Button',
