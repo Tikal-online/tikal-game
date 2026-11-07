@@ -12,10 +12,11 @@ import { LobbyService } from '../../services/lobby/lobby-service';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { pipe, switchMap, tap } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
+import { LoadingStatus } from '../../../../core/types/loading-status';
 
 type PreviewLobbyState = {
   lobby: Lobby | null;
-  status: 'initial' | 'loading' | 'loaded' | 'error';
+  status: LoadingStatus;
   joiningStatus:
     'initial' | 'joining' | 'joined' | 'notFound' | 'full' | 'alreadyInLobby' | 'error';
 };

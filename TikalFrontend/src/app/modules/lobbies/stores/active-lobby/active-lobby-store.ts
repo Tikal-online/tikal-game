@@ -26,11 +26,12 @@ import {
   PlayerAlreadyInLobby,
   PlayerNotInLobby,
 } from '../../errors/lobby-errors';
+import { LoadingStatus } from '../../../../core/types/loading-status';
 
 type ActiveLobbyState = {
   lobby: Lobby | null;
   connectionStatus: ConnectionStatus;
-  loadingStatus: 'initial' | 'loading' | 'loaded' | 'error';
+  loadingStatus: LoadingStatus;
 };
 
 const initialStatus: ActiveLobbyState = {

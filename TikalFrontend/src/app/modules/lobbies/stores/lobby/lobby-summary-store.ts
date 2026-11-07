@@ -11,10 +11,11 @@ import { computed, inject } from '@angular/core';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { debounceTime, pipe, switchMap, tap } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
+import { LoadingStatus } from '../../../../core/types/loading-status';
 
 type LobbySummaryState = {
   lobbies: LobbySummary[];
-  status: 'initial' | 'loading' | 'loaded' | 'error';
+  status: LoadingStatus;
   totalCount: number;
   filter: {
     pageSize: number;
