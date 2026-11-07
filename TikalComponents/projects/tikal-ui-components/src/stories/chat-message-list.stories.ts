@@ -1,5 +1,5 @@
 import { applicationConfig, Meta, StoryObj } from '@storybook/angular-vite';
-import { ChatMessageListComponent } from '../lib/components/chat-message-list/chat-message-list';
+import { ChatMessageListComponent } from '../public-api';
 
 const meta: Meta<ChatMessageListComponent> = {
   title: 'Molecules/Chat-Message-List',

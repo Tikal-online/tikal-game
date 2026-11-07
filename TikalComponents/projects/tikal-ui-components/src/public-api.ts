@@ -11,6 +11,12 @@ export * from './lib/components/input/input';
 // Chat form
 export * from './lib/components/chat-form/chat-form';
 
+// Chat message
+export * from './lib/components/chat-message/chat-message';
+
+// Chat message list
+export * from './lib/components/chat-message-list/chat-message-list';
+
 // Skeleton
 export * from './lib/components/skeleton/skeleton';
 
