@@ -1,7 +1,6 @@
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { ActivePlayerService } from './active-player-service';
 import { TestBed } from '@angular/core/testing';
-import { firstValueFrom } from 'rxjs';
 import { NOT_FOUND, OK } from '../../../../core/tests/http-responses';
 
 describe('ActivePlayerService', () => {
@@ -27,7 +26,7 @@ describe('ActivePlayerService', () => {
 
   test('readyUp returns success when PUT /Api/Players/me returns Success', async () => {
     // given
-    const promise = firstValueFrom(service.readyUp());
+    const promise = service.readyUp();
 
     // when & then
     const req = http.expectOne({ method: 'PUT', url: '/Api/Players/me/ready' });
@@ -40,7 +39,7 @@ describe('ActivePlayerService', () => {
 
   test('readyUp returns PlayerNotInLobby when PUT /Api/Players/me returns 404', async () => {
     // given
-    const promise = firstValueFrom(service.readyUp());
+    const promise = service.readyUp();
 
     // when & then
     const req = http.expectOne({ method: 'PUT', url: '/Api/Players/me/ready' });
@@ -56,7 +55,7 @@ describe('ActivePlayerService', () => {
 
   test('readyDown returns success when DELETE /Api/Players/me returns Success', async () => {
     // given
-    const promise = firstValueFrom(service.readyDown());
+    const promise = service.readyDown();
 
     // when & then
     const req = http.expectOne({ method: 'DELETE', url: '/Api/Players/me/ready' });
@@ -69,7 +68,7 @@ describe('ActivePlayerService', () => {
 
   test('readyDown returns PlayerNotInLobby when DELETE /Api/Players/me returns 404', async () => {
     // given
-    const promise = firstValueFrom(service.readyDown());
+    const promise = service.readyDown();
 
     // when & then
     const req = http.expectOne({ method: 'DELETE', url: '/Api/Players/me/ready' });

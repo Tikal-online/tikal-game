@@ -67,22 +67,6 @@ export const ActiveLobbyStore = signalStore(
       return store._activeLobbyConnection.disconnect();
     },
 
-    readyUp: rxMethod<void>(
-      pipe(
-        switchMap(() => {
-          return store._activePlayerService.readyUp();
-        }),
-      ),
-    ),
-
-    readyDown: rxMethod<void>(
-      pipe(
-        switchMap(() => {
-          return store._activePlayerService.readyDown();
-        }),
-      ),
-    ),
-
     loadActiveLobby: rxMethod<void>(
       pipe(
         tap(() =>
@@ -101,6 +85,14 @@ export const ActiveLobbyStore = signalStore(
         }),
       ),
     ),
+
+    readyUp(): Promise<Result<void, PlayerNotInLobby>> {
+      return store._activePlayerService.readyUp();
+    },
+
+    readyDown(): Promise<Result<void, PlayerNotInLobby>> {
+      return store._activePlayerService.readyDown();
+    },
 
     leaveActiveLobby(): Promise<Result<void, LobbyNotFound | PlayerNotInLobby | LobbyInGame>> {
       const lobby = store.lobby();
