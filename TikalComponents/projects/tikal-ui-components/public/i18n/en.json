@@ -1,5 +1,5 @@
 {
-  "player-slot" : {
+  "player-slot": {
     "ready": "Ready",
     "not-ready": "Not Ready",
     "you": "You"

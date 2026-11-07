@@ -37,3 +37,6 @@ export * from './lib/components/nav-link/nav-link';
 
 // Active session link
 export * from './lib/components/active-session-link/active-session-link';
+
+// Header
+export * from './lib/components/header/header';

@@ -1,0 +1,21 @@
+<a class="brand" [routerLink]="homeRoute()">
+  <span class="brand-name">Tikal</span>
+</a>
+
+@if (links().length) {
+  <nav aria-label="Navigation">
+    @for (link of links(); track link.label) {
+      <tikal-nav-link [exact]="link.exact ?? false" [label]="link.label" [route]="link.route" />
+    }
+  </nav>
+}
+
+<span class="spacer"></span>
+
+<tikal-button
+  colour="secondary"
+  [ariaLabel]="darkMode() ? 'switch-to-light' : 'switch-to-dark'"
+  [icon]="darkMode() ? 'sun' : 'moon'"
+  [text]="true"
+  (clicked)="darkModeToggled.emit()"
+/>
