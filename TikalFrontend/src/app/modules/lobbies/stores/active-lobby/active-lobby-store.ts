@@ -124,8 +124,15 @@ export const ActiveLobbyStore = signalStore(
         switchMap(() => store._activeLobbyConnection.joinedPlayers$),
         tap((player) =>
           patchState(store, (state) => ({
+            // a player rejoining must replace their existing entry instead of being duplicated
             lobby: state.lobby
-              ? { ...state.lobby, players: [...state.lobby.players, player] }
+              ? {
+                  ...state.lobby,
+                  players: [
+                    ...state.lobby.players.filter((p) => p.userId !== player.userId),
+                    player,
+                  ],
+                }
               : null,
           })),
         ),

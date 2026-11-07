@@ -233,6 +233,29 @@ describe('ActiveLobbyStore', () => {
   );
 
   test.for<Player>(PLAYER_TESTCASES)(
+    'given player already in lobby when joinedPlayers$ emits same userId then replaces the player',
+    (player: Player) => {
+      // given
+      const store = TestBed.inject(ActiveLobbyStore);
+      const existingPlayer: Player = { ...player, name: 'old name', isReady: !player.isReady };
+
+      activeLobbyService.getActiveLobby.mockReturnValueOnce(
+        of({ ...DEFAULT_TEST_LOBBY, players: [existingPlayer] }),
+      );
+
+      TestBed.runInInjectionContext(() => {
+        store.loadActiveLobby();
+      });
+
+      // when
+      activeLobbyConnection.joinedPlayers$.next(player);
+
+      // then
+      expect(store.lobby()?.players).toEqual([player]);
+    },
+  );
+
+  test.for<Player>(PLAYER_TESTCASES)(
     'given no active lobby when joinedPlayers$ emits then lobby is still null',
     (player: Player) => {
       // given
