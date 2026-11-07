@@ -34,3 +34,6 @@ export * from './lib/components/max-player-select/max-player-select';
 
 // Nav link
 export * from './lib/components/nav-link/nav-link';
+
+// Active session link
+export * from './lib/components/active-session-link/active-session-link';
