@@ -97,7 +97,6 @@ describe('ActiveLobbyStore', () => {
 
     // then
     expect(store.loadingStatus()).toEqual('loaded');
-    expect(store.startingStatus()).toEqual('initial');
     expect(store.lobby()).toBeNull();
   });
 
@@ -116,7 +115,6 @@ describe('ActiveLobbyStore', () => {
 
     // then
     expect(store.loadingStatus()).toEqual('error');
-    expect(store.startingStatus()).toEqual('initial');
     expect(store.lobby()).toBeNull();
   });
 
@@ -135,7 +133,6 @@ describe('ActiveLobbyStore', () => {
 
       // then
       expect(store.loadingStatus()).toEqual('loaded');
-      expect(store.startingStatus()).toEqual('initial');
       expect(store.lobby()).toEqual(lobby);
     },
   );
@@ -306,7 +303,6 @@ describe('ActiveLobbyStore', () => {
 
       // then
       expect(store.loadingStatus()).toEqual('initial');
-      expect(store.startingStatus()).toEqual('initial');
       expect(store.lobby()).toBeNull();
     },
   );
@@ -377,56 +373,76 @@ describe('ActiveLobbyStore', () => {
     expect(activePlayerService.readyDown).toHaveBeenCalledOnce();
   });
 
-  test('given no active lobby when startActiveLobby then does not call startLobby', async () => {
+  test('given no active lobby when startActiveLobby then returns PlayerNotInLobby without calling startLobby', async () => {
     // given
     const store = TestBed.inject(ActiveLobbyStore);
 
     // when
-    TestBed.runInInjectionContext(() => {
-      store.startActiveLobby();
-    });
+    const result = await store.startActiveLobby();
 
     // then
+    expect(result).toEqual(err({ type: 'PlayerNotInLobby' }));
     expect(activeLobbyService.startLobby).not.toHaveBeenCalled();
   });
 
   test.for<Lobby>(LOBBY_TESTCASES)(
-    'given starting fails when startActiveLobby then sets startingStatus to error',
-    (lobby: Lobby) => {
+    'given starting succeeds when startActiveLobby then returns ok',
+    async (lobby: Lobby) => {
       // given
       const store = TestBed.inject(ActiveLobbyStore);
 
       activeLobbyService.getActiveLobby.mockReturnValueOnce(of(lobby));
-      activeLobbyService.startLobby.mockReturnValueOnce(throwError(() => new Error('test error')));
+      activeLobbyService.startLobby.mockResolvedValueOnce(ok());
 
-      // when
       TestBed.runInInjectionContext(() => {
         store.loadActiveLobby();
-        store.startActiveLobby();
       });
 
+      // when
+      const result = await store.startActiveLobby();
+
       // then
-      expect(store.startingStatus()).toEqual('error');
+      expect(result.isOk()).toBe(true);
+      expect(activeLobbyService.startLobby).toHaveBeenCalledWith(lobby.id);
     },
   );
 
   test.for<Lobby>(LOBBY_TESTCASES)(
-    'given starting succeeds when startActiveLobby then sets startingStatus to started',
-    (lobby: Lobby) => {
+    'given starting returns an expected error when startActiveLobby then returns the error',
+    async (lobby: Lobby) => {
       // given
       const store = TestBed.inject(ActiveLobbyStore);
 
       activeLobbyService.getActiveLobby.mockReturnValueOnce(of(lobby));
-      activeLobbyService.startLobby.mockReturnValueOnce(of(null));
+      activeLobbyService.startLobby.mockResolvedValueOnce(err({ type: 'LobbyInGame' }));
 
-      // when
       TestBed.runInInjectionContext(() => {
         store.loadActiveLobby();
-        store.startActiveLobby();
       });
 
+      // when
+      const result = await store.startActiveLobby();
+
       // then
-      expect(store.startingStatus()).toEqual('started');
+      expect(result).toEqual(err({ type: 'LobbyInGame' }));
+    },
+  );
+
+  test.for<Lobby>(LOBBY_TESTCASES)(
+    'given starting fails unexpectedly when startActiveLobby then rejects',
+    async (lobby: Lobby) => {
+      // given
+      const store = TestBed.inject(ActiveLobbyStore);
+
+      activeLobbyService.getActiveLobby.mockReturnValueOnce(of(lobby));
+      activeLobbyService.startLobby.mockRejectedValueOnce(new Error('test error'));
+
+      TestBed.runInInjectionContext(() => {
+        store.loadActiveLobby();
+      });
+
+      // when & then
+      await expect(store.startActiveLobby()).rejects.toThrow('test error');
     },
   );
 });

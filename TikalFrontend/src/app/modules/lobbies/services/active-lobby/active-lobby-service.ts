@@ -73,18 +73,20 @@ export class ActiveLobbyService {
     return firstValueFrom(request);
   }
 
-  startLobby(id: number): Observable<Result<void, PlayerNotInLobby | LobbyInGame>> {
-    return this.http.post(`${this.url}/${id}/Start`, {}).pipe(
+  startLobby(id: number): Promise<Result<void, PlayerNotInLobby | LobbyInGame>> {
+    const request = this.http.post(`${this.url}/${id}/Start`, {}).pipe(
       map(() => ok()),
       catchError((error: HttpErrorResponse) => {
         if (error.status === 404) {
-          return err({ type: 'PlayerNotInLobby' } as const);
+          return of(err({ type: 'PlayerNotInLobby' } as const));
         } else if (error.status === 409) {
-          return err({ type: 'LobbyInGame' } as const);
+          return of(err({ type: 'LobbyInGame' } as const));
         }
 
         return throwError(() => error);
       }),
     );
+
+    return firstValueFrom(request);
   }
 }

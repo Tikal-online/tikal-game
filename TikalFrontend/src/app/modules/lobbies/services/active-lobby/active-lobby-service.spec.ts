@@ -223,7 +223,7 @@ describe('ActiveLobbyService', () => {
     'startLobby returns success when POST /Api/Lobbies/%i/Start returns Success',
     async (id) => {
       // given
-      const promise = firstValueFrom(service.startLobby(id));
+      const promise = service.startLobby(id);
 
       // when & then
       const req = http.expectOne({ method: 'POST', url: `/Api/Lobbies/${id}/Start` });
@@ -239,7 +239,7 @@ describe('ActiveLobbyService', () => {
     'startLobby returns PlayerNotInLobby when POST /Api/Lobbies/%i/Start returns 404',
     async (id) => {
       // given
-      const promise = firstValueFrom(service.startLobby(id));
+      const promise = service.startLobby(id);
 
       // when & then
       const req = http.expectOne({ method: 'POST', url: `/Api/Lobbies/${id}/Start` });
@@ -258,7 +258,7 @@ describe('ActiveLobbyService', () => {
     'startLobby returns LobbyInGame when POST /Api/Lobbies/%i/Start returns 409',
     async (id) => {
       // given
-      const promise = firstValueFrom(service.startLobby(id));
+      const promise = service.startLobby(id);
 
       // when & then
       const req = http.expectOne({ method: 'POST', url: `/Api/Lobbies/${id}/Start` });
@@ -274,27 +274,16 @@ describe('ActiveLobbyService', () => {
   );
 
   test.for<HttpResponseData>(ERROR_RESPONSES.filter((error) => ![404, 409].includes(error.status)))(
-    'startLobby throws error when POST /Api/Lobbies/id/Start returns $status',
+    'startLobby rejects when POST /Api/Lobbies/id/Start returns $status',
     async (error: HttpResponseData) => {
       // given
-      let capturedError: HttpErrorResponse;
-
-      const promise = firstValueFrom(
-        service.startLobby(1).pipe(
-          catchError((httpError) => {
-            capturedError = httpError;
-            return of(httpError);
-          }),
-        ),
-      );
+      const promise = service.startLobby(1);
 
       // when & then
       const req = http.expectOne({ method: 'POST', url: '/Api/Lobbies/1/Start' });
       req.flush('', error);
 
-      await promise;
-
-      expect(capturedError!.status).toEqual(error.status);
+      await expect(promise).rejects.toMatchObject({ status: error.status });
     },
   );
 });

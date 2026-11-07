@@ -10,7 +10,7 @@ import {
 import { Lobby } from '../../models/lobby';
 import { computed, inject } from '@angular/core';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { filter, pipe, switchMap, tap } from 'rxjs';
+import { pipe, switchMap, tap } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
 import {
   ActiveLobbyService,
@@ -31,7 +31,6 @@ type ActiveLobbyState = {
   lobby: Lobby | null;
   connectionStatus: ConnectionStatus;
   loadingStatus: 'initial' | 'loading' | 'loaded' | 'error';
-  startingStatus: 'initial' | 'starting' | 'started' | 'error';
   showCreateLobbyDialog: boolean;
 };
 
@@ -39,7 +38,6 @@ const initialStatus: ActiveLobbyState = {
   lobby: null,
   connectionStatus: 'Disconnected',
   loadingStatus: 'initial',
-  startingStatus: 'initial',
   showCreateLobbyDialog: false,
 };
 
@@ -95,8 +93,8 @@ export const ActiveLobbyStore = signalStore(
       pipe(
         tap(() =>
           patchState(store, {
+            lobby: null,
             loadingStatus: 'loading',
-            startingStatus: 'initial',
           }),
         ),
         switchMap(() => {
@@ -120,20 +118,15 @@ export const ActiveLobbyStore = signalStore(
       return store._activeLobbyService.leaveLobby(lobby.id);
     },
 
-    startActiveLobby: rxMethod<void>(
-      pipe(
-        filter(() => !!store.lobby()),
-        tap(() => patchState(store, { startingStatus: 'starting' })),
-        switchMap(() => {
-          return store._activeLobbyService.startLobby(store.lobby()!.id).pipe(
-            tapResponse({
-              next: () => patchState(store, { startingStatus: 'started' }),
-              error: () => patchState(store, { startingStatus: 'error' }),
-            }),
-          );
-        }),
-      ),
-    ),
+    startActiveLobby(): Promise<Result<void, PlayerNotInLobby | LobbyInGame>> {
+      const lobby = store.lobby();
+
+      if (!lobby) {
+        return Promise.resolve(err({ type: 'PlayerNotInLobby' } as const));
+      }
+
+      return store._activeLobbyService.startLobby(lobby.id);
+    },
 
     createLobby(data: CreateLobbyData): Promise<Result<void, PlayerAlreadyInLobby>> {
       return store._activeLobbyService.createLobby(data);
@@ -160,7 +153,6 @@ export const ActiveLobbyStore = signalStore(
             patchState(store, {
               lobby: null,
               loadingStatus: 'initial',
-              startingStatus: 'initial',
             });
           } else {
             patchState(store, (state) => ({
