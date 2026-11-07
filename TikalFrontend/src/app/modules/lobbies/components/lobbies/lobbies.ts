@@ -6,7 +6,6 @@ import { LobbiesHeaderComponent } from '../lobbies-header/lobbies-header';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { LobbiesNotFoundComponent } from '../lobbies-not-found/lobbies-not-found';
 import { RouterLink } from '@angular/router';
-import { CreateLobbyDialog } from '../create-lobby/create-lobby';
 
 @Component({
   selector: 'tikal-lobbies',
@@ -21,7 +20,6 @@ import { CreateLobbyDialog } from '../create-lobby/create-lobby';
     TranslocoDirective,
     LobbiesNotFoundComponent,
     RouterLink,
-    CreateLobbyDialog,
   ],
 })
 export class LobbiesComponent {

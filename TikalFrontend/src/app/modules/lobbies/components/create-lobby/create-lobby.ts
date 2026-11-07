@@ -1,5 +1,5 @@
-import { Component, effect, inject, signal } from '@angular/core';
-import { DialogModule } from 'primeng/dialog';
+import { Component, inject, signal } from '@angular/core';
+import { DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ButtonComponent, InputComponent, MaxPlayerSelectComponent } from 'tikal-ui-components';
 import { disabled, form, FormField, FormRoot, maxLength, required } from '@angular/forms/signals';
 import { Router } from '@angular/router';
@@ -14,7 +14,6 @@ type LobbyData = {
 @Component({
   selector: 'tikal-create-lobby-dialog',
   imports: [
-    DialogModule,
     ButtonComponent,
     FormRoot,
     FormField,
@@ -28,17 +27,11 @@ type LobbyData = {
 export class CreateLobbyDialog {
   private readonly router = inject(Router);
 
-  readonly activeLobbyStore = inject(ActiveLobbyStore);
+  private readonly activeLobbyStore = inject(ActiveLobbyStore);
 
   private readonly lobbyData = signal<LobbyData>({ name: '', maxPlayers: 4 });
 
-  constructor() {
-    effect(() => {
-      if (this.activeLobbyStore.creationStatus() === 'created') {
-        this.router.navigate(['/Lobbies/me']);
-      }
-    });
-  }
+  readonly dialogRef = inject(DynamicDialogRef);
 
   readonly lobbyForm = form(
     this.lobbyData,
@@ -46,16 +39,17 @@ export class CreateLobbyDialog {
       required(schemaPath.name);
       required(schemaPath.maxPlayers);
       maxLength(schemaPath.name, 30);
-      disabled(schemaPath, { when: () => this.activeLobbyStore.isCreating() });
+      disabled(schemaPath, { when: () => this.lobbyForm().submitting() });
     },
     {
       submission: {
-        action: (field) => {
-          const data = field().value();
+        action: async (field) => {
+          const result = await this.activeLobbyStore.createLobby(field().value());
 
-          this.activeLobbyStore.createLobby(data);
-
-          return Promise.resolve();
+          if (result.isOk()) {
+            this.dialogRef.close();
+            await this.router.navigate(['/Lobbies/me']);
+          }
         },
       },
     },
