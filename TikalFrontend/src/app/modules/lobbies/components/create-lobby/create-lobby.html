@@ -30,7 +30,7 @@
         icon="plus"
         label="Create"
         type="submit"
-        [isLoading]="activeLobbyStore.isCreating()"
+        [isLoading]="lobbyForm().submitting()"
         [label]="t('create-button-label')"
       />
     </ng-template>

@@ -32,7 +32,6 @@ type ActiveLobbyState = {
   connectionStatus: ConnectionStatus;
   loadingStatus: 'initial' | 'loading' | 'loaded' | 'error';
   isLeaving: boolean;
-  isCreating: boolean;
   startingStatus: 'initial' | 'starting' | 'started' | 'error';
   showCreateLobbyDialog: boolean;
 };
@@ -42,7 +41,6 @@ const initialStatus: ActiveLobbyState = {
   connectionStatus: 'Disconnected',
   loadingStatus: 'initial',
   isLeaving: false,
-  isCreating: false,
   startingStatus: 'initial',
   showCreateLobbyDialog: false,
 };
@@ -154,13 +152,7 @@ export const ActiveLobbyStore = signalStore(
     ),
 
     createLobby(data: CreateLobbyData): Promise<Result<void, PlayerAlreadyInLobby>> {
-      patchState(store, { isCreating: true, showCreateLobbyDialog: false });
-
-      try {
-        return store._activeLobbyService.createLobby(data);
-      } finally {
-        patchState(store, { isCreating: false });
-      }
+      return store._activeLobbyService.createLobby(data);
     },
 
     watchJoinedPlayers: rxMethod<void>(
