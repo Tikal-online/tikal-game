@@ -54,7 +54,7 @@
     "prettier": "^3.8.1",
     "storybook": "^10.5.10",
     "typescript": "~6.0.2",
-    "typescript-eslint": "~8.67.0",
+    "typescript-eslint": "~8.72.1",
     "vitest": "latest"
   },
   "allowScripts": {
