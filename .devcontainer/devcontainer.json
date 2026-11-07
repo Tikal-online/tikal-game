@@ -11,7 +11,8 @@
     },
     "ghcr.io/devcontainers-extra/features/mise:1": {},
     "ghcr.io/riccardobravin/devcontainer-features/zensical:0": {},
-    "ghcr.io/devcontainer-community/devcontainer-features/tree-sitter:1": {}
+    "ghcr.io/devcontainer-community/devcontainer-features/tree-sitter:1": {},
+    "ghcr.io/anthropics/devcontainer-features/claude-code:1.0": {}
   },
   "runArgs": [
     "--network=host"
@@ -20,8 +21,12 @@
     "source=usersecrets,target=/home/vscode/.microsoft/usersecrets,type=volume",
     "source=dataprotection,target=/home/vscode/.aspnet/DataProtection-Keys,type=volume",
     "source=${localEnv:HOME}/.aspnet/dev-certs,target=/.aspnet/dev-certs,type=bind,consistency=cached",
-    "source=${localEnv:HOME}/.config/nvim,target=/home/vscode/.config/nvim,type=bind"
+    "source=${localEnv:HOME}/.config/nvim,target=/home/vscode/.config/nvim,type=bind",
+    "source=claude-code-config-${devcontainerId},target=/home/vscode/.claude,type=volume"
   ],
+  "containerEnv": {
+    "CLAUDE_CONFIG_DIR": "/home/vscode/.claude"
+  },
   "remoteEnv": {
     "DISPLAY": "${localEnv:DISPLAY}",
     "LANG": "en_GB.UTF-8",

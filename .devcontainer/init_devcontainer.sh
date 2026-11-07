@@ -8,6 +8,9 @@ sudo chown -R vscode:vscode /home/vscode/.microsoft/usersecrets
 echo "Setting ownership for dataprotection keys..."
 sudo chown -R vscode:vscode /home/vscode/.aspnet/DataProtection-Keys
 
+echo "Setting ownership for Claude Code config..."
+sudo chown -R vscode:vscode /home/vscode/.claude
+
 echo "Adding development CA certificate..."
 sudo cp /.aspnet/dev-certs/dotnet-dev-ca.crt /usr/local/share/ca-certificates/
 
@@ -31,6 +34,9 @@ export DOTNET_ROOT="$HOME/.dotnet"
 export PATH="$DOTNET_ROOT:$PATH"
 EOF
 fi
+
+echo "Installing aspire cli"
+curl -sSL https://aspire.dev/install.sh | bash
 
 echo "Importing development certificate..."
 dotnet dev-certs https --import /.aspnet/dev-certs/dotnet-dev-cert.pfx --clean -p secret
@@ -62,7 +68,6 @@ sudo apt install -y ripgrep fd-find xclip
 sudo bash -c 'cat > /etc/default/locale' <<EOF
 LANG=en_GB.UTF-8
 EOF
-
 
 echo "Installing Playwright Chromium for UI inspection (TikalFrontend/ui-tools, TikalComponents/ui-tools)"
 (cd TikalFrontend && npm ci && npx playwright install --with-deps chromium)
