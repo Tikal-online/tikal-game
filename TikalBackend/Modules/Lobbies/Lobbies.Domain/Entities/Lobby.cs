@@ -1,6 +1,9 @@
 using FluentValidation;
+using Lobbies.Domain.Errors;
 using Lobbies.Domain.Events;
 using Lobbies.Domain.Mappers;
+using OneOf;
+using OneOf.Types;
 using Shared.Domain.Entities;
 using Shared.Domain.Enums;
 
@@ -18,32 +21,87 @@ public sealed class Lobby : Entity
 
     public bool InGame { get; set; }
 
+    public uint Version { get; set; }
+
     public bool IsEmpty => Players.Count == 0;
 
     public bool IsFull => Players.Count == MaxPlayers;
 
     public bool CanBeStarted => Players.Count >= 2 && Players.All(p => p.IsReady) && !InGame;
 
-    public void RemovePlayer(Player player)
+    public OneOf<Success, PlayerNotInLobbyDomainError, LobbyInGameDomainError> RemovePlayer(string userId)
     {
+        if (InGame)
+        {
+            return new LobbyInGameDomainError();
+        }
+
+        var player = Players.FirstOrDefault(p => p.UserId == userId);
+
+        if (player is null)
+        {
+            return new PlayerNotInLobbyDomainError();
+        }
+
         Players.Remove(player);
+        Touch();
         AddDomainEvent(new PlayerLeftDomainEvent(PlayerMapper.PlayerToPlayerEventData(player), Id));
 
+        // If there is no owner left, promote another random player to owner
         if (IsEmpty || Players.Any(p => p.IsOwner))
         {
-            return;
+            return new Success();
         }
 
         var firstPlayer = Players.First();
 
         firstPlayer.IsOwner = true;
         AddDomainEvent(new PlayerUpdatedDomainEvent(PlayerMapper.PlayerToPlayerEventData(firstPlayer), Id));
+
+        return new Success();
     }
 
-    public void AddPlayer(Player player)
+    public OneOf<Success, LobbyInGameDomainError, LobbyFullDomainError> AddPlayer(string username, string userId)
     {
+        if (InGame)
+        {
+            return new LobbyInGameDomainError();
+        }
+
+        if (IsFull)
+        {
+            return new LobbyFullDomainError();
+        }
+
+        var colour = GetUnusedColour();
+
+        var player = new Player
+        {
+            UserId = userId,
+            Name = username,
+            SelectedColour = colour,
+            IsOwner = false,
+            IsReady = false
+        };
+
         Players.Add(player);
+        Touch();
         AddDomainEvent(new PlayerJoinedDomainEvent(PlayerMapper.PlayerToPlayerEventData(player), Id));
+
+        return new Success();
+    }
+
+    public OneOf<Success, LobbyCannotBeStartedDomainError> Start()
+    {
+        if (!CanBeStarted)
+        {
+            return new LobbyCannotBeStartedDomainError();
+        }
+
+        InGame = true;
+        AddDomainEvent(new LobbyStartedDomainEvent(LobbyMapper.LobbyToLobbyEventData(this)));
+
+        return new Success();
     }
 
     public Player? GetPlayer(string userId)
@@ -60,12 +118,6 @@ public sealed class Lobby : Entity
             .First();
 
         return unusedColour;
-    }
-
-    public void Start()
-    {
-        InGame = true;
-        AddDomainEvent(new LobbyStartedDomainEvent(LobbyMapper.LobbyToLobbyEventData(this)));
     }
 
     public void Stop()

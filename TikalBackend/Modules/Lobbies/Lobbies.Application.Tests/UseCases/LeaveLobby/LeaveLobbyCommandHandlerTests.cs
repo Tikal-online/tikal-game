@@ -12,7 +12,6 @@ namespace Lobbies.Application.Tests.UseCases.LeaveLobby;
 public sealed class LeaveLobbyCommandHandlerTests
 {
     // dependencies
-    private readonly Mock<PlayerRepository> playerRepository;
     private readonly Mock<LobbyRepository> lobbyRepository;
 
     // under test
@@ -20,13 +19,9 @@ public sealed class LeaveLobbyCommandHandlerTests
 
     public LeaveLobbyCommandHandlerTests()
     {
-        playerRepository = new Mock<PlayerRepository>();
         lobbyRepository = new Mock<LobbyRepository>();
 
-        handler = new LeaveLobbyCommandHandler(
-            playerRepository.Object,
-            lobbyRepository.Object
-        );
+        handler = new LeaveLobbyCommandHandler(lobbyRepository.Object);
     }
 
     private void SetupHappyPath(Lobby lobby, LeaveLobbyCommand command)
@@ -38,7 +33,6 @@ public sealed class LeaveLobbyCommandHandlerTests
         // lobby contains authenticated player
         var player = lobby.Players.First();
         player.UserId = command.UserId;
-        player.Lobby = lobby;
     }
 
     [Fact]
@@ -104,8 +98,6 @@ public sealed class LeaveLobbyCommandHandlerTests
 
         // then
         Assert.IsType<Success>(result.Value);
-
-        playerRepository.Verify(r => r.Delete(It.IsAny<Player>()), Times.Once);
     }
 
     [Theory]
@@ -123,7 +115,6 @@ public sealed class LeaveLobbyCommandHandlerTests
         // then
         Assert.IsType<Success>(result.Value);
 
-        playerRepository.Verify(r => r.Delete(It.IsAny<Player>()), Times.Once);
         lobbyRepository.Verify(r => r.Delete(lobby), Times.Once);
     }
 }

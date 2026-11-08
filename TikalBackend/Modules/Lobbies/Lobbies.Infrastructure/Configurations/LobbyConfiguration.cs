@@ -24,5 +24,8 @@ internal sealed class LobbyConfiguration : IEntityTypeConfiguration<Lobby>
             .WithOne(x => x.Lobby)
             .HasForeignKey(x => x.LobbyId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Property(x => x.Version)
+            .IsRowVersion();
     }
 }

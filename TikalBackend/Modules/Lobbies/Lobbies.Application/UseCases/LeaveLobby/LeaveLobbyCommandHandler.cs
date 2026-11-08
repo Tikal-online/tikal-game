@@ -8,16 +8,10 @@ namespace Lobbies.Application.UseCases.LeaveLobby;
 
 public sealed class LeaveLobbyCommandHandler
 {
-    private readonly PlayerRepository playerRepository;
-
     private readonly LobbyRepository lobbyRepository;
 
-    public LeaveLobbyCommandHandler(
-        PlayerRepository playerRepository,
-        LobbyRepository lobbyRepository
-    )
+    public LeaveLobbyCommandHandler(LobbyRepository lobbyRepository)
     {
-        this.playerRepository = playerRepository;
         this.lobbyRepository = lobbyRepository;
     }
 
@@ -33,26 +27,20 @@ public sealed class LeaveLobbyCommandHandler
             return new LobbyNotFound(request.LobbyId);
         }
 
-        var player = lobby.GetPlayer(request.UserId);
+        var result = lobby.RemovePlayer(request.UserId);
 
-        if (player is null)
-        {
-            return new PlayerNotInGivenLobby(request.LobbyId);
-        }
+        return result.Match<OneOf<Success, LobbyNotFound, PlayerNotInGivenLobby, LobbyInGame>>(
+            success =>
+            {
+                if (lobby.IsEmpty)
+                {
+                    lobbyRepository.Delete(lobby);
+                }
 
-        if (lobby.InGame)
-        {
-            return new LobbyInGame(lobby.Id);
-        }
-
-        lobby.RemovePlayer(player);
-        playerRepository.Delete(player);
-
-        if (player.Lobby.IsEmpty)
-        {
-            lobbyRepository.Delete(player.Lobby);
-        }
-
-        return new Success();
+                return success;
+            },
+            playerNotInLobby => new PlayerNotInGivenLobby(lobby.Id),
+            lobbyInGame => new LobbyInGame(lobby.Id)
+        );
     }
 }

@@ -1,12 +1,27 @@
 using Lobbies.Domain.Entities;
+using Lobbies.Domain.Errors;
 using Lobbies.Domain.Events;
 using Lobbies.Domain.Tests.Data;
-using Shared.Domain.Enums;
+using OneOf.Types;
 
 namespace Lobbies.Domain.Tests.Entities;
 
 public sealed class LobbyTests
 {
+    [Theory]
+    [ClassData(typeof(ValidLobbies))]
+    public void GivenLobby_WhenRemovePlayer_ThenReturnsSuccess(Lobby lobby)
+    {
+        // given
+        var playerToRemove = lobby.Players.First();
+
+        // when
+        var result = lobby.RemovePlayer(playerToRemove.UserId);
+
+        // then
+        Assert.IsType<Success>(result.Value);
+    }
+
     [Theory]
     [ClassData(typeof(ValidLobbies))]
     public void GivenLobby_WhenRemovePlayer_ThenRemovesPlayerFromList(Lobby lobby)
@@ -15,7 +30,7 @@ public sealed class LobbyTests
         var playerToRemove = lobby.Players.First();
 
         // when
-        lobby.RemovePlayer(playerToRemove);
+        lobby.RemovePlayer(playerToRemove.UserId);
 
         // then
         Assert.DoesNotContain(playerToRemove, lobby.Players);
@@ -29,7 +44,7 @@ public sealed class LobbyTests
         var playerToRemove = lobby.Players.First();
 
         // when
-        lobby.RemovePlayer(playerToRemove);
+        lobby.RemovePlayer(playerToRemove.UserId);
 
         // then
         var domainEvent = lobby.DomainEvents.OfType<PlayerLeftDomainEvent>().SingleOrDefault();
@@ -41,50 +56,91 @@ public sealed class LobbyTests
     }
 
     [Theory]
-    [ClassData(typeof(ValidLobbies))]
-    public void GivenLobby_WhenAddPlayer_ThenAddsPlayerToList(Lobby lobby)
+    [ClassData(typeof(InGameLobbies))]
+    public void GivenLobbyInGame_WhenRemovePlayer_ThenReturnsInGameError(Lobby lobby)
     {
         // given
-        var playerToAdd = new Player
-        {
-            UserId = "user-id",
-            Name = "name",
-            IsOwner = false,
-            IsReady = false,
-            SelectedColour = Colour.Red
-        };
+        var playerToRemove = lobby.Players.First();
 
         // when
-        lobby.AddPlayer(playerToAdd);
+        var result = lobby.RemovePlayer(playerToRemove.UserId);
 
         // then
-        Assert.Contains(playerToAdd, lobby.Players);
+        Assert.IsType<LobbyInGameDomainError>(result.Value);
     }
 
     [Theory]
     [ClassData(typeof(ValidLobbies))]
-    public void GivenLobby_WhenAddPlayer_ThenAddsPlayerJoinedEvent(Lobby lobby)
+    public void GivenLobbyNotContainingPlayer_WhenRemovePlayer_ThenReturnsPlayerNotInLobbyError(Lobby lobby)
     {
         // given
-        var playerToAdd = new Player
-        {
-            UserId = "user-id",
-            Name = "name",
-            IsOwner = false,
-            IsReady = false,
-            SelectedColour = Colour.Red
-        };
+        var nonExistantUserId = "doesnt exist";
 
         // when
-        lobby.AddPlayer(playerToAdd);
+        var result = lobby.RemovePlayer(nonExistantUserId);
+
+        // PlayerNotInLobbyDomainError
+        Assert.IsType<PlayerNotInLobbyDomainError>(result.Value);
+    }
+
+    [Theory]
+    [ClassData(typeof(NotFullLobbies))]
+    public void GivenLobby_WhenAddPlayer_ThenReturnsSuccess(Lobby lobby)
+    {
+        // when
+        var result = lobby.AddPlayer("username", "user-id");
+
+        // then
+        Assert.IsType<Success>(result.Value);
+    }
+
+    [Theory]
+    [ClassData(typeof(NotFullLobbies))]
+    public void GivenLobby_WhenAddPlayer_ThenAddsPlayerToList(Lobby lobby)
+    {
+        // when
+        lobby.AddPlayer("username", "user-id");
+
+        // then
+        Assert.Contains(lobby.Players, p => p.UserId == "user-id" && p.Name == "username");
+    }
+
+    [Theory]
+    [ClassData(typeof(NotFullLobbies))]
+    public void GivenLobby_WhenAddPlayer_ThenAddsPlayerJoinedEvent(Lobby lobby)
+    {
+        // when
+        lobby.AddPlayer("username", "user-id");
 
         // then
         var domainEvent = lobby.DomainEvents.OfType<PlayerJoinedDomainEvent>().SingleOrDefault();
 
         Assert.Multiple(
             () => Assert.NotNull(domainEvent),
-            () => Assert.Equal(playerToAdd.UserId, domainEvent?.Player.UserId)
+            () => Assert.Equal("user-id", domainEvent?.Player.UserId)
         );
+    }
+
+    [Theory]
+    [ClassData(typeof(InGameLobbies))]
+    public void GivenInGameLobby_WhenAddPlayer_ThenReturnsLobbyInGameError(Lobby lobby)
+    {
+        // when
+        var result = lobby.AddPlayer("username", "user-id");
+
+        // then
+        Assert.IsType<LobbyInGameDomainError>(result.Value);
+    }
+
+    [Theory]
+    [ClassData(typeof(FullLobbies))]
+    public void GivenFullLobby_WhenAddPlayer_ThenReturnsLobbyFullError(Lobby lobby)
+    {
+        // when
+        var result = lobby.AddPlayer("username", "user-id");
+
+        // then
+        Assert.IsType<LobbyFullDomainError>(result.Value);
     }
 
     [Theory]
@@ -97,7 +153,7 @@ public sealed class LobbyTests
         var playerToRemove = lobby.Players.First(p => p.IsOwner);
 
         // when
-        lobby.RemovePlayer(playerToRemove);
+        lobby.RemovePlayer(playerToRemove.UserId);
 
         // then
         Assert.Multiple(
@@ -116,7 +172,7 @@ public sealed class LobbyTests
         var playerToRemove = lobby.Players.First(p => p.IsOwner);
 
         // when
-        lobby.RemovePlayer(playerToRemove);
+        lobby.RemovePlayer(playerToRemove.UserId);
 
         // then
         var domainEvent = lobby.DomainEvents.OfType<PlayerUpdatedDomainEvent>().SingleOrDefault();
@@ -143,7 +199,18 @@ public sealed class LobbyTests
     }
 
     [Theory]
-    [ClassData(typeof(ValidLobbies))]
+    [ClassData(typeof(StartableLobbies))]
+    public void GivenLobby_WhenStart_ThenReturnsSuccess(Lobby lobby)
+    {
+        // when
+        var result = lobby.Start();
+
+        // then;
+        Assert.IsType<Success>(result.Value);
+    }
+
+    [Theory]
+    [ClassData(typeof(StartableLobbies))]
     public void GivenLobby_WhenStart_ThenSetsInGameToTrue(Lobby lobby)
     {
         // when
@@ -154,7 +221,7 @@ public sealed class LobbyTests
     }
 
     [Theory]
-    [ClassData(typeof(ValidLobbies))]
+    [ClassData(typeof(StartableLobbies))]
     public void GivenLobby_WhenStart_ThenAddsLobbyStartedEvent(Lobby lobby)
     {
         // when
@@ -167,6 +234,17 @@ public sealed class LobbyTests
             () => Assert.NotNull(domainEvent),
             () => Assert.Equal(lobby.Id, domainEvent?.Lobby.Id)
         );
+    }
+
+    [Theory]
+    [ClassData(typeof(NotStartableLobbies))]
+    public void GivenNotStartableLobby_WhenStart_ThenReturnsLobbyCannotBeStartedError(Lobby lobby)
+    {
+        // when
+        var result = lobby.Start();
+
+        // then;
+        Assert.IsType<LobbyCannotBeStartedDomainError>(result.Value);
     }
 
     [Theory]
