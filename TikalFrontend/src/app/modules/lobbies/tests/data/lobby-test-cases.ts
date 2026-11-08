@@ -9,7 +9,7 @@ export const LOBBY_TESTCASES: Lobby[] = [
       {
         userId: 'u1',
         name: 'Alice',
-        selectedColour: 'red',
+        selectedColour: 'Red',
         isOwner: true,
         isReady: true,
         isMe: false,
@@ -24,7 +24,7 @@ export const LOBBY_TESTCASES: Lobby[] = [
       {
         userId: 'u2',
         name: 'Bob',
-        selectedColour: 'green',
+        selectedColour: 'Green',
         isOwner: true,
         isReady: true,
         isMe: false,
@@ -32,7 +32,7 @@ export const LOBBY_TESTCASES: Lobby[] = [
       {
         userId: 'u3',
         name: 'Charlie',
-        selectedColour: 'red',
+        selectedColour: 'Red',
         isOwner: false,
         isReady: true,
         isMe: false,
@@ -47,7 +47,7 @@ export const LOBBY_TESTCASES: Lobby[] = [
       {
         userId: 'u4',
         name: 'Dana',
-        selectedColour: 'red',
+        selectedColour: 'Red',
         isOwner: true,
         isReady: true,
         isMe: false,
@@ -55,7 +55,7 @@ export const LOBBY_TESTCASES: Lobby[] = [
       {
         userId: 'u5',
         name: 'Eve',
-        selectedColour: 'green',
+        selectedColour: 'Green',
         isOwner: false,
         isReady: false,
         isMe: false,
@@ -63,7 +63,7 @@ export const LOBBY_TESTCASES: Lobby[] = [
       {
         userId: 'u6',
         name: 'Frank',
-        selectedColour: 'yellow',
+        selectedColour: 'Yellow',
         isOwner: false,
         isReady: true,
         isMe: false,
@@ -78,7 +78,7 @@ export const LOBBY_TESTCASES: Lobby[] = [
       {
         userId: 'u7',
         name: 'Grace',
-        selectedColour: 'red',
+        selectedColour: 'Red',
         isOwner: true,
         isReady: true,
         isMe: false,
@@ -86,7 +86,7 @@ export const LOBBY_TESTCASES: Lobby[] = [
       {
         userId: 'u8',
         name: 'Heidi',
-        selectedColour: 'blue',
+        selectedColour: 'Blue',
         isOwner: false,
         isReady: true,
         isMe: false,
@@ -94,7 +94,7 @@ export const LOBBY_TESTCASES: Lobby[] = [
       {
         userId: 'u9',
         name: 'Ivan',
-        selectedColour: 'black',
+        selectedColour: 'Black',
         isOwner: false,
         isReady: true,
         isMe: false,
@@ -102,7 +102,7 @@ export const LOBBY_TESTCASES: Lobby[] = [
       {
         userId: 'u10',
         name: 'Judy',
-        selectedColour: 'green',
+        selectedColour: 'Green',
         isOwner: false,
         isReady: false,
         isMe: false,
@@ -117,7 +117,7 @@ export const LOBBY_TESTCASES: Lobby[] = [
       {
         userId: 'u11',
         name: 'Karl',
-        selectedColour: 'red',
+        selectedColour: 'Red',
         isOwner: true,
         isReady: false,
         isMe: false,
@@ -125,7 +125,7 @@ export const LOBBY_TESTCASES: Lobby[] = [
       {
         userId: 'u12',
         name: 'Liam',
-        selectedColour: 'blue',
+        selectedColour: 'Blue',
         isOwner: false,
         isReady: false,
         isMe: false,
