@@ -24,8 +24,6 @@ const initialState: ActiveGameState = {
 };
 
 export const ActiveGameStore = signalStore(
-  { providedIn: 'root' },
-
   withState(initialState),
 
   withProps(() => ({

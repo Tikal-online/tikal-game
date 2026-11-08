@@ -16,7 +16,7 @@ export type CreateLobbyData = {
   maxPlayers: number;
 };
 
-@Service()
+@Service({ autoProvided: false })
 export class ActiveLobbyService {
   private readonly url = '/Api/Lobbies';
 

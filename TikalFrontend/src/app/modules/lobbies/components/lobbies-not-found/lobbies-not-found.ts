@@ -10,7 +10,6 @@ import { CreateLobbyDialog } from '../create-lobby/create-lobby';
   imports: [Inbox, ButtonComponent, TranslocoDirective],
   templateUrl: './lobbies-not-found.html',
   styleUrl: './lobbies-not-found.scss',
-  providers: [DialogService],
 })
 export class LobbiesNotFoundComponent {
   private readonly dialogService = inject(DialogService);

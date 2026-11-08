@@ -3,7 +3,7 @@ import { catchError, map, Observable, of, throwError } from 'rxjs';
 import { Game } from '../../models/game';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
-@Service()
+@Service({ autoProvided: false })
 export class ActiveGameService {
   private readonly url = '/Api/Games';
 

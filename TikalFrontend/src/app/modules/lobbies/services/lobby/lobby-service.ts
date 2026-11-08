@@ -13,7 +13,7 @@ export type LobbySummary = {
   currentPlayers: number;
 };
 
-@Service()
+@Service({ autoProvided: false })
 export class LobbyService {
   private readonly url = '/Api/Lobbies';
 

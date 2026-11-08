@@ -41,8 +41,6 @@ const initialStatus: ActiveLobbyState = {
 };
 
 export const ActiveLobbyStore = signalStore(
-  { providedIn: 'root' },
-
   withState(initialStatus),
 
   withProps(() => ({
