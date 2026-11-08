@@ -27,11 +27,11 @@ export class PlayerCardComponent {
 
   /** @ignore */
   readonly colourMap: Record<PlayerColour, string> = {
-    red: 'var(--p-red-500)',
-    black: 'var(--p-surface-900)',
-    green: 'var(--p-green-500)',
-    blue: 'var(--p-blue-500)',
-    yellow: 'var(--p-yellow-500)',
+    Red: 'var(--p-red-500)',
+    Black: 'var(--p-surface-900)',
+    Green: 'var(--p-green-500)',
+    Blue: 'var(--p-blue-500)',
+    Yellow: 'var(--p-yellow-500)',
   };
 
   /** @ignore */
