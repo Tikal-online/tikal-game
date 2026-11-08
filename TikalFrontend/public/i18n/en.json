@@ -48,6 +48,11 @@
       "create-button-label": "Create"
     }
   },
+  "games": {
+    "active": {
+      "players-header": "Players"
+    }
+  },
   "player-slot": {
     "ready": "Ready",
     "not-ready": "Not Ready",
@@ -58,5 +63,9 @@
   },
   "player-slot-list": {
     "players": "Players"
+  },
+  "player-card": {
+    "you": "You",
+    "points": "pts"
   }
 }
