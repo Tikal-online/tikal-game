@@ -57,6 +57,12 @@ export const ActiveLobbyStore = signalStore(
     activePlayer: computed(() => lobby()?.players.find((p) => p.isMe)),
 
     isInLobby: computed(() => lobby() !== null),
+
+    canBeStarted: computed(() => {
+      const players = lobby()?.players ?? [];
+
+      return players.length >= 2 && players.every((p) => p.isReady);
+    }),
   })),
 
   withMethods((store) => ({
