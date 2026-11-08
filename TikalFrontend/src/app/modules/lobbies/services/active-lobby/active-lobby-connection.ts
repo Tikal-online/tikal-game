@@ -6,7 +6,7 @@ import { ConnectionStatus } from '../../../../core/types/connection-status';
 import { Player } from '../../models/player';
 import { AccountStore } from '../../../../core/stores/account-store/account-store';
 
-@Service()
+@Service({ autoProvided: false })
 export class ActiveLobbyConnection {
   readonly connectionStatus$ = new Subject<ConnectionStatus>();
 

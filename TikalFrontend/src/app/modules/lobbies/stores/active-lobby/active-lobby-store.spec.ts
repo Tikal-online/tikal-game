@@ -37,6 +37,7 @@ describe('ActiveLobbyStore', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
+        ActiveLobbyStore,
         { provide: ActiveLobbyService, useValue: activeLobbyService },
         { provide: ActivePlayerService, useValue: activePlayerService },
         { provide: ActiveLobbyConnection, useValue: activeLobbyConnection },

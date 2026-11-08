@@ -10,7 +10,6 @@ import { CreateLobbyDialog } from '../create-lobby/create-lobby';
   imports: [InputComponent, ButtonComponent, TranslocoDirective],
   templateUrl: './lobbies-header.html',
   styleUrl: './lobbies-header.scss',
-  providers: [DialogService],
 })
 export class LobbiesHeaderComponent {
   readonly lobbiesSummaryStore = inject(LobbySummaryStore);

@@ -27,8 +27,6 @@ const initialStatus: PreviewLobbyState = {
 };
 
 export const PreviewLobbyStore = signalStore(
-  { providedIn: 'root' },
-
   withState(initialStatus),
 
   withProps(() => ({

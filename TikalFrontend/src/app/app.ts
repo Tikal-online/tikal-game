@@ -4,7 +4,6 @@ import { HeaderComponent, HeaderLink } from 'tikal-ui-components';
 import { AccountStore } from './core/stores/account-store/account-store';
 import { AuthStore } from './core/stores/auth-store/auth-store';
 import { ThemeStore } from './core/stores/theme-store/theme-store';
-import { ActiveLobbyStore } from './modules/lobbies/stores/active-lobby/active-lobby-store';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -20,8 +19,6 @@ export class App {
 
   private readonly themeStore = inject(ThemeStore);
 
-  private readonly activeLobbyStore = inject(ActiveLobbyStore);
-
   readonly links: readonly HeaderLink[] = [
     { label: 'Lobbies', route: '/Lobbies' },
     { label: 'Profile', route: '/Profile' },
@@ -30,10 +27,6 @@ export class App {
   readonly initializationFailed = computed(
     () => this.accountStore.initializationFailed() || this.authStore.initializationFailed(),
   );
-
-  constructor() {
-    this.activeLobbyStore.loadActiveLobby();
-  }
 
   toggleDarkMode(): void {
     this.themeStore.toggleDarkMode();

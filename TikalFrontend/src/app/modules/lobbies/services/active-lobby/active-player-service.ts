@@ -4,7 +4,7 @@ import { err, ok, Result } from 'neverthrow';
 import { catchError, firstValueFrom, map, throwError } from 'rxjs';
 import { PlayerNotInLobby } from '../../errors/lobby-errors';
 
-@Service()
+@Service({ autoProvided: false })
 export class ActivePlayerService {
   private readonly url = '/Api/Players/me';
 

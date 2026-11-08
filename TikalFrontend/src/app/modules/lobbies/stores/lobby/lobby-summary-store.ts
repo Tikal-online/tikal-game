@@ -46,8 +46,6 @@ const initialState: LobbySummaryState = {
 };
 
 export const LobbySummaryStore = signalStore(
-  { providedIn: 'root' },
-
   withState(initialState),
 
   withProps(() => ({

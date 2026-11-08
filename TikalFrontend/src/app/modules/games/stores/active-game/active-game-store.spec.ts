@@ -13,7 +13,7 @@ describe('ActiveGameStore', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [{ provide: ActiveGameService, useValue: activeGameService }],
+      providers: [ActiveGameStore, { provide: ActiveGameService, useValue: activeGameService }],
     });
   });
 
