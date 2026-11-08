@@ -1,0 +1,19 @@
+<ng-container *transloco="let t; prefix: 'games.active'">
+  <aside>
+    <h2>{{ t('players-header') }}</h2>
+    @if (activeGameStore.game(); as game) {
+      <ul>
+        @for (player of game.players; track player.userId) {
+          <li>
+            <tikal-player-card
+              [colour]="player.colour"
+              [isMe]="false"
+              [name]="player.name"
+              [points]="player.points"
+            />
+          </li>
+        }
+      </ul>
+    }
+  </aside>
+</ng-container>
