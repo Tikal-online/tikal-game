@@ -77,7 +77,10 @@ public static class TileDictionaryExtensions
 
         private static int Heuristic(HexCoordinate a, HexCoordinate b)
         {
-            return Math.Abs(a.Q - b.Q) + Math.Abs(a.R - b.R);
+            var dq = a.Q - b.Q;
+            var dr = a.R - b.R;
+
+            return (Math.Abs(dq) + Math.Abs(dr) + Math.Abs(dq + dr)) / 2;
         }
     }
 }
