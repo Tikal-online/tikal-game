@@ -22,6 +22,7 @@ public sealed class DbPlayerRepository : PlayerRepository
     public Task<Player?> GetByUserId(string userId, CancellationToken cancellationToken)
     {
         return lobbiesDbContext.Players
+            .Include(p => p.Lobby)
             .Where(p => p.UserId == userId)
             .FirstOrDefaultAsync(cancellationToken);
     }

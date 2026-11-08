@@ -20,7 +20,7 @@ public abstract class Entity
 
     public bool IsTouched => isTouched;
 
-    protected void Touch()
+    public void Touch()
     {
         isTouched = true;
     }
