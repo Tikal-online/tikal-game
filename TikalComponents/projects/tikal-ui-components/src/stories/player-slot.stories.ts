@@ -12,7 +12,7 @@ const meta: Meta<PlayerSlotComponent> = {
   },
   args: {
     name: 'MyUser1234',
-    colour: 'red',
+    colour: 'Red',
     isReady: false,
     isOwner: true,
     isMe: true,
@@ -31,7 +31,7 @@ export const Ready: Story = {
   name: 'Ready',
   args: {
     name: 'MyUser1234',
-    colour: 'red',
+    colour: 'Red',
     isReady: true,
     isOwner: false,
     isMe: true,
@@ -42,7 +42,7 @@ export const Owner: Story = {
   name: 'Owner',
   args: {
     name: 'MyUser1234',
-    colour: 'red',
+    colour: 'Red',
     isReady: false,
     isOwner: true,
     isMe: false,

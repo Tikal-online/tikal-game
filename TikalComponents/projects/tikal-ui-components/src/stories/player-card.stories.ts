@@ -12,7 +12,7 @@ const meta: Meta<PlayerCardComponent> = {
   },
   args: {
     name: 'MyUser1234',
-    colour: 'red',
+    colour: 'Red',
     points: 12,
     isMe: false,
   },
@@ -30,7 +30,7 @@ export const Default: Story = {
   name: 'Default',
   args: {
     name: 'MyUser1234',
-    colour: 'blue',
+    colour: 'Blue',
     points: 18,
     isMe: false,
   },
@@ -40,7 +40,7 @@ export const Me: Story = {
   name: 'Me',
   args: {
     name: 'MyUser1234',
-    colour: 'red',
+    colour: 'Red',
     points: 12,
     isMe: true,
   },
@@ -50,7 +50,7 @@ export const LongName: Story = {
   name: 'Long name',
   args: {
     name: 'AVeryLongPlayerNameThatKeepsGoing',
-    colour: 'black',
+    colour: 'Black',
     points: 140,
     isMe: true,
   },

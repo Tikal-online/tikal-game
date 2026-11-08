@@ -4,7 +4,7 @@ import { Crown } from '@primeicons/angular/crown';
 import { Check } from '@primeicons/angular/check';
 import { TranslocoDirective } from '@jsverse/transloco';
 
-export type PlayerColour = 'red' | 'black' | 'green' | 'blue' | 'yellow';
+export type PlayerColour = 'Red' | 'Black' | 'Green' | 'Blue' | 'Yellow';
 
 @Component({
   selector: 'tikal-player-slot',
@@ -30,9 +30,10 @@ export class PlayerSlotComponent {
 
   /** @ignore */
   readonly colourMap = {
-    red: 'var(--p-red-500)',
-    green: 'var(--p-green-500)',
-    blue: 'var(--p-blue-500)',
-    yellow: 'var(--p-yellow-500)',
+    Red: 'var(--p-red-500)',
+    Black: 'var(--p-surface-900)',
+    Green: 'var(--p-green-500)',
+    Blue: 'var(--p-blue-500)',
+    Yellow: 'var(--p-yellow-500)',
   };
 }
