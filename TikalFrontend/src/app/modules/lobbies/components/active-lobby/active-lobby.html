@@ -1,34 +1,47 @@
 <ng-container *transloco="let t; prefix: 'lobbies.active'">
-  @if (activeLobbyStore.isLoading()) {
-    <h1>{{ t('loading-header') }}</h1>
-    <tikal-player-slot-list [isLoading]="true" [maxPlayers]="4" [players]="[]" />
-  } @else if (activeLobbyStore.lobby(); as lobby) {
-    <h1>{{ lobby.name }}</h1>
-    <tikal-player-slot-list [maxPlayers]="lobby.maxPlayers" [players]="lobby.players" />
-  }
-  <div class="button-options">
+  <div class="header">
+    @if (activeLobbyStore.isLoading()) {
+      <h1>{{ t('loading-header') }}</h1>
+    } @else if (activeLobbyStore.lobby(); as lobby) {
+      <h1>{{ lobby.name }}</h1>
+    }
     <tikal-button
-      size="large"
+      colour="danger"
       type="button"
       [isLoading]="isLeaving()"
       [label]="t('leave-button-label')"
       (clicked)="leave()"
     />
-    @if (activeLobbyStore.activePlayer()?.isReady) {
-      <tikal-button
-        size="large"
-        type="button"
-        [label]="t('readydown-button-label')"
-        (clicked)="activeLobbyStore.readyDown()"
-      />
-    } @else {
-      <tikal-button
-        label="ReadyUp"
-        size="large"
-        type="button"
-        [label]="t('readyup-button-label')"
-        (clicked)="activeLobbyStore.readyUp()"
-      />
-    }
   </div>
+  @if (activeLobbyStore.isLoading()) {
+    <tikal-player-slot-list [isLoading]="true" [maxPlayers]="4" [players]="[]" />
+  } @else if (activeLobbyStore.lobby(); as lobby) {
+    <tikal-player-slot-list [maxPlayers]="lobby.maxPlayers" [players]="lobby.players">
+      @if (activeLobbyStore.activePlayer()?.isReady) {
+        <tikal-button
+          size="large"
+          type="button"
+          [label]="t('readydown-button-label')"
+          [outline]="true"
+          (clicked)="activeLobbyStore.readyDown()"
+        />
+      } @else {
+        <tikal-button
+          size="large"
+          type="button"
+          [label]="t('readyup-button-label')"
+          (clicked)="activeLobbyStore.readyUp()"
+        />
+      }
+      @if (activeLobbyStore.activePlayer()?.isOwner) {
+        <tikal-button
+          size="large"
+          type="button"
+          [disabled]="!activeLobbyStore.canBeStarted()"
+          [label]="t('start-button-label')"
+          (clicked)="activeLobbyStore.startActiveLobby()"
+        />
+      }
+    </tikal-player-slot-list>
+  }
 </ng-container>

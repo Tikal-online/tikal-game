@@ -34,9 +34,10 @@
     },
     "active": {
       "loading-header": "Loading...",
-      "leave-button-label": "Leave",
-      "readyup-button-label": "Ready Up",
-      "readydown-button-label": "Ready Down"
+      "leave-button-label": "Leave lobby",
+      "readyup-button-label": "I'm ready",
+      "readydown-button-label": "Not ready",
+      "start-button-label": "Start game"
     },
     "create": {
       "header": "Create a lobby",
