@@ -7,7 +7,7 @@ public static class LobbyTestCases
 {
     public static IEnumerable<Lobby> ValidLobbies()
     {
-        yield return new()
+        yield return new Lobby
         {
             Id = 1,
             MaxPlayers = 2,
@@ -23,9 +23,9 @@ public static class LobbyTestCases
                     IsReady = false
                 }
             ]
-        };
+        }.WithLinkedPlayers();
 
-        yield return new()
+        yield return new Lobby
         {
             Id = 2,
             MaxPlayers = 3,
@@ -49,9 +49,9 @@ public static class LobbyTestCases
                     IsReady = false
                 }
             ]
-        };
+        }.WithLinkedPlayers();
 
-        yield return new()
+        yield return new Lobby
         {
             Id = 3,
             MaxPlayers = 4,
@@ -83,9 +83,9 @@ public static class LobbyTestCases
                     IsReady = true
                 }
             ]
-        };
+        }.WithLinkedPlayers();
 
-        yield return new()
+        yield return new Lobby
         {
             Id = 4,
             MaxPlayers = 2,
@@ -109,6 +109,6 @@ public static class LobbyTestCases
                     IsReady = true
                 }
             ]
-        };
+        }.WithLinkedPlayers();
     }
 }

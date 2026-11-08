@@ -40,13 +40,11 @@ public sealed class StartLobbyCommandHandler
             return new Unprivileged();
         }
 
-        if (!lobby.CanBeStarted)
-        {
-            return new LobbyCannotBeStarted(request.LobbyId);
-        }
+        var result = lobby.Start();
 
-        lobby.Start();
-
-        return new Success();
+        return result.Match<OneOf<Success, LobbyNotFound, PlayerNotInGivenLobby, Unprivileged, LobbyCannotBeStarted>>(
+            success => success,
+            cannotBeStarted => new LobbyCannotBeStarted(lobby.Id)
+        );
     }
 }

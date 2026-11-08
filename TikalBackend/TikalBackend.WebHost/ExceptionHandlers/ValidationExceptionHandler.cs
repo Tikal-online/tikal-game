@@ -20,15 +20,16 @@ internal sealed class ValidationExceptionHandler : IExceptionHandler
 
         httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
 
-        var errorDictionary = validationException.Errors.ToDictionary(error => error.PropertyName, error => error.ErrorMessage);
+        var errorDictionary = validationException.Errors
+            .GroupBy(error => error.PropertyName)
+            .ToDictionary(group => group.Key, group => group.Select(error => error.ErrorMessage).ToArray());
 
-        var problemDetails = new ProblemDetails
+        var problemDetails = new ValidationProblemDetails(errorDictionary)
         {
             Status = StatusCodes.Status400BadRequest,
             Title = "One or more validation errors occurred.",
-            Extensions = new Dictionary<string, object?>
+            Extensions =
             {
-                { "errors", errorDictionary },
                 { "traceId", Activity.Current?.Id ?? httpContext.TraceIdentifier }
             }
         };

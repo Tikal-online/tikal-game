@@ -40,6 +40,6 @@ public class InGameLobbies : TheoryData<Lobby>
                     IsReady = true
                 }
             ]
-        });
+        }.WithLinkedPlayers());
     }
 }

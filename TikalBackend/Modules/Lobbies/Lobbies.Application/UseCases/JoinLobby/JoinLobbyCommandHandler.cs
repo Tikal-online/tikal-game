@@ -2,6 +2,7 @@ using Lobbies.Application.DataAccess;
 using Lobbies.Contracts.Commands;
 using Lobbies.Contracts.Errors;
 using Lobbies.Domain.Entities;
+using Lobbies.Domain.Errors;
 using OneOf;
 using OneOf.Types;
 
@@ -41,29 +42,12 @@ public sealed class JoinLobbyCommandHandler
             return new LobbyNotFound(request.LobbyId);
         }
 
-        if (lobby.InGame)
-        {
-            return new LobbyInGame(lobby.Id);
-        }
+        var result = lobby.AddPlayer(request.Username, request.UserId);
 
-        if (lobby.IsFull)
-        {
-            return new LobbyFull(lobby.Id);
-        }
-
-        var colour = lobby.GetUnusedColour();
-
-        var player = new Player
-        {
-            UserId = request.UserId,
-            Name = request.Username,
-            SelectedColour = colour,
-            IsOwner = false,
-            IsReady = false
-        };
-
-        lobby.AddPlayer(player);
-
-        return new Success();
+        return result.Match<OneOf<Success, PlayerAlreadyInALobby, LobbyNotFound, LobbyFull, LobbyInGame>>(
+            success => success,
+            lobbyInGame => new LobbyInGame(lobby.Id),
+            lobbyFull => new LobbyFull(lobby.Id)
+        );
     }
 }

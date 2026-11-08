@@ -31,6 +31,7 @@ public sealed class Player : Entity
         }
 
         IsReady = true;
+        Lobby.Touch();
         AddDomainEvent(new PlayerUpdatedDomainEvent(PlayerMapper.PlayerToPlayerEventData(this), LobbyId));
     }
 
@@ -42,6 +43,7 @@ public sealed class Player : Entity
         }
 
         IsReady = false;
+        Lobby.Touch();
         AddDomainEvent(new PlayerUpdatedDomainEvent(PlayerMapper.PlayerToPlayerEventData(this), LobbyId));
     }
 }

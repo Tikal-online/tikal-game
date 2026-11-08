@@ -1,6 +1,7 @@
 using Lobbies.Application;
 using Lobbies.Application.DataAccess;
 using Lobbies.Infrastructure.Database;
+using Lobbies.Infrastructure.Database.Interceptors;
 using Lobbies.Infrastructure.QueryContexts;
 using Lobbies.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -32,6 +33,8 @@ public static class LobbiesInfrastructureModule
                         LobbiesDbContext.Schema
                     )
                 );
+
+                optionsBuilder.AddInterceptors(new TouchedEntityInterceptor());
             });
 
             services.AddScoped<LobbyRepository, DbLobbyRepository>();

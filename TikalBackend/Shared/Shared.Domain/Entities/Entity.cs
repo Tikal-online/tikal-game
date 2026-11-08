@@ -15,4 +15,13 @@ public abstract class Entity
     {
         domainEvents.Clear();
     }
+
+    private bool isTouched;
+
+    public bool IsTouched => isTouched;
+
+    public void Touch()
+    {
+        isTouched = true;
+    }
 }

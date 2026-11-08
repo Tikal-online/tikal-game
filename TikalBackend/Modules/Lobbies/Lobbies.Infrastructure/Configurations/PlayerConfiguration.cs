@@ -14,6 +14,10 @@ internal sealed class PlayerConfiguration : IEntityTypeConfiguration<Player>
             .IsRequired()
             .HasMaxLength(100);
 
+        builder.Property(x => x.Name)
+            .IsRequired()
+            .HasMaxLength(30);
+
         builder.Property(x => x.SelectedColour)
             .IsRequired()
             .HasConversion<int>();
