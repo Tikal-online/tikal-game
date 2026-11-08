@@ -17,7 +17,7 @@ export const GAME_TESTCASES: Game[] = [
       {
         userId: 'u1',
         name: 'Alice',
-        colour: 'red',
+        colour: 'Red',
         points: 10,
       },
     ],
@@ -34,13 +34,13 @@ export const GAME_TESTCASES: Game[] = [
       {
         userId: 'u2',
         name: 'Bob',
-        colour: 'green',
+        colour: 'Green',
         points: 50,
       },
       {
         userId: 'u3',
         name: 'Charlie',
-        colour: 'red',
+        colour: 'Red',
         points: 50,
       },
     ],
