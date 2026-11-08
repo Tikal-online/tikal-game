@@ -1,0 +1,13 @@
+<ng-container *transloco="let t; prefix: 'player-card'">
+  <span class="dot"></span>
+  <p class="name">
+    {{ name() }}
+    @if (isMe()) {
+      <span class="me-label">({{ t('you') }})</span>
+    }
+  </p>
+  <p class="points">
+    <strong>{{ points() }}</strong>
+    <span class="unit">{{ t('points') }}</span>
+  </p>
+</ng-container>

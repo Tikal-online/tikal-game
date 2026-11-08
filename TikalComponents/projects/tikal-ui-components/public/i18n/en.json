@@ -7,6 +7,10 @@
   "empty-player-slot": {
     "open-slot": "Open Slot"
   },
+  "player-card": {
+    "you": "You",
+    "points": "pts"
+  },
   "player-slot-list": {
     "players": "Players"
   },
