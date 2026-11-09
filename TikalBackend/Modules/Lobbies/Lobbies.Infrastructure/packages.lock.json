@@ -716,7 +716,7 @@
       },
       "WolverineFx": {
         "type": "CentralTransitive",
-        "requested": "[6.60.0, )",
+        "requested": "[6.64.0, )",
         "resolved": "6.60.0",
         "contentHash": "PfH3GOcBcGwGH5UhQmsT20mEtkKOdphFZLzb88j5Ci6iZAQtBkiSV85W4SHD70hqodJy912Ntok4uArYG/dtVw==",
         "dependencies": {

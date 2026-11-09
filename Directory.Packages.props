@@ -40,7 +40,7 @@
     <PackageVersion Include="Scalar.AspNetCore" Version="2.18.0" />
     <PackageVersion Include="Testcontainers" Version="4.16.0" />
     <PackageVersion Include="Testcontainers.PostgreSql" Version="4.16.0" />
-    <PackageVersion Include="WolverineFX" Version="6.60.0" />
+    <PackageVersion Include="WolverineFX" Version="6.64.0" />
     <PackageVersion Include="WolverineFX.EntityFrameworkCore" Version="6.60.0" />
     <PackageVersion Include="WolverineFX.FluentValidation" Version="6.60.0" />
     <PackageVersion Include="WolverineFX.RuntimeCompilation" Version="6.60.0" />
