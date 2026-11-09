@@ -3,10 +3,11 @@ import { Router } from '@angular/router';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { PlayerCardComponent } from 'tikal-ui-components';
 import { ActiveGameStore } from '../../stores/active-game/active-game-store';
+import { GameBoardComponent } from '../game-board/game-board';
 
 @Component({
   selector: 'tikal-active-game',
-  imports: [TranslocoDirective, PlayerCardComponent],
+  imports: [TranslocoDirective, PlayerCardComponent, GameBoardComponent],
   templateUrl: './active-game.html',
   styleUrl: './active-game.scss',
 })

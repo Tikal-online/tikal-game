@@ -21,3 +21,14 @@ body {
 h1 {
   margin: 0;
 }
+
+main {
+  width: 100%;
+  max-width: 75rem;
+  margin: 0 auto;
+}
+
+// the game board uses the whole window width
+main:has(> tikal-active-game) {
+  max-width: none;
+}
