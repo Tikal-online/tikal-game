@@ -113,15 +113,15 @@
       },
       "WolverineFx.EntityFrameworkCore": {
         "type": "Direct",
-        "requested": "[6.60.0, )",
-        "resolved": "6.60.0",
-        "contentHash": "4ZJewxClNU6FrXqSofHh7axMXtqT7/A0Xwtt3lO8qF0yDCjOQlWqcAtX8W5bCDC2PctIu12wcZJeSGz3tK43Dg==",
+        "requested": "[6.64.0, )",
+        "resolved": "6.64.0",
+        "contentHash": "SYn1juewjXZLG8gzwrtD3k6/LjP3Lg4MCDbW8ww6A3y418xpfYujterg1HHKHcLRnRu4Z7f1CEOIttFEip8hBw==",
         "dependencies": {
           "Microsoft.EntityFrameworkCore": "10.0.4",
           "Microsoft.EntityFrameworkCore.Design": "10.0.4",
           "Microsoft.EntityFrameworkCore.Relational": "10.0.4",
-          "Weasel.EntityFrameworkCore": "9.47.1",
-          "WolverineFx.RDBMS": "6.60.0"
+          "Weasel.EntityFrameworkCore": "9.50.0",
+          "WolverineFx.RDBMS": "6.64.0"
         }
       },
       "WolverineFx.FluentValidation": {
@@ -176,8 +176,8 @@
       },
       "JasperFx": {
         "type": "Transitive",
-        "resolved": "2.97.0",
-        "contentHash": "LZlh0kWctuAFozrOQY/CaJm+IPDJmi7tKCkf1aLhconSwzbUQJ6YpHkOomOsniTEgpEZ5CT+oX6WT7iKl8udUw==",
+        "resolved": "2.101.0",
+        "contentHash": "L9Mgppyszj51DwjX9Na8HkqfUP4JTXGmxFSh7rZ9nNBZm/Zedcj3+e/r2FdoViFRtGsFzEtPK103r0r3IMVbGA==",
         "dependencies": {
           "FastExpressionCompiler": "5.4.1",
           "ImTools": "4.0.0",
@@ -578,19 +578,19 @@
       },
       "Weasel.Core": {
         "type": "Transitive",
-        "resolved": "9.47.1",
-        "contentHash": "RVlNuFRaOGrna0w4fqQrrkShrTJvUGJIT8hYHiJK/P3vHzy5LF0cXgL04Q0F0a2Uqy+RBf0bftDpx0g5gcDnPg==",
+        "resolved": "9.50.0",
+        "contentHash": "1pkdHGPsR4sCdQApIaji5mm8SuuD8jIg7IY6EkrOzdDgialP2XPIAfnhdD1lyl1LTPfeD1Qn69IWpR2hSiT4Cg==",
         "dependencies": {
-          "JasperFx": "2.90.2"
+          "JasperFx": "2.101.0"
         }
       },
       "Weasel.EntityFrameworkCore": {
         "type": "Transitive",
-        "resolved": "9.47.1",
-        "contentHash": "4X7LSLGFv4uzfW4FrDDFK9EtrMWKhiFQZFe69TEPuysqe+lt43CIGyn/d1qeYWfkqaJYctmjUvTZx6Txp4wPPg==",
+        "resolved": "9.50.0",
+        "contentHash": "taT+yC2KGbH/hLtmihxmRhzKxmB7W3ZsCXoMV6r4YzR9ecxrHX0aHX+ZHlEE1qX89dL9DATDBa6gweutYfsx7A==",
         "dependencies": {
           "Microsoft.EntityFrameworkCore.Relational": "10.0.0",
-          "Weasel.Core": "9.47.1"
+          "Weasel.Core": "9.50.0"
         }
       },
       "Weasel.Postgresql": {
@@ -607,11 +607,11 @@
       },
       "WolverineFx.RDBMS": {
         "type": "Transitive",
-        "resolved": "6.60.0",
-        "contentHash": "ZOfZlKCdY7ddPMSaUVXSMqBtThePSO7I03peIthL4aW0NblmNV4j6F8WIgnKqBpO1vo1VCb9MGaj/7AKxHzqRA==",
+        "resolved": "6.64.0",
+        "contentHash": "Klrsjh1JhFOhqgqJIpwjTjwpJmdsDdtDy3elObXC5AskHNJtleQHWVpvhC1QorwoyLyKnUqwJpe4q1fEpgPZ1w==",
         "dependencies": {
-          "Weasel.Core": "9.47.1",
-          "WolverineFx": "6.60.0"
+          "Weasel.Core": "9.50.0",
+          "WolverineFx": "6.64.0"
         }
       },
       "accounts.application": {
@@ -642,7 +642,7 @@
           "Microsoft.EntityFrameworkCore": "[10.0.13, )",
           "Microsoft.EntityFrameworkCore.Relational": "[10.0.13, )",
           "Npgsql.EntityFrameworkCore.PostgreSQL": "[10.0.3, )",
-          "WolverineFX.EntityFrameworkCore": "[6.60.0, )"
+          "WolverineFX.EntityFrameworkCore": "[6.64.0, )"
         }
       },
       "games.application": {
@@ -678,7 +678,7 @@
           "Microsoft.EntityFrameworkCore": "[10.0.13, )",
           "Microsoft.EntityFrameworkCore.Relational": "[10.0.13, )",
           "Npgsql.EntityFrameworkCore.PostgreSQL": "[10.0.3, )",
-          "WolverineFX.EntityFrameworkCore": "[6.60.0, )"
+          "WolverineFX.EntityFrameworkCore": "[6.64.0, )"
         }
       },
       "lobbies.application": {
@@ -714,7 +714,7 @@
           "Microsoft.EntityFrameworkCore": "[10.0.13, )",
           "Microsoft.EntityFrameworkCore.Relational": "[10.0.13, )",
           "Npgsql.EntityFrameworkCore.PostgreSQL": "[10.0.3, )",
-          "WolverineFX.EntityFrameworkCore": "[6.60.0, )"
+          "WolverineFX.EntityFrameworkCore": "[6.64.0, )"
         }
       },
       "restapi.controllers": {
