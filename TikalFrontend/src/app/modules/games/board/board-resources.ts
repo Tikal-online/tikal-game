@@ -7,6 +7,7 @@ import {
   MeshToonMaterial,
   NearestFilter,
   RedFormat,
+  SRGBColorSpace,
 } from 'three';
 import { LineMaterial } from 'three/addons/lines/LineMaterial.js';
 import { LineSegmentsGeometry } from 'three/addons/lines/LineSegmentsGeometry.js';
@@ -21,6 +22,9 @@ const SLOT_COLOUR = '#56645a';
 const TILE_GAP = 0.06;
 
 const SIDE_SHADE = 0.55;
+
+// a hovered tile gets this much lighter (hsl lightness as seen on screen), enough to notice without changing its colour
+const HIGHLIGHT_LIGHTEN = 0.07;
 
 // cel shading: the light falls into these hard bands instead of a smooth gradient (0 = dark, 255 = fully lit)
 const LIGHT_BANDS = [110, 190, 255];
@@ -46,22 +50,30 @@ export class BoardResources {
 
   private readonly tileMaterialsByColour = new Map<string, MeshToonMaterial[]>();
 
-  readonly slotMaterials = this.tileMaterials(SLOT_COLOUR);
-
   // [sides, top, bottom] of a tile with the given top colour, the material groups of the tile geometry
-  tileMaterials(colour: ColorRepresentation): MeshToonMaterial[] {
+  tileMaterials(colour: ColorRepresentation, highlighted = false): MeshToonMaterial[] {
     const top = new Color(colour);
-    const key = top.getHexString();
+    const key = `${top.getHexString()}${highlighted ? '-highlighted' : ''}`;
 
     let materials = this.tileMaterialsByColour.get(key);
 
     if (!materials) {
       const side = top.clone().multiplyScalar(SIDE_SHADE);
+
+      if (highlighted) {
+        lighten(top);
+        lighten(side);
+      }
+
       materials = [this.toon(side), this.toon(top), this.toon(side)];
       this.tileMaterialsByColour.set(key, materials);
     }
 
     return materials;
+  }
+
+  slotMaterials(highlighted = false): MeshToonMaterial[] {
+    return this.tileMaterials(SLOT_COLOUR, highlighted);
   }
 
   dispose(): void {
@@ -89,6 +101,12 @@ export class BoardResources {
       polygonOffsetUnits: 1,
     });
   }
+}
+
+// in srgb, so light and dark colours change by the same visible amount
+function lighten(colour: Color): void {
+  const { h, s, l } = colour.getHSL({ h: 0, s: 0, l: 0 }, SRGBColorSpace);
+  colour.setHSL(h, s, Math.min(l + HIGHLIGHT_LIGHTEN, 1), SRGBColorSpace);
 }
 
 // flat-topped hexagon of a tile's size, standing on the ground plane

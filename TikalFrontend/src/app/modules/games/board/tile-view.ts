@@ -1,29 +1,32 @@
 import { Group, Mesh } from 'three';
 import { LineSegments2 } from 'three/addons/lines/LineSegments2.js';
 import { Tile } from '../models/tile';
+import { Hoverable } from './board-hover';
 import { BoardResources } from './board-resources';
 import { hexToWorld } from './hex-layout';
 
-// jungle greens of the mockup, varied so neighbouring jungle tiles stay apart
-const JUNGLE_COLOURS = ['#3f7a4f', '#4b8657', '#467f53', '#3a7149'];
-
-// the other tile types in the colours of the mockup's legend
-const TILE_COLOURS: Record<Exclude<Tile['type'], 'empty'>, string> = {
+const TILE_COLOURS: Record<Tile['type'], string> = {
+  empty: '#3f7a4f',
   treasure: '#d9a514',
   volcano: '#7a3b2a',
   temple: '#b9b1a0',
 };
 
-export class TileView {
+export class TileView implements Hoverable {
   readonly object = new Group();
 
-  private readonly body: Mesh;
+  readonly body: Mesh;
+
+  private colour: string;
+
+  private highlighted = false;
 
   constructor(
     tile: Tile,
     private readonly resources: BoardResources,
   ) {
-    this.body = new Mesh(resources.tileGeometry, resources.tileMaterials(tileColour(tile)));
+    this.colour = TILE_COLOURS[tile.type];
+    this.body = new Mesh(resources.tileGeometry, resources.tileMaterials(this.colour));
     const outline = new LineSegments2(resources.tileOutlineGeometry, resources.outlineMaterial);
 
     this.object.add(this.body, outline);
@@ -34,19 +37,16 @@ export class TileView {
     const { x, z } = hexToWorld(tile.coordinate);
 
     this.object.position.set(x, 0, z);
-    this.body.material = this.resources.tileMaterials(tileColour(tile));
-  }
-}
-
-function tileColour(tile: Tile): string {
-  if (tile.type !== 'empty') {
-    return TILE_COLOURS[tile.type];
+    this.colour = TILE_COLOURS[tile.type];
+    this.applyMaterials();
   }
 
-  // empty tiles are the jungle, the pattern only depends on the position so it stays the same on every load
-  const { q, r } = tile.coordinate;
-  const row = r + Math.floor(q / 2);
-  const index = (q * 3 + row * 2) % JUNGLE_COLOURS.length;
+  setHighlighted(highlighted: boolean): void {
+    this.highlighted = highlighted;
+    this.applyMaterials();
+  }
 
-  return JUNGLE_COLOURS[(index + JUNGLE_COLOURS.length) % JUNGLE_COLOURS.length];
+  private applyMaterials(): void {
+    this.body.material = this.resources.tileMaterials(this.colour, this.highlighted);
+  }
 }
