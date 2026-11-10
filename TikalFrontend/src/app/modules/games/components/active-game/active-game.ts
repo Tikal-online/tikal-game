@@ -1,10 +1,9 @@
-import { Component, effect, inject } from '@angular/core';
+import { Component, computed, effect, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { PlayerCardComponent } from 'tikal-ui-components';
 import { ActiveGameStore } from '../../stores/active-game/active-game-store';
 import { GameBoardComponent } from '../game-board/game-board';
-import { placeholderTiles } from '../../board/placeholder-tiles';
 
 @Component({
   selector: 'tikal-active-game',
@@ -17,8 +16,7 @@ export class ActiveGameComponent {
 
   readonly activeGameStore = inject(ActiveGameStore);
 
-  // until the backend sends the whole board, game.tiles only holds a few tiles
-  readonly boardTiles = placeholderTiles();
+  readonly boardTiles = computed(() => this.activeGameStore.game()?.tiles ?? []);
 
   constructor() {
     this.activeGameStore.loadActiveGame();

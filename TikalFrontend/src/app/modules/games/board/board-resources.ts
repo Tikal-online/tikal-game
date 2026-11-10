@@ -14,6 +14,10 @@ import { HEX_SIZE } from './hex-layout';
 
 export const TILE_HEIGHT = 0.3;
 
+// places without a tile are flat, muted plates
+const SLOT_HEIGHT = 0.05;
+const SLOT_COLOUR = '#56645a';
+
 const TILE_GAP = 0.06;
 
 const SIDE_SHADE = 0.55;
@@ -26,16 +30,23 @@ const OUTLINE_COLOUR = '#0f1d14';
 const OUTLINE_WIDTH = 2;
 
 export class BoardResources {
-  readonly tileGeometry = createTileGeometry();
+  // Tiles
+  readonly tileGeometry = createHexPrism(TILE_HEIGHT);
 
-  // the edges of a single tile, the outline of every tile uses it
   readonly tileOutlineGeometry = createOutlineGeometry(this.tileGeometry);
+
+  // Placeholders
+  readonly slotGeometry = createHexPrism(SLOT_HEIGHT);
+
+  readonly slotOutlineGeometry = createOutlineGeometry(this.slotGeometry);
 
   readonly outlineMaterial = new LineMaterial({ color: OUTLINE_COLOUR, linewidth: OUTLINE_WIDTH });
 
   private readonly lightBands = createLightBands();
 
   private readonly tileMaterialsByColour = new Map<string, MeshToonMaterial[]>();
+
+  readonly slotMaterials = this.tileMaterials(SLOT_COLOUR);
 
   // [sides, top, bottom] of a tile with the given top colour, the material groups of the tile geometry
   tileMaterials(colour: ColorRepresentation): MeshToonMaterial[] {
@@ -56,6 +67,8 @@ export class BoardResources {
   dispose(): void {
     this.tileGeometry.dispose();
     this.tileOutlineGeometry.dispose();
+    this.slotGeometry.dispose();
+    this.slotOutlineGeometry.dispose();
     this.outlineMaterial.dispose();
     this.lightBands.dispose();
 
@@ -78,20 +91,20 @@ export class BoardResources {
   }
 }
 
-function createTileGeometry(): CylinderGeometry {
+// flat-topped hexagon of a tile's size, standing on the ground plane
+function createHexPrism(height: number): CylinderGeometry {
   const radius = HEX_SIZE - TILE_GAP;
 
-  const geometry = new CylinderGeometry(radius, radius, TILE_HEIGHT, 6);
+  const geometry = new CylinderGeometry(radius, radius, height, 6);
   geometry.rotateY(Math.PI / 6);
-  // the tiles stand on the ground plane
-  geometry.translate(0, TILE_HEIGHT / 2, 0);
+  geometry.translate(0, height / 2, 0);
 
   return geometry;
 }
 
 // ink lines around the top, around the bottom and up the corners
-function createOutlineGeometry(tileGeometry: CylinderGeometry): LineSegmentsGeometry {
-  const edges = new EdgesGeometry(tileGeometry);
+function createOutlineGeometry(geometry: CylinderGeometry): LineSegmentsGeometry {
+  const edges = new EdgesGeometry(geometry);
 
   // plain webgl lines are always one pixel thin, these fat lines keep their width in css pixels
   const lines = new LineSegmentsGeometry().fromEdgesGeometry(edges);

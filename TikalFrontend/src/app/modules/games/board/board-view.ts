@@ -12,9 +12,11 @@ import {
 import { MapControls } from 'three/addons/controls/MapControls.js';
 import { Tile } from '../models/tile';
 import { BoardKeyboardControls } from './board-keyboard-controls';
-import { BoardResources } from './board-resources';
+import { boardCoordinates } from './board-layout';
+import { BoardResources, TILE_HEIGHT } from './board-resources';
 import { boxCorners, fitDistance } from './camera-fit';
 import { coordinateKey } from './hex-layout';
+import { SlotView } from './slot-view';
 import { TileView } from './tile-view';
 
 // a narrow field of view keeps the perspective flat, the tiles in front look about as big as the ones behind
@@ -53,11 +55,18 @@ export class BoardView {
 
   private readonly resources = new BoardResources();
 
+  private readonly slots = new Group();
+
+  private readonly slotViews = new Map<string, SlotView>();
+
   private readonly tiles = new Group();
 
   private readonly tileViews = new Map<string, TileView>();
 
-  // the space the tiles take up, for framing them and for keeping the view on the board
+  // the space the full board takes up, it stays the same while tiles are set
+  private readonly boardBounds = new Box3();
+
+  // the board and any tile set outside of it, for framing them and for keeping the view on the board
   private readonly bounds = new Box3();
 
   // until the player moves the view, it keeps fitting the whole board to the canvas
@@ -74,7 +83,8 @@ export class BoardView {
       () => (this.viewMovedByPlayer = true),
     );
 
-    this.scene.add(this.tiles);
+    this.scene.add(this.slots, this.tiles);
+    this.addSlots();
     this.addLights();
 
     this.startRenderLoop();
@@ -105,7 +115,12 @@ export class BoardView {
       }
     }
 
-    this.bounds.setFromObject(this.tiles);
+    // a set tile replaces the slot it was set on
+    for (const [key, slot] of this.slotViews) {
+      slot.object.visible = !this.tileViews.has(key);
+    }
+
+    this.bounds.copy(this.boardBounds).union(new Box3().setFromObject(this.tiles));
 
     if (!this.viewMovedByPlayer) {
       this.fitCamera();
@@ -164,6 +179,20 @@ export class BoardView {
     controls.addEventListener('change', () => this.keepViewOnBoard());
 
     return controls;
+  }
+
+  // the board always has its full size, every place starts as a slot until a tile is set on it
+  private addSlots(): void {
+    for (const coordinate of boardCoordinates()) {
+      const view = new SlotView(coordinate, this.resources);
+      this.slotViews.set(coordinateKey(coordinate), view);
+      this.slots.add(view.object);
+    }
+
+    // as high as a set tile, so the framing does not change once tiles are set
+    this.boardBounds.setFromObject(this.slots);
+    this.boardBounds.max.y = TILE_HEIGHT;
+    this.bounds.copy(this.boardBounds);
   }
 
   private addLights(): void {
