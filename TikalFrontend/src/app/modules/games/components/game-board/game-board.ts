@@ -1,84 +1,54 @@
 import {
   afterNextRender,
-  ChangeDetectionStrategy,
   Component,
   DestroyRef,
+  effect,
   ElementRef,
   inject,
+  input,
+  signal,
   viewChild,
 } from '@angular/core';
-import { PerspectiveCamera, Scene, WebGLRenderer } from 'three';
+import { BoardView } from '../../board/board-view';
+import { Tile } from '../../models/tile';
 
 @Component({
-  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'tikal-game-board',
   templateUrl: './game-board.html',
   styleUrl: './game-board.scss',
 })
 export class GameBoardComponent {
+  readonly tiles = input.required<readonly Tile[]>();
+
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
 
   private readonly canvas = viewChild.required<ElementRef<HTMLCanvasElement>>('canvas');
 
-  private readonly scene = new Scene();
-
-  private readonly camera = new PerspectiveCamera(45, 1, 0.1, 1000);
-
-  private renderer: WebGLRenderer | null = null;
-
-  private resizeObserver: ResizeObserver | null = null;
+  private readonly view = signal<BoardView | null>(null);
 
   constructor() {
-    // looking down onto the board from above at an angle
-    this.camera.position.set(0, 10, 10);
-    this.camera.lookAt(0, 0, 0);
+    let resizeObserver: ResizeObserver | null = null;
 
-    // WebGL needs the canvas in the DOM, so the renderer is only created after the first render
-    afterNextRender(() => this.initRenderer());
+    // WebGL needs the canvas in the DOM, so the view is only created after the first render
+    afterNextRender(() => {
+      const view = new BoardView(this.canvas().nativeElement);
 
-    inject(DestroyRef).onDestroy(() => this.dispose());
-  }
+      const element = this.host.nativeElement;
+      resizeObserver = new ResizeObserver(() =>
+        view.resize(element.clientWidth, element.clientHeight),
+      );
+      resizeObserver.observe(element);
+      view.resize(element.clientWidth, element.clientHeight);
 
-  private initRenderer(): void {
-    const renderer = new WebGLRenderer({
-      canvas: this.canvas().nativeElement,
-      antialias: true,
-      alpha: true,
+      this.view.set(view);
     });
 
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    // runs once the view exists and again whenever the tiles change
+    effect(() => this.view()?.setTiles(this.tiles()));
 
-    this.renderer = renderer;
-
-    this.resizeObserver = new ResizeObserver(() => this.resize());
-    this.resizeObserver.observe(this.host.nativeElement);
-    this.resize();
-
-    renderer.setAnimationLoop(() => renderer.render(this.scene, this.camera));
-  }
-
-  private resize(): void {
-    if (!this.renderer) {
-      return;
-    }
-
-    const { clientWidth, clientHeight } = this.host.nativeElement;
-
-    if (clientWidth === 0 || clientHeight === 0) {
-      return;
-    }
-
-    // false: the canvas size is controlled by css, only the drawing buffer is resized
-    this.renderer.setSize(clientWidth, clientHeight, false);
-
-    this.camera.aspect = clientWidth / clientHeight;
-    this.camera.updateProjectionMatrix();
-  }
-
-  private dispose(): void {
-    this.resizeObserver?.disconnect();
-
-    this.renderer?.setAnimationLoop(null);
-    this.renderer?.dispose();
+    inject(DestroyRef).onDestroy(() => {
+      resizeObserver?.disconnect();
+      this.view()?.dispose();
+    });
   }
 }

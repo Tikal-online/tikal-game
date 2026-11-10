@@ -4,6 +4,7 @@ import { TranslocoDirective } from '@jsverse/transloco';
 import { PlayerCardComponent } from 'tikal-ui-components';
 import { ActiveGameStore } from '../../stores/active-game/active-game-store';
 import { GameBoardComponent } from '../game-board/game-board';
+import { placeholderTiles } from '../../board/placeholder-tiles';
 
 @Component({
   selector: 'tikal-active-game',
@@ -15,6 +16,9 @@ export class ActiveGameComponent {
   private readonly router = inject(Router);
 
   readonly activeGameStore = inject(ActiveGameStore);
+
+  // until the backend sends the whole board, game.tiles only holds a few tiles
+  readonly boardTiles = placeholderTiles();
 
   constructor() {
     this.activeGameStore.loadActiveGame();
