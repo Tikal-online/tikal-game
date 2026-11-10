@@ -30,11 +30,12 @@ const OUTLINE_COLOUR = '#0f1d14';
 const OUTLINE_WIDTH = 2;
 
 export class BoardResources {
+  // Tiles
   readonly tileGeometry = createHexPrism(TILE_HEIGHT);
 
-  // the edges of a single tile, the outline of every tile uses it
   readonly tileOutlineGeometry = createOutlineGeometry(this.tileGeometry);
 
+  // Placeholders
   readonly slotGeometry = createHexPrism(SLOT_HEIGHT);
 
   readonly slotOutlineGeometry = createOutlineGeometry(this.slotGeometry);
