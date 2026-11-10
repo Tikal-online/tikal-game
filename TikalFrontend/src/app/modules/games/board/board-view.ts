@@ -11,6 +11,7 @@ import {
 } from 'three';
 import { MapControls } from 'three/addons/controls/MapControls.js';
 import { Tile } from '../models/tile';
+import { BoardHover, Hoverable } from './board-hover';
 import { BoardKeyboardControls } from './board-keyboard-controls';
 import { boardCoordinates } from './board-layout';
 import { BoardResources, TILE_HEIGHT } from './board-resources';
@@ -53,6 +54,8 @@ export class BoardView {
 
   private readonly keyboardControls: BoardKeyboardControls;
 
+  private readonly hover: BoardHover;
+
   private readonly resources = new BoardResources();
 
   private readonly slots = new Group();
@@ -82,6 +85,7 @@ export class BoardView {
       canvas,
       () => (this.viewMovedByPlayer = true),
     );
+    this.hover = new BoardHover(canvas, this.camera);
 
     this.scene.add(this.slots, this.tiles);
     this.addSlots();
@@ -149,6 +153,7 @@ export class BoardView {
 
     this.keyboardControls.dispose();
     this.controls.dispose();
+    this.hover.dispose();
 
     this.resources.dispose();
     this.renderer.dispose();
@@ -164,8 +169,16 @@ export class BoardView {
       this.keyboardControls.update(deltaSeconds);
       // applies the damping of the controls, the view glides out after the pointer is released
       this.controls.update();
+      this.hover.update(this.hoverables());
       this.renderer.render(this.scene, this.camera);
     });
+  }
+
+  // every set tile and every place still without one
+  private hoverables(): Hoverable[] {
+    const visibleSlots = [...this.slotViews.values()].filter((slot) => slot.object.visible);
+
+    return [...this.tileViews.values(), ...visibleSlots];
   }
 
   private createControls(canvas: HTMLCanvasElement): MapControls {
