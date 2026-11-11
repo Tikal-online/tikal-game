@@ -14,12 +14,6 @@ const START_DIRECTION = new Vector3(
 
 // the centre of the board, it always has the same size
 const START_TARGET = new Vector3(5.25, 0, -3.03);
-
-/**
- * Distances from START_TARGET at which the whole 8 × 5 board is in view, with about 8% space around it.
- * Narrow canvases are limited by the board's width (distance × aspect ratio), wide ones by its depth.
- * Measured for this board, field of view and start direction: recheck them when one of those changes.
- */
 const FIT_WIDTH = 29.7;
 const FIT_DEPTH = 18.4;
 
