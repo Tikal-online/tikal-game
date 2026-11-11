@@ -48,7 +48,6 @@ export class BoardKeyboardControls {
   constructor(
     private readonly controls: MapControls,
     private readonly canvas: HTMLCanvasElement,
-    private readonly onUse: () => void,
   ) {
     canvas.addEventListener('keydown', this.onKeyDown);
     canvas.addEventListener('keyup', this.onKeyUp);
@@ -131,7 +130,6 @@ export class BoardKeyboardControls {
     event.preventDefault();
 
     this.pressed.add(action);
-    this.onUse();
   };
 
   private readonly onKeyUp = (event: KeyboardEvent): void => {

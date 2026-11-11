@@ -50,18 +50,21 @@ export class BoardView {
 
   private readonly renderer: WebGLRenderer;
 
+  private readonly resources = new BoardResources();
+
+  // Utils
   private readonly controls: MapControls;
 
   private readonly keyboardControls: BoardKeyboardControls;
 
   private readonly hover: BoardHover;
 
-  private readonly resources = new BoardResources();
-
+  // Placeholders
   private readonly slots = new Group();
 
   private readonly slotViews = new Map<string, SlotView>();
 
+  // Tiles
   private readonly tiles = new Group();
 
   private readonly tileViews = new Map<string, TileView>();
@@ -72,19 +75,12 @@ export class BoardView {
   // the board and any tile set outside of it, for framing them and for keeping the view on the board
   private readonly bounds = new Box3();
 
-  // until the player moves the view, it keeps fitting the whole board to the canvas
-  private viewMovedByPlayer = false;
-
   constructor(canvas: HTMLCanvasElement) {
     this.renderer = new WebGLRenderer({ canvas, antialias: true, alpha: true });
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
     this.controls = this.createControls(canvas);
-    this.keyboardControls = new BoardKeyboardControls(
-      this.controls,
-      canvas,
-      () => (this.viewMovedByPlayer = true),
-    );
+    this.keyboardControls = new BoardKeyboardControls(this.controls, canvas);
     this.hover = new BoardHover(canvas, this.camera);
 
     this.scene.add(this.slots, this.tiles);
@@ -92,6 +88,7 @@ export class BoardView {
     this.addLights();
 
     this.startRenderLoop();
+    this.fitCamera();
   }
 
   setTiles(tiles: readonly Tile[]): void {
@@ -125,10 +122,6 @@ export class BoardView {
     }
 
     this.bounds.copy(this.boardBounds).union(new Box3().setFromObject(this.tiles));
-
-    if (!this.viewMovedByPlayer) {
-      this.fitCamera();
-    }
   }
 
   // css size of the canvas
@@ -142,10 +135,6 @@ export class BoardView {
 
     this.camera.aspect = width / height;
     this.camera.updateProjectionMatrix();
-
-    if (!this.viewMovedByPlayer) {
-      this.fitCamera();
-    }
   }
 
   dispose(): void {
@@ -188,7 +177,6 @@ export class BoardView {
     controls.zoomToCursor = true;
     controls.maxPolarAngle = MAX_TILT;
 
-    controls.addEventListener('start', () => (this.viewMovedByPlayer = true));
     controls.addEventListener('change', () => this.keepViewOnBoard());
 
     return controls;
