@@ -13,7 +13,7 @@ import { LineMaterial } from 'three/addons/lines/LineMaterial.js';
 import { LineSegmentsGeometry } from 'three/addons/lines/LineSegmentsGeometry.js';
 import { HEX_SIZE } from './hex-layout';
 
-export const TILE_HEIGHT = 0.3;
+const TILE_HEIGHT = 0.3;
 
 // places without a tile are flat, muted plates
 const SLOT_HEIGHT = 0.05;
