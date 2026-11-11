@@ -1,7 +1,7 @@
 import { Group, Mesh } from 'three';
 import { LineSegments2 } from 'three/addons/lines/LineSegments2.js';
 import { Tile } from '../models/tile';
-import { Hoverable } from './board-hover';
+import { Hoverable } from './utils/board-hover';
 import { BoardResources } from './board-resources';
 import { hexToWorld } from './hex-layout';
 

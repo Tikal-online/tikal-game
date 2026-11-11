@@ -1,7 +1,7 @@
 import { DirectionalLight, Group, HemisphereLight, Scene, WebGLRenderer } from 'three';
 import { Tile } from '../models/tile';
-import { BoardCamera } from './board-camera';
-import { BoardHover, Hoverable } from './board-hover';
+import { BoardCamera } from './utils/board-camera';
+import { BoardHover, Hoverable } from './utils/board-hover';
 import { boardCoordinates } from './board-layout';
 import { BoardResources } from './board-resources';
 import { coordinateKey } from './hex-layout';
