@@ -50,6 +50,7 @@ export class BoardView {
 
   private readonly renderer: WebGLRenderer;
 
+  // Shared GPU resources
   private readonly resources = new BoardResources();
 
   // Utils
@@ -177,8 +178,6 @@ export class BoardView {
     controls.zoomToCursor = true;
     controls.maxPolarAngle = MAX_TILT;
 
-    controls.addEventListener('change', () => this.keepViewOnBoard());
-
     return controls;
   }
 
@@ -204,26 +203,6 @@ export class BoardView {
     const sun = new DirectionalLight('#ffffff', 2.5);
     sun.position.set(5, 10, 7);
     this.scene.add(sun);
-  }
-
-  // the point the camera looks at may not leave the board, so it cannot get lost in empty space
-  private keepViewOnBoard(): void {
-    if (this.bounds.isEmpty()) {
-      return;
-    }
-
-    const { min, max } = this.bounds;
-    const target = this.controls.target;
-
-    const clamped = new Vector3(
-      MathUtils.clamp(target.x, min.x, max.x),
-      0,
-      MathUtils.clamp(target.z, min.z, max.z),
-    );
-
-    // moves the camera along, so the view is only stopped and not turned
-    this.camera.position.add(clamped.clone().sub(target));
-    target.copy(clamped);
   }
 
   // looks at the centre of the board from the start direction, as close as possible with every corner in view
