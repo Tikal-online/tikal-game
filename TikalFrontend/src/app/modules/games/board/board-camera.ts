@@ -1,7 +1,6 @@
-import { Box3, MathUtils, PerspectiveCamera, Vector3 } from 'three';
+import { MathUtils, PerspectiveCamera, Vector3 } from 'three';
 import { MapControls } from 'three/addons/controls/MapControls.js';
 import { BoardKeyboardControls } from './board-keyboard-controls';
-import { boxCorners, fitDistance } from './camera-fit';
 
 // a narrow field of view keeps the perspective flat, the tiles in front look about as big as the ones behind
 const FIELD_OF_VIEW = 30;
@@ -13,10 +12,18 @@ const START_DIRECTION = new Vector3(
   Math.cos(MathUtils.degToRad(55)),
 );
 
-// space around the board, relative to its size on screen
-const VIEW_MARGIN = 1.08;
+// the centre of the board, it always has the same size
+const START_TARGET = new Vector3(5.25, 0, -3.03);
 
-// how close and how far the camera may move, relative to the distance that fits the whole board
+/**
+ * Distances from START_TARGET at which the whole 8 × 5 board is in view, with about 8% space around it.
+ * Narrow canvases are limited by the board's width (distance × aspect ratio), wide ones by its depth.
+ * Measured for this board, field of view and start direction: recheck them when one of those changes.
+ */
+const FIT_WIDTH = 29.7;
+const FIT_DEPTH = 18.4;
+
+// how close and how far the camera may move, relative to the start distance
 const MIN_ZOOM_DISTANCE = 0.25;
 const MAX_ZOOM_DISTANCE = 1.5;
 
@@ -27,7 +34,6 @@ const MAX_TILT = MathUtils.degToRad(85);
 export class BoardCamera {
   readonly camera = new PerspectiveCamera(FIELD_OF_VIEW, 1, 0.1, 1000);
 
-  // mouse and touch
   private readonly controls: MapControls;
 
   private readonly keyboardControls: BoardKeyboardControls;
@@ -41,35 +47,23 @@ export class BoardCamera {
     this.keyboardControls = new BoardKeyboardControls(this.controls, canvas);
   }
 
-  // width / height of the canvas
   setAspect(aspect: number): void {
     this.camera.aspect = aspect;
     this.camera.updateProjectionMatrix();
   }
 
-  // looks at the centre of the space from the start direction, as close as possible with every corner in view
-  fit(space: Box3): void {
-    const target = space.getCenter(new Vector3()).setY(0);
+  reset(): void {
+    const distance = Math.max(FIT_WIDTH / this.camera.aspect, FIT_DEPTH);
 
-    const distance = fitDistance(
-      boxCorners(space),
-      target,
-      START_DIRECTION,
-      MathUtils.degToRad(this.camera.fov),
-      this.camera.aspect,
-      VIEW_MARGIN,
-    );
+    this.camera.position.copy(START_DIRECTION).multiplyScalar(distance).add(START_TARGET);
+    this.camera.lookAt(START_TARGET);
 
-    this.camera.position.copy(START_DIRECTION).multiplyScalar(distance).add(target);
-    this.camera.lookAt(target);
-
-    this.controls.target.copy(target);
+    this.controls.target.copy(START_TARGET);
     this.controls.minDistance = distance * MIN_ZOOM_DISTANCE;
     this.controls.maxDistance = distance * MAX_ZOOM_DISTANCE;
     this.controls.update();
   }
 
-  // once per frame, before rendering
   update(deltaSeconds: number): void {
     this.keyboardControls.update(deltaSeconds);
     this.controls.update();

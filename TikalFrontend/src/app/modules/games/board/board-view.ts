@@ -1,4 +1,4 @@
-import { Box3, DirectionalLight, Group, HemisphereLight, Scene, WebGLRenderer } from 'three';
+import { DirectionalLight, Group, HemisphereLight, Scene, WebGLRenderer } from 'three';
 import { Tile } from '../models/tile';
 import { BoardCamera } from './board-camera';
 import { BoardHover, Hoverable } from './board-hover';
@@ -46,7 +46,7 @@ export class BoardView {
     this.addLights();
 
     this.resize();
-    this.boardCamera.fit(this.boardSpace());
+    this.boardCamera.reset();
     this.resizeObserver.observe(canvas);
 
     this.startRenderLoop();
@@ -142,10 +142,5 @@ export class BoardView {
     const sun = new DirectionalLight('#ffffff', 2.5);
     sun.position.set(5, 10, 7);
     this.scene.add(sun);
-  }
-
-  // the whole board, as high as a set tile, so the tiles set later are in view as well
-  private boardSpace(): Box3 {
-    return new Box3().setFromObject(this.slots);
   }
 }
