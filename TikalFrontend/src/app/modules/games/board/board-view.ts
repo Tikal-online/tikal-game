@@ -50,12 +50,12 @@ export class BoardView {
 
   private readonly renderer: WebGLRenderer;
 
+  private readonly controls: MapControls;
+
   // Shared GPU resources
   private readonly resources = new BoardResources();
 
   // Utils
-  private readonly controls: MapControls;
-
   private readonly keyboardControls: BoardKeyboardControls;
 
   private readonly hover: BoardHover;
@@ -70,11 +70,8 @@ export class BoardView {
 
   private readonly tileViews = new Map<string, TileView>();
 
-  // the space the full board takes up, it stays the same while tiles are set
-  private readonly boardBounds = new Box3();
-
-  // the board and any tile set outside of it, for framing them and for keeping the view on the board
-  private readonly bounds = new Box3();
+  // the drawing buffer follows the canvas' css size
+  private readonly resizeObserver = new ResizeObserver(() => this.resize());
 
   constructor(canvas: HTMLCanvasElement) {
     this.renderer = new WebGLRenderer({ canvas, antialias: true, alpha: true });
@@ -88,8 +85,11 @@ export class BoardView {
     this.addSlots();
     this.addLights();
 
-    this.startRenderLoop();
+    this.resize();
     this.fitCamera();
+    this.resizeObserver.observe(canvas);
+
+    this.startRenderLoop();
   }
 
   setTiles(tiles: readonly Tile[]): void {
@@ -121,12 +121,24 @@ export class BoardView {
     for (const [key, slot] of this.slotViews) {
       slot.object.visible = !this.tileViews.has(key);
     }
-
-    this.bounds.copy(this.boardBounds).union(new Box3().setFromObject(this.tiles));
   }
 
-  // css size of the canvas
-  resize(width: number, height: number): void {
+  dispose(): void {
+    this.renderer.setAnimationLoop(null);
+    this.resizeObserver.disconnect();
+
+    this.keyboardControls.dispose();
+    this.controls.dispose();
+    this.hover.dispose();
+
+    this.resources.dispose();
+    this.renderer.dispose();
+  }
+
+  private resize(): void {
+    const { clientWidth: width, clientHeight: height } = this.renderer.domElement;
+
+    // a hidden canvas has no size, the camera would get an invalid aspect ratio
     if (width === 0 || height === 0) {
       return;
     }
@@ -136,17 +148,6 @@ export class BoardView {
 
     this.camera.aspect = width / height;
     this.camera.updateProjectionMatrix();
-  }
-
-  dispose(): void {
-    this.renderer.setAnimationLoop(null);
-
-    this.keyboardControls.dispose();
-    this.controls.dispose();
-    this.hover.dispose();
-
-    this.resources.dispose();
-    this.renderer.dispose();
   }
 
   private startRenderLoop(): void {
@@ -164,7 +165,6 @@ export class BoardView {
     });
   }
 
-  // every set tile and every place still without one
   private hoverables(): Hoverable[] {
     const visibleSlots = [...this.slotViews.values()].filter((slot) => slot.object.visible);
 
@@ -181,22 +181,15 @@ export class BoardView {
     return controls;
   }
 
-  // the board always has its full size, every place starts as a slot until a tile is set on it
   private addSlots(): void {
     for (const coordinate of boardCoordinates()) {
       const view = new SlotView(coordinate, this.resources);
       this.slotViews.set(coordinateKey(coordinate), view);
       this.slots.add(view.object);
     }
-
-    // as high as a set tile, so the framing does not change once tiles are set
-    this.boardBounds.setFromObject(this.slots);
-    this.boardBounds.max.y = TILE_HEIGHT;
-    this.bounds.copy(this.boardBounds);
   }
 
   private addLights(): void {
-    // soft light from the sky, darker from the jungle floor, keeps the shadowed sides from turning black
     this.scene.add(new HemisphereLight('#e9efe9', '#101b14', 1));
 
     // sun from the south east, the cel shading turns it into hard bands on the tiles
@@ -207,14 +200,13 @@ export class BoardView {
 
   // looks at the centre of the board from the start direction, as close as possible with every corner in view
   private fitCamera(): void {
-    if (this.bounds.isEmpty()) {
-      return;
-    }
+    const board = new Box3().setFromObject(this.slots);
+    board.max.y = TILE_HEIGHT;
 
-    const target = this.bounds.getCenter(new Vector3()).setY(0);
+    const target = board.getCenter(new Vector3()).setY(0);
 
     const distance = fitDistance(
-      boxCorners(this.bounds),
+      boxCorners(board),
       target,
       START_DIRECTION,
       MathUtils.degToRad(this.camera.fov),

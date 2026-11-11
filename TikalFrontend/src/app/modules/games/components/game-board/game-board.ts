@@ -20,35 +20,17 @@ import { Tile } from '../../models/tile';
 export class GameBoardComponent {
   readonly tiles = input.required<readonly Tile[]>();
 
-  private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
-
   private readonly canvas = viewChild.required<ElementRef<HTMLCanvasElement>>('canvas');
 
   private readonly view = signal<BoardView | null>(null);
 
   constructor() {
-    let resizeObserver: ResizeObserver | null = null;
-
     // WebGL needs the canvas in the DOM, so the view is only created after the first render
-    afterNextRender(() => {
-      const view = new BoardView(this.canvas().nativeElement);
-
-      const element = this.host.nativeElement;
-      resizeObserver = new ResizeObserver(() =>
-        view.resize(element.clientWidth, element.clientHeight),
-      );
-      resizeObserver.observe(element);
-      view.resize(element.clientWidth, element.clientHeight);
-
-      this.view.set(view);
-    });
+    afterNextRender(() => this.view.set(new BoardView(this.canvas().nativeElement)));
 
     // runs once the view exists and again whenever the tiles change
     effect(() => this.view()?.setTiles(this.tiles()));
 
-    inject(DestroyRef).onDestroy(() => {
-      resizeObserver?.disconnect();
-      this.view()?.dispose();
-    });
+    inject(DestroyRef).onDestroy(() => this.view()?.dispose());
   }
 }
