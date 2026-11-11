@@ -1,62 +1,23 @@
-import {
-  Box3,
-  DirectionalLight,
-  Group,
-  HemisphereLight,
-  MathUtils,
-  PerspectiveCamera,
-  Scene,
-  Vector3,
-  WebGLRenderer,
-} from 'three';
-import { MapControls } from 'three/addons/controls/MapControls.js';
+import { Box3, DirectionalLight, Group, HemisphereLight, Scene, WebGLRenderer } from 'three';
 import { Tile } from '../models/tile';
+import { BoardCamera } from './board-camera';
 import { BoardHover, Hoverable } from './board-hover';
-import { BoardKeyboardControls } from './board-keyboard-controls';
 import { boardCoordinates } from './board-layout';
-import { BoardResources, TILE_HEIGHT } from './board-resources';
-import { boxCorners, fitDistance } from './camera-fit';
+import { BoardResources } from './board-resources';
 import { coordinateKey } from './hex-layout';
 import { SlotView } from './slot-view';
 import { TileView } from './tile-view';
 
-// a narrow field of view keeps the perspective flat, the tiles in front look about as big as the ones behind
-const FIELD_OF_VIEW = 30;
-
-// the camera starts looking at the centre of the board from the south, 55° above the ground
-const START_DIRECTION = new Vector3(
-  0,
-  Math.sin(MathUtils.degToRad(55)),
-  Math.cos(MathUtils.degToRad(55)),
-);
-
-// space around the board, relative to its size on screen
-const VIEW_MARGIN = 1.08;
-
-// how close and how far the camera may move, relative to the distance that fits the whole board
-const MIN_ZOOM_DISTANCE = 0.25;
-const MAX_ZOOM_DISTANCE = 1.5;
-
-// the camera stays above the board: from straight down to almost level with the table
-const MAX_TILT = MathUtils.degToRad(85);
-
-// longest step the movement makes at once, e.g. after the tab was in the background
-const MAX_FRAME_SECONDS = 0.1;
-
 export class BoardView {
   private readonly scene = new Scene();
 
-  private readonly camera = new PerspectiveCamera(FIELD_OF_VIEW, 1, 0.1, 1000);
-
   private readonly renderer: WebGLRenderer;
-
-  private readonly controls: MapControls;
 
   // Shared GPU resources
   private readonly resources = new BoardResources();
 
   // Utils
-  private readonly keyboardControls: BoardKeyboardControls;
+  private readonly boardCamera: BoardCamera;
 
   private readonly hover: BoardHover;
 
@@ -77,16 +38,15 @@ export class BoardView {
     this.renderer = new WebGLRenderer({ canvas, antialias: true, alpha: true });
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-    this.controls = this.createControls(canvas);
-    this.keyboardControls = new BoardKeyboardControls(this.controls, canvas);
-    this.hover = new BoardHover(canvas, this.camera);
+    this.boardCamera = new BoardCamera(canvas);
+    this.hover = new BoardHover(canvas, this.boardCamera.camera);
 
     this.scene.add(this.slots, this.tiles);
     this.addSlots();
     this.addLights();
 
     this.resize();
-    this.fitCamera();
+    this.boardCamera.fit(this.boardSpace());
     this.resizeObserver.observe(canvas);
 
     this.startRenderLoop();
@@ -127,8 +87,7 @@ export class BoardView {
     this.renderer.setAnimationLoop(null);
     this.resizeObserver.disconnect();
 
-    this.keyboardControls.dispose();
-    this.controls.dispose();
+    this.boardCamera.dispose();
     this.hover.dispose();
 
     this.resources.dispose();
@@ -146,22 +105,19 @@ export class BoardView {
     // false: the canvas size is controlled by css, only the drawing buffer is resized
     this.renderer.setSize(width, height, false);
 
-    this.camera.aspect = width / height;
-    this.camera.updateProjectionMatrix();
+    this.boardCamera.setAspect(width / height);
   }
 
   private startRenderLoop(): void {
     let previousTime: number | null = null;
 
     this.renderer.setAnimationLoop((time) => {
-      const deltaSeconds = Math.min((time - (previousTime ?? time)) / 1000, MAX_FRAME_SECONDS);
+      const deltaSeconds = Math.min((time - (previousTime ?? time)) / 1000, 0.1);
       previousTime = time;
 
-      this.keyboardControls.update(deltaSeconds);
-      // applies the damping of the controls, the view glides out after the pointer is released
-      this.controls.update();
+      this.boardCamera.update(deltaSeconds);
       this.hover.update(this.hoverables());
-      this.renderer.render(this.scene, this.camera);
+      this.renderer.render(this.scene, this.boardCamera.camera);
     });
   }
 
@@ -169,16 +125,6 @@ export class BoardView {
     const visibleSlots = [...this.slotViews.values()].filter((slot) => slot.object.visible);
 
     return [...this.tileViews.values(), ...visibleSlots];
-  }
-
-  private createControls(canvas: HTMLCanvasElement): MapControls {
-    const controls = new MapControls(this.camera, canvas);
-
-    controls.enableDamping = true;
-    controls.zoomToCursor = true;
-    controls.maxPolarAngle = MAX_TILT;
-
-    return controls;
   }
 
   private addSlots(): void {
@@ -198,28 +144,8 @@ export class BoardView {
     this.scene.add(sun);
   }
 
-  // looks at the centre of the board from the start direction, as close as possible with every corner in view
-  private fitCamera(): void {
-    const board = new Box3().setFromObject(this.slots);
-    board.max.y = TILE_HEIGHT;
-
-    const target = board.getCenter(new Vector3()).setY(0);
-
-    const distance = fitDistance(
-      boxCorners(board),
-      target,
-      START_DIRECTION,
-      MathUtils.degToRad(this.camera.fov),
-      this.camera.aspect,
-      VIEW_MARGIN,
-    );
-
-    this.camera.position.copy(START_DIRECTION).multiplyScalar(distance).add(target);
-    this.camera.lookAt(target);
-
-    this.controls.target.copy(target);
-    this.controls.minDistance = distance * MIN_ZOOM_DISTANCE;
-    this.controls.maxDistance = distance * MAX_ZOOM_DISTANCE;
-    this.controls.update();
+  // the whole board, as high as a set tile, so the tiles set later are in view as well
+  private boardSpace(): Box3 {
+    return new Box3().setFromObject(this.slots);
   }
 }
