@@ -1,5 +1,8 @@
+using Games.Domain.Errors;
 using Games.Domain.Events;
 using Games.Domain.Mappers;
+using OneOf;
+using OneOf.Types;
 using Shared.Domain.Entities;
 
 namespace Games.Domain.Entities;
@@ -16,16 +19,25 @@ public sealed class Game : Entity
 
     public bool HasEnoughPlayers => Players.Count > 1;
 
-    public void RemovePlayer(Player player)
+    public OneOf<Success, PlayerNotInGameDomainError> RemovePlayer(string userId)
     {
+        var player = Players.FirstOrDefault(p => p.UserId == userId);
+
+        if (player is null)
+        {
+            return new PlayerNotInGameDomainError();
+        }
+
         Players.Remove(player);
 
         if (HasEnoughPlayers)
         {
-            return;
+            return new Success();
         }
 
         AddDomainEvent(new GameCompletedDomainEvent(GameMapper.GameToGameEventData(this)));
+
+        return new Success();
     }
 
     public Player? GetPlayer(string userId)
