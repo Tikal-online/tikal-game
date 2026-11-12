@@ -61,6 +61,33 @@ public sealed class Lobby : Entity
         return new Success();
     }
 
+    public OneOf<Success, PlayerNotInLobbyDomainError> RemoveInGamePlayer(string userId)
+    {
+        var player = Players.FirstOrDefault(p => p.UserId == userId);
+
+        if (player is null)
+        {
+            return new PlayerNotInLobbyDomainError();
+        }
+
+        Players.Remove(player);
+        Touch();
+        AddDomainEvent(new PlayerLeftDomainEvent(PlayerMapper.PlayerToPlayerEventData(player), Id));
+
+        // If there is no owner left, promote another random player to owner
+        if (IsEmpty || Players.Any(p => p.IsOwner))
+        {
+            return new Success();
+        }
+
+        var firstPlayer = Players.First();
+
+        firstPlayer.IsOwner = true;
+        AddDomainEvent(new PlayerUpdatedDomainEvent(PlayerMapper.PlayerToPlayerEventData(firstPlayer), Id));
+
+        return new Success();
+    }
+
     public OneOf<Success, LobbyInGameDomainError, LobbyFullDomainError> AddPlayer(string username, string userId)
     {
         if (InGame)
