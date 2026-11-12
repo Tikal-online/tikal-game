@@ -37,6 +37,25 @@ public sealed class GameTests
     }
 
     [Theory]
+    [ClassData(typeof(ValidGames))]
+    public void GivenGame_WhenRemovePlayer_ThenAddsPlayerLeftEvent(Game game)
+    {
+        // given
+        var playerToRemove = game.Players.First();
+
+        // when
+        game.RemovePlayer(playerToRemove.UserId);
+
+        // then
+        var domainEvent = game.DomainEvents.OfType<PlayerLeftDomainEvent>().SingleOrDefault();
+
+        Assert.Multiple(
+            () => Assert.NotNull(domainEvent),
+            () => Assert.Equal(playerToRemove.UserId, domainEvent?.Player.UserId)
+        );
+    }
+
+    [Theory]
     [ClassData(typeof(GameWith2Players))]
     public void GivenGameWith2Players_WhenRemovePlayer_ThenAddsGameCompletedDomainEvent(Game game)
     {
