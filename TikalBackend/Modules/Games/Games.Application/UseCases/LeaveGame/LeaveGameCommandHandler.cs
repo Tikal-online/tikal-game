@@ -8,16 +8,10 @@ namespace Games.Application.UseCases.LeaveGame;
 
 public sealed class LeaveGameCommandHandler
 {
-    private readonly PlayerRepository playerRepository;
-
     private readonly GameRepository gameRepository;
 
-    public LeaveGameCommandHandler(
-        PlayerRepository playerRepository,
-        GameRepository gameRepository
-    )
+    public LeaveGameCommandHandler(GameRepository gameRepository)
     {
-        this.playerRepository = playerRepository;
         this.gameRepository = gameRepository;
     }
 
@@ -33,21 +27,19 @@ public sealed class LeaveGameCommandHandler
             return new GameNotFound(command.GameId);
         }
 
-        var player = game.GetPlayer(command.UserId);
+        var result = game.RemovePlayer(command.UserId);
 
-        if (player is null)
-        {
-            return new PlayerNotInGivenGame(command.GameId);
-        }
+        return result.Match<OneOf<Success, GameNotFound, PlayerNotInGivenGame>>(
+            success =>
+            {
+                if (!game.HasEnoughPlayers)
+                {
+                    gameRepository.Delete(game);
+                }
 
-        game.RemovePlayer(player);
-        playerRepository.Delete(player);
-
-        if (!game.HasEnoughPlayers)
-        {
-            gameRepository.Delete(game);
-        }
-
-        return new Success();
+                return success;
+            },
+            success => new PlayerNotInGivenGame(game.Id)
+        );
     }
 }

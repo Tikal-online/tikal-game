@@ -12,7 +12,6 @@ namespace Games.Application.Tests.UseCases.LeaveGame;
 public sealed class LeaveGameCommandHandlerTests
 {
     // dependencies
-    private readonly Mock<PlayerRepository> playerRepository;
     private readonly Mock<GameRepository> gameRepository;
 
     // under test
@@ -20,13 +19,9 @@ public sealed class LeaveGameCommandHandlerTests
 
     public LeaveGameCommandHandlerTests()
     {
-        playerRepository = new Mock<PlayerRepository>();
         gameRepository = new Mock<GameRepository>();
 
-        handler = new LeaveGameCommandHandler(
-            playerRepository.Object,
-            gameRepository.Object
-        );
+        handler = new LeaveGameCommandHandler(gameRepository.Object);
     }
 
     private void SetupHappyPath(Game game, LeaveGameCommand command)
@@ -88,8 +83,6 @@ public sealed class LeaveGameCommandHandlerTests
 
         // then
         Assert.IsType<Success>(result.Value);
-
-        playerRepository.Verify(r => r.Delete(It.IsAny<Player>()), Times.Once);
     }
 
     [Theory]
@@ -107,7 +100,6 @@ public sealed class LeaveGameCommandHandlerTests
         // then
         Assert.IsType<Success>(result.Value);
 
-        playerRepository.Verify(r => r.Delete(It.IsAny<Player>()), Times.Once);
         gameRepository.Verify(r => r.Delete(game), Times.Once);
     }
 }
