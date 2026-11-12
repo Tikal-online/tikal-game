@@ -1,4 +1,4 @@
-import { HexCoordinate } from '../models/tile';
+import { HexCoordinate, TravelCost } from '../models/tile';
 
 // distance from the centre of a tile to its corners, in world units
 export const HEX_SIZE = 1;
@@ -19,6 +19,16 @@ export function hexToWorld({ q, r }: HexCoordinate): WorldPosition {
     z: HEX_SIZE * Math.sqrt(3) * (r + q / 2),
   };
 }
+
+// the neighbour across each edge of a tile, the same offsets as the backend's HexCoordinate
+export const EDGE_OFFSETS: Readonly<Record<keyof TravelCost, HexCoordinate>> = {
+  north: { q: 0, r: -1 },
+  northEast: { q: 1, r: -1 },
+  southEast: { q: 1, r: 0 },
+  south: { q: 0, r: 1 },
+  southWest: { q: -1, r: 1 },
+  northWest: { q: -1, r: 0 },
+};
 
 // identifies a tile on the board, e.g. as a map key
 export function coordinateKey({ q, r }: HexCoordinate): string {

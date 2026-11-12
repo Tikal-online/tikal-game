@@ -1,9 +1,12 @@
 import {
+  BoxGeometry,
+  BufferGeometry,
   Color,
   ColorRepresentation,
   CylinderGeometry,
   DataTexture,
   EdgesGeometry,
+  MeshBasicMaterial,
   MeshToonMaterial,
   NearestFilter,
   RedFormat,
@@ -11,6 +14,7 @@ import {
 } from 'three';
 import { LineMaterial } from 'three/addons/lines/LineMaterial.js';
 import { LineSegmentsGeometry } from 'three/addons/lines/LineSegmentsGeometry.js';
+import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { HEX_SIZE } from './hex-layout';
 
 const TILE_HEIGHT = 0.3;
@@ -29,6 +33,17 @@ const HIGHLIGHT_LIGHTEN = 0.07;
 // cel shading: the light falls into these hard bands instead of a smooth gradient (0 = dark, 255 = fully lit)
 const LIGHT_BANDS = [110, 190, 255];
 
+// travel costs: one ink bar per point along each edge, the first one closest to the edge
+const MAX_COST = 3;
+const COST_BAR_LENGTH = 0.4;
+const COST_BAR_WIDTH = 0.055;
+const COST_BAR_HEIGHT = 0.02;
+const COST_BAR_GAP = 0.05;
+const COST_BAR_INSET = 0.07;
+
+// colour of the bars for a cost of 1, 2 and 3
+const COST_BAR_COLOURS = ['#9aa09b', '#e8862a', '#d0402f'];
+
 // ink lines along the edges, in css pixels
 const OUTLINE_COLOUR = '#0f1d14';
 const OUTLINE_WIDTH = 2;
@@ -45,6 +60,13 @@ export class BoardResources {
   readonly slotOutlineGeometry = createOutlineGeometry(this.slotGeometry);
 
   readonly outlineMaterial = new LineMaterial({ color: OUTLINE_COLOUR, linewidth: OUTLINE_WIDTH });
+
+  // Travel costs
+  private readonly costBarMaterials = COST_BAR_COLOURS.map(
+    (color) => new MeshBasicMaterial({ color }),
+  );
+
+  private readonly costBarGeometries = createCostBarGeometries();
 
   private readonly lightBands = createLightBands();
 
@@ -76,12 +98,25 @@ export class BoardResources {
     return this.tileMaterials(SLOT_COLOUR, highlighted);
   }
 
+  // the bars of a cost at the edge facing +z, null for a cost of 0
+  costBars(cost: number): { geometry: BufferGeometry; material: MeshBasicMaterial } | null {
+    if (cost <= 0) {
+      return null;
+    }
+
+    const index = Math.min(cost, MAX_COST) - 1;
+
+    return { geometry: this.costBarGeometries[index], material: this.costBarMaterials[index] };
+  }
+
   dispose(): void {
     this.tileGeometry.dispose();
     this.tileOutlineGeometry.dispose();
     this.slotGeometry.dispose();
     this.slotOutlineGeometry.dispose();
     this.outlineMaterial.dispose();
+    this.costBarMaterials.forEach((material) => material.dispose());
+    this.costBarGeometries.forEach((geometry) => geometry.dispose());
     this.lightBands.dispose();
 
     for (const materials of this.tileMaterialsByColour.values()) {
@@ -129,6 +164,30 @@ function createOutlineGeometry(geometry: CylinderGeometry): LineSegmentsGeometry
   edges.dispose();
 
   return lines;
+}
+
+// for each cost from 1 to MAX_COST its bars on top of a tile, parallel to the edge facing +z and stacked towards the centre
+function createCostBarGeometries(): BufferGeometry[] {
+  // distance from the centre of a tile to the middle of its edges
+  const apothem = ((HEX_SIZE - TILE_GAP) * Math.sqrt(3)) / 2;
+
+  return Array.from({ length: MAX_COST }, (_, index) => {
+    const bars: BufferGeometry[] = [];
+
+    for (let bar = 0; bar <= index; bar++) {
+      const geometry = new BoxGeometry(COST_BAR_LENGTH, COST_BAR_HEIGHT, COST_BAR_WIDTH);
+      const distance =
+        apothem - COST_BAR_INSET - COST_BAR_WIDTH / 2 - bar * (COST_BAR_WIDTH + COST_BAR_GAP);
+      geometry.translate(0, TILE_HEIGHT + COST_BAR_HEIGHT / 2, distance);
+
+      bars.push(geometry);
+    }
+
+    const merged = mergeGeometries(bars);
+    bars.forEach((geometry) => geometry.dispose());
+
+    return merged;
+  });
 }
 
 // a one pixel high strip with one texel per band, read without blending so the bands stay hard
