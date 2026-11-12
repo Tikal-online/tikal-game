@@ -185,6 +185,67 @@ public sealed class LobbyTests
     }
 
     [Theory]
+    [ClassData(typeof(InGameLobbies))]
+    public void GivenLobby_WhenRemoveInGamePlayer_ThenReturnsSuccess(Lobby lobby)
+    {
+        // given
+        var playerToRemove = lobby.Players.First();
+
+        // when
+        var result = lobby.RemoveInGamePlayer(playerToRemove.UserId);
+
+        // then
+        Assert.IsType<Success>(result.Value);
+    }
+
+    [Theory]
+    [ClassData(typeof(InGameLobbies))]
+    public void GivenLobby_WhenRemoveInGamePlayer_ThenRemovesPlayerFromList(Lobby lobby)
+    {
+        // given
+        var playerToRemove = lobby.Players.First();
+
+        // when
+        lobby.RemoveInGamePlayer(playerToRemove.UserId);
+
+        // then
+        Assert.DoesNotContain(playerToRemove, lobby.Players);
+    }
+
+    [Theory]
+    [ClassData(typeof(InGameLobbies))]
+    public void GivenLobby_WhenRemoveInGamePlayer_ThenAddsPlayerLeftEvent(Lobby lobby)
+    {
+        // given
+        var playerToRemove = lobby.Players.First();
+
+        // when
+        lobby.RemoveInGamePlayer(playerToRemove.UserId);
+
+        // then
+        var domainEvent = lobby.DomainEvents.OfType<PlayerLeftDomainEvent>().SingleOrDefault();
+
+        Assert.Multiple(
+            () => Assert.NotNull(domainEvent),
+            () => Assert.Equal(playerToRemove.UserId, domainEvent?.Player.UserId)
+        );
+    }
+
+    [Theory]
+    [ClassData(typeof(ValidLobbies))]
+    public void GivenLobbyNotContainingPlayer_WhenRemoveInGamePlayer_ThenReturnsPlayerNotInLobbyError(Lobby lobby)
+    {
+        // given
+        var nonExistantUserId = "doesnt exist";
+
+        // when
+        var result = lobby.RemoveInGamePlayer(nonExistantUserId);
+
+        // PlayerNotInLobbyDomainError
+        Assert.IsType<PlayerNotInLobbyDomainError>(result.Value);
+    }
+
+    [Theory]
     [ClassData(typeof(ValidLobbies))]
     public void GivenLobby_WhenGetUnusedColour_ThenReturnsColourUsedByNoPlayer(Lobby lobby)
     {
