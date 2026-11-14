@@ -39,11 +39,11 @@ echo "Installing aspire cli"
 curl -sSL https://aspire.dev/install.sh | bash
 
 echo "Importing development certificate..."
-dotnet dev-certs https --import /.aspnet/dev-certs/dotnet-dev-cert.pfx --clean -p secret
+dotnet dev-certs https --import /.aspnet/dev-certs/dotnet-dev-cert.pfx --clean -p ""
 
 echo "Extracting crt and key"
-openssl pkcs12 -in /.aspnet/dev-certs/dotnet-dev-cert.pfx -clcerts -nokeys -out /.aspnet/dev-certs/cert.crt -passin pass:'secret'
-openssl pkcs12 -in /.aspnet/dev-certs/dotnet-dev-cert.pfx -nocerts -out /.aspnet/dev-certs/key.key -passin pass:'secret' -nodes
+openssl pkcs12 -in /.aspnet/dev-certs/dotnet-dev-cert.pfx -clcerts -nokeys -out /.aspnet/dev-certs/cert.crt -passin pass:''
+openssl pkcs12 -in /.aspnet/dev-certs/dotnet-dev-cert.pfx -nocerts -out /.aspnet/dev-certs/key.key -passin pass:'' -nodes
 
 echo "Installing Neovim v0.12.5"
 curl -LO https://github.com/neovim/neovim/releases/download/v0.12.5/nvim-linux-x86_64.tar.gz
