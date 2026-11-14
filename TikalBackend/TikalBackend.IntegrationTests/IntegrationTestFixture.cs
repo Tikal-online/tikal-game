@@ -4,9 +4,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Connections;
 using Microsoft.AspNetCore.SignalR.Client;
 using RestApi.Controllers.Accounts.Dtos;
+using RestApi.Controllers.Games.Dtos;
 using RestApi.Controllers.Lobbies.Dtos;
 using TikalBackend.IntegrationTests.Extensions;
 using TikalBackend.IntegrationTests.Modules.Accounts;
+using TikalBackend.IntegrationTests.Modules.Games;
 using TikalBackend.IntegrationTests.Modules.Lobbies;
 using Wolverine.Tracking;
 
@@ -39,6 +41,12 @@ public abstract class IntegrationTestFixture(AppFactoryFixture appFactoryFixture
         await Client.PostAsyncWithUser(LobbyUrl.CreateLobby, user, createLobbyDto, TestContext.Current.CancellationToken);
         var response = await Client.GetAsyncWithUser(LobbyUrl.GetActiveLobby, user, TestContext.Current.CancellationToken);
         return (await response.Content.ReadFromJsonAsync<LobbyDto>())!;
+    }
+
+    protected async Task<GameDto> GetActiveGame(TestUser user)
+    {
+        var response = await Client.GetAsyncWithUser(GameUrl.GetActiveGame, user, TestContext.Current.CancellationToken);
+        return (await response.Content.ReadFromJsonAsync<GameDto>(TestContext.Current.CancellationToken))!;
     }
 
     protected Task<ITrackedSession> RunTracked(Func<Task> action)

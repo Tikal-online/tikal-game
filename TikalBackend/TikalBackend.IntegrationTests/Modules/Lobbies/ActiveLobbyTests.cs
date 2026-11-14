@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.SignalR.Client;
 using RestApi.Controllers.Lobbies.Dtos;
 using TikalBackend.IntegrationTests.Extensions;
+using TikalBackend.IntegrationTests.Modules.Games;
 using TikalBackend.IntegrationTests.Modules.Lobbies.Dtos;
 using LobbyPlayerDto = SignalRApi.Hubs.Lobbies.Dtos.LobbyPlayerDto;
 
@@ -230,6 +231,100 @@ public sealed class ActiveLobbyTests(AppFactoryFixture fixture) : IntegrationTes
                 () => Assert.Equal(TestUser.TestUser1.UserId, updatedPlayer.UserId),
                 () => Assert.Equal(TestUser.TestUser1.Name, updatedPlayer.Name),
                 () => Assert.False(updatedPlayer.IsReady)
+            );
+        });
+    }
+
+    [Theory]
+    [ClassData(typeof(ValidCreateLobbyDtos))]
+    public async Task GivenInGameLobby_WhenPlayerLeavesGame_ThenSendsPlayerLeftMessage(CreateLobbyDto createLobbyDto)
+    {
+        // given
+
+        // create and start the lobby
+        await RunTracked(async () =>
+        {
+            await CreateUserAccount(TestUser.Default);
+            await CreateUserAccount(TestUser.TestUser1);
+
+            var lobby = await CreateAndGetLobby(createLobbyDto, TestUser.Default);
+
+            await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.TestUser1, null, TestContext.Current.CancellationToken);
+
+            await Client.PutAsyncWithUser(LobbyUrl.SetPlayerReady, TestUser.Default, null, TestContext.Current.CancellationToken);
+            await Client.PutAsyncWithUser(LobbyUrl.SetPlayerReady, TestUser.TestUser1, null, TestContext.Current.CancellationToken);
+
+            await Client.PostAsyncWithUser(LobbyUrl.StartLobby(lobby.Id), TestUser.Default, null, TestContext.Current.CancellationToken);
+        });
+
+        await RunTracked(async () =>
+        {
+            await using var connection = await CreateConnection(LobbyUrl.ActiveLobbyHub, TestUser.Default);
+
+            var leftPlayerSource = new TaskCompletionSource<LobbyPlayerDto>();
+            connection.On<LobbyPlayerDto>("PlayerLeft", leftPlayerSource.SetResult);
+
+            var game = await GetActiveGame(TestUser.TestUser1);
+
+            // when
+            await Client.DeleteAsyncWithUser(GameUrl.LeaveGame(game.Id), TestUser.TestUser1, TestContext.Current.CancellationToken);
+
+            // then
+            var leftPlayer = await leftPlayerSource.Task.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken);
+
+            Assert.Multiple(
+                () => Assert.NotNull(leftPlayer),
+                () => Assert.Equal(TestUser.TestUser1.UserId, leftPlayer.UserId),
+                () => Assert.Equal(TestUser.TestUser1.Name, leftPlayer.Name)
+            );
+        });
+    }
+
+    [Theory]
+    [ClassData(typeof(CreateLobbyDtoWith3orMorePlayers))]
+    public async Task GivenInGameLobby_WhenLastOwnerLeavesGame_ThenPromotesPlayerAndSendsPlayerUpdatedNotification(CreateLobbyDto createLobbyDto)
+    {
+        // given
+
+        // create and start the lobby
+        await RunTracked(async () =>
+        {
+            await CreateUserAccount(TestUser.Default);
+            await CreateUserAccount(TestUser.TestUser1);
+            await CreateUserAccount(TestUser.TestUser2);
+
+            var lobby = await CreateAndGetLobby(createLobbyDto, TestUser.Default);
+
+            await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.TestUser1, null, TestContext.Current.CancellationToken);
+            await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.TestUser2, null, TestContext.Current.CancellationToken);
+
+            await Client.PutAsyncWithUser(LobbyUrl.SetPlayerReady, TestUser.Default, null, TestContext.Current.CancellationToken);
+            await Client.PutAsyncWithUser(LobbyUrl.SetPlayerReady, TestUser.TestUser1, null, TestContext.Current.CancellationToken);
+            await Client.PutAsyncWithUser(LobbyUrl.SetPlayerReady, TestUser.TestUser2, null, TestContext.Current.CancellationToken);
+
+            await Client.PostAsyncWithUser(LobbyUrl.StartLobby(lobby.Id), TestUser.Default, null, TestContext.Current.CancellationToken);
+        });
+
+        await RunTracked(async () =>
+        {
+            await using var connection = await CreateConnection(LobbyUrl.ActiveLobbyHub, TestUser.TestUser1);
+
+            var updatedPlayerSource = new TaskCompletionSource<LobbyPlayerDto>();
+            connection.On<LobbyPlayerDto>("PlayerUpdated", updatedPlayerSource.SetResult);
+
+            var game = await GetActiveGame(TestUser.Default);
+
+            // when
+            await Client.DeleteAsyncWithUser(GameUrl.LeaveGame(game.Id), TestUser.Default, TestContext.Current.CancellationToken);
+
+            // then
+            var updatedPlayer = await updatedPlayerSource.Task.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken);
+
+            Assert.Multiple(
+                () => Assert.NotNull(updatedPlayer),
+                () => Assert.Equal(TestUser.TestUser1.UserId, updatedPlayer.UserId),
+                () => Assert.Equal(TestUser.TestUser1.Name, updatedPlayer.Name),
+                () => Assert.True(updatedPlayer.IsOwner)
             );
         });
     }
