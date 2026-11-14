@@ -257,6 +257,49 @@ public sealed class LobbyTests
         Assert.IsType<PlayerNotInLobbyDomainError>(result.Value);
     }
 
+    [Theory]
+    [ClassData(typeof(LobbiesWithOneOwnerAndMultiplePlayers))]
+    public void GivenLobbyWithMultiplePlayersAndOneOwner_WhenInGameOwnerIsRemoved_ThenPromotesAnotherPlayerToOwner(
+        Lobby lobby
+    )
+    {
+        // given
+        var playerToRemove = lobby.Players.First(p => p.IsOwner);
+
+        // when
+        lobby.RemoveInGamePlayer(playerToRemove.UserId);
+
+        // then
+        Assert.Multiple(
+            () => Assert.DoesNotContain(playerToRemove, lobby.Players),
+            () => Assert.Contains(lobby.Players, p => p.IsOwner)
+        );
+    }
+
+    [Theory]
+    [ClassData(typeof(LobbiesWithOneOwnerAndMultiplePlayers))]
+    public void GivenLobbyWithMultiplePlayersAndOneOwner_WhenInGameOwnerIsRemoved_ThenAddsPlayerUpdatedEvent(
+        Lobby lobby
+    )
+    {
+        // given
+        var playerToRemove = lobby.Players.First(p => p.IsOwner);
+
+        // when
+        lobby.RemoveInGamePlayer(playerToRemove.UserId);
+
+        // then
+        var domainEvent = lobby.DomainEvents.OfType<PlayerUpdatedDomainEvent>().SingleOrDefault();
+        var promotedPlayer = lobby.Players.First(p => p.IsOwner);
+
+        Assert.Multiple(
+            () => Assert.NotNull(domainEvent),
+            () => Assert.Equal(promotedPlayer.UserId, domainEvent?.Player.UserId)
+        );
+    }
+
+
+
     // ------------------------------------------------------------------------
     // GetUnusedColour
     // ------------------------------------------------------------------------
