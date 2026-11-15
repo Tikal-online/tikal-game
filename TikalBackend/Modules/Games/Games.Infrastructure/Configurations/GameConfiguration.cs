@@ -13,6 +13,12 @@ internal sealed class GameConfiguration : IEntityTypeConfiguration<Game>
         builder.Property(x => x.LobbyId)
             .IsRequired();
 
+        builder.Property(x => x.DrawnTiles)
+            .IsRequired()
+            .HasConversion<long>();
+
+        builder.Property(x => x.PendingTile);
+
         builder.HasMany(x => x.Tiles)
             .WithOne(x => x.Game)
             .HasForeignKey(x => x.GameId)

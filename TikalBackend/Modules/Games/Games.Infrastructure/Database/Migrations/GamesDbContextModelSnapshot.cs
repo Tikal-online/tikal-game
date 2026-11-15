@@ -31,8 +31,14 @@ namespace Games.Infrastructure.Database.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
+                    b.Property<long>("DrawnTiles")
+                        .HasColumnType("bigint");
+
                     b.Property<long>("LobbyId")
                         .HasColumnType("bigint");
+
+                    b.Property<byte?>("PendingTile")
+                        .HasColumnType("smallint");
 
                     b.HasKey("Id");
 

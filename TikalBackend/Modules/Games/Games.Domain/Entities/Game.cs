@@ -15,7 +15,19 @@ public sealed class Game : Entity
 
     public ICollection<Player> Players { get; set; } = [];
 
-    public List<Tile> Tiles { get; init; } = [];
+    public List<Tile> Tiles { get; set; } = [];
+
+    /// <summary>
+    /// A bit mask that holds which tiles have already been drawn and played.
+    /// </summary>
+    public ulong DrawnTiles { get; set; }
+
+    /// <summary>
+    /// The identifier of the tile that has been drawn, but not yet played.
+    /// Ensures that the same tile gets drawn if a player draws
+    /// multiple times without placing.
+    /// </summary>
+    public TileCardIdentifier? PendingTile { get; set; }
 
     public bool HasEnoughPlayers => Players.Count > 1;
 
