@@ -31,5 +31,8 @@ internal sealed class GameConfiguration : IEntityTypeConfiguration<Game>
 
         builder.HasIndex(x => x.LobbyId)
             .IsUnique();
+
+        builder.Property(x => x.Version)
+            .IsRowVersion();
     }
 }

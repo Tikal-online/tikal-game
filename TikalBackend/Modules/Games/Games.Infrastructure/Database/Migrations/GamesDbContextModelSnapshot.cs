@@ -40,6 +40,12 @@ namespace Games.Infrastructure.Database.Migrations
                     b.Property<byte?>("PendingTile")
                         .HasColumnType("smallint");
 
+                    b.Property<uint>("Version")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
+
                     b.HasKey("Id");
 
                     b.HasIndex("LobbyId")
