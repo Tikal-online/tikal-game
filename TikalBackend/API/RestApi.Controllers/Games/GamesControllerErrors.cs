@@ -31,4 +31,13 @@ public sealed partial class GamesController
             statusCode: StatusCodes.Status404NotFound
         );
     }
+
+    private ObjectResult NoTileLeft(long gameId)
+    {
+        return Problem(
+            title: "No tile left",
+            detail: $"Game with ID {gameId} has not tile left",
+            statusCode: StatusCodes.Status404NotFound
+        );
+    }
 }

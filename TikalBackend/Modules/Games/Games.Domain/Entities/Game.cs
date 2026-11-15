@@ -1,3 +1,4 @@
+using System.Numerics;
 using Games.Domain.Errors;
 using Games.Domain.Events;
 using Games.Domain.Mappers;
@@ -51,6 +52,44 @@ public sealed class Game : Entity
         AddDomainEvent(new GameCompletedDomainEvent(GameMapper.GameToGameEventData(this)));
 
         return new Success();
+    }
+
+    /// <summary>
+    /// Draws the next tile of the card stack for this game.
+    /// Returns null if all tiles have been drawn already.
+    /// </summary>
+    public Tile? DrawTile()
+    {
+        if (PendingTile is not null)
+        {
+            return TileCatalogue.Tiles[PendingTile.Value];
+        }
+
+        foreach (var bucket in TileCatalogue.BucketBitMasks)
+        {
+            var remaining = bucket & ~DrawnTiles;
+
+            if (remaining == 0)
+            {
+                continue;
+            }
+
+            // Remove a random number of trailing 1s of this bucket.
+            // The last trailing 1 of this bucket will be the chosen tile.
+            for (var skip = Random.Shared.Next(BitOperations.PopCount(remaining)); skip > 0; --skip)
+            {
+                remaining &= remaining - 1;
+            }
+
+            var tileIdentifier = (TileCardIdentifier)BitOperations.TrailingZeroCount(remaining);
+
+            PendingTile = tileIdentifier;
+            DrawnTiles |= 1UL << (int)tileIdentifier;
+
+            return TileCatalogue.Tiles[tileIdentifier];
+        }
+
+        return null;
     }
 
     public Player? GetPlayer(string userId)

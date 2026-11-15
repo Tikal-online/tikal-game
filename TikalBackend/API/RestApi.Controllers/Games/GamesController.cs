@@ -65,4 +65,24 @@ public sealed partial class GamesController : ApiController
         );
     }
 
+    [HttpGet("{Id:long}/Tiles/next")]
+    [ProducesResponseType<TileDto>(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [EndpointDescription("Gets the next tile which can be placed in the game")]
+    public async Task<IActionResult> GetNextTile(long Id, CancellationToken cancellationToken)
+    {
+        var query = new GetNextTileQuery(Id);
+
+        var result = await bus.InvokeAsync<OneOf<TileModel, GameNotFound, NoTilesLeft>>(query, cancellationToken);
+
+        return result.Match<IActionResult>(
+            // explicitly declare the type to serialize with type descriminator
+            tile => new OkObjectResult(GameModelMapper.TileModelToTileDto(tile))
+            {
+                DeclaredType = typeof(TileDto)
+            },
+            _ => GameNotFound(Id),
+            _ => NoTileLeft(Id)
+        );
+    }
 }

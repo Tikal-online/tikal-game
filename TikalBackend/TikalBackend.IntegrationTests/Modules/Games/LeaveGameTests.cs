@@ -87,7 +87,7 @@ public sealed class LeaveGameTests(AppFactoryFixture fixture) : IntegrationTestF
 
     [Theory]
     [ClassData(typeof(ValidCreateLobbyDtos))]
-    public async Task GivenPlayerInGame_WhenLeaveGame_ThenReturnsNotFound(CreateLobbyDto createLobbyDto)
+    public async Task GivenPlayerInGame_WhenLeaveGame_ThenReturnsSuccess(CreateLobbyDto createLobbyDto)
     {
         // given
 

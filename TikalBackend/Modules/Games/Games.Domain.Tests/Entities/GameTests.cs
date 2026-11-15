@@ -8,6 +8,10 @@ namespace Games.Domain.Tests.Entities;
 
 public sealed class GameTests
 {
+    // ------------------------------------------------------------------------
+    // RemovePlayer
+    // ------------------------------------------------------------------------
+
     [Theory]
     [ClassData(typeof(ValidGames))]
     public void GivenGame_WhenRemovePlayer_ThenReturnsSuccess(Game game)
@@ -87,5 +91,71 @@ public sealed class GameTests
 
         // then
         Assert.IsType<PlayerNotInGameDomainError>(result.Value);
+    }
+
+    // ------------------------------------------------------------------------
+    // DrawTile
+    // ------------------------------------------------------------------------
+
+    [Theory]
+    [ClassData(typeof(ValidGames))]
+    public void GivenGameWithTilesLeft_WhenDrawTile_ThenReturnsNotNullTile(Game game)
+    {
+        // when
+        var tile = game.DrawTile();
+
+        // then
+        Assert.NotNull(tile);
+    }
+
+    [Theory]
+    [ClassData(typeof(ValidGames))]
+    public void GivenGameWithTilesLeft_WhenDrawTile_ThenSetsPendingTileToDrawnTile(Game game)
+    {
+        // when
+        var tile = game.DrawTile();
+
+        // then
+        Assert.Multiple(
+            () => Assert.NotNull(game.PendingTile),
+            () => Assert.Equal(TileCatalogue.Tiles[game.PendingTile!.Value], tile)
+        );
+    }
+
+    [Theory]
+    [ClassData(typeof(ValidGames))]
+    public void GivenGameWithTilesLeft_WhenDrawTile_ThenIncludesPendingTileInDrawnTilesBitmask(Game game)
+    {
+        // given
+        var drawnTilesBefore = game.DrawnTiles;
+
+        // when
+        game.DrawTile();
+
+        // then
+        var drawnBit = 1UL << (int)game.PendingTile!.Value;
+
+        Assert.Multiple(
+            () => Assert.Equal(0UL, drawnTilesBefore & drawnBit),
+            () => Assert.Equal(drawnTilesBefore | drawnBit, game.DrawnTiles)
+        );
+    }
+
+    [Theory]
+    [ClassData(typeof(ValidGames))]
+    public void GivenGameWithTilesLeft_WhenDrawTileMultipleTimesWithoutPlacing_ThenReturnsSameTile(Game game)
+    {
+        // when
+        var tile = game.DrawTile();
+        var tile1 = game.DrawTile();
+        var tile2 = game.DrawTile();
+        var tile3 = game.DrawTile();
+
+        // then
+        Assert.Multiple(
+            () => Assert.Equal(tile, tile1),
+            () => Assert.Equal(tile, tile2),
+            () => Assert.Equal(tile, tile3)
+        );
     }
 }

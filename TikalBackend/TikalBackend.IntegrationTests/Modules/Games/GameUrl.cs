@@ -10,4 +10,9 @@ internal static class GameUrl
     {
         return $"Games/{id}/Players/me";
     }
+
+    public static string GetNextTile(long id)
+    {
+        return $"Games/{id}/Tiles/next";
+    }
 }
