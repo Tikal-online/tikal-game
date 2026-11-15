@@ -40,9 +40,9 @@
     "@storybook/addon-vitest": "^10.5.10",
     "@storybook/angular-vite": "^10.5.10",
     "@types/node": "^26",
-    "@vitest/browser": "^4.1.11",
-    "@vitest/browser-playwright": "latest",
-    "@vitest/coverage-v8": "latest",
+    "@vitest/browser": "^5.1.0",
+    "@vitest/browser-playwright": "^5.1.0",
+    "@vitest/coverage-v8": "^5.1.0",
     "angular-eslint": "^22.1.0",
     "eslint": "~10.14.0",
     "eslint-config-prettier": "~10.1.8",
@@ -55,7 +55,7 @@
     "storybook": "^10.5.10",
     "typescript": "~6.0.2",
     "typescript-eslint": "~8.72.1",
-    "vitest": "latest"
+    "vitest": "^5.1.0"
   },
   "allowScripts": {
     "@parcel/watcher@2.6.0": true,

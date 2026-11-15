@@ -11,14 +11,14 @@ const meta: Meta<PlayerSlotListComponent> = {
     players: [
       {
         name: 'Player1',
-        selectedColour: 'red',
+        selectedColour: 'Red',
         isReady: true,
         isOwner: true,
         isMe: true,
       },
       {
         name: 'Player2',
-        selectedColour: 'green',
+        selectedColour: 'Green',
         isReady: false,
         isOwner: false,
         isMe: false,
@@ -43,14 +43,14 @@ export const HalfFullLobby: Story = {
     players: [
       {
         name: 'Player1',
-        selectedColour: 'red',
+        selectedColour: 'Red',
         isReady: false,
         isOwner: false,
         isMe: false,
       },
       {
         name: 'Player2',
-        selectedColour: 'green',
+        selectedColour: 'Green',
         isReady: true,
         isOwner: true,
         isMe: true,
@@ -67,21 +67,21 @@ export const FullLobby: Story = {
     players: [
       {
         name: 'Player1',
-        selectedColour: 'red',
+        selectedColour: 'Red',
         isReady: true,
         isOwner: true,
         isMe: false,
       },
       {
         name: 'Player2',
-        selectedColour: 'green',
+        selectedColour: 'Green',
         isReady: false,
         isOwner: false,
         isMe: true,
       },
       {
         name: 'Player3',
-        selectedColour: 'yellow',
+        selectedColour: 'Yellow',
         isReady: true,
         isOwner: false,
         isMe: false,

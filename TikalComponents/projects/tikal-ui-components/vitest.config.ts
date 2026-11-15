@@ -14,7 +14,7 @@ export default defineConfig({
       enabled: true,
       reporter: ['text', 'html', 'lcov'],
       reportsDirectory: './coverage',
-      exclude: ['**/documentation.json'],
+      exclude: ['**/documentation.json', '**/*.stories.ts'],
     },
     projects: [
       {
