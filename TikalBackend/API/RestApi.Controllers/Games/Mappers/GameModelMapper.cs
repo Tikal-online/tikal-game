@@ -13,5 +13,5 @@ internal static partial class GameModelMapper
     [MapDerivedType<TreasureTileModel, TreasureTileDto>]
     [MapDerivedType<VolcanoTileModel, VolcanoTileDto>]
     [MapDerivedType<TempleTileModel, TempleTileDto>]
-    private static partial TileDto TileModelToTileDto(TileModel tile);
+    public static partial TileDto TileModelToTileDto(TileModel tile);
 }
