@@ -30,6 +30,8 @@ public sealed class Game : Entity
     /// </summary>
     public TileCardIdentifier? PendingTile { get; set; }
 
+    public uint Version { get; set; }
+
     public bool HasEnoughPlayers => Players.Count > 1;
 
     public OneOf<Success, PlayerNotInGameDomainError> RemovePlayer(string userId)
@@ -42,6 +44,7 @@ public sealed class Game : Entity
         }
 
         Players.Remove(player);
+        Touch();
         AddDomainEvent(new PlayerLeftDomainEvent(PlayerMapper.PlayerToPlayerEventData(player), LobbyId));
 
         if (HasEnoughPlayers)
