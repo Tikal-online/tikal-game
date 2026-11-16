@@ -7,4 +7,6 @@ public record GameDto
     public List<GamePlayerDto> Players { get; set; } = [];
 
     public List<TileDto> Tiles { get; init; } = [];
+
+    public int CurrentTurnPosition { get; set; }
 }
