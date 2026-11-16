@@ -1,4 +1,5 @@
 using Games.Domain.Entities;
+using Games.Domain.Enums;
 using Games.Domain.Errors;
 using Games.Domain.Events;
 using Games.Domain.Tests.Data;
@@ -91,6 +92,23 @@ public sealed class GameTests
 
         // then
         Assert.IsType<PlayerNotInGameDomainError>(result.Value);
+    }
+
+    [Theory]
+    [ClassData(typeof(ValidGames))]
+    public void GivenGame_WhenRemoveCurrentPlayer_ThenEndsTurn(Game game)
+    {
+        // given
+        var currentPlayer = game.CurrentPlayer;
+
+        // when
+        game.RemovePlayer(currentPlayer.UserId);
+
+        // then
+        Assert.Multiple(
+            () => Assert.Equal(TurnPhase.PlaceTile, game.TurnPhase),
+            () => Assert.NotEqual(currentPlayer, game.CurrentPlayer)
+        );
     }
 
     // ------------------------------------------------------------------------
