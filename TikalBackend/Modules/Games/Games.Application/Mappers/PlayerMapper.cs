@@ -10,14 +10,15 @@ namespace Games.Application.Mappers;
 internal static class PlayerMapper
 {
     // Model --> Entity
-    private static Player LobbyPlayerModelToPlayer(LobbyPlayerModel player)
+    private static Player LobbyPlayerModelToPlayer(LobbyPlayerModel player, int turnPosition)
     {
         return new Player
         {
             UserId = player.UserId,
             Name = player.Name,
             Colour = (Colour)player.SelectedColour,
-            Points = 0
+            Points = 0,
+            TurnPosition = turnPosition
         };
     }
 

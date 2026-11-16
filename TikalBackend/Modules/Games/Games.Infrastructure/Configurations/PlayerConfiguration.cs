@@ -25,6 +25,13 @@ internal sealed class PlayerConfiguration : IEntityTypeConfiguration<Player>
         builder.Property(x => x.Points)
             .IsRequired();
 
+        builder.Property(x => x.TurnPosition)
+            .IsRequired();
+
+        // 2 Players in the same game should never have the same turn position
+        builder.HasIndex(x => new { x.GameId, x.TurnPosition })
+            .IsUnique();
+
         builder.HasIndex(x => x.UserId)
             .IsUnique();
 

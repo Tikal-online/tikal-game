@@ -31,6 +31,9 @@ namespace Games.Infrastructure.Database.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
+                    b.Property<int>("CurrentTurnPosition")
+                        .HasColumnType("integer");
+
                     b.Property<long>("DrawnTiles")
                         .HasColumnType("bigint");
 
@@ -39,6 +42,9 @@ namespace Games.Infrastructure.Database.Migrations
 
                     b.Property<byte?>("PendingTile")
                         .HasColumnType("smallint");
+
+                    b.Property<int>("TurnPhase")
+                        .HasColumnType("integer");
 
                     b.Property<uint>("Version")
                         .IsConcurrencyToken()
@@ -76,6 +82,9 @@ namespace Games.Infrastructure.Database.Migrations
                     b.Property<int>("Points")
                         .HasColumnType("integer");
 
+                    b.Property<int>("TurnPosition")
+                        .HasColumnType("integer");
+
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -83,9 +92,10 @@ namespace Games.Infrastructure.Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GameId");
-
                     b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.HasIndex("GameId", "TurnPosition")
                         .IsUnique();
 
                     b.ToTable("Players", "Games");
