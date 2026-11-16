@@ -54,14 +54,14 @@ public sealed class Game : Entity
             return new PlayerNotInGameDomainError();
         }
 
-        Players.Remove(player);
-        Touch();
-        AddDomainEvent(new PlayerLeftDomainEvent(PlayerMapper.PlayerToPlayerEventData(player), LobbyId));
-
         if (player == CurrentPlayer)
         {
             ForceEndTurn();
         }
+
+        Players.Remove(player);
+        Touch();
+        AddDomainEvent(new PlayerLeftDomainEvent(PlayerMapper.PlayerToPlayerEventData(player), LobbyId));
 
         if (HasEnoughPlayers)
         {
