@@ -34,8 +34,8 @@ public sealed class Game : Entity
     public TurnPhase TurnPhase { get; set; }
 
     /// <summary>
-    /// Indicates whose players turn it is right now.
-    /// Matches Player.TurnPosition of the player whose turn it is.
+    /// Indicates which player's turn it is currently.
+    /// Matches <see cref="Player.TurnPosition"/>.
     /// </summary>
     public int CurrentTurnPosition { get; set; }
 
