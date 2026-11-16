@@ -11,4 +11,6 @@ public sealed record GamePlayerModel
     public required ColourModel Colour { get; set; }
 
     public required int Points { get; set; }
+
+    public required int TurnPosition { get; set; }
 }

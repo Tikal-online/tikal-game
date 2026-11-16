@@ -9,4 +9,6 @@ public sealed record GameEventData
     public List<PlayerEventData> Players { get; set; } = [];
 
     public List<TileEventData> Tiles { get; set; } = [];
+
+    public int CurrentTurnPosition { get; set; }
 }

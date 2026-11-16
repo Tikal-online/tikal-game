@@ -18,4 +18,6 @@ public sealed record GamePlayerDto
     public required ColourDto Colour { get; set; }
 
     public required int Points { get; set; }
+
+    public required int TurnPosition { get; set; }
 }

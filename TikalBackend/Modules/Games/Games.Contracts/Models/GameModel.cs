@@ -9,4 +9,6 @@ public sealed record GameModel
     public List<GamePlayerModel> Players { get; set; } = [];
 
     public List<TileModel> Tiles { get; init; } = [];
+
+    public int CurrentTurnPosition { get; set; }
 }
