@@ -38,8 +38,8 @@
     <PackageVersion Include="Riok.Mapperly" Version="4.3.1" />
     <PackageVersion Include="System.IdentityModel.Tokens.Jwt" Version="8.16.0" />
     <PackageVersion Include="Scalar.AspNetCore" Version="2.18.0" />
-    <PackageVersion Include="Testcontainers" Version="4.16.0" />
-    <PackageVersion Include="Testcontainers.PostgreSql" Version="4.16.0" />
+    <PackageVersion Include="Testcontainers" Version="4.17.0" />
+    <PackageVersion Include="Testcontainers.PostgreSql" Version="4.17.0" />
     <PackageVersion Include="WolverineFX" Version="6.64.0" />
     <PackageVersion Include="WolverineFX.EntityFrameworkCore" Version="6.64.0" />
     <PackageVersion Include="WolverineFX.FluentValidation" Version="6.64.0" />
