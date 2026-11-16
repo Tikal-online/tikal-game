@@ -1,4 +1,5 @@
 using System.Numerics;
+using Games.Domain.Enums;
 using Games.Domain.Errors;
 using Games.Domain.Events;
 using Games.Domain.Mappers;
@@ -29,6 +30,14 @@ public sealed class Game : Entity
     /// multiple times without placing.
     /// </summary>
     public TileCardIdentifier? PendingTile { get; set; }
+
+    public TurnPhase TurnPhase { get; set; }
+
+    /// <summary>
+    /// Indicates whose players turn it is right now.
+    /// Matches Player.TurnPosition of the player whose turn it is.
+    /// </summary>
+    public int CurrentTurnPosition { get; set; }
 
     public uint Version { get; set; }
 

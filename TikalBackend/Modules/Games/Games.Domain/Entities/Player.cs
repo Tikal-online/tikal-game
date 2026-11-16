@@ -19,4 +19,6 @@ public sealed class Player
     public Game Game { get; set; } = null!;
 
     public ICollection<TroopAssignment> TroopAssignments { get; set; } = [];
+
+    public required int TurnPosition { get; set; }
 }

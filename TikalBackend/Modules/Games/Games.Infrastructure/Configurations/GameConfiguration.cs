@@ -19,6 +19,12 @@ internal sealed class GameConfiguration : IEntityTypeConfiguration<Game>
 
         builder.Property(x => x.PendingTile);
 
+        builder.Property(x => x.TurnPhase)
+            .IsRequired();
+
+        builder.Property(x => x.CurrentTurnPosition)
+            .IsRequired();
+
         builder.HasMany(x => x.Tiles)
             .WithOne(x => x.Game)
             .HasForeignKey(x => x.GameId)
