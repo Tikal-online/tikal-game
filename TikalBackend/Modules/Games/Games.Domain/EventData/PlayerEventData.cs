@@ -11,4 +11,6 @@ public sealed record PlayerEventData
     public required Colour Colour { get; set; }
 
     public required int Points { get; set; }
+
+    public required int TurnPosition { get; set; }
 }

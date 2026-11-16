@@ -36,6 +36,7 @@ internal static class PlayerMapper
             Name = player.Name,
             Colour = (ColourModel)player.Colour,
             Points = player.Points,
+            TurnPosition = player.TurnPosition
         };
     }
 }
