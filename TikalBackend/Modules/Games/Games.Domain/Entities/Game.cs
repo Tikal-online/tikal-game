@@ -43,6 +43,8 @@ public sealed class Game : Entity
 
     public bool HasEnoughPlayers => Players.Count > 1;
 
+    public Player CurrentPlayer => Players.Single(p => p.TurnPosition == CurrentTurnPosition);
+
     public OneOf<Success, PlayerNotInGameDomainError> RemovePlayer(string userId)
     {
         var player = Players.FirstOrDefault(p => p.UserId == userId);
@@ -55,6 +57,11 @@ public sealed class Game : Entity
         Players.Remove(player);
         Touch();
         AddDomainEvent(new PlayerLeftDomainEvent(PlayerMapper.PlayerToPlayerEventData(player), LobbyId));
+
+        if (player == CurrentPlayer)
+        {
+            ForceEndTurn();
+        }
 
         if (HasEnoughPlayers)
         {
@@ -104,8 +111,30 @@ public sealed class Game : Entity
         return null;
     }
 
+    /// <summary>
+    /// Forces the current turn to end even if the current player has not placed his tile.
+    /// </summary>
+    public void ForceEndTurn()
+    {
+        var nextPlayer = GetNextPlayer();
+
+        TurnPhase = TurnPhase.PlaceTile;
+        CurrentTurnPosition = nextPlayer.TurnPosition;
+    }
+
     public Player? GetPlayer(string userId)
     {
         return Players.FirstOrDefault(p => p.UserId == userId);
+    }
+
+    /// <summary>
+    /// Gets the next Player in the turn order
+    /// </summary>
+    private Player GetNextPlayer()
+    {
+        return Players
+            .Where(p => p.TurnPosition > CurrentTurnPosition)
+            .MinBy(p => p.TurnPosition)
+            ?? Players.MinBy(p => p.TurnPosition)!;
     }
 }
