@@ -6,6 +6,9 @@
       <span class="me-label">({{ t('you') }})</span>
     }
   </p>
+  @if (isCurrentTurn()) {
+    <svg class="turn-icon" data-p-icon="hourglass" [size]="16"></svg>
+  }
   <p class="points">
     <strong>{{ points() }}</strong>
     <span class="unit">{{ t('points') }}</span>

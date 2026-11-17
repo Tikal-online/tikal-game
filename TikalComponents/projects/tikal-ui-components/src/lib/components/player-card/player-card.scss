@@ -20,6 +20,14 @@
   border-color: var(--p-primary-color);
 }
 
+:host(.current-turn) {
+  background-color: color-mix(in srgb, var(--player-colour) 8%, var(--p-content-background));
+
+  .dot {
+    animation: turn-pulse 1.6s ease-out infinite;
+  }
+}
+
 .dot {
   flex: none;
 
@@ -29,6 +37,22 @@
   border-radius: 50%;
 
   background-color: var(--player-colour);
+}
+
+@keyframes turn-pulse {
+  from {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--player-colour) 60%, transparent);
+  }
+
+  to {
+    box-shadow: 0 0 0 0.5rem transparent;
+  }
+}
+
+.turn-icon {
+  flex: none;
+
+  color: var(--player-colour);
 }
 
 .name {

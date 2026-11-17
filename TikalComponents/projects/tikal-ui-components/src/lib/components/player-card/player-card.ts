@@ -1,14 +1,16 @@
 import { Component, computed, input } from '@angular/core';
 import { TranslocoDirective } from '@jsverse/transloco';
+import { Hourglass } from '@primeicons/angular/hourglass';
 import { PlayerColour } from '../player-slot/player-slot';
 
 @Component({
   selector: 'tikal-player-card',
-  imports: [TranslocoDirective],
+  imports: [TranslocoDirective, Hourglass],
   templateUrl: './player-card.html',
   styleUrl: './player-card.scss',
   host: {
     '[class.me]': 'isMe()',
+    '[class.current-turn]': 'isCurrentTurn()',
     '[style.--player-colour]': 'colourValue()',
   },
 })
@@ -24,6 +26,9 @@ export class PlayerCardComponent {
 
   /** Is the player the currently authenticated user? */
   readonly isMe = input.required<boolean>();
+
+  /** Is it currently this player's turn? */
+  readonly isCurrentTurn = input<boolean>(false);
 
   /** @ignore */
   readonly colourMap: Record<PlayerColour, string> = {
