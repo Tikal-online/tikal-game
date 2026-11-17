@@ -16,7 +16,7 @@ public sealed class GetNextTileQueryHandler
         this.gameRepository = gameRepository;
     }
 
-    public async Task<OneOf<TileModel, GameNotFound, NoTilesLeft>> Handle(
+    public async Task<OneOf<TileModel, GameNotFound, InvalidTurnPhase, NoTilesLeft>> Handle(
         GetNextTileQuery query,
         CancellationToken cancellationToken
     )
@@ -28,15 +28,12 @@ public sealed class GetNextTileQueryHandler
             return new GameNotFound(query.GameId);
         }
 
-        var tile = game.DrawTile();
+        var result = game.DrawTile();
 
-        if (tile is null)
-        {
-            return new NoTilesLeft(game.Id);
-        }
-
-        var tileModel = GameMapper.TileToTileModel(tile);
-
-        return tileModel;
+        return result.Match<OneOf<TileModel, GameNotFound, InvalidTurnPhase, NoTilesLeft>>(
+            tile => GameMapper.TileToTileModel(tile),
+            invalidTurnPhase => new InvalidTurnPhase(game.Id),
+            noTileLeft => new NoTilesLeft(game.Id)
+        );
     }
 }

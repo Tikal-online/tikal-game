@@ -48,8 +48,24 @@ public sealed class GetNextTileQueryHandlerTests
     }
 
     [Theory]
-    [ClassData(typeof(ValidGames))]
-    public async Task GivenGameWithTilesLeft_WhenHandle_ThenReturnsTileModel(Game game)
+    [ClassData(typeof(ActionPhaseGames))]
+    public async Task GivenGameInActionPhase_WhenHandle_ThenReturnsInvalidTurnPhaseError(Game game)
+    {
+        // given
+        var query = new GetNextTileQuery(game.Id);
+
+        SetupHappyPath(game);
+
+        // when
+        var result = await handler.Handle(query, TestContext.Current.CancellationToken);
+
+        // then
+        Assert.IsType<InvalidTurnPhase>(result.Value);
+    }
+
+    [Theory]
+    [ClassData(typeof(PlaceTileGames))]
+    public async Task GivenGameInPlaceTilePhase_WhenHandle_ThenReturnsTileModel(Game game)
     {
         // given
         var query = new GetNextTileQuery(game.Id);

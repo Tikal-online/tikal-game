@@ -116,33 +116,33 @@ public sealed class GameTests
     // ------------------------------------------------------------------------
 
     [Theory]
-    [ClassData(typeof(ValidGames))]
-    public void GivenGameWithTilesLeft_WhenDrawTile_ThenReturnsNotNullTile(Game game)
+    [ClassData(typeof(PlaceTileGames))]
+    public void GivenGameInPlaceTilePhase_WhenDrawTile_ThenReturnsTile(Game game)
     {
         // when
-        var tile = game.DrawTile();
+        var result = game.DrawTile();
 
         // then
-        Assert.NotNull(tile);
+        Assert.IsType<Tile>(result.Value, exactMatch: false);
     }
 
     [Theory]
-    [ClassData(typeof(ValidGames))]
-    public void GivenGameWithTilesLeft_WhenDrawTile_ThenSetsPendingTileToDrawnTile(Game game)
+    [ClassData(typeof(PlaceTileGames))]
+    public void GivenGameInPlaceTilePhase_WhenDrawTile_ThenSetsPendingTileToDrawnTile(Game game)
     {
         // when
-        var tile = game.DrawTile();
+        var result = game.DrawTile();
 
         // then
         Assert.Multiple(
             () => Assert.NotNull(game.PendingTile),
-            () => Assert.Equal(TileCatalogue.Tiles[game.PendingTile!.Value], tile)
+            () => Assert.Equal(TileCatalogue.Tiles[game.PendingTile!.Value], result.Value)
         );
     }
 
     [Theory]
-    [ClassData(typeof(ValidGames))]
-    public void GivenGameWithTilesLeft_WhenDrawTile_ThenIncludesPendingTileInDrawnTilesBitmask(Game game)
+    [ClassData(typeof(PlaceTileGames))]
+    public void GivenGameInPlaceTilePhase_WhenDrawTile_ThenIncludesPendingTileInDrawnTilesBitmask(Game game)
     {
         // given
         var drawnTilesBefore = game.DrawnTiles;
@@ -160,14 +160,14 @@ public sealed class GameTests
     }
 
     [Theory]
-    [ClassData(typeof(ValidGames))]
-    public void GivenGameWithTilesLeft_WhenDrawTileMultipleTimesWithoutPlacing_ThenReturnsSameTile(Game game)
+    [ClassData(typeof(PlaceTileGames))]
+    public void GivenGameInPlaceTilePhase_WhenDrawTileMultipleTimesWithoutPlacing_ThenReturnsSameTile(Game game)
     {
         // when
-        var tile = game.DrawTile();
-        var tile1 = game.DrawTile();
-        var tile2 = game.DrawTile();
-        var tile3 = game.DrawTile();
+        var tile = game.DrawTile().Value;
+        var tile1 = game.DrawTile().Value;
+        var tile2 = game.DrawTile().Value;
+        var tile3 = game.DrawTile().Value;
 
         // then
         Assert.Multiple(
@@ -175,5 +175,16 @@ public sealed class GameTests
             () => Assert.Equal(tile, tile2),
             () => Assert.Equal(tile, tile3)
         );
+    }
+
+    [Theory]
+    [ClassData(typeof(ActionPhaseGames))]
+    public void GivenGameinActionPhase_WhenDrawTile_ThenReturnsInvalidTurnPhaseError(Game game)
+    {
+        // when
+        var result = game.DrawTile();
+
+        // then
+        Assert.IsType<InvalidTurnPhaseDomainError>(result.Value);
     }
 }

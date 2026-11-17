@@ -73,12 +73,13 @@ public sealed class Game : Entity
         return new Success();
     }
 
-    /// <summary>
-    /// Draws the next tile of the card stack for this game.
-    /// Returns null if all tiles have been drawn already.
-    /// </summary>
-    public Tile? DrawTile()
+    public OneOf<Tile, InvalidTurnPhaseDomainError, NoTilesLeftDomainError> DrawTile()
     {
+        if (TurnPhase != TurnPhase.PlaceTile)
+        {
+            return new InvalidTurnPhaseDomainError();
+        }
+
         if (PendingTile is not null)
         {
             return TileCatalogue.Tiles[PendingTile.Value];
@@ -108,7 +109,7 @@ public sealed class Game : Entity
             return TileCatalogue.Tiles[tileIdentifier];
         }
 
-        return null;
+        return new NoTilesLeftDomainError();
     }
 
     /// <summary>

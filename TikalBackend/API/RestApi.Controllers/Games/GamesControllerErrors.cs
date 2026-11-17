@@ -40,4 +40,13 @@ public sealed partial class GamesController
             statusCode: StatusCodes.Status404NotFound
         );
     }
+
+    private ObjectResult InvalidTurnPhase(long gameId)
+    {
+        return Problem(
+            title: "Invalid turn phase",
+            detail: $"Game with ID {gameId} is not in a valid turn phase to perform this action",
+            statusCode: StatusCodes.Status409Conflict
+        );
+    }
 }
