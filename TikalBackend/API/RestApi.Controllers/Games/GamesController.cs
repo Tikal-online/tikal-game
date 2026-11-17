@@ -73,7 +73,7 @@ public sealed partial class GamesController : ApiController
     {
         var query = new GetNextTileQuery(Id);
 
-        var result = await bus.InvokeAsync<OneOf<TileModel, GameNotFound, NoTilesLeft>>(query, cancellationToken);
+        var result = await bus.InvokeAsync<OneOf<TileModel, GameNotFound, InvalidTurnPhase, NoTilesLeft>>(query, cancellationToken);
 
         return result.Match<IActionResult>(
             // explicitly declare the type to serialize with type descriminator
@@ -82,6 +82,7 @@ public sealed partial class GamesController : ApiController
                 DeclaredType = typeof(TileDto)
             },
             _ => GameNotFound(Id),
+            _ => InvalidTurnPhase(Id),
             _ => NoTileLeft(Id)
         );
     }
