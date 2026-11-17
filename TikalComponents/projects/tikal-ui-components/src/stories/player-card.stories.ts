@@ -15,6 +15,7 @@ const meta: Meta<PlayerCardComponent> = {
     colour: 'Red',
     points: 12,
     isMe: false,
+    isCurrentTurn: false,
   },
   decorators: [
     applicationConfig({
@@ -43,6 +44,28 @@ export const Me: Story = {
     colour: 'Red',
     points: 12,
     isMe: true,
+  },
+};
+
+export const CurrentTurn: Story = {
+  name: 'Current turn',
+  args: {
+    name: 'MyUser1234',
+    colour: 'Green',
+    points: 18,
+    isMe: false,
+    isCurrentTurn: true,
+  },
+};
+
+export const MyTurn: Story = {
+  name: 'My turn',
+  args: {
+    name: 'MyUser1234',
+    colour: 'Red',
+    points: 12,
+    isMe: true,
+    isCurrentTurn: true,
   },
 };
 
