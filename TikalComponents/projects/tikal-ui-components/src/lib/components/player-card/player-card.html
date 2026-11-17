@@ -7,7 +7,7 @@
     }
   </p>
   @if (isCurrentTurn()) {
-    <svg class="turn-icon" data-p-icon="hourglass" [size]="16"></svg>
+    <svg aria-label="current-turn" class="turn-icon" data-p-icon="hourglass" [size]="16"></svg>
   }
   <p class="points">
     <strong>{{ points() }}</strong>
