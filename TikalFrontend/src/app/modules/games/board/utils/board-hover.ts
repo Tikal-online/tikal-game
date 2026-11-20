@@ -17,6 +17,11 @@ export class BoardHover {
 
   private hovered: Hoverable | null = null;
 
+  // the place currently under the mouse
+  get current(): Hoverable | null {
+    return this.hovered;
+  }
+
   constructor(
     private readonly canvas: HTMLCanvasElement,
     private readonly camera: Camera,

@@ -12,7 +12,7 @@ export class SlotView implements Hoverable {
   readonly body: Mesh;
 
   constructor(
-    coordinate: HexCoordinate,
+    readonly coordinate: HexCoordinate,
     private readonly resources: BoardResources,
   ) {
     this.body = new Mesh(resources.slotGeometry, resources.slotMaterials());
