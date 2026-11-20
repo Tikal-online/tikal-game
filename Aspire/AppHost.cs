@@ -1,5 +1,3 @@
-using Projects;
-
 var builder = DistributedApplication.CreateBuilder(args);
 
 // ================================================
@@ -27,14 +25,14 @@ var postgres = builder.AddPostgres("postgres")
 // identity
 var identityDb = postgres.AddDatabase("identityDb");
 
-var identity = builder.AddProject<Identity>("identity")
+var identity = builder.AddDotnetProject("identity", "../Identity/Identity.csproj")
     .WithReference(identityDb)
     .WaitFor(identityDb);
 
 // tikal backend
 var backendDb = postgres.AddDatabase("backendDb");
 
-var backend = builder.AddProject<TikalBackend_WebHost>("tikal-backend")
+var backend = builder.AddDotnetProject("tikal-backend", "../TikalBackend/TikalBackend.WebHost/TikalBackend.WebHost.csproj")
     .WithUrl("/scalar/v1", "Scalar")
     .WithReference(backendDb)
     .WaitFor(backendDb);
@@ -42,7 +40,7 @@ var backend = builder.AddProject<TikalBackend_WebHost>("tikal-backend")
 // bff
 var bffDb = postgres.AddDatabase("bffDb");
 
-var bff = builder.AddProject<BFF>("tikal-bff")
+var bff = builder.AddDotnetProject("tikal-bff", "../BFF/BFF.csproj")
     .WithReference(bffDb)
     .WaitFor(bffDb);
 

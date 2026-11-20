@@ -1,22 +1,16 @@
-<Project Sdk="Aspire.AppHost.Sdk/13.6.5">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>net10.0</TargetFramework>
         <OutputType>Exe</OutputType>
         <UserSecretsId>8f58aa9c-e58e-459d-881f-b7f1908737ef</UserSecretsId>
-        <AspireUseCliBundle>false</AspireUseCliBundle>
-        <NoWarn>$(NoWarn);ASPIRE010</NoWarn>
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Aspire.Hosting.AppHost"/>
+        <PackageReference Include="Aspire.Hosting.Dotnet"/>
         <PackageReference Include="Aspire.Hosting.JavaScript"/>
         <PackageReference Include="Aspire.Hosting.PostgreSQL"/>
-    </ItemGroup>
-
-    <ItemGroup>
-        <ProjectReference Include="..\BFF\BFF.csproj"/>
-        <ProjectReference Include="..\Identity\Identity.csproj"/>
-        <ProjectReference Include="..\TikalBackend\TikalBackend.WebHost\TikalBackend.WebHost.csproj"/>
     </ItemGroup>
 
 </Project>
