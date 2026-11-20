@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace RestApi.Controllers.Games.Dtos;
 
 public record GameDto
@@ -9,4 +11,7 @@ public record GameDto
     public List<TileDto> Tiles { get; init; } = [];
 
     public int CurrentTurnPosition { get; set; }
+
+    [JsonConverter(typeof(JsonStringEnumConverter))]
+    public TurnPhaseDto TurnPhase { get; set; }
 }

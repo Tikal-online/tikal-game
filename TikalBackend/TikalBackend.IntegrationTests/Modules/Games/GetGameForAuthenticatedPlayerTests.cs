@@ -80,6 +80,7 @@ public sealed class GetGameForAuthenticatedPlayerTests(AppFactoryFixture fixture
             () => Assert.Equal(expectedPlayers.Length, game.Players.Count),
             () => Assert.Equal(4, game.Tiles.Count),
             () => Assert.Equal(0, game.CurrentTurnPosition),
+            () => Assert.Equal(TurnPhaseDto.PlaceTile, game.TurnPhase),
             () =>
             {
                 foreach (var expectedPlayer in expectedPlayers)
