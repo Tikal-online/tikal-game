@@ -16,6 +16,8 @@ export class ActiveLobbyConnection {
 
   readonly updatedPlayers$ = new Subject<Player>();
 
+  readonly lobbyStarted$ = new Subject<void>();
+
   private readonly connection: HubConnection;
 
   private readonly accountStore = inject(AccountStore);
@@ -51,6 +53,10 @@ export class ActiveLobbyConnection {
       }
 
       this.updatedPlayers$.next(player);
+    });
+
+    this.connection.on('LobbyStarted', () => {
+      this.lobbyStarted$.next();
     });
 
     this.connection.onclose(() => {

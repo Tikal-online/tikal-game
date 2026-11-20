@@ -16,3 +16,14 @@
 tikal-player-slot-list {
   max-width: 35rem;
 }
+
+.start-countdown {
+  margin: 0;
+
+  color: var(--p-primary-color);
+  font-size: 1.25rem;
+  font-weight: 600;
+
+  // keeps its space so the list below does not jump when the countdown appears
+  min-height: 1.5em;
+}
