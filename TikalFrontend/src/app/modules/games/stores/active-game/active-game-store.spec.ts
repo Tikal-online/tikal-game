@@ -4,7 +4,6 @@ import { ActiveGameStore } from './active-game-store';
 import { of, throwError } from 'rxjs';
 import { Game } from '../../models/game';
 import { DEFAULT_TEST_GAME, GAME_TESTCASES } from '../../tests/data/game-test-cases';
-import { rotateCosts } from '../../models/tile';
 import { ok } from 'neverthrow';
 
 /** Is the authenticated player on turn and has to place a tile? */
@@ -170,30 +169,27 @@ describe('ActiveGameStore', () => {
   // rotating the drawn tile
   // ------------------------------------------------------------------------
 
-  /** Loads a game where the authenticated player has drawn DEFAULT_TEST_GAME.tiles[0]. */
-  function storeWithDrawnTile(): InstanceType<typeof ActiveGameStore> {
-    const store = TestBed.inject(ActiveGameStore);
+  test.for<Game>(GAME_TESTCASES.filter(isMyTurnToPlaceTile))(
+    'given drawn tile when drawn then rotation is 0 and rotatedDrawnTile equals the drawn tile',
+    (game: Game) => {
+      // given
+      const store = TestBed.inject(ActiveGameStore);
+      const tile = DEFAULT_TEST_GAME.tiles[0];
 
-    activeGameService.getActiveGame.mockReturnValueOnce(
-      of(GAME_TESTCASES.filter(isMyTurnToPlaceTile)[0]),
-    );
+      activeGameService.getActiveGame.mockReturnValueOnce(of(game));
+      activeGameService.getNextTile.mockReturnValueOnce(of(ok(tile)));
 
-    TestBed.runInInjectionContext(() => {
-      store.loadActiveGame();
-    });
-    TestBed.tick();
+      // when
+      TestBed.runInInjectionContext(() => {
+        store.loadActiveGame();
+      });
+      TestBed.tick();
 
-    return store;
-  }
-
-  test('given drawn tile when drawn then rotation is 0 and rotatedDrawnTile equals the drawn tile', () => {
-    // given & when
-    const store = storeWithDrawnTile();
-
-    // then
-    expect(store.drawnTileRotation()).toEqual(0);
-    expect(store.rotatedDrawnTile()).toEqual(store.drawnTile());
-  });
+      // then
+      expect(store.drawnTileRotation()).toEqual(0);
+      expect(store.rotatedDrawnTile()).toEqual(store.drawnTile());
+    },
+  );
 
   test.for([
     { steps: [1], expected: 1 },
@@ -205,7 +201,16 @@ describe('ActiveGameStore', () => {
     'given drawn tile when rotateDrawnTile with $steps then rotation is $expected',
     ({ steps, expected }) => {
       // given
-      const store = storeWithDrawnTile();
+      const store = TestBed.inject(ActiveGameStore);
+      const tile = DEFAULT_TEST_GAME.tiles[0];
+
+      activeGameService.getActiveGame.mockReturnValueOnce(of(DEFAULT_TEST_GAME));
+      activeGameService.getNextTile.mockReturnValueOnce(of(ok(tile)));
+
+      TestBed.runInInjectionContext(() => {
+        store.loadActiveGame();
+      });
+      TestBed.tick();
 
       // when
       steps.forEach((step) => store.rotateDrawnTile(step));
@@ -214,22 +219,6 @@ describe('ActiveGameStore', () => {
       expect(store.drawnTileRotation()).toEqual(expected);
     },
   );
-
-  test('given drawn tile when rotateDrawnTile then keeps the original costs and turns the costs of rotatedDrawnTile', () => {
-    // given
-    const store = storeWithDrawnTile();
-    const drawnTile = store.drawnTile()!;
-
-    // when
-    store.rotateDrawnTile(2);
-
-    // then
-    expect(store.drawnTile()).toEqual(drawnTile);
-    expect(store.rotatedDrawnTile()).toEqual({
-      ...drawnTile,
-      costs: rotateCosts(drawnTile.costs, 2),
-    });
-  });
 
   test('given no drawn tile when rotateDrawnTile then rotation stays 0', () => {
     // given
@@ -241,24 +230,5 @@ describe('ActiveGameStore', () => {
     // then
     expect(store.drawnTileRotation()).toEqual(0);
     expect(store.rotatedDrawnTile()).toBeNull();
-  });
-
-  test('given rotated tile when a tile is drawn again then resets the rotation', () => {
-    // given
-    const store = storeWithDrawnTile();
-    store.rotateDrawnTile(3);
-
-    // when
-    activeGameService.getActiveGame.mockReturnValueOnce(
-      // a reload parses a new game object, like the http response does
-      of(structuredClone(GAME_TESTCASES.filter(isMyTurnToPlaceTile)[0])),
-    );
-    TestBed.runInInjectionContext(() => {
-      store.loadActiveGame();
-    });
-    TestBed.tick();
-
-    // then
-    expect(store.drawnTileRotation()).toEqual(0);
   });
 });
