@@ -2,26 +2,31 @@ import {
   patchState,
   signalStore,
   withComputed,
+  withHooks,
   withMethods,
   withProps,
   withState,
 } from '@ngrx/signals';
 import { Game } from '../../models/game';
 import { Player } from '../../models/player';
+import { Tile } from '../../models/tile';
+import { TurnPhase } from '../../models/turn-phase';
 import { computed, inject } from '@angular/core';
 import { ActiveGameService } from '../../services/active-game/active-game-service';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { pipe, switchMap, tap } from 'rxjs';
+import { EMPTY, pipe, switchMap, tap } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
 
 type ActiveGameState = {
   game: Game | null;
   loadingStatus: 'initial' | 'loading' | 'loaded' | 'error';
+  drawnTile: Tile | null;
 };
 
 const initialState: ActiveGameState = {
   game: null,
   loadingStatus: 'initial',
+  drawnTile: null,
 };
 
 export const ActiveGameStore = signalStore(
@@ -33,6 +38,8 @@ export const ActiveGameStore = signalStore(
 
   withComputed(({ game, loadingStatus }) => ({
     isLoading: computed(() => loadingStatus() === 'loading'),
+
+    turnPhase: computed<TurnPhase | null>(() => game()?.turnPhase ?? null),
 
     currentPlayer: computed<Player | null>(() => {
       const activeGame = game();
@@ -63,5 +70,35 @@ export const ActiveGameStore = signalStore(
         }),
       ),
     ),
+
+    drawTileWhenMyTurn: rxMethod<Player | null>(
+      pipe(
+        tap(() => patchState(store, { drawnTile: null })),
+        switchMap((currentPlayer) => {
+          const game = store.game();
+
+          if (!game || !currentPlayer?.isMe || store.turnPhase() !== 'PlaceTile') {
+            return EMPTY;
+          }
+
+          return store._activeGameService.getNextTile(game.id).pipe(
+            tapResponse({
+              next: (result) => {
+                if (result.isOk()) {
+                  patchState(store, { drawnTile: result.value });
+                }
+              },
+              error: () => patchState(store, { drawnTile: null }),
+            }),
+          );
+        }),
+      ),
+    ),
   })),
+
+  withHooks({
+    onInit(store) {
+      store.drawTileWhenMyTurn(store.currentPlayer);
+    },
+  }),
 );

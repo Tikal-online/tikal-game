@@ -4,10 +4,12 @@ import { TestBed } from '@angular/core/testing';
 import { catchError, firstValueFrom, of } from 'rxjs';
 import { DEFAULT_TEST_GAME, GAME_TESTCASES } from '../../tests/data/game-test-cases';
 import { Game } from '../../models/game';
+import { Tile } from '../../models/tile';
 import {
   ERROR_RESPONSES,
   HttpResponseData,
   NOT_FOUND,
+  CONFLICT,
 } from '../../../../core/tests/http-responses';
 import { HttpErrorResponse } from '@angular/common/http';
 import { signal } from '@angular/core';
@@ -100,6 +102,78 @@ describe('ActiveGameService', () => {
 
       // when & then
       const req = http.expectOne({ method: 'GET', url: '/Api/Games/me' });
+      req.flush('', error);
+
+      await promise;
+
+      expect(capturedError!.status).toEqual(error.status);
+    },
+  );
+
+  test.for<Tile>(DEFAULT_TEST_GAME.tiles)(
+    'getNextTile returns $type tile when GET /Api/Games/{id}/Tiles/next returns success',
+    async (tile: Tile) => {
+      // given
+      const promise = firstValueFrom(service.getNextTile(DEFAULT_TEST_GAME.id));
+
+      // when & then
+      const req = http.expectOne({
+        method: 'GET',
+        url: `/Api/Games/${DEFAULT_TEST_GAME.id}/Tiles/next`,
+      });
+      req.flush(tile);
+
+      const result = await promise;
+
+      expect(result.isOk() && result.value).toEqual(tile);
+    },
+  );
+
+  test.for([
+    { response: NOT_FOUND, title: 'Game not found', expected: 'GameNotFound' },
+    { response: NOT_FOUND, title: 'No tile left', expected: 'NoTilesLeft' },
+    { response: CONFLICT, title: 'Invalid turn phase', expected: 'InvalidTurnPhase' },
+  ])(
+    'getNextTile returns $expected when GET /Api/Games/{id}/Tiles/next returns $response.status $title',
+    async ({ response, title, expected }) => {
+      // given
+      const promise = firstValueFrom(service.getNextTile(DEFAULT_TEST_GAME.id));
+
+      // when & then
+      const req = http.expectOne({
+        method: 'GET',
+        url: `/Api/Games/${DEFAULT_TEST_GAME.id}/Tiles/next`,
+      });
+      req.flush({ title }, response);
+
+      const result = await promise;
+
+      expect(result.isErr() && result.error.type).toEqual(expected);
+    },
+  );
+
+  test.for<HttpResponseData>(
+    ERROR_RESPONSES.filter((error) => error.status !== 404 && error.status !== 409),
+  )(
+    'getNextTile throws error when GET /Api/Games/{id}/Tiles/next returns $status',
+    async (error: HttpResponseData) => {
+      // given
+      let capturedError: HttpErrorResponse;
+
+      const promise = firstValueFrom(
+        service.getNextTile(DEFAULT_TEST_GAME.id).pipe(
+          catchError((httpError) => {
+            capturedError = httpError;
+            return of(httpError);
+          }),
+        ),
+      );
+
+      // when & then
+      const req = http.expectOne({
+        method: 'GET',
+        url: `/Api/Games/${DEFAULT_TEST_GAME.id}/Tiles/next`,
+      });
       req.flush('', error);
 
       await promise;
