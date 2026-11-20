@@ -4,19 +4,18 @@ using RestApi.Controllers.Lobbies.Dtos;
 using TikalBackend.IntegrationTests.Extensions;
 using TikalBackend.IntegrationTests.Modules.Games;
 using TikalBackend.IntegrationTests.Modules.Lobbies.Dtos;
-using LobbyPlayerDto = SignalRApi.Hubs.Lobbies.Dtos.LobbyPlayerDto;
 
 namespace TikalBackend.IntegrationTests.Modules.Lobbies;
 
 public sealed class ActiveLobbyTests(AppFactoryFixture fixture) : IntegrationTestFixture(fixture)
 {
     [Fact]
-    public async Task GivenUnauthenticatedUser_WhenConnect_ThenThrowsInvalidOperation()
+    public Task GivenUnauthenticatedUser_WhenConnect_ThenThrowsInvalidOperation()
     {
         // when & then
-        await Assert.ThrowsAsync<InvalidOperationException>(async () =>
+        return Assert.ThrowsAsync<InvalidOperationException>(() =>
         {
-            await CreateConnection(LobbyUrl.ActiveLobbyHub);
+            return CreateConnection(LobbyUrl.ActiveLobbyHub);
         });
     }
 

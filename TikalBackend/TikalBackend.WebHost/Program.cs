@@ -2,6 +2,7 @@ using JasperFx;
 using JasperFx.Resources;
 using Microsoft.AspNetCore.SignalR;
 using RestApi.Controllers;
+using SignalRApi.Hubs.Games.ActiveGame;
 using SignalRApi.Hubs.Lobbies.ActiveLobby;
 using TikalBackend.WebHost.Extensions;
 using TikalBackend.WebHost.Middleware;
@@ -63,5 +64,6 @@ app.MapHealthChecks("/healthcheck");
 app.MapControllers();
 
 app.MapHub<ActiveLobbyHub>("/hub/activeLobby").DisableHttpMetrics();
+app.MapHub<ActiveGameHub>("/hub/activeGame").DisableHttpMetrics();
 
 await app.RunJasperFxCommands(args);
