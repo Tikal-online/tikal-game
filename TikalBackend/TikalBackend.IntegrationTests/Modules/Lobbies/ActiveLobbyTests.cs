@@ -237,6 +237,36 @@ public sealed class ActiveLobbyTests(AppFactoryFixture fixture) : IntegrationTes
 
     [Theory]
     [ClassData(typeof(ValidCreateLobbyDtos))]
+    public async Task GivenLobby_WhenLobbyStarted_ThenSendsLobbyStartedMessage(CreateLobbyDto createLobbyDto)
+    {
+        await RunTracked(async () =>
+        {
+            // given
+            await CreateUserAccount(TestUser.Default);
+            await CreateUserAccount(TestUser.TestUser1);
+
+            var lobby = await CreateAndGetLobby(createLobbyDto, TestUser.Default);
+
+            await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.TestUser1, null, TestContext.Current.CancellationToken);
+
+            await Client.PutAsyncWithUser(LobbyUrl.SetPlayerReady, TestUser.Default, null, TestContext.Current.CancellationToken);
+            await Client.PutAsyncWithUser(LobbyUrl.SetPlayerReady, TestUser.TestUser1, null, TestContext.Current.CancellationToken);
+
+            await using var connection = await CreateConnection(LobbyUrl.ActiveLobbyHub, TestUser.Default);
+
+            var lobbyStartedSource = new TaskCompletionSource();
+            connection.On("LobbyStarted", lobbyStartedSource.SetResult);
+
+            // when
+            await Client.PostAsyncWithUser(LobbyUrl.StartLobby(lobby.Id), TestUser.Default, null, TestContext.Current.CancellationToken);
+
+            // then
+            await lobbyStartedSource.Task.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken);
+        });
+    }
+
+    [Theory]
+    [ClassData(typeof(ValidCreateLobbyDtos))]
     public async Task GivenInGameLobby_WhenPlayerLeavesGame_ThenSendsPlayerLeftMessage(CreateLobbyDto createLobbyDto)
     {
         // given
