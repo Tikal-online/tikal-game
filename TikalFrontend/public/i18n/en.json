@@ -38,7 +38,7 @@
       "readyup-button-label": "I'm ready",
       "readydown-button-label": "Not ready",
       "start-button-label": "Start game",
-      "start-countdown": "Game starts in {{seconds}}…",
+      "start-countdown": "Game starts in",
       "starting": "Starting game…"
     },
     "create": {
