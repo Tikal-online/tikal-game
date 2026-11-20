@@ -9,7 +9,7 @@ import {
 } from '@ngrx/signals';
 import { Game } from '../../models/game';
 import { Player } from '../../models/player';
-import { Tile } from '../../models/tile';
+import { rotateCosts, Tile } from '../../models/tile';
 import { TurnPhase } from '../../models/turn-phase';
 import { computed, inject } from '@angular/core';
 import { ActiveGameService } from '../../services/active-game/active-game-service';
@@ -21,12 +21,15 @@ type ActiveGameState = {
   game: Game | null;
   loadingStatus: 'initial' | 'loading' | 'loaded' | 'error';
   drawnTile: Tile | null;
+  /** 60 degree steps the drawn tile is turned clockwise (0 to 5), the tile keeps its original costs. */
+  drawnTileRotation: number;
 };
 
 const initialState: ActiveGameState = {
   game: null,
   loadingStatus: 'initial',
   drawnTile: null,
+  drawnTileRotation: 0,
 };
 
 export const ActiveGameStore = signalStore(
@@ -54,6 +57,14 @@ export const ActiveGameStore = signalStore(
     }),
   })),
 
+  withComputed(({ drawnTile, drawnTileRotation }) => ({
+    rotatedDrawnTile: computed<Tile | null>(() => {
+      const tile = drawnTile();
+
+      return tile ? { ...tile, costs: rotateCosts(tile.costs, drawnTileRotation()) } : null;
+    }),
+  })),
+
   withMethods((store) => ({
     loadActiveGame: rxMethod<void>(
       pipe(
@@ -71,9 +82,19 @@ export const ActiveGameStore = signalStore(
       ),
     ),
 
+    rotateDrawnTile(steps: number): void {
+      if (!store.drawnTile()) {
+        return;
+      }
+
+      patchState(store, {
+        drawnTileRotation: (((store.drawnTileRotation() + steps) % 6) + 6) % 6,
+      });
+    },
+
     drawTileWhenMyTurn: rxMethod<Player | null>(
       pipe(
-        tap(() => patchState(store, { drawnTile: null })),
+        tap(() => patchState(store, { drawnTile: null, drawnTileRotation: 0 })),
         switchMap((currentPlayer) => {
           const game = store.game();
 

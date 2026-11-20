@@ -1,5 +1,9 @@
 <ng-container *transloco="let t; prefix: 'games.active'">
-  <tikal-game-board [pendingTile]="activeGameStore.drawnTile()" [tiles]="boardTiles()" />
+  <tikal-game-board
+    [pendingTile]="activeGameStore.rotatedDrawnTile()"
+    [tiles]="boardTiles()"
+    (rotatePendingTile)="activeGameStore.rotateDrawnTile($event)"
+  />
   <aside>
     <h2>{{ t('players-header') }}</h2>
     @if (activeGameStore.game(); as game) {

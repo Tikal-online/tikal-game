@@ -164,4 +164,73 @@ describe('ActiveGameStore', () => {
       expect(store.drawnTile()).toBeNull();
     },
   );
+
+  // ------------------------------------------------------------------------
+  // rotating the drawn tile
+  // ------------------------------------------------------------------------
+
+  test.for<Game>(GAME_TESTCASES.filter(isMyTurnToPlaceTile))(
+    'given drawn tile when drawn then rotation is 0 and rotatedDrawnTile equals the drawn tile',
+    (game: Game) => {
+      // given
+      const store = TestBed.inject(ActiveGameStore);
+      const tile = DEFAULT_TEST_GAME.tiles[0];
+
+      activeGameService.getActiveGame.mockReturnValueOnce(of(game));
+      activeGameService.getNextTile.mockReturnValueOnce(of(ok(tile)));
+
+      // when
+      TestBed.runInInjectionContext(() => {
+        store.loadActiveGame();
+      });
+      TestBed.tick();
+
+      // then
+      expect(store.drawnTileRotation()).toEqual(0);
+      expect(store.rotatedDrawnTile()).toEqual(store.drawnTile());
+    },
+  );
+
+  test.for([
+    { steps: [1], expected: 1 },
+    { steps: [-1], expected: 5 },
+    { steps: [1, 1, 1], expected: 3 },
+    { steps: [1, -1], expected: 0 },
+    { steps: [1, 1, 1, 1, 1, 1], expected: 0 },
+  ])(
+    'given drawn tile when rotateDrawnTile with $steps then rotation is $expected',
+    ({ steps, expected }) => {
+      // given
+      const store = TestBed.inject(ActiveGameStore);
+      const tile = DEFAULT_TEST_GAME.tiles[0];
+
+      activeGameService.getActiveGame.mockReturnValueOnce(
+        of(GAME_TESTCASES.filter(isMyTurnToPlaceTile)[0]),
+      );
+      activeGameService.getNextTile.mockReturnValueOnce(of(ok(tile)));
+
+      TestBed.runInInjectionContext(() => {
+        store.loadActiveGame();
+      });
+      TestBed.tick();
+
+      // when
+      steps.forEach((step) => store.rotateDrawnTile(step));
+
+      // then
+      expect(store.drawnTileRotation()).toEqual(expected);
+    },
+  );
+
+  test('given no drawn tile when rotateDrawnTile then rotation stays 0', () => {
+    // given
+    const store = TestBed.inject(ActiveGameStore);
+
+    // when
+    store.rotateDrawnTile(1);
+
+    // then
+    expect(store.drawnTileRotation()).toEqual(0);
+    expect(store.rotatedDrawnTile()).toBeNull();
+  });
 });
