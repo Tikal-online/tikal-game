@@ -8,7 +8,8 @@
           <li>
             <tikal-player-card
               [colour]="player.colour"
-              [isMe]="false"
+              [isCurrentTurn]="player.turnPosition === game.currentTurnPosition"
+              [isMe]="player.isMe"
               [name]="player.name"
               [points]="player.points"
             />
