@@ -4,7 +4,7 @@ import { ActiveGameStore } from './active-game-store';
 import { of, throwError } from 'rxjs';
 import { Game } from '../../models/game';
 import { DEFAULT_TEST_GAME, GAME_TESTCASES } from '../../tests/data/game-test-cases';
-import { err, ok } from 'neverthrow';
+import { ok } from 'neverthrow';
 
 /** Is the authenticated player on turn and has to place a tile? */
 function isMyTurnToPlaceTile(game: Game): boolean {
