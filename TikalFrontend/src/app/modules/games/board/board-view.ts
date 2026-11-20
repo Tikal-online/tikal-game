@@ -1,10 +1,10 @@
 import { DirectionalLight, Group, HemisphereLight, Scene, WebGLRenderer } from 'three';
-import { Tile } from '../models/tile';
+import { HexCoordinate, Tile } from '../models/tile';
 import { BoardCamera } from './utils/board-camera';
 import { BoardHover, Hoverable } from './utils/board-hover';
 import { boardCoordinates } from './board-layout';
 import { BoardResources } from './board-resources';
-import { coordinateKey } from './hex-layout';
+import { coordinateKey, EDGE_OFFSETS } from './hex-layout';
 import { SlotView } from './slot-view';
 import { TileView } from './tile-view';
 
@@ -164,7 +164,15 @@ export class BoardView {
       this.scene.add(this.preview.object);
     }
 
+    this.preview.setInvalid(!this.isValidPlacement(slot.coordinate));
     this.preview.object.visible = true;
+  }
+
+  // a tile can only be set next to a tile that is already on the board
+  private isValidPlacement({ q, r }: HexCoordinate): boolean {
+    return Object.values(EDGE_OFFSETS).some((offset) =>
+      this.tileViews.has(coordinateKey({ q: q + offset.q, r: r + offset.r })),
+    );
   }
 
   private hoverables(): Hoverable[] {
