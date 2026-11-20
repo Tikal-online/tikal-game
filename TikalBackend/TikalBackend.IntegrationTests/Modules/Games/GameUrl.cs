@@ -6,6 +6,8 @@ internal static class GameUrl
 
     public const string GetActiveGame = $"{gameUrl}/me";
 
+    public const string ActiveGameHub = $"hub/activeGame";
+
     public static string LeaveGame(long id)
     {
         return $"Games/{id}/Players/me";
