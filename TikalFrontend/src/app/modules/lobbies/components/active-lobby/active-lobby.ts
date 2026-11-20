@@ -23,7 +23,6 @@ export class ActiveLobbyComponent {
 
     inject(DestroyRef).onDestroy(() => this.activeLobbyStore.disconnect());
 
-    // the lobby was started and the countdown has run out
     effect(() => {
       if (this.activeLobbyStore.isStarted()) {
         this.router.navigate(['/Games/me']);

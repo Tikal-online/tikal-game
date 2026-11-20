@@ -14,13 +14,13 @@
       (clicked)="leave()"
     />
   </div>
-  <p class="start-countdown" role="status">
+  <output class="start-countdown">
     @if (activeLobbyStore.startCountdown(); as secondsLeft) {
       {{ t('start-countdown', { seconds: secondsLeft }) }}
     } @else if (activeLobbyStore.isStarted()) {
       {{ t('starting') }}
     }
-  </p>
+  </output>
   @if (activeLobbyStore.isLoading()) {
     <tikal-player-slot-list [isLoading]="true" [maxPlayers]="4" [players]="[]" />
   } @else if (activeLobbyStore.lobby(); as lobby) {
