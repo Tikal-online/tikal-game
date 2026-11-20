@@ -9,7 +9,7 @@
             <tikal-player-card
               [colour]="player.colour"
               [isCurrentTurn]="player.turnPosition === game.currentTurnPosition"
-              [isMe]="false"
+              [isMe]="player.isMe"
               [name]="player.name"
               [points]="player.points"
             />

@@ -7,3 +7,13 @@ export type Game = {
   tiles: Tile[];
   currentTurnPosition: number;
 };
+
+export function markAuthenticatedPlayer(game: Game, userId: string | undefined): Game {
+  return {
+    ...game,
+    players: game.players.map((player) => ({
+      ...player,
+      isMe: player.userId === userId,
+    })),
+  };
+}

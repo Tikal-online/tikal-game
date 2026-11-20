@@ -6,4 +6,5 @@ export type Player = {
   colour: Colour;
   points: number;
   turnPosition: number;
+  isMe: boolean;
 };

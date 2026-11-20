@@ -2,24 +2,33 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { ActiveGameService } from './active-game-service';
 import { TestBed } from '@angular/core/testing';
 import { catchError, firstValueFrom, of } from 'rxjs';
-import { DEFAULT_TEST_GAME } from '../../tests/data/game-test-cases';
+import { DEFAULT_TEST_GAME, GAME_TESTCASES } from '../../tests/data/game-test-cases';
+import { Game } from '../../models/game';
 import {
   ERROR_RESPONSES,
   HttpResponseData,
   NOT_FOUND,
 } from '../../../../core/tests/http-responses';
 import { HttpErrorResponse } from '@angular/common/http';
+import { signal } from '@angular/core';
+import { AccountStore } from '../../../../core/stores/account-store/account-store';
+import { Account } from '../../../../core/services/account-service/account-service';
 
 describe('ActiveGameService', () => {
   // dependencies
   let http: HttpTestingController;
+  const account = signal<Account | null>(null);
 
   // under test
   let service: ActiveGameService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [ActiveGameService, provideHttpClientTesting()],
+      providers: [
+        ActiveGameService,
+        provideHttpClientTesting(),
+        { provide: AccountStore, useValue: { account } },
+      ],
     });
 
     http = TestBed.inject(HttpTestingController);
@@ -29,6 +38,7 @@ describe('ActiveGameService', () => {
 
   afterEach(() => {
     http.verify();
+    account.set(null);
   });
 
   test('getActiveGame returns game when GET /Api/Games/me returns success', async () => {
@@ -41,6 +51,28 @@ describe('ActiveGameService', () => {
 
     expect(await promise).toEqual(DEFAULT_TEST_GAME);
   });
+
+  test.for<Game>(GAME_TESTCASES)(
+    'getActiveGame marks the authenticated player with isMe in game $id when GET /Api/Games/me returns success',
+    async (testGame: Game) => {
+      // given
+      const me = testGame.players.at(-1)!;
+      account.set({ userId: me.userId, name: me.name });
+
+      const promise = firstValueFrom(service.getActiveGame());
+
+      // when & then
+      const req = http.expectOne({ method: 'GET', url: '/Api/Games/me' });
+      req.flush(testGame);
+
+      const game = await promise;
+
+      expect(game?.players.filter((player) => player.isMe).map((player) => player.userId)).toEqual([
+        me.userId,
+      ]);
+    },
+  );
+
   test('getActiveGame returns null when GET /Api/Games/me returns NotFound', async () => {
     // given
     const promise = firstValueFrom(service.getActiveGame());
