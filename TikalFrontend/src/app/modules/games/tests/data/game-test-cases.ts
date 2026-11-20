@@ -30,6 +30,7 @@ export const GAME_TESTCASES: Game[] = [
       { type: 'temple', costs: COSTS, coordinate: { q: -1, r: 1 }, templeLevel: 3 },
     ],
     currentTurnPosition: 0,
+    turnPhase: 'PlaceTile',
   },
   {
     id: 2,
@@ -53,6 +54,7 @@ export const GAME_TESTCASES: Game[] = [
     ],
     tiles: [],
     currentTurnPosition: 1,
+    turnPhase: 'Actions',
   },
   {
     id: 3,
@@ -76,6 +78,7 @@ export const GAME_TESTCASES: Game[] = [
     ],
     tiles: [],
     currentTurnPosition: 2,
+    turnPhase: 'PlaceTile',
   },
 ];
 
