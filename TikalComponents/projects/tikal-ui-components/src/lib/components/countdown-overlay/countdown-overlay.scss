@@ -1,0 +1,80 @@
+// covers the whole page, everything behind it is dimmed and can not be clicked
+:host {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+
+  background-color: color-mix(in srgb, var(--p-surface-950) 60%, transparent);
+  backdrop-filter: blur(4px);
+
+  color: var(--p-surface-0);
+  text-align: center;
+}
+
+.label {
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.number {
+  font-size: clamp(6rem, 25vw, 12rem);
+  font-weight: 800;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+
+  color: var(--p-primary-300);
+
+  // only a changed animation name restarts an animation, the number alternates between two identical ones
+  animation: pop-even 0.4s ease-out;
+
+  &.odd {
+    animation-name: pop-odd;
+  }
+}
+
+.starting {
+  font-size: clamp(2rem, 8vw, 3.5rem);
+  font-weight: 800;
+
+  animation: pop-even 0.4s ease-out;
+}
+
+@keyframes pop-even {
+  from {
+    opacity: 0;
+    transform: scale(1.6);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pop-odd {
+  from {
+    opacity: 0;
+    transform: scale(1.6);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .number,
+  .starting {
+    animation: none;
+  }
+}

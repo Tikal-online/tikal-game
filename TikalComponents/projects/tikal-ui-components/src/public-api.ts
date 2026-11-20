@@ -49,3 +49,6 @@ export * from './lib/components/active-session-link/active-session-link';
 
 // Header
 export * from './lib/components/header/header';
+
+// Countdown overlay
+export * from './lib/components/countdown-overlay/countdown-overlay';

@@ -1,0 +1,6 @@
+@if (secondsLeft() > 0) {
+  <span class="label">{{ label() }}</span>
+  <span class="number" [class.odd]="secondsLeft() % 2 === 1">{{ secondsLeft() }}</span>
+} @else {
+  <span class="starting">{{ finalLabel() }}</span>
+}
