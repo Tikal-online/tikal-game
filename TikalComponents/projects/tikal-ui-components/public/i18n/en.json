@@ -17,9 +17,5 @@
   "active-session-link": {
     "lobby": "Your lobby: {{name}}",
     "game": "Your game: {{name}}"
-  },
-  "countdown-overlay": {
-    "starts-in": "Game starts in",
-    "starting": "Starting game…"
   }
 }

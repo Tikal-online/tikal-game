@@ -13,7 +13,7 @@ const meta: Meta<CountdownOverlayComponent> = {
     props: { ...args, inDocs: viewMode === 'docs' },
     template: `
       <div [style.transform]="inDocs ? 'translateZ(0)' : null" [style.height]="inDocs ? '25rem' : null">
-        <tikal-countdown-overlay [secondsLeft]="secondsLeft" />
+        <tikal-countdown-overlay [finalLabel]="finalLabel" [label]="label" [secondsLeft]="secondsLeft" />
       </div>
     `,
   }),
@@ -24,6 +24,8 @@ const meta: Meta<CountdownOverlayComponent> = {
   },
   args: {
     secondsLeft: 3,
+    label: 'Game starts in',
+    finalLabel: 'Starting game…',
   },
 };
 

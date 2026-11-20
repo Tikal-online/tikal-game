@@ -1,13 +1,17 @@
 import { Component, input } from '@angular/core';
-import { TranslocoDirective } from '@jsverse/transloco';
 
 @Component({
   selector: 'tikal-countdown-overlay',
-  imports: [TranslocoDirective],
   templateUrl: './countdown-overlay.html',
   styleUrl: './countdown-overlay.scss',
 })
 export class CountdownOverlayComponent {
-  /** How many seconds are left until the game starts? 0 shows that it is starting now. */
+  /** How many seconds are left? 0 shows the final label instead of the number. */
   readonly secondsLeft = input.required<number>();
+
+  /** What text is shown above the number while counting down? */
+  readonly label = input.required<string>();
+
+  /** What text is shown once the countdown has reached 0? */
+  readonly finalLabel = input.required<string>();
 }
