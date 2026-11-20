@@ -15,7 +15,7 @@ public sealed class LobbyStartedIntegrationEventHandler
         this.gameRepository = gameRepository;
     }
 
-    public void Handle(LobbyStartedIntegrationEvent notification, CancellationToken cancellationToken)
+    public void Handle(LobbyStartedIntegrationEvent notification)
     {
         var players = PlayerMapper.LobbyPlayerModelsToPlayers(notification.Lobby.Players);
 
