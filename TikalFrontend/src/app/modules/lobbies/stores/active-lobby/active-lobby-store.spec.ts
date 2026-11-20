@@ -4,7 +4,7 @@ import { Player } from '../../models/player';
 import { TestBed } from '@angular/core/testing';
 import { ActiveLobbyService } from '../../services/active-lobby/active-lobby-service';
 import { ActiveLobbyConnection } from '../../services/active-lobby/active-lobby-connection';
-import { ActiveLobbyStore } from './active-lobby-store';
+import { ActiveLobbyStore, START_COUNTDOWN_SECONDS } from './active-lobby-store';
 import { Lobby } from '../../models/lobby';
 import { DEFAULT_TEST_LOBBY, LOBBY_TESTCASES } from '../../tests/data/lobby-test-cases';
 import { PLAYER_TESTCASES } from '../../tests/data/player-test-cases';
@@ -32,6 +32,7 @@ describe('ActiveLobbyStore', () => {
     joinedPlayers$: new Subject<Player>(),
     updatedPlayers$: new Subject<Player>(),
     leftPlayers$: new Subject<Player>(),
+    lobbyStarted$: new Subject<void>(),
   };
 
   beforeEach(() => {
@@ -46,6 +47,7 @@ describe('ActiveLobbyStore', () => {
   });
 
   afterEach(() => {
+    vi.useRealTimers();
     vi.clearAllMocks();
   });
 
@@ -469,4 +471,48 @@ describe('ActiveLobbyStore', () => {
       await expect(store.startActiveLobby()).rejects.toThrow('test error');
     },
   );
+
+  test('given lobby not started when lobbyStarted$ emits then startCountdown is null and isStarting is false', () => {
+    // given
+    vi.useFakeTimers();
+
+    const store = TestBed.inject(ActiveLobbyStore);
+
+    // then
+    expect(store.startCountdown()).toBeNull();
+    expect(store.isStarting()).toBe(false);
+    expect(store.isStarted()).toBe(false);
+  });
+
+  test('when lobbyStarted$ emits then starts the countdown at START_COUNTDOWN_SECONDS', () => {
+    // given
+    vi.useFakeTimers();
+
+    const store = TestBed.inject(ActiveLobbyStore);
+
+    // when
+    activeLobbyConnection.lobbyStarted$.next();
+    vi.advanceTimersByTime(0);
+
+    // then
+    expect(store.startCountdown()).toEqual(START_COUNTDOWN_SECONDS);
+    expect(store.isStarting()).toBe(true);
+    expect(store.isStarted()).toBe(false);
+  });
+
+  test('when lobbyStarted$ emits then isStarted is true once the countdown has run out and stays at 0', () => {
+    // given
+    vi.useFakeTimers();
+
+    const store = TestBed.inject(ActiveLobbyStore);
+
+    // when
+    activeLobbyConnection.lobbyStarted$.next();
+    vi.advanceTimersByTime(START_COUNTDOWN_SECONDS * 1000 + 5000);
+
+    // then
+    expect(store.startCountdown()).toEqual(0);
+    expect(store.isStarting()).toBe(true);
+    expect(store.isStarted()).toBe(true);
+  });
 });

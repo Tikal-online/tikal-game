@@ -8,11 +8,19 @@
     <tikal-button
       colour="danger"
       type="button"
+      [disabled]="activeLobbyStore.isStarting()"
       [isLoading]="isLeaving()"
       [label]="t('leave-button-label')"
       (clicked)="leave()"
     />
   </div>
+  <p class="start-countdown" role="status">
+    @if (activeLobbyStore.startCountdown(); as secondsLeft) {
+      {{ t('start-countdown', { seconds: secondsLeft }) }}
+    } @else if (activeLobbyStore.isStarted()) {
+      {{ t('starting') }}
+    }
+  </p>
   @if (activeLobbyStore.isLoading()) {
     <tikal-player-slot-list [isLoading]="true" [maxPlayers]="4" [players]="[]" />
   } @else if (activeLobbyStore.lobby(); as lobby) {
@@ -21,6 +29,7 @@
         <tikal-button
           size="large"
           type="button"
+          [disabled]="activeLobbyStore.isStarting()"
           [label]="t('readydown-button-label')"
           [outline]="true"
           (clicked)="activeLobbyStore.readyDown()"
@@ -29,6 +38,7 @@
         <tikal-button
           size="large"
           type="button"
+          [disabled]="activeLobbyStore.isStarting()"
           [label]="t('readyup-button-label')"
           (clicked)="activeLobbyStore.readyUp()"
         />
@@ -37,7 +47,7 @@
         <tikal-button
           size="large"
           type="button"
-          [disabled]="!activeLobbyStore.canBeStarted()"
+          [disabled]="!activeLobbyStore.canBeStarted() || activeLobbyStore.isStarting()"
           [label]="t('start-button-label')"
           (clicked)="activeLobbyStore.startActiveLobby()"
         />

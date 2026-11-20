@@ -37,7 +37,9 @@
       "leave-button-label": "Leave lobby",
       "readyup-button-label": "I'm ready",
       "readydown-button-label": "Not ready",
-      "start-button-label": "Start game"
+      "start-button-label": "Start game",
+      "start-countdown": "Game starts in {{seconds}}…",
+      "starting": "Starting game…"
     },
     "create": {
       "header": "Create a lobby",

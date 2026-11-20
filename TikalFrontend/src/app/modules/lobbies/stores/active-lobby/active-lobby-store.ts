@@ -10,7 +10,7 @@ import {
 import { Lobby } from '../../models/lobby';
 import { computed, inject } from '@angular/core';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { pipe, switchMap, tap } from 'rxjs';
+import { map, pipe, switchMap, take, tap, timer } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
 import {
   ActiveLobbyService,
@@ -28,16 +28,21 @@ import {
 } from '../../errors/lobby-errors';
 import { LoadingStatus } from '../../../../core/types/loading-status';
 
+export const START_COUNTDOWN_SECONDS = 3;
+
 type ActiveLobbyState = {
   lobby: Lobby | null;
   connectionStatus: ConnectionStatus;
   loadingStatus: LoadingStatus;
+  /** Seconds left until the game starts, null while the lobby has not been started. */
+  startCountdown: number | null;
 };
 
 const initialStatus: ActiveLobbyState = {
   lobby: null,
   connectionStatus: 'Disconnected',
   loadingStatus: 'initial',
+  startCountdown: null,
 };
 
 export const ActiveLobbyStore = signalStore(
@@ -49,12 +54,16 @@ export const ActiveLobbyStore = signalStore(
     _activeLobbyConnection: inject(ActiveLobbyConnection),
   })),
 
-  withComputed(({ loadingStatus, lobby }) => ({
+  withComputed(({ loadingStatus, lobby, startCountdown }) => ({
     isLoading: computed(() => loadingStatus() === 'loading'),
 
     activePlayer: computed(() => lobby()?.players.find((p) => p.isMe)),
 
     isInLobby: computed(() => lobby() !== null),
+
+    isStarting: computed(() => startCountdown() !== null),
+
+    isStarted: computed(() => startCountdown() === 0),
 
     canBeStarted: computed(() => {
       const players = lobby()?.players ?? [];
@@ -184,6 +193,19 @@ export const ActiveLobbyStore = signalStore(
       ),
     ),
 
+    watchLobbyStarted: rxMethod<void>(
+      pipe(
+        switchMap(() => store._activeLobbyConnection.lobbyStarted$),
+        switchMap(() =>
+          timer(0, 1000).pipe(
+            take(START_COUNTDOWN_SECONDS + 1),
+            map((elapsed) => START_COUNTDOWN_SECONDS - elapsed),
+          ),
+        ),
+        tap((secondsLeft) => patchState(store, { startCountdown: secondsLeft })),
+      ),
+    ),
+
     watchConnectionStatus: rxMethod<void>(
       pipe(
         switchMap(() => store._activeLobbyConnection.connectionStatus$),
@@ -196,6 +218,7 @@ export const ActiveLobbyStore = signalStore(
     onInit(store) {
       store.watchJoinedPlayers();
       store.watchConnectionStatus();
+      store.watchLobbyStarted();
       store.watchLeftPlayers();
       store.watchUpdatedPlayers();
     },

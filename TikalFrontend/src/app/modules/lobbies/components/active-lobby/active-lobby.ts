@@ -23,6 +23,13 @@ export class ActiveLobbyComponent {
 
     inject(DestroyRef).onDestroy(() => this.activeLobbyStore.disconnect());
 
+    // the lobby was started and the countdown has run out
+    effect(() => {
+      if (this.activeLobbyStore.isStarted()) {
+        this.router.navigate(['/Games/me']);
+      }
+    });
+
     // still covers having no active lobby on page load and being removed via SignalR
     effect(() => {
       if (!this.activeLobbyStore.lobby() && !this.activeLobbyStore.isLoading()) {
