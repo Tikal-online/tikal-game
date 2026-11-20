@@ -96,7 +96,7 @@ public sealed class ActiveGameTests(AppFactoryFixture fixture) : IntegrationTest
             // when
             var game = await GetActiveGame(TestUser.Default);
 
-            var response = await Client.DeleteAsyncWithUser(GameUrl.LeaveGame(game.Id), TestUser.Default, TestContext.Current.CancellationToken);
+            var response = await Client.DeleteAsyncWithUser(GameUrl.LeaveGame(game.Id), TestUser.TestUser1, TestContext.Current.CancellationToken);
 
             // then
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
