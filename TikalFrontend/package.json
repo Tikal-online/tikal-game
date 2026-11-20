@@ -31,7 +31,7 @@
     "primeng": "^22.1.0",
     "rxjs": "~7.8.0",
     "three": "^0.187.0",
-    "tikal-ui-components": "^1.8.1",
+    "tikal-ui-components": "^1.9.1",
     "tslib": "~2.9.1"
   },
   "devDependencies": {
