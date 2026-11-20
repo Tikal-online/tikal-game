@@ -1,3 +1,4 @@
+using System.Net;
 using Microsoft.AspNetCore.SignalR.Client;
 using RestApi.Controllers.Lobbies.Dtos;
 using TikalBackend.IntegrationTests.Extensions;
@@ -232,6 +233,38 @@ public sealed class ActiveLobbyTests(AppFactoryFixture fixture) : IntegrationTes
                 () => Assert.Equal(TestUser.TestUser1.Name, updatedPlayer.Name),
                 () => Assert.False(updatedPlayer.IsReady)
             );
+        });
+    }
+
+    [Theory]
+    [ClassData(typeof(ValidCreateLobbyDtos))]
+    public async Task GivenLobby_WhenLobbyStarted_ThenSendsLobbyStartedMessage(CreateLobbyDto createLobbyDto)
+    {
+        await RunTracked(async () =>
+        {
+            // given
+            await CreateUserAccount(TestUser.Default);
+            await CreateUserAccount(TestUser.TestUser1);
+
+            var lobby = await CreateAndGetLobby(createLobbyDto, TestUser.Default);
+
+            await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.TestUser1, null, TestContext.Current.CancellationToken);
+
+            await Client.PutAsyncWithUser(LobbyUrl.SetPlayerReady, TestUser.Default, null, TestContext.Current.CancellationToken);
+            await Client.PutAsyncWithUser(LobbyUrl.SetPlayerReady, TestUser.TestUser1, null, TestContext.Current.CancellationToken);
+
+            await using var connection = await CreateConnection(LobbyUrl.ActiveLobbyHub, TestUser.Default);
+
+            var lobbyStartedSource = new TaskCompletionSource();
+            connection.On("LobbyStarted", lobbyStartedSource.SetResult);
+
+            // when
+            var response = await Client.PostAsyncWithUser(LobbyUrl.StartLobby(lobby.Id), TestUser.Default, null, TestContext.Current.CancellationToken);
+
+            // then
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+            await lobbyStartedSource.Task.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken);
         });
     }
 

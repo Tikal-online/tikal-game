@@ -13,7 +13,7 @@ public sealed class PlayerLeftIntegrationEventHandler
         this.hubContext = hubContext;
     }
 
-    public Task Handle(PlayerLeftIntegrationEvent notification, CancellationToken cancellationToken)
+    public Task Handle(PlayerLeftIntegrationEvent notification)
     {
         var lobbyPlayerDto = LobbyPlayerModelMapper.LobbyPlayerModelToLobbyPlayerDto(notification.LobbyPlayerModel);
 

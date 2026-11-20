@@ -13,4 +13,6 @@ public interface ActiveLobbyClient
     Task PlayerUpdated(LobbyPlayerDto lobbyPlayerDto);
 
     Task ReceiveMessage(ChatMessageDto chatMessageDto);
+
+    Task LobbyStarted();
 }
