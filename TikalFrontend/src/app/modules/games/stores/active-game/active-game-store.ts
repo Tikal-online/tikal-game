@@ -7,6 +7,7 @@ import {
   withState,
 } from '@ngrx/signals';
 import { Game } from '../../models/game';
+import { Player } from '../../models/player';
 import { computed, inject } from '@angular/core';
 import { ActiveGameService } from '../../services/active-game/active-game-service';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
@@ -30,8 +31,20 @@ export const ActiveGameStore = signalStore(
     _activeGameService: inject(ActiveGameService),
   })),
 
-  withComputed(({ loadingStatus }) => ({
+  withComputed(({ game, loadingStatus }) => ({
     isLoading: computed(() => loadingStatus() === 'loading'),
+
+    currentPlayer: computed<Player | null>(() => {
+      const activeGame = game();
+
+      if (!activeGame) {
+        return null;
+      }
+
+      return activeGame.players.find(
+        (player) => player.turnPosition === activeGame.currentTurnPosition,
+      )!;
+    }),
   })),
 
   withMethods((store) => ({

@@ -71,4 +71,38 @@ describe('ActiveGameStore', () => {
       expect(store.game()).toEqual(game);
     },
   );
+
+  test('given no active game when currentPlayer then returns null', () => {
+    // given
+    const store = TestBed.inject(ActiveGameStore);
+
+    // when
+    const currentPlayer = store.currentPlayer();
+
+    // then
+    expect(currentPlayer).toBeNull();
+  });
+
+  test.for<Game>(GAME_TESTCASES)(
+    'given active game when loadActiveGame then currentPlayer is the player at currentTurnPosition',
+    (game: Game) => {
+      // given
+      const store = TestBed.inject(ActiveGameStore);
+
+      activeGameService.getActiveGame.mockReturnValueOnce(of(game));
+
+      // when
+      TestBed.runInInjectionContext(() => {
+        store.loadActiveGame();
+      });
+
+      // then
+      const expectedPlayer = game.players.find(
+        (player) => player.turnPosition === game.currentTurnPosition,
+      );
+
+      expect(expectedPlayer).toBeDefined();
+      expect(store.currentPlayer()).toEqual(expectedPlayer);
+    },
+  );
 });

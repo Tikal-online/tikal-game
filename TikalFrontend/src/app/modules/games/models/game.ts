@@ -5,4 +5,5 @@ export type Game = {
   id: number;
   players: Player[];
   tiles: Tile[];
+  currentTurnPosition: number;
 };
