@@ -1,3 +1,4 @@
+using System.Net;
 using Microsoft.AspNetCore.SignalR.Client;
 using RestApi.Controllers.Lobbies.Dtos;
 using TikalBackend.IntegrationTests.Extensions;
@@ -258,9 +259,11 @@ public sealed class ActiveLobbyTests(AppFactoryFixture fixture) : IntegrationTes
             connection.On("LobbyStarted", lobbyStartedSource.SetResult);
 
             // when
-            await Client.PostAsyncWithUser(LobbyUrl.StartLobby(lobby.Id), TestUser.Default, null, TestContext.Current.CancellationToken);
+            var response = await Client.PostAsyncWithUser(LobbyUrl.StartLobby(lobby.Id), TestUser.Default, null, TestContext.Current.CancellationToken);
 
             // then
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
             await lobbyStartedSource.Task.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken);
         });
     }
