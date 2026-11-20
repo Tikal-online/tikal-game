@@ -1,12 +1,21 @@
 import { Component, DestroyRef, effect, inject, signal } from '@angular/core';
 import { ActiveLobbyStore } from '../../stores/active-lobby/active-lobby-store';
 import { TranslocoDirective } from '@jsverse/transloco';
-import { PlayerSlotListComponent, ButtonComponent } from 'tikal-ui-components';
+import {
+  PlayerSlotListComponent,
+  ButtonComponent,
+  CountdownOverlayComponent,
+} from 'tikal-ui-components';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'tikal-active-lobby',
-  imports: [TranslocoDirective, PlayerSlotListComponent, ButtonComponent],
+  imports: [
+    TranslocoDirective,
+    PlayerSlotListComponent,
+    ButtonComponent,
+    CountdownOverlayComponent,
+  ],
   templateUrl: './active-lobby.html',
   styleUrl: './active-lobby.scss',
 })
