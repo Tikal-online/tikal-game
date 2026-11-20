@@ -61,7 +61,7 @@ public sealed class Game : Entity
 
         Players.Remove(player);
         Touch();
-        AddDomainEvent(new PlayerLeftDomainEvent(PlayerMapper.PlayerToPlayerEventData(player), LobbyId));
+        AddDomainEvent(new PlayerLeftDomainEvent(PlayerMapper.PlayerToPlayerEventData(player), Id, LobbyId));
 
         if (HasEnoughPlayers)
         {
