@@ -1,3 +1,5 @@
+using Games.Domain.Enums;
+
 namespace Games.Domain.EventData;
 
 public sealed record GameEventData
@@ -11,4 +13,6 @@ public sealed record GameEventData
     public List<TileEventData> Tiles { get; set; } = [];
 
     public int CurrentTurnPosition { get; set; }
+
+    public TurnPhase TurnPhase { get; set; }
 }

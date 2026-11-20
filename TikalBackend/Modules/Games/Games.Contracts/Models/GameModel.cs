@@ -1,3 +1,5 @@
+using Games.Contracts.Enums;
+
 namespace Games.Contracts.Models;
 
 public sealed record GameModel
@@ -11,4 +13,6 @@ public sealed record GameModel
     public List<TileModel> Tiles { get; init; } = [];
 
     public int CurrentTurnPosition { get; set; }
+
+    public TurnPhaseModel TurnPhase { get; set; }
 }
