@@ -204,7 +204,9 @@ describe('ActiveGameStore', () => {
       const store = TestBed.inject(ActiveGameStore);
       const tile = DEFAULT_TEST_GAME.tiles[0];
 
-      activeGameService.getActiveGame.mockReturnValueOnce(of(DEFAULT_TEST_GAME));
+      activeGameService.getActiveGame.mockReturnValueOnce(
+        of(GAME_TESTCASES.filter(isMyTurnToPlaceTile)[0]),
+      );
       activeGameService.getNextTile.mockReturnValueOnce(of(ok(tile)));
 
       TestBed.runInInjectionContext(() => {
