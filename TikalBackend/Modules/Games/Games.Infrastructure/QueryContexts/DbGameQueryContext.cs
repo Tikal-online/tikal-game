@@ -23,4 +23,12 @@ public sealed class DbGameQueryContext : GameQueryContext
             .AsSplitQuery()
             .SingleOrDefaultAsync(g => g.Players.Any(p => p.UserId == userId), cancellationToken);
     }
+
+    public Task<long?> GetIdByUserId(string userId, CancellationToken cancellationToken)
+    {
+        return gamesDbContext.Games.AsNoTracking()
+            .Where(game => game.Players.Any(p => p.UserId == userId))
+            .Select(game => (long?)game.Id)
+            .FirstOrDefaultAsync(cancellationToken);
+    }
 }
