@@ -12,6 +12,9 @@ const TILE_COLOURS: Record<Tile['type'], string> = {
   temple: '#b9b1a0',
 };
 
+// a tile previewed on a place it can not be set on
+const INVALID_COLOUR = '#c0392b';
+
 export class TileView implements Hoverable {
   readonly object = new Group();
 
@@ -22,6 +25,8 @@ export class TileView implements Hoverable {
   private colour: string;
 
   private highlighted = false;
+
+  private invalid = false;
 
   constructor(
     tile: Tile,
@@ -49,8 +54,14 @@ export class TileView implements Hoverable {
     this.applyMaterials();
   }
 
+  setInvalid(invalid: boolean): void {
+    this.invalid = invalid;
+    this.applyMaterials();
+  }
+
   private applyMaterials(): void {
-    this.body.material = this.resources.tileMaterials(this.colour, this.highlighted);
+    const colour = this.invalid ? INVALID_COLOUR : this.colour;
+    this.body.material = this.resources.tileMaterials(colour, this.highlighted);
   }
 
   // one bar per cost point at each edge, an edge with a cost of 0 stays empty

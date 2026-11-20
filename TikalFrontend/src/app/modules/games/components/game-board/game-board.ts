@@ -20,6 +20,9 @@ import { Tile } from '../../models/tile';
 export class GameBoardComponent {
   readonly tiles = input.required<readonly Tile[]>();
 
+  /** The drawn tile that still has to be placed, shown on the empty place under the mouse. */
+  readonly pendingTile = input<Tile | null>(null);
+
   private readonly canvas = viewChild.required<ElementRef<HTMLCanvasElement>>('canvas');
 
   private readonly view = signal<BoardView | null>(null);
@@ -30,6 +33,8 @@ export class GameBoardComponent {
 
     // runs once the view exists and again whenever the tiles change
     effect(() => this.view()?.setTiles(this.tiles()));
+
+    effect(() => this.view()?.setPendingTile(this.pendingTile()));
 
     inject(DestroyRef).onDestroy(() => this.view()?.dispose());
   }
