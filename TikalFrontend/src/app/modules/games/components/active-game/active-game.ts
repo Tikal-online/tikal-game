@@ -24,8 +24,14 @@ export class ActiveGameComponent {
 
     inject(DestroyRef).onDestroy(() => this.activeGameStore.disconnect());
 
-    // covers having no active game on page load
     effect(() => {
+      // the game is over, the players go back to their lobby
+      if (this.activeGameStore.isCompleted()) {
+        this.router.navigate(['/Lobbies/me']);
+        return;
+      }
+
+      // covers having no active game on page load and leaving the game
       if (!this.activeGameStore.game() && !this.activeGameStore.isLoading()) {
         this.router.navigate(['/Lobbies']);
       }

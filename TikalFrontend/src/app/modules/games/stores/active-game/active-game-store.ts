@@ -26,6 +26,7 @@ type ActiveGameState = {
   drawnTile: Tile | null;
   /** 60 degree steps the drawn tile is turned clockwise (0 to 5), the tile keeps its original costs. */
   drawnTileRotation: number;
+  isCompleted: boolean;
 };
 
 const initialState: ActiveGameState = {
@@ -34,6 +35,7 @@ const initialState: ActiveGameState = {
   loadingStatus: 'initial',
   drawnTile: null,
   drawnTileRotation: 0,
+  isCompleted: false,
 };
 
 export const ActiveGameStore = signalStore(
@@ -82,7 +84,7 @@ export const ActiveGameStore = signalStore(
     loadActiveGame: rxMethod<void>(
       pipe(
         tap(() => {
-          patchState(store, { game: null, loadingStatus: 'loading' });
+          patchState(store, { game: null, loadingStatus: 'loading', isCompleted: false });
         }),
         switchMap(() => {
           return store._activeGameService.getActiveGame().pipe(
@@ -152,6 +154,19 @@ export const ActiveGameStore = signalStore(
       ),
     ),
 
+    watchGameCompleted: rxMethod<void>(
+      pipe(
+        switchMap(() => store._activeGameConnection.gameCompleted$),
+        tap(() =>
+          patchState(store, (state) => ({
+            ...initialState,
+            connectionStatus: state.connectionStatus,
+            isCompleted: true,
+          })),
+        ),
+      ),
+    ),
+
     watchTurnCompleted: rxMethod<void>(
       pipe(
         switchMap(() => store._activeGameConnection.turnCompleted$),
@@ -183,6 +198,7 @@ export const ActiveGameStore = signalStore(
       store.watchConnectionStatus();
       store.watchLeftPlayers();
       store.watchTurnCompleted();
+      store.watchGameCompleted();
     },
   }),
 );
