@@ -134,8 +134,8 @@ describe('ActiveGameStore', () => {
       activeGameConnection.leftPlayers$.next(me);
 
       // then
-      expect(store.loadingStatus()).toEqual('initial');
       expect(store.game()).toBeNull();
+      expect(store.loadingStatus()).toEqual('initial');
     },
   );
 
