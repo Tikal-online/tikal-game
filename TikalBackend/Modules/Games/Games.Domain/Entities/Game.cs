@@ -3,6 +3,7 @@ using Games.Domain.Enums;
 using Games.Domain.Errors;
 using Games.Domain.Events;
 using Games.Domain.Mappers;
+using Games.Domain.Types;
 using OneOf;
 using OneOf.Types;
 using Shared.Domain.Entities;
@@ -17,7 +18,7 @@ public sealed class Game : Entity
 
     public ICollection<Player> Players { get; set; } = [];
 
-    public List<Tile> Tiles { get; set; } = [];
+    public ICollection<Tile> Tiles { get; set; } = [];
 
     /// <summary>
     /// A bit mask that holds which tiles have already been drawn and played.
@@ -82,7 +83,7 @@ public sealed class Game : Entity
 
         if (PendingTile is not null)
         {
-            return TileCatalogue.Tiles[PendingTile.Value];
+            return TileCatalogue.CreateTile(PendingTile.Value);
         }
 
         foreach (var bucket in TileCatalogue.BucketBitMasks)
@@ -106,10 +107,33 @@ public sealed class Game : Entity
             PendingTile = tileIdentifier;
             DrawnTiles |= 1UL << (int)tileIdentifier;
 
-            return TileCatalogue.Tiles[tileIdentifier];
+            return TileCatalogue.CreateTile(tileIdentifier);
         }
 
         return new NoTilesLeftDomainError();
+    }
+
+    public OneOf<Success, InvalidTurnPhaseDomainError, TileMustBeDrawnFirstDomainError> PlaceTile(int Q, int R)
+    {
+        if (TurnPhase != TurnPhase.PlaceTile)
+        {
+            return new InvalidTurnPhaseDomainError();
+        }
+
+        if (PendingTile is null)
+        {
+            return new TileMustBeDrawnFirstDomainError();
+        }
+
+        var tileToPlace = TileCatalogue.CreateTile(PendingTile.Value, new HexCoordinate(Q, R));
+
+        // TODO: check if position is valid
+        Tiles.Add(tileToPlace);
+        PendingTile = null;
+        TurnPhase = TurnPhase.Actions;
+        // TODO: add domain event
+
+        return new Success();
     }
 
     /// <summary>

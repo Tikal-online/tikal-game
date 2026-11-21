@@ -156,7 +156,7 @@ public sealed class GameTests
         // then
         Assert.Multiple(
             () => Assert.NotNull(game.PendingTile),
-            () => Assert.Equal(TileCatalogue.Tiles[game.PendingTile!.Value], result.Value)
+            () => Assert.Equivalent(TileCatalogue.CreateTile(game.PendingTile!.Value, default), result.Value, strict: true)
         );
     }
 
@@ -191,9 +191,9 @@ public sealed class GameTests
 
         // then
         Assert.Multiple(
-            () => Assert.Equal(tile, tile1),
-            () => Assert.Equal(tile, tile2),
-            () => Assert.Equal(tile, tile3)
+            () => Assert.Equivalent(tile, tile1, strict: true),
+            () => Assert.Equivalent(tile, tile2, strict: true),
+            () => Assert.Equivalent(tile, tile3, strict: true)
         );
     }
 
