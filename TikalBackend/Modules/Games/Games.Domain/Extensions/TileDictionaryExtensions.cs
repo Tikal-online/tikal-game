@@ -51,6 +51,26 @@ public static class TileDictionaryExtensions
             return new NoPathFound(start, goal);
         }
 
+        public bool CanBePlaced(Tile tile)
+        {
+            if (tiles.ContainsKey(tile.Coordinate))
+            {
+                return false;
+            }
+
+            foreach (var neighbour in tiles.GetNeighbours(tile.Coordinate))
+            {
+                var travelCost = tiles.GetTileTravelCost(neighbour, tile);
+
+                if (travelCost > 0)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         private IEnumerable<HexCoordinate> GetNeighbours(HexCoordinate coordinate)
         {
             foreach (var direction in HexCoordinate.Directions)
@@ -73,6 +93,16 @@ public static class TileDictionaryExtensions
             var tileB = tiles[b];
 
             return tileA.Costs[tileAEdge] + tileB.Costs[tileBEdge];
+        }
+
+        private int GetTileTravelCost(HexCoordinate coordinate, Tile tile)
+        {
+            var existingEdge = coordinate.GetEdge(tile.Coordinate);
+            var providedEdge = tile.Coordinate.GetEdge(coordinate);
+
+            var existingTile = tiles[coordinate];
+
+            return existingTile.Costs[existingEdge] + tile.Costs[providedEdge];
         }
 
         private static int Heuristic(HexCoordinate a, HexCoordinate b)
