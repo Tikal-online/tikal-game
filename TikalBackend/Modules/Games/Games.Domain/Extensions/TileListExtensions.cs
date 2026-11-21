@@ -16,7 +16,7 @@ public static class TileListExtensions
             return dict.GetTravelCost(start, goal);
         }
 
-        public bool CanBePlaces(Tile tile)
+        public bool CanBePlaced(Tile tile)
         {
             var dict = tiles.ToDictionary(tile => tile.Coordinate);
 

@@ -2,6 +2,7 @@ using System.Numerics;
 using Games.Domain.Enums;
 using Games.Domain.Errors;
 using Games.Domain.Events;
+using Games.Domain.Extensions;
 using Games.Domain.Mappers;
 using Games.Domain.Types;
 using OneOf;
@@ -18,7 +19,7 @@ public sealed class Game : Entity
 
     public ICollection<Player> Players { get; set; } = [];
 
-    public ICollection<Tile> Tiles { get; set; } = [];
+    public List<Tile> Tiles { get; set; } = [];
 
     /// <summary>
     /// A bit mask that holds which tiles have already been drawn and played.
@@ -113,7 +114,7 @@ public sealed class Game : Entity
         return new NoTilesLeftDomainError();
     }
 
-    public OneOf<Success, InvalidTurnPhaseDomainError, TileMustBeDrawnFirstDomainError> PlaceTile(int q, int r, int rotation)
+    public OneOf<Success, InvalidTurnPhaseDomainError, TileMustBeDrawnFirstDomainError, TileCannotBePlacedDomainError> PlaceTile(int q, int r, int rotation)
     {
         if (TurnPhase != TurnPhase.PlaceTile)
         {
@@ -128,11 +129,14 @@ public sealed class Game : Entity
         var tileToPlace = TileCatalogue.CreateTile(PendingTile.Value, new HexCoordinate(q, r));
         tileToPlace.Rotate(rotation);
 
-        // TODO: check if position is valid
+        if (!Tiles.CanBePlaced(tileToPlace))
+        {
+            return new TileCannotBePlacedDomainError();
+        }
+
         Tiles.Add(tileToPlace);
         PendingTile = null;
         TurnPhase = TurnPhase.Actions;
-        // TODO: add domain event
 
         return new Success();
     }
