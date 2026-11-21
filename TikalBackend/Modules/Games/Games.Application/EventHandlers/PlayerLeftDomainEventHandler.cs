@@ -10,7 +10,7 @@ public static class PlayerLeftDomainEventHandler
     {
         var playerModel = PlayerMapper.PlayerEventDataToGamePlayerModel(domainEvent.Player);
 
-        var playerLeftIntegrationEvent = new PlayerLeftIntegrationEvent(playerModel, domainEvent.LobbyId);
+        var playerLeftIntegrationEvent = new PlayerLeftIntegrationEvent(playerModel, domainEvent.GameId, domainEvent.LobbyId);
 
         return playerLeftIntegrationEvent;
     }
