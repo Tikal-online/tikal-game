@@ -87,6 +87,7 @@ export const ActiveLobbyStore = signalStore(
           patchState(store, {
             lobby: null,
             loadingStatus: 'loading',
+            startCountdown: null,
           }),
         ),
         switchMap(() => {
