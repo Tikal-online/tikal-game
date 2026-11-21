@@ -195,6 +195,34 @@ describe('ActiveGameStore', () => {
   );
 
   // ------------------------------------------------------------------------
+  // game completed
+  // ------------------------------------------------------------------------
+
+  test.for<Game>(GAME_TESTCASES)(
+    'given game $id when gameCompleted$ emits then resets the game state',
+    (game: Game) => {
+      // given
+      const store = TestBed.inject(ActiveGameStore);
+
+      activeGameService.getActiveGame.mockReturnValueOnce(of(game));
+      TestBed.runInInjectionContext(() => {
+        store.loadActiveGame();
+      });
+      TestBed.tick();
+
+      // when
+      activeGameConnection.gameCompleted$.next();
+      TestBed.tick();
+
+      // then
+      expect(store.game()).toBeNull();
+      expect(store.loadingStatus()).toEqual('initial');
+      expect(store.drawnTile()).toBeNull();
+      expect(store.drawnTileRotation()).toEqual(0);
+    },
+  );
+
+  // ------------------------------------------------------------------------
   // loading the active game
   // ------------------------------------------------------------------------
 

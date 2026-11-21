@@ -152,6 +152,19 @@ export const ActiveGameStore = signalStore(
       ),
     ),
 
+    watchGameCompleted: rxMethod<void>(
+      pipe(
+        switchMap(() => store._activeGameConnection.gameCompleted$),
+        tap(() =>
+          patchState(store, (state) => ({
+            ...initialState,
+            // the connection is still open, it is closed when the game screen is left
+            connectionStatus: state.connectionStatus,
+          })),
+        ),
+      ),
+    ),
+
     watchTurnCompleted: rxMethod<void>(
       pipe(
         switchMap(() => store._activeGameConnection.turnCompleted$),
@@ -183,6 +196,7 @@ export const ActiveGameStore = signalStore(
       store.watchConnectionStatus();
       store.watchLeftPlayers();
       store.watchTurnCompleted();
+      store.watchGameCompleted();
     },
   }),
 );
