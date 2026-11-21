@@ -152,6 +152,23 @@ export const ActiveGameStore = signalStore(
       ),
     ),
 
+    watchTurnCompleted: rxMethod<void>(
+      pipe(
+        switchMap(() => store._activeGameConnection.turnCompleted$),
+        tap((nextPlayer) =>
+          patchState(store, (state) => ({
+            game: state.game
+              ? {
+                  ...state.game,
+                  currentTurnPosition: nextPlayer.turnPosition,
+                  turnPhase: 'PlaceTile' as const,
+                }
+              : null,
+          })),
+        ),
+      ),
+    ),
+
     watchConnectionStatus: rxMethod<void>(
       pipe(
         switchMap(() => store._activeGameConnection.connectionStatus$),
@@ -165,6 +182,7 @@ export const ActiveGameStore = signalStore(
       store.drawTileWhenMyTurn(store.currentPlayer);
       store.watchConnectionStatus();
       store.watchLeftPlayers();
+      store.watchTurnCompleted();
     },
   }),
 );

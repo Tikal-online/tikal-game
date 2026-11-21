@@ -155,6 +155,46 @@ describe('ActiveGameStore', () => {
   );
 
   // ------------------------------------------------------------------------
+  // turn completed
+  // ------------------------------------------------------------------------
+
+  test.for<Game>(GAME_TESTCASES)(
+    'given game $id when turnCompleted$ emits then the received player is on turn in the place tile phase',
+    (game: Game) => {
+      // given
+      const store = TestBed.inject(ActiveGameStore);
+      const nextPlayer = game.players.at(-1)!;
+
+      activeGameService.getActiveGame.mockReturnValueOnce(of(game));
+      TestBed.runInInjectionContext(() => {
+        store.loadActiveGame();
+      });
+
+      // when
+      activeGameConnection.turnCompleted$.next(nextPlayer);
+
+      // then
+      expect(store.game()?.currentTurnPosition).toEqual(nextPlayer.turnPosition);
+      expect(store.turnPhase()).toEqual('PlaceTile');
+      expect(store.currentPlayer()).toEqual(nextPlayer);
+    },
+  );
+
+  test.for<Player>(PLAYER_TESTCASES)(
+    'given no active game when turnCompleted$ emits $name then game is still null',
+    (player: Player) => {
+      // given
+      const store = TestBed.inject(ActiveGameStore);
+
+      // when
+      activeGameConnection.turnCompleted$.next(player);
+
+      // then
+      expect(store.game()).toBeNull();
+    },
+  );
+
+  // ------------------------------------------------------------------------
   // loading the active game
   // ------------------------------------------------------------------------
 
