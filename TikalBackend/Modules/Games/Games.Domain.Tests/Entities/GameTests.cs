@@ -3,6 +3,7 @@ using Games.Domain.Enums;
 using Games.Domain.Errors;
 using Games.Domain.Events;
 using Games.Domain.Tests.Data;
+using Games.Domain.Types;
 using OneOf.Types;
 
 namespace Games.Domain.Tests.Entities;
@@ -210,6 +211,8 @@ public sealed class GameTests
 
     // ------------------------------------------------------------------------
     // PlaceTile
+    // The logic if a tile can or can not be placed in a given grid is tested 
+    // as part of the Tile tests. Here we only test the consequences.
     // ------------------------------------------------------------------------
 
     [Theory]
@@ -232,5 +235,51 @@ public sealed class GameTests
 
         // then
         Assert.IsType<TileMustBeDrawnFirstDomainError>(result.Value);
+    }
+
+    [Theory]
+    [ClassData(typeof(PlaceTileGames))]
+    public void GivenInvalidTilePosition_WhenPlaceTile_ThenReturnsTileCannotBePlacedError(Game game)
+    {
+        // give
+        game.DrawTile();
+
+        // when
+        var result = game.PlaceTile(3, -4, 0);
+
+        // then
+        Assert.IsType<TileCannotBePlacedDomainError>(result.Value);
+    }
+
+    [Theory]
+    [ClassData(typeof(PlaceTileGames))]
+    public void GivenValidTilePosition_WhenPlaceTile_ThenReturnsSuccess(Game game)
+    {
+        // give
+        game.DrawTile();
+
+        // when
+        var result = game.PlaceTile(1, -2, 0);
+
+        // then
+        Assert.IsType<Success>(result.Value);
+    }
+
+    [Theory]
+    [ClassData(typeof(PlaceTileGames))]
+    public void GivenValidTilePosition_WhenPlaceTile_ThenAddsTileAndAdvancesPhase(Game game)
+    {
+        // give
+        var tile = game.DrawTile();
+
+        // when
+        game.PlaceTile(1, -2, 0);
+
+        // then
+        Assert.Multiple(
+            () => Assert.Null(game.PendingTile),
+            () => Assert.Equal(TurnPhase.Actions, game.TurnPhase),
+            () => Assert.Contains(game.Tiles, t => t.Coordinate == new HexCoordinate(1, -2))
+        );
     }
 }
