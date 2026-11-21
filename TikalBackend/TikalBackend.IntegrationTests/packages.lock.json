@@ -1272,7 +1272,7 @@
           "OpenTelemetry.Instrumentation.AspNetCore": "[1.21.0, )",
           "OpenTelemetry.Instrumentation.Http": "[1.21.0, )",
           "RestApi.Controllers": "[1.0.0, )",
-          "Scalar.AspNetCore": "[2.18.0, )",
+          "Scalar.AspNetCore": "[3.1.1, )",
           "SignalRApi.Hubs": "[1.0.0, )",
           "WolverineFX": "[6.64.0, )",
           "WolverineFX.EntityFrameworkCore": "[6.64.0, )",
@@ -1408,9 +1408,9 @@
       },
       "Scalar.AspNetCore": {
         "type": "CentralTransitive",
-        "requested": "[2.18.0, )",
-        "resolved": "2.18.0",
-        "contentHash": "wwI3khcYNM7oL6axr4a41G29fJYOS3ckusgYZ4NiIccL8Amh2LOeu4HSK1SrQWiMJNrgoFqyWfDkOkunQCiRDw=="
+        "requested": "[3.1.1, )",
+        "resolved": "3.1.1",
+        "contentHash": "vI+FzdXwxmoih0njtFcE1TxILgBsTUdjilMg40L79Y5lD4PPrXif+iYEvhVqMI8DGiOQZsfkP+5vdq/K566M1Q=="
       },
       "System.IdentityModel.Tokens.Jwt": {
         "type": "CentralTransitive",
