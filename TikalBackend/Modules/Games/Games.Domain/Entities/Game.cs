@@ -113,7 +113,7 @@ public sealed class Game : Entity
         return new NoTilesLeftDomainError();
     }
 
-    public OneOf<Success, InvalidTurnPhaseDomainError, TileMustBeDrawnFirstDomainError> PlaceTile(int Q, int R)
+    public OneOf<Success, InvalidTurnPhaseDomainError, TileMustBeDrawnFirstDomainError> PlaceTile(int q, int r, int rotation)
     {
         if (TurnPhase != TurnPhase.PlaceTile)
         {
@@ -125,7 +125,8 @@ public sealed class Game : Entity
             return new TileMustBeDrawnFirstDomainError();
         }
 
-        var tileToPlace = TileCatalogue.CreateTile(PendingTile.Value, new HexCoordinate(Q, R));
+        var tileToPlace = TileCatalogue.CreateTile(PendingTile.Value, new HexCoordinate(q, r));
+        tileToPlace.Rotate(rotation);
 
         // TODO: check if position is valid
         Tiles.Add(tileToPlace);
