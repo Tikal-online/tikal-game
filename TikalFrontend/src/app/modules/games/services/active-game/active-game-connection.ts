@@ -12,6 +12,9 @@ export class ActiveGameConnection {
 
   readonly leftPlayers$ = new Subject<Player>();
 
+  /** Emits the player whose turn starts now. */
+  readonly turnCompleted$ = new Subject<Player>();
+
   readonly gameCompleted$ = new Subject<void>();
 
   private readonly connection: HubConnection;
@@ -29,6 +32,10 @@ export class ActiveGameConnection {
 
     this.connection.on('PlayerLeft', (player: Omit<Player, 'isMe'>) => {
       this.leftPlayers$.next({ ...player, isMe: this.accountStore.isMe(player.userId) });
+    });
+
+    this.connection.on('TurnCompleted', (nextPlayer: Omit<Player, 'isMe'>) => {
+      this.turnCompleted$.next({ ...nextPlayer, isMe: this.accountStore.isMe(nextPlayer.userId) });
     });
 
     this.connection.on('GameCompleted', () => {
