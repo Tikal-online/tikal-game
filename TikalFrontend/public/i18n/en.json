@@ -52,7 +52,8 @@
   },
   "games": {
     "active": {
-      "players-header": "Players"
+      "players-header": "Players",
+      "my-turn": "Your turn"
     }
   },
   "player-slot": {

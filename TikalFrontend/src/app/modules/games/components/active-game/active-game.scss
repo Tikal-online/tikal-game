@@ -9,11 +9,20 @@
   gap: 1rem;
 }
 
-tikal-game-board {
+// the board fills this area, the turn panel floats over its top right corner
+.board {
+  display: flex;
+  position: relative;
   flex: 1 1 40rem;
 
   min-width: 0;
   min-height: 30rem;
+}
+
+tikal-game-board {
+  flex: 1;
+
+  min-width: 0;
 }
 
 aside {
@@ -22,6 +31,29 @@ aside {
   flex-direction: column;
 
   gap: 0.5rem;
+}
+
+.turn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+
+  max-width: calc(100% - 2rem);
+
+  // only shows information, the board underneath stays usable
+  pointer-events: none;
+
+  margin: 0;
+  padding: 0.75rem 1rem;
+
+  border: 1px solid var(--p-primary-color);
+  border-radius: var(--p-content-border-radius);
+
+  background-color: color-mix(in srgb, var(--p-primary-color) 10%, var(--p-content-background));
+  box-shadow: 0 0.25rem 1rem color-mix(in srgb, var(--p-surface-950) 25%, transparent);
+
+  color: var(--p-primary-color);
+  font-weight: 600;
 }
 
 h2 {
