@@ -111,6 +111,26 @@ public sealed class GameTests
         );
     }
 
+    [Theory]
+    [ClassData(typeof(ValidGames))]
+    public void GivenGame_WhenRemoveCurrentPlayer_ThenAddsTurnCompletedDomainEvent(Game game)
+    {
+        // given
+        var currentPlayer = game.CurrentPlayer;
+
+        // when
+        game.RemovePlayer(currentPlayer.UserId);
+
+        // then
+        var domainEvent = game.DomainEvents.OfType<TurnCompleteDomainEvent>().SingleOrDefault();
+
+        Assert.Multiple(
+            () => Assert.NotNull(domainEvent),
+            () => Assert.Equal(game.Id, domainEvent?.GameId),
+            () => Assert.Equal(game.CurrentPlayer.UserId, domainEvent?.NewPlayer.UserId)
+        );
+    }
+
     // ------------------------------------------------------------------------
     // DrawTile
     // ------------------------------------------------------------------------

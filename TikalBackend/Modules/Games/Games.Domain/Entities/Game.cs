@@ -121,6 +121,8 @@ public sealed class Game : Entity
 
         TurnPhase = TurnPhase.PlaceTile;
         CurrentTurnPosition = nextPlayer.TurnPosition;
+
+        AddDomainEvent(new TurnCompleteDomainEvent(PlayerMapper.PlayerToPlayerEventData(nextPlayer), Id));
     }
 
     public Player? GetPlayer(string userId)
