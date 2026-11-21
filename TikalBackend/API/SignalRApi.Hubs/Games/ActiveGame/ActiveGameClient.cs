@@ -8,5 +8,7 @@ public interface ActiveGameClient
 
     Task PlayerLeft(GamePlayerDto gamePlayerDto);
 
+    Task TurnCompleted(GamePlayerDto nextPlayer);
+
     Task GameCompleted();
 }
