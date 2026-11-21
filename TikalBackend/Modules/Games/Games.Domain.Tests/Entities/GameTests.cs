@@ -5,6 +5,7 @@ using Games.Domain.Events;
 using Games.Domain.Tests.Data;
 using Games.Domain.Types;
 using OneOf.Types;
+using Shared.Domain.Enums;
 
 namespace Games.Domain.Tests.Entities;
 
@@ -251,12 +252,11 @@ public sealed class GameTests
         Assert.IsType<TileCannotBePlacedDomainError>(result.Value);
     }
 
-    [Theory]
-    [ClassData(typeof(PlaceTileGames))]
-    public void GivenValidTilePosition_WhenPlaceTile_ThenReturnsSuccess(Game game)
+    [Fact]
+    public void GivenValidTilePosition_WhenPlaceTile_ThenReturnsSuccess()
     {
-        // give
-        game.DrawTile();
+        // given
+        var game = GameWithPendingTile();
 
         // when
         var result = game.PlaceTile(1, -2, 0);
@@ -265,12 +265,11 @@ public sealed class GameTests
         Assert.IsType<Success>(result.Value);
     }
 
-    [Theory]
-    [ClassData(typeof(PlaceTileGames))]
-    public void GivenValidTilePosition_WhenPlaceTile_ThenAddsTileAndAdvancesPhase(Game game)
+    [Fact]
+    public void GivenValidTilePosition_WhenPlaceTile_ThenAddsTileAndAdvancesPhase()
     {
-        // give
-        var tile = game.DrawTile();
+        // given
+        var game = GameWithPendingTile();
 
         // when
         game.PlaceTile(1, -2, 0);
@@ -281,5 +280,52 @@ public sealed class GameTests
             () => Assert.Equal(TurnPhase.Actions, game.TurnPhase),
             () => Assert.Contains(game.Tiles, t => t.Coordinate == new HexCoordinate(1, -2))
         );
+    }
+
+    /// <summary>
+    /// A game in the place tile phase where A1 (temple, south 2) has been drawn.
+    /// (1, -2) is a valid place for it: its south edge faces the tile on (1, -1).
+    /// </summary>
+    private static Game GameWithPendingTile()
+    {
+        return new Game
+        {
+            LobbyId = 1,
+            TurnPhase = TurnPhase.PlaceTile,
+            PendingTile = TileCardIdentifier.A1,
+            DrawnTiles = 1UL << (int)TileCardIdentifier.A1,
+            Players =
+            [
+                new Player
+                {
+                    UserId = "ebb73b46-d8fd-460e-ae24-848d8c20141f",
+                    Name = "Player1",
+                    Colour = Colour.Red,
+                    Points = 0,
+                    TurnPosition = 0
+                },
+                new Player
+                {
+                    UserId = "1a6a2a19-d2a3-46eb-b732-da1550ccc8d1",
+                    Name = "Player2",
+                    Colour = Colour.Black,
+                    Points = 0,
+                    TurnPosition = 1
+                }
+            ],
+            Tiles =
+            [
+                new EmptyTile
+                {
+                    Costs = new TravelCosts(NorthEast: 1),
+                    Coordinate = new HexCoordinate(0, 0)
+                },
+                new EmptyTile
+                {
+                    Costs = new TravelCosts(SouthWest: 1),
+                    Coordinate = new HexCoordinate(1, -1)
+                }
+            ]
+        };
     }
 }
