@@ -31,6 +31,7 @@ describe('ActiveGameStore', () => {
     disconnect: vi.fn(),
     connectionStatus$: new Subject<ConnectionStatus>(),
     leftPlayers$: new Subject<Player>(),
+    turnCompleted$: new Subject<Player>(),
     gameCompleted$: new Subject<void>(),
   };
 
