@@ -207,4 +207,30 @@ public sealed class GameTests
         // then
         Assert.IsType<InvalidTurnPhaseDomainError>(result.Value);
     }
+
+    // ------------------------------------------------------------------------
+    // PlaceTile
+    // ------------------------------------------------------------------------
+
+    [Theory]
+    [ClassData(typeof(ActionPhaseGames))]
+    public void GivenGameinActionPhase_WhenPlaceTile_ThenReturnsInvalidTurnPhaseError(Game game)
+    {
+        // when
+        var result = game.PlaceTile(0, 0, 0);
+
+        // then
+        Assert.IsType<InvalidTurnPhaseDomainError>(result.Value);
+    }
+
+    [Theory]
+    [ClassData(typeof(PlaceTileGames))]
+    public void GivenGameWithOutDrawing_WhenPlaceTile_ThenReturnsTileMustBeDrawnFirstError(Game game)
+    {
+        // when
+        var result = game.PlaceTile(0, 0, 0);
+
+        // then
+        Assert.IsType<TileMustBeDrawnFirstDomainError>(result.Value);
+    }
 }
