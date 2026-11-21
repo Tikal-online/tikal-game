@@ -13,12 +13,15 @@ import { rotateCosts, Tile } from '../../models/tile';
 import { TurnPhase } from '../../models/turn-phase';
 import { computed, inject } from '@angular/core';
 import { ActiveGameService } from '../../services/active-game/active-game-service';
+import { ActiveGameConnection } from '../../services/active-game/active-game-connection';
+import { ConnectionStatus } from '../../../../core/types/connection-status';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { EMPTY, pipe, switchMap, tap } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
 
 type ActiveGameState = {
   game: Game | null;
+  connectionStatus: ConnectionStatus;
   loadingStatus: 'initial' | 'loading' | 'loaded' | 'error';
   drawnTile: Tile | null;
   /** 60 degree steps the drawn tile is turned clockwise (0 to 5), the tile keeps its original costs. */
@@ -27,6 +30,7 @@ type ActiveGameState = {
 
 const initialState: ActiveGameState = {
   game: null,
+  connectionStatus: 'Disconnected',
   loadingStatus: 'initial',
   drawnTile: null,
   drawnTileRotation: 0,
@@ -37,6 +41,7 @@ export const ActiveGameStore = signalStore(
 
   withProps(() => ({
     _activeGameService: inject(ActiveGameService),
+    _activeGameConnection: inject(ActiveGameConnection),
   })),
 
   withComputed(({ game, loadingStatus }) => ({
@@ -66,6 +71,14 @@ export const ActiveGameStore = signalStore(
   })),
 
   withMethods((store) => ({
+    connect(): Promise<void> {
+      return store._activeGameConnection.connect();
+    },
+
+    disconnect(): Promise<void> {
+      return store._activeGameConnection.disconnect();
+    },
+
     loadActiveGame: rxMethod<void>(
       pipe(
         tap(() => {
@@ -115,11 +128,19 @@ export const ActiveGameStore = signalStore(
         }),
       ),
     ),
+
+    watchConnectionStatus: rxMethod<void>(
+      pipe(
+        switchMap(() => store._activeGameConnection.connectionStatus$),
+        tap((status) => patchState(store, { connectionStatus: status })),
+      ),
+    ),
   })),
 
   withHooks({
     onInit(store) {
       store.drawTileWhenMyTurn(store.currentPlayer);
+      store.watchConnectionStatus();
     },
   }),
 );
