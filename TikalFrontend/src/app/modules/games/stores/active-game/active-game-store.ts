@@ -129,6 +129,29 @@ export const ActiveGameStore = signalStore(
       ),
     ),
 
+    watchLeftPlayers: rxMethod<void>(
+      pipe(
+        switchMap(() => store._activeGameConnection.leftPlayers$),
+        tap((player) => {
+          if (player.isMe) {
+            patchState(store, {
+              game: null,
+              loadingStatus: 'initial',
+            });
+          } else {
+            patchState(store, (state) => ({
+              game: state.game
+                ? {
+                    ...state.game,
+                    players: state.game.players.filter((p) => p.userId !== player.userId),
+                  }
+                : null,
+            }));
+          }
+        }),
+      ),
+    ),
+
     watchConnectionStatus: rxMethod<void>(
       pipe(
         switchMap(() => store._activeGameConnection.connectionStatus$),
@@ -141,6 +164,7 @@ export const ActiveGameStore = signalStore(
     onInit(store) {
       store.drawTileWhenMyTurn(store.currentPlayer);
       store.watchConnectionStatus();
+      store.watchLeftPlayers();
     },
   }),
 );

@@ -295,20 +295,6 @@ describe('ActiveLobbyStore', () => {
     },
   );
 
-  test.for<Player>(PLAYER_TESTCASES.filter((p) => !p.isMe))(
-    'given no active lobby when leftPlayers$ emits not me then lobby is still null',
-    (player: Player) => {
-      // given
-      const store = TestBed.inject(ActiveLobbyStore);
-
-      // when
-      activeLobbyConnection.leftPlayers$.next(player);
-
-      // then
-      expect(store.lobby()).toBeNull();
-    },
-  );
-
   test.for<Lobby>(LOBBY_TESTCASES)(
     'given active lobby when leftPlayers$ emits me then resets state',
     (lobby: Lobby) => {

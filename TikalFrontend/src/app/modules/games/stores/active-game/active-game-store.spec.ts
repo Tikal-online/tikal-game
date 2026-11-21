@@ -8,6 +8,7 @@ import { of, Subject, throwError } from 'rxjs';
 import { Game } from '../../models/game';
 import { DEFAULT_TEST_GAME, GAME_TESTCASES } from '../../tests/data/game-test-cases';
 import { ok } from 'neverthrow';
+import { PLAYER_TESTCASES } from '../../tests/data/player-test-cases';
 
 /** Is the authenticated player on turn and has to place a tile? */
 function isMyTurnToPlaceTile(game: Game): boolean {
@@ -29,7 +30,7 @@ describe('ActiveGameStore', () => {
     connect: vi.fn(),
     disconnect: vi.fn(),
     connectionStatus$: new Subject<ConnectionStatus>(),
-    playerLeft$: new Subject<Player>(),
+    leftPlayers$: new Subject<Player>(),
     gameCompleted$: new Subject<void>(),
   };
 
@@ -88,6 +89,69 @@ describe('ActiveGameStore', () => {
     // then
     expect(activeGameConnection.disconnect).toHaveBeenCalledOnce();
   });
+
+  // ------------------------------------------------------------------------
+  // players leaving
+  // ------------------------------------------------------------------------
+
+  test.for<Game>(GAME_TESTCASES.filter((game) => game.players.some((player) => !player.isMe)))(
+    'given game $id when leftPlayers$ emits not me then removes player from game',
+    (game: Game) => {
+      // given
+      const store = TestBed.inject(ActiveGameStore);
+
+      activeGameService.getActiveGame.mockReturnValueOnce(of(game));
+
+      TestBed.runInInjectionContext(() => {
+        store.loadActiveGame();
+      });
+
+      const leavingPlayer = game.players.find((player) => !player.isMe)!;
+
+      // when
+      activeGameConnection.leftPlayers$.next(leavingPlayer);
+
+      // then
+      expect(store.game()?.players).not.toContain(leavingPlayer);
+    },
+  );
+
+  test.for<Game>(GAME_TESTCASES.filter((game) => game.players.some((player) => player.isMe)))(
+    'given game $id when leftPlayers$ emits me then resets state',
+    (game: Game) => {
+      // given
+      const store = TestBed.inject(ActiveGameStore);
+
+      activeGameService.getActiveGame.mockReturnValueOnce(of(game));
+
+      TestBed.runInInjectionContext(() => {
+        store.loadActiveGame();
+      });
+
+      const me = game.players.find((player) => player.isMe)!;
+
+      // when
+      activeGameConnection.leftPlayers$.next(me);
+
+      // then
+      expect(store.loadingStatus()).toEqual('initial');
+      expect(store.game()).toBeNull();
+    },
+  );
+
+  test.for<Player>(PLAYER_TESTCASES)(
+    'given no active game when leftPlayers$ emits then game is still null',
+    (player: Player) => {
+      // given
+      const store = TestBed.inject(ActiveGameStore);
+
+      // when
+      activeGameConnection.leftPlayers$.next(player);
+
+      // then
+      expect(store.game()).toBeNull();
+    },
+  );
 
   // ------------------------------------------------------------------------
   // loading the active game

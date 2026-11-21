@@ -10,7 +10,7 @@ import { AccountStore } from '../../../../core/stores/account-store/account-stor
 export class ActiveGameConnection {
   readonly connectionStatus$ = new Subject<ConnectionStatus>();
 
-  readonly playerLeft$ = new Subject<Player>();
+  readonly leftPlayers$ = new Subject<Player>();
 
   readonly gameCompleted$ = new Subject<void>();
 
@@ -28,7 +28,7 @@ export class ActiveGameConnection {
       .build();
 
     this.connection.on('PlayerLeft', (player: Omit<Player, 'isMe'>) => {
-      this.playerLeft$.next({ ...player, isMe: this.accountStore.isMe(player.userId) });
+      this.leftPlayers$.next({ ...player, isMe: this.accountStore.isMe(player.userId) });
     });
 
     this.connection.on('GameCompleted', () => {
