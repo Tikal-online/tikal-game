@@ -1,7 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 import { ActiveGameService } from '../../services/active-game/active-game-service';
 import { ActiveGameStore } from './active-game-store';
-import { of, throwError } from 'rxjs';
+import { ActiveGameConnection } from '../../services/active-game/active-game-connection';
+import { ConnectionStatus } from '../../../../core/types/connection-status';
+import { Player } from '../../models/player';
+import { of, Subject, throwError } from 'rxjs';
 import { Game } from '../../models/game';
 import { DEFAULT_TEST_GAME, GAME_TESTCASES } from '../../tests/data/game-test-cases';
 import { ok } from 'neverthrow';
@@ -22,17 +25,73 @@ describe('ActiveGameStore', () => {
     getNextTile: vi.fn(),
   };
 
+  const activeGameConnection = {
+    connect: vi.fn(),
+    disconnect: vi.fn(),
+    connectionStatus$: new Subject<ConnectionStatus>(),
+    playerLeft$: new Subject<Player>(),
+    gameCompleted$: new Subject<void>(),
+  };
+
   beforeEach(() => {
     activeGameService.getNextTile.mockReturnValue(of(ok(DEFAULT_TEST_GAME.tiles[0])));
 
     TestBed.configureTestingModule({
-      providers: [ActiveGameStore, { provide: ActiveGameService, useValue: activeGameService }],
+      providers: [
+        ActiveGameStore,
+        { provide: ActiveGameService, useValue: activeGameService },
+        { provide: ActiveGameConnection, useValue: activeGameConnection },
+      ],
     });
   });
 
   afterEach(() => {
     vi.clearAllMocks();
   });
+
+  // ------------------------------------------------------------------------
+  // connection
+  // ------------------------------------------------------------------------
+
+  test.for<ConnectionStatus>(['Connected', 'Connecting', 'Disconnected'])(
+    'when connectionStatus$ emits %s then sets connectionStatus with emitted value',
+    (status: ConnectionStatus) => {
+      // given
+      const store = TestBed.inject(ActiveGameStore);
+
+      // when
+      activeGameConnection.connectionStatus$.next(status);
+
+      // then
+      expect(store.connectionStatus()).toEqual(status);
+    },
+  );
+
+  test('when connect then calls activeGameConnection.connect', async () => {
+    // given
+    const store = TestBed.inject(ActiveGameStore);
+
+    // when
+    await store.connect();
+
+    // then
+    expect(activeGameConnection.connect).toHaveBeenCalledOnce();
+  });
+
+  test('when disconnect then calls activeGameConnection.disconnect', async () => {
+    // given
+    const store = TestBed.inject(ActiveGameStore);
+
+    // when
+    await store.disconnect();
+
+    // then
+    expect(activeGameConnection.disconnect).toHaveBeenCalledOnce();
+  });
+
+  // ------------------------------------------------------------------------
+  // loading the active game
+  // ------------------------------------------------------------------------
 
   test('given no active game when loadActiveGame then sets game to null and loadingStatus to loaded', () => {
     // given

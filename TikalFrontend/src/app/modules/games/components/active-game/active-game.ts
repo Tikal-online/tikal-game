@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject } from '@angular/core';
+import { Component, computed, DestroyRef, effect, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { PlayerCardComponent } from 'tikal-ui-components';
@@ -20,6 +20,9 @@ export class ActiveGameComponent {
 
   constructor() {
     this.activeGameStore.loadActiveGame();
+    this.activeGameStore.connect();
+
+    inject(DestroyRef).onDestroy(() => this.activeGameStore.disconnect());
 
     // covers having no active game on page load
     effect(() => {
