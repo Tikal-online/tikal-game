@@ -38,4 +38,26 @@ public sealed class TilesTests
         // then
         Assert.IsType<NoPathFound>(cost.Value);
     }
+
+    [Theory]
+    [ClassData(typeof(ValidTilePlacements))]
+    public void GivenTilesAndConnectedTile_WhenCanBePlaced_ThenReturnsTrue(List<Tile> tiles, Tile tile)
+    {
+        // when
+        var canBePlaced = tiles.CanBePlaced(tile);
+
+        // then
+        Assert.True(canBePlaced);
+    }
+
+    [Theory]
+    [ClassData(typeof(InvalidTilePlacements))]
+    public void GivenTilesAndUnconnectedOrTakenTile_WhenCanBePlaced_ThenReturnsFalse(List<Tile> tiles, Tile tile)
+    {
+        // when
+        var canBePlaced = tiles.CanBePlaced(tile);
+
+        // then
+        Assert.False(canBePlaced);
+    }
 }

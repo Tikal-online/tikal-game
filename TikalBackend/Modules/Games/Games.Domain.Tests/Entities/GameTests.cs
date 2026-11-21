@@ -3,6 +3,7 @@ using Games.Domain.Enums;
 using Games.Domain.Errors;
 using Games.Domain.Events;
 using Games.Domain.Tests.Data;
+using Games.Domain.Types;
 using OneOf.Types;
 
 namespace Games.Domain.Tests.Entities;
@@ -156,7 +157,7 @@ public sealed class GameTests
         // then
         Assert.Multiple(
             () => Assert.NotNull(game.PendingTile),
-            () => Assert.Equal(TileCatalogue.Tiles[game.PendingTile!.Value], result.Value)
+            () => Assert.Equivalent(TileCatalogue.CreateTile(game.PendingTile!.Value, default), result.Value, strict: true)
         );
     }
 
@@ -191,9 +192,9 @@ public sealed class GameTests
 
         // then
         Assert.Multiple(
-            () => Assert.Equal(tile, tile1),
-            () => Assert.Equal(tile, tile2),
-            () => Assert.Equal(tile, tile3)
+            () => Assert.Equivalent(tile, tile1, strict: true),
+            () => Assert.Equivalent(tile, tile2, strict: true),
+            () => Assert.Equivalent(tile, tile3, strict: true)
         );
     }
 
@@ -206,5 +207,79 @@ public sealed class GameTests
 
         // then
         Assert.IsType<InvalidTurnPhaseDomainError>(result.Value);
+    }
+
+    // ------------------------------------------------------------------------
+    // PlaceTile
+    // The logic if a tile can or can not be placed in a given grid is tested 
+    // as part of the Tile tests. Here we only test the consequences.
+    // ------------------------------------------------------------------------
+
+    [Theory]
+    [ClassData(typeof(ActionPhaseGames))]
+    public void GivenGameinActionPhase_WhenPlaceTile_ThenReturnsInvalidTurnPhaseError(Game game)
+    {
+        // when
+        var result = game.PlaceTile(0, 0, 0);
+
+        // then
+        Assert.IsType<InvalidTurnPhaseDomainError>(result.Value);
+    }
+
+    [Theory]
+    [ClassData(typeof(PlaceTileGames))]
+    public void GivenGameWithOutDrawing_WhenPlaceTile_ThenReturnsTileMustBeDrawnFirstError(Game game)
+    {
+        // when
+        var result = game.PlaceTile(0, 0, 0);
+
+        // then
+        Assert.IsType<TileMustBeDrawnFirstDomainError>(result.Value);
+    }
+
+    [Theory]
+    [ClassData(typeof(PlaceTileGames))]
+    public void GivenInvalidTilePosition_WhenPlaceTile_ThenReturnsTileCannotBePlacedError(Game game)
+    {
+        // give
+        game.DrawTile();
+
+        // when
+        var result = game.PlaceTile(3, -4, 0);
+
+        // then
+        Assert.IsType<TileCannotBePlacedDomainError>(result.Value);
+    }
+
+    [Theory]
+    [ClassData(typeof(PlaceTileGames))]
+    public void GivenValidTilePosition_WhenPlaceTile_ThenReturnsSuccess(Game game)
+    {
+        // give
+        game.DrawTile();
+
+        // when
+        var result = game.PlaceTile(1, -2, 0);
+
+        // then
+        Assert.IsType<Success>(result.Value);
+    }
+
+    [Theory]
+    [ClassData(typeof(PlaceTileGames))]
+    public void GivenValidTilePosition_WhenPlaceTile_ThenAddsTileAndAdvancesPhase(Game game)
+    {
+        // give
+        var tile = game.DrawTile();
+
+        // when
+        game.PlaceTile(1, -2, 0);
+
+        // then
+        Assert.Multiple(
+            () => Assert.Null(game.PendingTile),
+            () => Assert.Equal(TurnPhase.Actions, game.TurnPhase),
+            () => Assert.Contains(game.Tiles, t => t.Coordinate == new HexCoordinate(1, -2))
+        );
     }
 }

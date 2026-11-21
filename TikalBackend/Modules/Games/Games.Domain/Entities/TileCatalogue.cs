@@ -50,41 +50,46 @@ public static class TileCatalogue
         return ((1UL << count) - 1) << first;
     }
 
-    // TODO: add the rest of the tiles
-    public static readonly IReadOnlyDictionary<TileCardIdentifier, Tile> Tiles = new Dictionary<TileCardIdentifier, Tile>
+    public static Tile CreateTile(TileCardIdentifier tileCardIdentifier, HexCoordinate coordinate = default)
     {
-        [TileCardIdentifier.A0] = new TreasureTile
+        return TileFactories[tileCardIdentifier](coordinate);
+    }
+
+    // TODO: add the rest of the tiles
+    private static readonly Dictionary<TileCardIdentifier, Func<HexCoordinate, Tile>> TileFactories = new()
+    {
+        [TileCardIdentifier.A0] = coordinate => new TreasureTile
         {
             Costs = new TravelCosts(North: 2, SouthWest: 1),
-            Coordinate = default
+            Coordinate = coordinate
         },
-        [TileCardIdentifier.A1] = new TempleTile
+        [TileCardIdentifier.A1] = coordinate => new TempleTile
         {
             TempleLevel = 1,
             Costs = new TravelCosts(South: 2, SouthWest: 1),
-            Coordinate = default
+            Coordinate = coordinate
         },
-        [TileCardIdentifier.A2] = new TempleTile
+        [TileCardIdentifier.A2] = coordinate => new TempleTile
         {
             TempleLevel = 2,
             Costs = new TravelCosts(North: 1, South: 2),
-            Coordinate = default
+            Coordinate = coordinate
         },
-        [TileCardIdentifier.A3] = new TempleTile
+        [TileCardIdentifier.A3] = coordinate => new TempleTile
         {
             TempleLevel = 2,
             Costs = new TravelCosts(South: 2, NorthWest: 1),
-            Coordinate = default
+            Coordinate = coordinate
         },
-        [TileCardIdentifier.A4] = new EmptyTile
+        [TileCardIdentifier.A4] = coordinate => new EmptyTile
         {
             Costs = new TravelCosts(North: 1, South: 1, SouthWest: 1),
-            Coordinate = default
+            Coordinate = coordinate
         },
-        [TileCardIdentifier.A5] = new TreasureTile
+        [TileCardIdentifier.A5] = coordinate => new TreasureTile
         {
             Costs = new TravelCosts(South: 1, NorthEast: 2),
-            Coordinate = default
+            Coordinate = coordinate
         },
     };
 

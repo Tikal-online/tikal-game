@@ -27,4 +27,19 @@ public readonly record struct TravelCosts(
             };
         }
     }
+
+    public TravelCosts Rotate(int steps)
+    {
+        int[] costs = [North, NorthEast, SouthEast, South, SouthWest, NorthWest];
+        var rotated = new int[costs.Length];
+
+        var shift = ((steps % costs.Length) + costs.Length) % costs.Length;
+
+        for (var edge = 0; edge < costs.Length; edge++)
+        {
+            rotated[(edge + shift) % costs.Length] = costs[edge];
+        }
+
+        return new TravelCosts(rotated[0], rotated[1], rotated[2], rotated[3], rotated[4], rotated[5]);
+    }
 }

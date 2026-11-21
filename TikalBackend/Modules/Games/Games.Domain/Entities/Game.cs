@@ -2,7 +2,9 @@ using System.Numerics;
 using Games.Domain.Enums;
 using Games.Domain.Errors;
 using Games.Domain.Events;
+using Games.Domain.Extensions;
 using Games.Domain.Mappers;
+using Games.Domain.Types;
 using OneOf;
 using OneOf.Types;
 using Shared.Domain.Entities;
@@ -82,7 +84,7 @@ public sealed class Game : Entity
 
         if (PendingTile is not null)
         {
-            return TileCatalogue.Tiles[PendingTile.Value];
+            return TileCatalogue.CreateTile(PendingTile.Value);
         }
 
         foreach (var bucket in TileCatalogue.BucketBitMasks)
@@ -106,10 +108,37 @@ public sealed class Game : Entity
             PendingTile = tileIdentifier;
             DrawnTiles |= 1UL << (int)tileIdentifier;
 
-            return TileCatalogue.Tiles[tileIdentifier];
+            return TileCatalogue.CreateTile(tileIdentifier);
         }
 
         return new NoTilesLeftDomainError();
+    }
+
+    public OneOf<Success, InvalidTurnPhaseDomainError, TileMustBeDrawnFirstDomainError, TileCannotBePlacedDomainError> PlaceTile(int q, int r, int rotation)
+    {
+        if (TurnPhase != TurnPhase.PlaceTile)
+        {
+            return new InvalidTurnPhaseDomainError();
+        }
+
+        if (PendingTile is null)
+        {
+            return new TileMustBeDrawnFirstDomainError();
+        }
+
+        var tileToPlace = TileCatalogue.CreateTile(PendingTile.Value, new HexCoordinate(q, r));
+        tileToPlace.Rotate(rotation);
+
+        if (!Tiles.CanBePlaced(tileToPlace))
+        {
+            return new TileCannotBePlacedDomainError();
+        }
+
+        Tiles.Add(tileToPlace);
+        PendingTile = null;
+        TurnPhase = TurnPhase.Actions;
+
+        return new Success();
     }
 
     /// <summary>

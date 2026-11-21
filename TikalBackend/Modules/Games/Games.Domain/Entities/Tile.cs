@@ -13,9 +13,14 @@ public abstract class Tile
 
     public abstract TileType Type { get; }
 
-    public required TravelCosts Costs { get; init; }
+    public required TravelCosts Costs { get; set; }
 
     public required HexCoordinate Coordinate { get; init; }
 
     public ICollection<TroopAssignment> TroopAssignments { get; set; } = [];
+
+    public void Rotate(int steps)
+    {
+        Costs = Costs.Rotate(steps);
+    }
 }
