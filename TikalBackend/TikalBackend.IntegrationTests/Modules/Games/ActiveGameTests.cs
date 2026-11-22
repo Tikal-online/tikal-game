@@ -236,7 +236,7 @@ public sealed class ActiveGameTests(AppFactoryFixture fixture) : IntegrationTest
             await Client.GetAsyncWithUser(GameUrl.GetNextTile(game.Id), currentUser, TestContext.Current.CancellationToken);
 
             // when
-            var response = await Client.PostAsyncWithUser(GameUrl.PlaceTile(game.Id), currentUser, dto, TestContext.Current.CancellationToken);
+            await Client.PostAsyncWithUser(GameUrl.PlaceTile(game.Id), currentUser, dto, TestContext.Current.CancellationToken);
 
             // then
             var tile = await tilePlacedSource.Task.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken);
