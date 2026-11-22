@@ -197,4 +197,55 @@ public sealed class ActiveGameTests(AppFactoryFixture fixture) : IntegrationTest
             await turnCompletedSource.Task.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken);
         });
     }
+
+    [Theory]
+    [ClassData(typeof(ValidCreateLobbyDtos))]
+    public async Task GivenGame_WhenTilePlaced_ThenSendsTilePlacedMessage(CreateLobbyDto createLobbyDto)
+    {
+        // given
+        var dto = new RestApi.Controllers.Games.Dtos.PlaceTileDto() { Q = 1, R = -2, Rotation = 2 };
+
+        // create and start the lobby
+        await RunTracked(async () =>
+        {
+            await CreateUserAccount(TestUser.Default);
+            await CreateUserAccount(TestUser.TestUser1);
+
+            var lobby = await CreateAndGetLobby(createLobbyDto, TestUser.Default);
+
+            await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.TestUser1, null, TestContext.Current.CancellationToken);
+
+            await Client.PutAsyncWithUser(LobbyUrl.SetPlayerReady, TestUser.Default, null, TestContext.Current.CancellationToken);
+            await Client.PutAsyncWithUser(LobbyUrl.SetPlayerReady, TestUser.TestUser1, null, TestContext.Current.CancellationToken);
+
+            await Client.PostAsyncWithUser(LobbyUrl.StartLobby(lobby.Id), TestUser.Default, null, TestContext.Current.CancellationToken);
+        });
+
+        await RunTracked(async () =>
+        {
+            await using var connection = await CreateConnection(GameUrl.ActiveGameHub, TestUser.TestUser1);
+
+            var tilePlacedSource = new TaskCompletionSource<TileDto>();
+            connection.On<TileDto>("TilePlaced", tilePlacedSource.SetResult);
+
+            var game = await GetActiveGame(TestUser.Default);
+            var currentPlayer = game.Players.Single(p => p.TurnPosition == game.CurrentTurnPosition);
+            List<TestUser> users = [TestUser.Default, TestUser.TestUser1];
+            var currentUser = users.First(u => u.UserId == currentPlayer.UserId);
+
+            await Client.GetAsyncWithUser(GameUrl.GetNextTile(game.Id), currentUser, TestContext.Current.CancellationToken);
+
+            // when
+            var response = await Client.PostAsyncWithUser(GameUrl.PlaceTile(game.Id), currentUser, dto, TestContext.Current.CancellationToken);
+
+            // then
+            var tile = await tilePlacedSource.Task.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken);
+
+            Assert.Multiple(
+                () => Assert.NotNull(tile),
+                () => Assert.Equal(tile.Coordinate.Q, dto.Q),
+                () => Assert.Equal(tile.Coordinate.R, dto.R)
+            );
+        });
+    }
 }
