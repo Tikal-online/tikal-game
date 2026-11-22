@@ -6,7 +6,7 @@ using Shared.Domain.Enums;
 namespace Games.Domain.Tests.Data;
 
 // the test cases follow the structure: game with a drawn tile, location, rotation
-internal class InvalidTilePlacementGames : TheoryData<Game, HexCoordinate, int>
+public class InvalidTilePlacementGames : TheoryData<Game, HexCoordinate, int>
 {
     public InvalidTilePlacementGames()
     {
