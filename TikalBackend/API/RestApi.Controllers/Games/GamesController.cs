@@ -9,6 +9,7 @@ using OneOf.Types;
 using RestApi.Controllers.Games.Dtos;
 using RestApi.Controllers.Games.Mappers;
 using Shared.Api;
+using Shared.Contracts.Errors;
 using Wolverine;
 
 namespace RestApi.Controllers.Games;
@@ -84,6 +85,30 @@ public sealed partial class GamesController : ApiController
             _ => GameNotFound(Id),
             _ => InvalidTurnPhase(Id),
             _ => NoTileLeft(Id)
+        );
+    }
+
+    [HttpPost("{Id:long}/Tiles")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    [EndpointDescription("Places the drawn tile at the given position with the given rotation")]
+    public async Task<IActionResult> PlaceTile(long Id, PlaceTileDto placeTileDto, CancellationToken cancellationToken)
+    {
+        var command = new PlaceTileCommand(accountContext.Account.UserId, Id, placeTileDto.Q, placeTileDto.R, placeTileDto.Rotation);
+
+        var result = await bus.InvokeAsync<OneOf<Success, GameNotFound, Unprivileged, InvalidTurnPhase, TileMustBeDrawnFirst, TileCannotBePlaced>>(
+            command,
+            cancellationToken
+        );
+
+        return result.Match<IActionResult>(
+            success => Ok(),
+            gameNotFound => GameNotFound(Id),
+            unpriviliged => Unprivileged(),
+            invalidTurnPhase => InvalidTurnPhase(Id),
+            tileMustBeDrawnFirst => TileMustBeDrawnFirst(Id),
+            tileCannotBePlaced => TileCannotBePlaced()
         );
     }
 }

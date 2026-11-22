@@ -5,7 +5,6 @@ using Games.Domain.Events;
 using Games.Domain.Tests.Data;
 using Games.Domain.Types;
 using OneOf.Types;
-using Shared.Domain.Enums;
 
 namespace Games.Domain.Tests.Entities;
 
@@ -212,8 +211,6 @@ public sealed class GameTests
 
     // ------------------------------------------------------------------------
     // PlaceTile
-    // The logic if a tile can or can not be placed in a given grid is tested 
-    // as part of the Tile tests. Here we only test the consequences.
     // ------------------------------------------------------------------------
 
     [Theory]
@@ -239,93 +236,51 @@ public sealed class GameTests
     }
 
     [Theory]
-    [ClassData(typeof(PlaceTileGames))]
-    public void GivenInvalidTilePosition_WhenPlaceTile_ThenReturnsTileCannotBePlacedError(Game game)
+    [ClassData(typeof(InvalidTilePlacementGames))]
+    public void GivenInvalidTilePosition_WhenPlaceTile_ThenReturnsTileCannotBePlacedError(
+        Game game,
+        HexCoordinate coordinate,
+        int rotation
+    )
     {
-        // give
-        game.DrawTile();
-
         // when
-        var result = game.PlaceTile(3, -4, 0);
+        var result = game.PlaceTile(coordinate.Q, coordinate.R, rotation);
 
         // then
         Assert.IsType<TileCannotBePlacedDomainError>(result.Value);
     }
 
-    [Fact]
-    public void GivenValidTilePosition_WhenPlaceTile_ThenReturnsSuccess()
+    [Theory]
+    [ClassData(typeof(ValidTilePlacementGames))]
+    public void GivenValidTilePosition_WhenPlaceTile_ThenReturnsSuccess(
+        Game game,
+        HexCoordinate coordinate,
+        int rotation
+    )
     {
-        // given
-        var game = GameWithPendingTile();
-
         // when
-        var result = game.PlaceTile(1, -2, 0);
+        var result = game.PlaceTile(coordinate.Q, coordinate.R, rotation);
 
         // then
         Assert.IsType<Success>(result.Value);
     }
 
-    [Fact]
-    public void GivenValidTilePosition_WhenPlaceTile_ThenAddsTileAndAdvancesPhase()
+    [Theory]
+    [ClassData(typeof(ValidTilePlacementGames))]
+    public void GivenValidTilePosition_WhenPlaceTile_ThenAddsTileAndAdvancesPhase(
+        Game game,
+        HexCoordinate coordinate,
+        int rotation
+    )
     {
-        // given
-        var game = GameWithPendingTile();
-
         // when
-        game.PlaceTile(1, -2, 0);
+        game.PlaceTile(coordinate.Q, coordinate.R, rotation);
 
         // then
         Assert.Multiple(
             () => Assert.Null(game.PendingTile),
             () => Assert.Equal(TurnPhase.Actions, game.TurnPhase),
-            () => Assert.Contains(game.Tiles, t => t.Coordinate == new HexCoordinate(1, -2))
+            () => Assert.Contains(game.Tiles, t => t.Coordinate == coordinate)
         );
-    }
-
-    /// <summary>
-    /// A game in the place tile phase where A1 (temple, south 2) has been drawn.
-    /// (1, -2) is a valid place for it: its south edge faces the tile on (1, -1).
-    /// </summary>
-    private static Game GameWithPendingTile()
-    {
-        return new Game
-        {
-            LobbyId = 1,
-            TurnPhase = TurnPhase.PlaceTile,
-            PendingTile = TileCardIdentifier.A1,
-            DrawnTiles = 1UL << (int)TileCardIdentifier.A1,
-            Players =
-            [
-                new Player
-                {
-                    UserId = "ebb73b46-d8fd-460e-ae24-848d8c20141f",
-                    Name = "Player1",
-                    Colour = Colour.Red,
-                    Points = 0,
-                    TurnPosition = 0
-                },
-                new Player
-                {
-                    UserId = "1a6a2a19-d2a3-46eb-b732-da1550ccc8d1",
-                    Name = "Player2",
-                    Colour = Colour.Black,
-                    Points = 0,
-                    TurnPosition = 1
-                }
-            ],
-            Tiles =
-            [
-                new EmptyTile
-                {
-                    Costs = new TravelCosts(NorthEast: 1),
-                    Coordinate = new HexCoordinate(0, 0)
-                },
-                new EmptyTile
-                {
-                    Costs = new TravelCosts(SouthWest: 1),
-                    Coordinate = new HexCoordinate(1, -1)
-                }
-            ]
-        };
     }
 }
