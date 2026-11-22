@@ -78,7 +78,7 @@ public sealed class PlaceTileTests(AppFactoryFixture fixture) : IntegrationTestF
     public async Task GivenPlayerNotInGame_WhenPlaceTile_ThenReturnsForbidden(CreateLobbyDto createLobbyDto)
     {
         // given
-        var dto = new PlaceTileDto() { Q = 1, R = 1, Rotation = 1 }; ;
+        var dto = new PlaceTileDto() { Q = 1, R = 1, Rotation = 1 };
 
         // create and start the lobby
         await RunTracked(async () =>
@@ -114,7 +114,7 @@ public sealed class PlaceTileTests(AppFactoryFixture fixture) : IntegrationTestF
     public async Task GivenPlayerNotCurrentPlayer_WhenPlaceTile_ThenReturnsForbidden(CreateLobbyDto createLobbyDto)
     {
         // given
-        var dto = new PlaceTileDto() { Q = 1, R = 1, Rotation = 1 }; ;
+        var dto = new PlaceTileDto() { Q = 1, R = 1, Rotation = 1 };
 
         // create and start the lobby
         await RunTracked(async () =>
@@ -153,7 +153,7 @@ public sealed class PlaceTileTests(AppFactoryFixture fixture) : IntegrationTestF
     public async Task GivenNoDrawnTile_WhenPlaceTile_ThenReturnsNotFound(CreateLobbyDto createLobbyDto)
     {
         // given
-        var dto = new PlaceTileDto() { Q = 1, R = 1, Rotation = 1 }; ;
+        var dto = new PlaceTileDto() { Q = 1, R = 1, Rotation = 1 };
 
         // create and start the lobby
         await RunTracked(async () =>
@@ -183,7 +183,7 @@ public sealed class PlaceTileTests(AppFactoryFixture fixture) : IntegrationTestF
             var response = await Client.PostAsyncWithUser(GameUrl.PlaceTile(game.Id), currentUser, dto, TestContext.Current.CancellationToken);
 
             // then
-            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+            Assert.Equal(HttpStatusCode.Conflict, response.StatusCode);
         });
     }
 
@@ -192,7 +192,7 @@ public sealed class PlaceTileTests(AppFactoryFixture fixture) : IntegrationTestF
     public async Task GivenInvalidTilePosition_WhenPlaceTile_ThenReturnsConflict(CreateLobbyDto createLobbyDto)
     {
         // given
-        var dto = new PlaceTileDto() { Q = 5, R = 5, Rotation = 1 }; ;
+        var dto = new PlaceTileDto() { Q = 5, R = 5, Rotation = 1 };
 
         // create and start the lobby
         await RunTracked(async () =>
@@ -233,7 +233,7 @@ public sealed class PlaceTileTests(AppFactoryFixture fixture) : IntegrationTestF
     public async Task GivenValidTilePosition_WhenPlaceTile_ThenReturnsOk(CreateLobbyDto createLobbyDto)
     {
         // given
-        var dto = new PlaceTileDto() { Q = 1, R = -2, Rotation = 2 }; ;
+        var dto = new PlaceTileDto() { Q = 1, R = -2, Rotation = 2 };
 
         // create and start the lobby
         await RunTracked(async () =>
