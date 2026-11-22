@@ -55,7 +55,7 @@ public sealed partial class GamesController
         return Problem(
             title: "Tile must be draw first",
             detail: $"The game with ID {gameId} must first have a drawn tile before it can be placed",
-            statusCode: StatusCodes.Status409Conflict
+            statusCode: StatusCodes.Status404NotFound
         );
     }
 
