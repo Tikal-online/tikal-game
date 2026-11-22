@@ -4,7 +4,7 @@ using Games.Domain.Events;
 
 namespace Games.Application.EventHandlers;
 
-public static class TilePlacedIntegrationEventHandler
+public static class TilePlacedDomainEventHandler
 {
     public static TilePlacedIntegrationEvent Handle(TilePlacedDomainEvent domainEvent)
     {
