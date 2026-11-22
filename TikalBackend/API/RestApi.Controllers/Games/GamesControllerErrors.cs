@@ -49,4 +49,22 @@ public sealed partial class GamesController
             statusCode: StatusCodes.Status409Conflict
         );
     }
+
+    private ObjectResult TileMustBeDrawnFirst(long gameId)
+    {
+        return Problem(
+            title: "Tile must be draw first",
+            detail: $"The game with ID {gameId} must first have a drawn tile before it can be placed",
+            statusCode: StatusCodes.Status409Conflict
+        );
+    }
+
+    private ObjectResult TileCannotBePlaced()
+    {
+        return Problem(
+            title: "Tile can not be placed",
+            detail: $"Invalid tile location provided",
+            statusCode: StatusCodes.Status409Conflict
+        );
+    }
 }
