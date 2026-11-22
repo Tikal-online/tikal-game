@@ -283,4 +283,25 @@ public sealed class GameTests
             () => Assert.Contains(game.Tiles, t => t.Coordinate == coordinate)
         );
     }
+
+    [Theory]
+    [ClassData(typeof(ValidTilePlacementGames))]
+    public void GivenValidTilePosition_WhenPlaceTile_ThenAddsTilePlacedDomainEvent(
+        Game game,
+        HexCoordinate coordinate,
+        int rotation
+    )
+    {
+        // when
+        game.PlaceTile(coordinate.Q, coordinate.R, rotation);
+
+        // then
+        var domainEvent = game.DomainEvents.OfType<TilePlacedDomainEvent>().SingleOrDefault();
+
+        Assert.Multiple(
+            () => Assert.NotNull(domainEvent),
+            () => Assert.Equal(domainEvent?.Tile.Coordinate, coordinate),
+            () => Assert.Equal(domainEvent?.GameId, game.Id)
+        );
+    }
 }

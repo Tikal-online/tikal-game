@@ -10,5 +10,7 @@ public interface ActiveGameClient
 
     Task TurnCompleted(GamePlayerDto nextPlayer);
 
+    Task TilePlaced(TileDto tileDto);
+
     Task GameCompleted();
 }

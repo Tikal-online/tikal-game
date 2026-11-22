@@ -137,6 +137,7 @@ public sealed class Game : Entity
         Tiles.Add(tileToPlace);
         PendingTile = null;
         TurnPhase = TurnPhase.Actions;
+        AddDomainEvent(new TilePlacedDomainEvent(GameMapper.TileToTileEventData(tileToPlace), Id));
 
         return new Success();
     }

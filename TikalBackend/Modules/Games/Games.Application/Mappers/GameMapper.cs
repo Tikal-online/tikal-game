@@ -24,5 +24,5 @@ internal static partial class GameMapper
     [MapDerivedType<TreasureTileEventData, TreasureTileModel>]
     [MapDerivedType<VolcanoTileEventData, VolcanoTileModel>]
     [MapDerivedType<TempleTileEventData, TempleTileModel>]
-    private static partial TileModel TileEventDataToTileModel(TileEventData tile);
+    public static partial TileModel TileEventDataToTileModel(TileEventData tile);
 }
