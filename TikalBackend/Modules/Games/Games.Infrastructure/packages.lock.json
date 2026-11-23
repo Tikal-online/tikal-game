@@ -39,15 +39,15 @@
       },
       "WolverineFx.EntityFrameworkCore": {
         "type": "Direct",
-        "requested": "[6.64.0, )",
-        "resolved": "6.64.0",
-        "contentHash": "SYn1juewjXZLG8gzwrtD3k6/LjP3Lg4MCDbW8ww6A3y418xpfYujterg1HHKHcLRnRu4Z7f1CEOIttFEip8hBw==",
+        "requested": "[6.65.1, )",
+        "resolved": "6.65.1",
+        "contentHash": "J8yvpqk85sIqZ/+q3l2/dEJAdzIKvjFI2lANQZjQMbyygvJ8sRbLzj6EX2RedVeBqrHQsFd0R3wIcc314H80Yw==",
         "dependencies": {
           "Microsoft.EntityFrameworkCore": "10.0.4",
           "Microsoft.EntityFrameworkCore.Design": "10.0.4",
           "Microsoft.EntityFrameworkCore.Relational": "10.0.4",
           "Weasel.EntityFrameworkCore": "9.50.0",
-          "WolverineFx.RDBMS": "6.64.0"
+          "WolverineFx.RDBMS": "6.65.1"
         }
       },
       "Cronos": {
@@ -625,11 +625,11 @@
       },
       "WolverineFx.RDBMS": {
         "type": "Transitive",
-        "resolved": "6.64.0",
-        "contentHash": "Klrsjh1JhFOhqgqJIpwjTjwpJmdsDdtDy3elObXC5AskHNJtleQHWVpvhC1QorwoyLyKnUqwJpe4q1fEpgPZ1w==",
+        "resolved": "6.65.1",
+        "contentHash": "zklh+4haPfQmxYCo5qfXrBe765i5lvjkJ2fY49q8Tk2hdFYiFwrrXxwyKhN8VvG4oQr1r5JSXbBYxaUKu0EJIg==",
         "dependencies": {
           "Weasel.Core": "9.50.0",
-          "WolverineFx": "6.64.0"
+          "WolverineFx": "6.65.1"
         }
       },
       "games.application": {
@@ -717,8 +717,8 @@
       "WolverineFx": {
         "type": "CentralTransitive",
         "requested": "[6.64.0, )",
-        "resolved": "6.64.0",
-        "contentHash": "hoGE3ZTGontyepxYQ96OUklj81x3a5dg9k32rpgCa1yNHWdsfJCtr9Lx/wZidUv+lfzm+LSLoVHsXILYeq+e2A==",
+        "resolved": "6.65.1",
+        "contentHash": "e1QGJy/kn+N5T5L40jJFWvj1pyHiXkVT5w2F4yLvnjiDrQmchO+Cyixgbjfvh08WfLm1iYyhjATos0Q024jKSQ==",
         "dependencies": {
           "Cronos": "0.11.0",
           "JasperFx": "2.102.0",
