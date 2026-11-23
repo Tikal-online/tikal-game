@@ -136,12 +136,12 @@
       },
       "WolverineFx.Postgresql": {
         "type": "Direct",
-        "requested": "[6.64.0, )",
-        "resolved": "6.64.0",
-        "contentHash": "2oQduQBFxVGH11zOxlqlS/d8SjJUaZaN+sFcRnXK+SgFmozu9QjFDuRlw3i3hOK42cpnG9hfkDxs5Reot3Gr3A==",
+        "requested": "[6.65.1, )",
+        "resolved": "6.65.1",
+        "contentHash": "Qlq8G2hVUR4nJc5d60i8mfVpLSNHXxW21xpXAovzQile+quyCRX3+ll3v6XINvIiUWiY35df7GD44xX65sq32A==",
         "dependencies": {
           "Weasel.Postgresql": "9.50.0",
-          "WolverineFx.RDBMS": "6.64.0"
+          "WolverineFx.RDBMS": "6.65.1"
         }
       },
       "WolverineFx.RuntimeCompilation": {
@@ -615,11 +615,11 @@
       },
       "WolverineFx.RDBMS": {
         "type": "Transitive",
-        "resolved": "6.64.0",
-        "contentHash": "Klrsjh1JhFOhqgqJIpwjTjwpJmdsDdtDy3elObXC5AskHNJtleQHWVpvhC1QorwoyLyKnUqwJpe4q1fEpgPZ1w==",
+        "resolved": "6.65.1",
+        "contentHash": "zklh+4haPfQmxYCo5qfXrBe765i5lvjkJ2fY49q8Tk2hdFYiFwrrXxwyKhN8VvG4oQr1r5JSXbBYxaUKu0EJIg==",
         "dependencies": {
           "Weasel.Core": "9.50.0",
-          "WolverineFx": "6.64.0"
+          "WolverineFx": "6.65.1"
         }
       },
       "accounts.application": {
