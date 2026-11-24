@@ -184,6 +184,26 @@ export const ActiveGameStore = signalStore(
       ),
     ),
 
+    watchTilePlaced: rxMethod<void>(
+      pipe(
+        switchMap(() => store._activeGameConnection.tilePlaced$),
+        // placing the tile ends the place tile phase
+        tap((tile) =>
+          patchState(store, (state) => ({
+            game: state.game
+              ? {
+                  ...state.game,
+                  tiles: [...state.game.tiles, tile],
+                  turnPhase: 'Actions' as const,
+                }
+              : null,
+            drawnTile: null,
+            drawnTileRotation: 0,
+          })),
+        ),
+      ),
+    ),
+
     watchConnectionStatus: rxMethod<void>(
       pipe(
         switchMap(() => store._activeGameConnection.connectionStatus$),
@@ -198,6 +218,7 @@ export const ActiveGameStore = signalStore(
       store.watchConnectionStatus();
       store.watchLeftPlayers();
       store.watchTurnCompleted();
+      store.watchTilePlaced();
       store.watchGameCompleted();
     },
   }),

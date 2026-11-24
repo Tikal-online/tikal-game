@@ -4,6 +4,7 @@ import { ActiveGameStore } from './active-game-store';
 import { ActiveGameConnection } from '../../services/active-game/active-game-connection';
 import { ConnectionStatus } from '../../../../core/types/connection-status';
 import { Player } from '../../models/player';
+import { Tile } from '../../models/tile';
 import { of, Subject, throwError } from 'rxjs';
 import { Game } from '../../models/game';
 import { DEFAULT_TEST_GAME, GAME_TESTCASES } from '../../tests/data/game-test-cases';
@@ -32,6 +33,7 @@ describe('ActiveGameStore', () => {
     connectionStatus$: new Subject<ConnectionStatus>(),
     leftPlayers$: new Subject<Player>(),
     turnCompleted$: new Subject<Player>(),
+    tilePlaced$: new Subject<Tile>(),
     gameCompleted$: new Subject<void>(),
   };
 
@@ -193,6 +195,70 @@ describe('ActiveGameStore', () => {
       expect(store.game()).toBeNull();
     },
   );
+
+  // ------------------------------------------------------------------------
+  // tile placed
+  // ------------------------------------------------------------------------
+
+  const PLACED_TILE: Tile = {
+    type: 'temple',
+    templeLevel: 2,
+    costs: { north: 0, northEast: 1, southEast: 0, south: 2, southWest: 0, northWest: 0 },
+    coordinate: { q: 4, r: -3 },
+  };
+
+  test.for<Game>(GAME_TESTCASES)(
+    'given game $id when tilePlaced$ emits then adds the tile to the board and starts the action phase',
+    (game: Game) => {
+      // given
+      const store = TestBed.inject(ActiveGameStore);
+
+      activeGameService.getActiveGame.mockReturnValueOnce(of({ ...game, turnPhase: 'PlaceTile' }));
+      TestBed.runInInjectionContext(() => {
+        store.loadActiveGame();
+      });
+
+      // when
+      activeGameConnection.tilePlaced$.next(PLACED_TILE);
+
+      // then
+      expect(store.game()?.tiles).toEqual([...game.tiles, PLACED_TILE]);
+      expect(store.turnPhase()).toEqual('Actions');
+    },
+  );
+
+  test.for<Game>(GAME_TESTCASES.filter(isMyTurnToPlaceTile))(
+    'given my drawn tile in game $id when tilePlaced$ emits then clears the drawn tile and its rotation',
+    (game: Game) => {
+      // given
+      const store = TestBed.inject(ActiveGameStore);
+
+      activeGameService.getActiveGame.mockReturnValueOnce(of(game));
+      TestBed.runInInjectionContext(() => {
+        store.loadActiveGame();
+      });
+      TestBed.tick();
+      store.rotateDrawnTile(2);
+
+      // when
+      activeGameConnection.tilePlaced$.next(PLACED_TILE);
+
+      // then
+      expect(store.drawnTile()).toBeNull();
+      expect(store.drawnTileRotation()).toEqual(0);
+    },
+  );
+
+  test('given no active game when tilePlaced$ emits then game is still null', () => {
+    // given
+    const store = TestBed.inject(ActiveGameStore);
+
+    // when
+    activeGameConnection.tilePlaced$.next(PLACED_TILE);
+
+    // then
+    expect(store.game()).toBeNull();
+  });
 
   // ------------------------------------------------------------------------
   // game completed
