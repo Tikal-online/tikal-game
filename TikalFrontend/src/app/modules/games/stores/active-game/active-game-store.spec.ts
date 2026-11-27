@@ -249,6 +249,35 @@ describe('ActiveGameStore', () => {
     },
   );
 
+  test.for<Game>(GAME_TESTCASES)(
+    'given game $id with a tile at the coordinate when tilePlaced$ emits then leaves the game unchanged',
+    (game: Game) => {
+      // given
+      const store = TestBed.inject(ActiveGameStore);
+      const existingTile: Tile = { ...PLACED_TILE, type: 'empty' };
+      const gameWithTile: Game = {
+        ...game,
+        turnPhase: 'PlaceTile',
+        tiles: [...game.tiles, existingTile],
+      };
+
+      activeGameService.getActiveGame.mockReturnValueOnce(of(gameWithTile));
+      TestBed.runInInjectionContext(() => {
+        store.loadActiveGame();
+      });
+      TestBed.tick();
+
+      const drawnTileBefore = store.drawnTile();
+
+      // when
+      activeGameConnection.tilePlaced$.next(PLACED_TILE);
+
+      // then
+      expect(store.game()).toEqual(gameWithTile);
+      expect(store.drawnTile()).toEqual(drawnTileBefore);
+    },
+  );
+
   test('given no active game when tilePlaced$ emits then game is still null', () => {
     // given
     const store = TestBed.inject(ActiveGameStore);

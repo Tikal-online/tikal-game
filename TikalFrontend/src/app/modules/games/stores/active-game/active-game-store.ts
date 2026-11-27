@@ -16,7 +16,7 @@ import { ActiveGameService } from '../../services/active-game/active-game-servic
 import { ActiveGameConnection } from '../../services/active-game/active-game-connection';
 import { ConnectionStatus } from '../../../../core/types/connection-status';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { EMPTY, pipe, switchMap, tap } from 'rxjs';
+import { EMPTY, filter, pipe, switchMap, tap } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
 
 type ActiveGameState = {
@@ -187,6 +187,17 @@ export const ActiveGameStore = signalStore(
     watchTilePlaced: rxMethod<void>(
       pipe(
         switchMap(() => store._activeGameConnection.tilePlaced$),
+        // a place that already has a tile keeps it, the message is ignored
+        filter(
+          (tile) =>
+            !store
+              .game()
+              ?.tiles.some(
+                (placed) =>
+                  placed.coordinate.q === tile.coordinate.q &&
+                  placed.coordinate.r === tile.coordinate.r,
+              ),
+        ),
         // placing the tile ends the place tile phase
         tap((tile) =>
           patchState(store, (state) => ({
