@@ -41,7 +41,7 @@ export class BoardClick {
     const press = this.press;
     this.press = null;
 
-    if (!press || press.pointerId !== event.pointerId) {
+    if (press?.pointerId !== event.pointerId) {
       return;
     }
 
