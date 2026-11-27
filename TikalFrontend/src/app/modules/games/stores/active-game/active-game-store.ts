@@ -9,14 +9,14 @@ import {
 } from '@ngrx/signals';
 import { Game } from '../../models/game';
 import { Player } from '../../models/player';
-import { rotateCosts, Tile } from '../../models/tile';
+import { HexCoordinate, rotateCosts, Tile } from '../../models/tile';
 import { TurnPhase } from '../../models/turn-phase';
 import { computed, inject } from '@angular/core';
 import { ActiveGameService } from '../../services/active-game/active-game-service';
 import { ActiveGameConnection } from '../../services/active-game/active-game-connection';
 import { ConnectionStatus } from '../../../../core/types/connection-status';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { EMPTY, pipe, switchMap, tap } from 'rxjs';
+import { EMPTY, filter, pipe, switchMap, tap } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
 
 type ActiveGameState = {
@@ -96,6 +96,42 @@ export const ActiveGameStore = signalStore(
         }),
       ),
     ),
+
+    async placeDrawnTile(coordinate: HexCoordinate): Promise<void> {
+      const game = store.game();
+      const rotatedTile = store.rotatedDrawnTile();
+
+      if (!game || !rotatedTile) {
+        return;
+      }
+
+      const result = await store._activeGameService.placeTile(
+        game.id,
+        coordinate,
+        store.drawnTileRotation(),
+      );
+
+      if (result.isOk()) {
+        const placedTile: Tile = { ...rotatedTile, coordinate };
+
+        patchState(store, (state) => ({
+          game: state.game
+            ? {
+                ...state.game,
+                tiles: state.game.tiles.some(
+                  (tile) =>
+                    tile.coordinate.q === coordinate.q && tile.coordinate.r === coordinate.r,
+                )
+                  ? state.game.tiles
+                  : [...state.game.tiles, placedTile],
+                turnPhase: 'Actions' as const,
+              }
+            : null,
+          drawnTile: null,
+          drawnTileRotation: 0,
+        }));
+      }
+    },
 
     rotateDrawnTile(steps: number): void {
       if (!store.drawnTile()) {
@@ -184,6 +220,37 @@ export const ActiveGameStore = signalStore(
       ),
     ),
 
+    watchTilePlaced: rxMethod<void>(
+      pipe(
+        switchMap(() => store._activeGameConnection.tilePlaced$),
+        // a place that already has a tile keeps it, the message is ignored
+        filter(
+          (tile) =>
+            !store
+              .game()
+              ?.tiles.some(
+                (placed) =>
+                  placed.coordinate.q === tile.coordinate.q &&
+                  placed.coordinate.r === tile.coordinate.r,
+              ),
+        ),
+        // placing the tile ends the place tile phase
+        tap((tile) =>
+          patchState(store, (state) => ({
+            game: state.game
+              ? {
+                  ...state.game,
+                  tiles: [...state.game.tiles, tile],
+                  turnPhase: 'Actions' as const,
+                }
+              : null,
+            drawnTile: null,
+            drawnTileRotation: 0,
+          })),
+        ),
+      ),
+    ),
+
     watchConnectionStatus: rxMethod<void>(
       pipe(
         switchMap(() => store._activeGameConnection.connectionStatus$),
@@ -198,6 +265,7 @@ export const ActiveGameStore = signalStore(
       store.watchConnectionStatus();
       store.watchLeftPlayers();
       store.watchTurnCompleted();
+      store.watchTilePlaced();
       store.watchGameCompleted();
     },
   }),

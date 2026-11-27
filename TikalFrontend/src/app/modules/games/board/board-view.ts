@@ -1,12 +1,19 @@
 import { DirectionalLight, Group, HemisphereLight, Scene, WebGLRenderer } from 'three';
 import { HexCoordinate, Tile } from '../models/tile';
 import { BoardCamera } from './utils/board-camera';
+import { BoardClick } from './utils/board-click';
 import { BoardHover, Hoverable } from './utils/board-hover';
 import { boardCoordinates } from './board-layout';
 import { BoardResources } from './board-resources';
 import { coordinateKey, EDGE_OFFSETS } from './hex-layout';
 import { SlotView } from './slot-view';
 import { TileView } from './tile-view';
+
+// how the board reports what the user does on it
+export type BoardViewCallbacks = {
+  /** A valid free place was clicked to put the pending tile on. */
+  onPlacePendingTile: (coordinate: HexCoordinate) => void;
+};
 
 export class BoardView {
   private readonly scene = new Scene();
@@ -20,6 +27,8 @@ export class BoardView {
   private readonly boardCamera: BoardCamera;
 
   private readonly hover: BoardHover;
+
+  private readonly click: BoardClick;
 
   // Placeholders
   private readonly slots = new Group();
@@ -42,12 +51,21 @@ export class BoardView {
   // the drawing buffer follows the canvas' css size
   private readonly resizeObserver = new ResizeObserver(() => this.resize());
 
-  constructor(canvas: HTMLCanvasElement) {
+  constructor(
+    canvas: HTMLCanvasElement,
+    private readonly callbacks: BoardViewCallbacks,
+  ) {
     this.renderer = new WebGLRenderer({ canvas, antialias: true, alpha: true });
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
     this.boardCamera = new BoardCamera(canvas);
     this.hover = new BoardHover(canvas, this.boardCamera.camera);
+    this.click = new BoardClick(
+      canvas,
+      this.boardCamera.camera,
+      () => this.hoverables(),
+      (target) => this.onBoardClick(target),
+    );
 
     this.scene.add(this.slots, this.tiles);
     this.addSlots();
@@ -102,6 +120,7 @@ export class BoardView {
 
     this.boardCamera.dispose();
     this.hover.dispose();
+    this.click.dispose();
 
     this.resources.dispose();
     this.renderer.dispose();
@@ -169,6 +188,17 @@ export class BoardView {
   }
 
   // a tile can only be set next to a tile that is already on the board
+  // a click on a free place the preview shows as valid puts the pending tile there
+  private onBoardClick(target: Hoverable): void {
+    if (!this.pendingTile || !(target instanceof SlotView)) {
+      return;
+    }
+
+    if (this.isValidPlacement(target.coordinate)) {
+      this.callbacks.onPlacePendingTile(target.coordinate);
+    }
+  }
+
   private isValidPlacement({ q, r }: HexCoordinate): boolean {
     return Object.values(EDGE_OFFSETS).some((offset) =>
       this.tileViews.has(coordinateKey({ q: q + offset.q, r: r + offset.r })),

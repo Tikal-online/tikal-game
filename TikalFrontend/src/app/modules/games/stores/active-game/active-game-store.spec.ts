@@ -4,10 +4,12 @@ import { ActiveGameStore } from './active-game-store';
 import { ActiveGameConnection } from '../../services/active-game/active-game-connection';
 import { ConnectionStatus } from '../../../../core/types/connection-status';
 import { Player } from '../../models/player';
+import { Tile } from '../../models/tile';
 import { of, Subject, throwError } from 'rxjs';
 import { Game } from '../../models/game';
 import { DEFAULT_TEST_GAME, GAME_TESTCASES } from '../../tests/data/game-test-cases';
-import { ok } from 'neverthrow';
+import { err, ok } from 'neverthrow';
+import { rotateCosts } from '../../models/tile';
 import { PLAYER_TESTCASES } from '../../tests/data/player-test-cases';
 
 /** Is the authenticated player on turn and has to place a tile? */
@@ -24,6 +26,7 @@ describe('ActiveGameStore', () => {
   const activeGameService = {
     getActiveGame: vi.fn(),
     getNextTile: vi.fn(),
+    placeTile: vi.fn(),
   };
 
   const activeGameConnection = {
@@ -32,6 +35,7 @@ describe('ActiveGameStore', () => {
     connectionStatus$: new Subject<ConnectionStatus>(),
     leftPlayers$: new Subject<Player>(),
     turnCompleted$: new Subject<Player>(),
+    tilePlaced$: new Subject<Tile>(),
     gameCompleted$: new Subject<void>(),
   };
 
@@ -193,6 +197,218 @@ describe('ActiveGameStore', () => {
       expect(store.game()).toBeNull();
     },
   );
+
+  // ------------------------------------------------------------------------
+  // placing the drawn tile
+  // ------------------------------------------------------------------------
+
+  test.for<Game>(GAME_TESTCASES.filter(isMyTurnToPlaceTile))(
+    'given my drawn tile in game $id when placeDrawnTile then sends the place and its rotation',
+    async (game: Game) => {
+      // given
+      const store = TestBed.inject(ActiveGameStore);
+
+      activeGameService.getActiveGame.mockReturnValueOnce(of(game));
+      TestBed.runInInjectionContext(() => {
+        store.loadActiveGame();
+      });
+      TestBed.tick();
+      store.rotateDrawnTile(2);
+
+      activeGameService.placeTile.mockResolvedValueOnce(ok());
+
+      // when
+      await store.placeDrawnTile({ q: 1, r: -2 });
+
+      // then
+      expect(activeGameService.placeTile).toHaveBeenCalledExactlyOnceWith(
+        game.id,
+        { q: 1, r: -2 },
+        2,
+      );
+    },
+  );
+
+  test.for<Game>(GAME_TESTCASES.filter(isMyTurnToPlaceTile))(
+    'given the backend accepts the tile in game $id when placeDrawnTile then puts the turned tile on the board right away',
+    async (game: Game) => {
+      // given
+      const store = TestBed.inject(ActiveGameStore);
+
+      activeGameService.getActiveGame.mockReturnValueOnce(of(game));
+      TestBed.runInInjectionContext(() => {
+        store.loadActiveGame();
+      });
+      TestBed.tick();
+      store.rotateDrawnTile(2);
+      const drawnTile = store.drawnTile()!;
+
+      activeGameService.placeTile.mockResolvedValueOnce(ok());
+
+      // when
+      await store.placeDrawnTile({ q: 1, r: -2 });
+
+      // then
+      expect(store.game()?.tiles).toEqual([
+        ...game.tiles,
+        { ...drawnTile, costs: rotateCosts(drawnTile.costs, 2), coordinate: { q: 1, r: -2 } },
+      ]);
+      expect(store.turnPhase()).toEqual('Actions');
+      expect(store.drawnTile()).toBeNull();
+      expect(store.drawnTileRotation()).toEqual(0);
+    },
+  );
+
+  test.for<Game>(GAME_TESTCASES.filter(isMyTurnToPlaceTile))(
+    'given the backend rejects the tile when placeDrawnTile then leaves the board and drawn tile unchanged',
+    async (game: Game) => {
+      // given
+      const store = TestBed.inject(ActiveGameStore);
+
+      activeGameService.getActiveGame.mockReturnValueOnce(of(game));
+      TestBed.runInInjectionContext(() => {
+        store.loadActiveGame();
+      });
+      TestBed.tick();
+      const drawnTile = store.drawnTile();
+
+      activeGameService.placeTile.mockResolvedValueOnce(err(null));
+
+      // when
+      await store.placeDrawnTile({ q: 1, r: -2 });
+
+      // then
+      expect(store.game()?.tiles).toEqual(game.tiles);
+      expect(store.turnPhase()).toEqual('PlaceTile');
+      expect(store.drawnTile()).toEqual(drawnTile);
+    },
+  );
+
+  test('given no active game when placeDrawnTile then does not call placeTile', async () => {
+    // given
+    const store = TestBed.inject(ActiveGameStore);
+
+    // when
+    await store.placeDrawnTile({ q: 1, r: -2 });
+
+    // then
+    expect(activeGameService.placeTile).not.toHaveBeenCalled();
+    expect(store.game()).toBeNull();
+  });
+
+  test.for<Game>(GAME_TESTCASES.filter((game) => !isMyTurnToPlaceTile(game)))(
+    'given no drawn tile in game $id when placeDrawnTile then does not call placeTile and leaves the game unchanged',
+    async (game: Game) => {
+      // given
+      const store = TestBed.inject(ActiveGameStore);
+
+      activeGameService.getActiveGame.mockReturnValueOnce(of(game));
+      TestBed.runInInjectionContext(() => {
+        store.loadActiveGame();
+      });
+      TestBed.tick();
+
+      // when
+      await store.placeDrawnTile({ q: 1, r: -2 });
+
+      // then
+      expect(activeGameService.placeTile).not.toHaveBeenCalled();
+      expect(store.game()).toEqual(game);
+    },
+  );
+
+  // ------------------------------------------------------------------------
+  // tile placed
+  // ------------------------------------------------------------------------
+
+  const PLACED_TILE: Tile = {
+    type: 'temple',
+    templeLevel: 2,
+    costs: { north: 0, northEast: 1, southEast: 0, south: 2, southWest: 0, northWest: 0 },
+    coordinate: { q: 4, r: -3 },
+  };
+
+  test.for<Game>(GAME_TESTCASES)(
+    'given game $id when tilePlaced$ emits then adds the tile to the board and starts the action phase',
+    (game: Game) => {
+      // given
+      const store = TestBed.inject(ActiveGameStore);
+
+      activeGameService.getActiveGame.mockReturnValueOnce(of({ ...game, turnPhase: 'PlaceTile' }));
+      TestBed.runInInjectionContext(() => {
+        store.loadActiveGame();
+      });
+
+      // when
+      activeGameConnection.tilePlaced$.next(PLACED_TILE);
+
+      // then
+      expect(store.game()?.tiles).toEqual([...game.tiles, PLACED_TILE]);
+      expect(store.turnPhase()).toEqual('Actions');
+    },
+  );
+
+  test.for<Game>(GAME_TESTCASES.filter(isMyTurnToPlaceTile))(
+    'given my drawn tile in game $id when tilePlaced$ emits then clears the drawn tile and its rotation',
+    (game: Game) => {
+      // given
+      const store = TestBed.inject(ActiveGameStore);
+
+      activeGameService.getActiveGame.mockReturnValueOnce(of(game));
+      TestBed.runInInjectionContext(() => {
+        store.loadActiveGame();
+      });
+      TestBed.tick();
+      store.rotateDrawnTile(2);
+
+      // when
+      activeGameConnection.tilePlaced$.next(PLACED_TILE);
+
+      // then
+      expect(store.drawnTile()).toBeNull();
+      expect(store.drawnTileRotation()).toEqual(0);
+    },
+  );
+
+  test.for<Game>(GAME_TESTCASES)(
+    'given game $id with a tile at the coordinate when tilePlaced$ emits then leaves the game unchanged',
+    (game: Game) => {
+      // given
+      const store = TestBed.inject(ActiveGameStore);
+      const existingTile: Tile = { ...PLACED_TILE, type: 'empty' };
+      const gameWithTile: Game = {
+        ...game,
+        turnPhase: 'PlaceTile',
+        tiles: [...game.tiles, existingTile],
+      };
+
+      activeGameService.getActiveGame.mockReturnValueOnce(of(gameWithTile));
+      TestBed.runInInjectionContext(() => {
+        store.loadActiveGame();
+      });
+      TestBed.tick();
+
+      const drawnTileBefore = store.drawnTile();
+
+      // when
+      activeGameConnection.tilePlaced$.next(PLACED_TILE);
+
+      // then
+      expect(store.game()).toEqual(gameWithTile);
+      expect(store.drawnTile()).toEqual(drawnTileBefore);
+    },
+  );
+
+  test('given no active game when tilePlaced$ emits then game is still null', () => {
+    // given
+    const store = TestBed.inject(ActiveGameStore);
+
+    // when
+    activeGameConnection.tilePlaced$.next(PLACED_TILE);
+
+    // then
+    expect(store.game()).toBeNull();
+  });
 
   // ------------------------------------------------------------------------
   // game completed

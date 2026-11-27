@@ -4,6 +4,7 @@ import { environment } from '../../../../../environments/environment';
 import { Subject } from 'rxjs';
 import { ConnectionStatus } from '../../../../core/types/connection-status';
 import { Player } from '../../models/player';
+import { Tile } from '../../models/tile';
 import { AccountStore } from '../../../../core/stores/account-store/account-store';
 
 @Service({ autoProvided: false })
@@ -14,6 +15,8 @@ export class ActiveGameConnection {
 
   /** Emits the player whose turn starts now. */
   readonly turnCompleted$ = new Subject<Player>();
+
+  readonly tilePlaced$ = new Subject<Tile>();
 
   readonly gameCompleted$ = new Subject<void>();
 
@@ -36,6 +39,10 @@ export class ActiveGameConnection {
 
     this.connection.on('TurnCompleted', (nextPlayer: Omit<Player, 'isMe'>) => {
       this.turnCompleted$.next({ ...nextPlayer, isMe: this.accountStore.isMe(nextPlayer.userId) });
+    });
+
+    this.connection.on('TilePlaced', (tile: Tile) => {
+      this.tilePlaced$.next(tile);
     });
 
     this.connection.on('GameCompleted', () => {
