@@ -3,6 +3,7 @@
     <tikal-game-board
       [pendingTile]="activeGameStore.rotatedDrawnTile()"
       [tiles]="boardTiles()"
+      (placePendingTile)="activeGameStore.placeDrawnTile($event)"
       (rotatePendingTile)="activeGameStore.rotateDrawnTile($event)"
     />
     @if (activeGameStore.currentPlayer()?.isMe) {

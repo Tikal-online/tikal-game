@@ -10,6 +10,7 @@ import {
   HttpResponseData,
   NOT_FOUND,
   CONFLICT,
+  FORBIDDEN,
 } from '../../../../core/tests/http-responses';
 import { HttpErrorResponse } from '@angular/common/http';
 import { signal } from '@angular/core';
@@ -179,6 +180,71 @@ describe('ActiveGameService', () => {
       await promise;
 
       expect(capturedError!.status).toEqual(error.status);
+    },
+  );
+
+  // ------------------------------------------------------------------------
+  // placeTile
+  // ------------------------------------------------------------------------
+
+  test('placeTile sends the place and rotation to POST /Api/Games/{id}/Tiles and returns ok', async () => {
+    // given
+    const promise = service.placeTile(DEFAULT_TEST_GAME.id, { q: 1, r: -2 }, 3);
+
+    // when & then
+    const req = http.expectOne({ method: 'POST', url: `/Api/Games/${DEFAULT_TEST_GAME.id}/Tiles` });
+    expect(req.request.body).toEqual({ q: 1, r: -2, rotation: 3 });
+    req.flush(null);
+
+    expect((await promise).isOk()).toBe(true);
+  });
+
+  test.for([
+    { response: NOT_FOUND, title: 'Game not found', expected: 'GameNotFound' },
+    {
+      response: FORBIDDEN,
+      title: 'You are not allowed to perform this action',
+      expected: 'NotCurrentPlayer',
+    },
+    { response: CONFLICT, title: 'Tile can not be placed', expected: 'TileCannotBePlaced' },
+    { response: CONFLICT, title: 'Invalid turn phase', expected: 'InvalidTurnPhase' },
+    { response: CONFLICT, title: 'Tile must be draw first', expected: 'TileMustBeDrawnFirst' },
+  ])(
+    'placeTile returns $expected when POST /Api/Games/{id}/Tiles returns $response.status $title',
+    async ({ response, title, expected }) => {
+      // given
+      const promise = service.placeTile(DEFAULT_TEST_GAME.id, { q: 1, r: -2 }, 0);
+
+      // when & then
+      const req = http.expectOne({
+        method: 'POST',
+        url: `/Api/Games/${DEFAULT_TEST_GAME.id}/Tiles`,
+      });
+      req.flush({ title }, response);
+
+      const result = await promise;
+
+      expect(result.isErr() && result.error.type).toEqual(expected);
+    },
+  );
+
+  test.for<HttpResponseData>(
+    ERROR_RESPONSES.filter((error) => ![403, 404, 409].includes(error.status)),
+  )(
+    'placeTile throws error when POST /Api/Games/{id}/Tiles returns $status',
+    async (error: HttpResponseData) => {
+      // given
+      const promise = service.placeTile(DEFAULT_TEST_GAME.id, { q: 1, r: -2 }, 0);
+
+      // when
+      const req = http.expectOne({
+        method: 'POST',
+        url: `/Api/Games/${DEFAULT_TEST_GAME.id}/Tiles`,
+      });
+      req.flush('', error);
+
+      // then
+      await expect(promise).rejects.toMatchObject({ status: error.status });
     },
   );
 });

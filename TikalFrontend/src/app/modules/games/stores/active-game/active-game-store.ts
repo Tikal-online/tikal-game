@@ -9,7 +9,7 @@ import {
 } from '@ngrx/signals';
 import { Game } from '../../models/game';
 import { Player } from '../../models/player';
-import { rotateCosts, Tile } from '../../models/tile';
+import { HexCoordinate, rotateCosts, Tile } from '../../models/tile';
 import { TurnPhase } from '../../models/turn-phase';
 import { computed, inject } from '@angular/core';
 import { ActiveGameService } from '../../services/active-game/active-game-service';
@@ -96,6 +96,42 @@ export const ActiveGameStore = signalStore(
         }),
       ),
     ),
+
+    async placeDrawnTile(coordinate: HexCoordinate): Promise<void> {
+      const game = store.game();
+      const rotatedTile = store.rotatedDrawnTile();
+
+      if (!game || !rotatedTile) {
+        return;
+      }
+
+      const result = await store._activeGameService.placeTile(
+        game.id,
+        coordinate,
+        store.drawnTileRotation(),
+      );
+
+      if (result.isOk()) {
+        const placedTile: Tile = { ...rotatedTile, coordinate };
+
+        patchState(store, (state) => ({
+          game: state.game
+            ? {
+                ...state.game,
+                tiles: state.game.tiles.some(
+                  (tile) =>
+                    tile.coordinate.q === coordinate.q && tile.coordinate.r === coordinate.r,
+                )
+                  ? state.game.tiles
+                  : [...state.game.tiles, placedTile],
+                turnPhase: 'Actions' as const,
+              }
+            : null,
+          drawnTile: null,
+          drawnTileRotation: 0,
+        }));
+      }
+    },
 
     rotateDrawnTile(steps: number): void {
       if (!store.drawnTile()) {

@@ -11,7 +11,7 @@ import {
   viewChild,
 } from '@angular/core';
 import { BoardView } from '../../board/board-view';
-import { Tile } from '../../models/tile';
+import { HexCoordinate, Tile } from '../../models/tile';
 
 @Component({
   selector: 'tikal-game-board',
@@ -27,15 +27,21 @@ export class GameBoardComponent {
   /** Emits 60 degree steps the pending tile should be turned by, positive is clockwise. */
   readonly rotatePendingTile = output<number>();
 
+  /** Emits the place the user clicked to put the pending tile on. */
+  readonly placePendingTile = output<HexCoordinate>();
+
   private readonly canvas = viewChild.required<ElementRef<HTMLCanvasElement>>('canvas');
 
   private readonly view = signal<BoardView | null>(null);
 
   constructor() {
-    // WebGL needs the canvas in the DOM, so the view is only created after the first render
-    afterNextRender(() => this.view.set(new BoardView(this.canvas().nativeElement)));
+    afterNextRender(() => {
+      const view = new BoardView(this.canvas().nativeElement, {
+        onPlacePendingTile: (coordinate): void => this.placePendingTile.emit(coordinate),
+      });
+      this.view.set(view);
+    });
 
-    // runs once the view exists and again whenever the tiles change
     effect(() => this.view()?.setTiles(this.tiles()));
 
     effect(() => this.view()?.setPendingTile(this.pendingTile()));
