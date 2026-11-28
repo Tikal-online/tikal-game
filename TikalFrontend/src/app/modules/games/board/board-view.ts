@@ -125,6 +125,9 @@ export class BoardView {
     }
 
     this.preview.setInvalid(invalid);
+
+    // a pending tile on a place that already has a tile, e.g. a freshly drawn one, is not shown
+    this.preview.object.visible = !this.tileViews.has(coordinateKey(tile.coordinate));
   }
 
   dispose(): void {
