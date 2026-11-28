@@ -10,9 +10,9 @@
       },
       "WolverineFx": {
         "type": "Direct",
-        "requested": "[6.64.0, )",
-        "resolved": "6.64.0",
-        "contentHash": "hoGE3ZTGontyepxYQ96OUklj81x3a5dg9k32rpgCa1yNHWdsfJCtr9Lx/wZidUv+lfzm+LSLoVHsXILYeq+e2A==",
+        "requested": "[6.66.0, )",
+        "resolved": "6.66.0",
+        "contentHash": "xhkFc5TD5FfEsV1KH9SCeTmRkHti6v4dob7gIEpoo//oBwusEwQ/5KrNwGs1r1X4DKyLY/jaggt5NDA/WiD1Dw==",
         "dependencies": {
           "Cronos": "0.11.0",
           "JasperFx": "2.102.0",
