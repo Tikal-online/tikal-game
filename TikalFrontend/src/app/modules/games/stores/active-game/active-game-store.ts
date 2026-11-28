@@ -114,9 +114,13 @@ export const ActiveGameStore = signalStore(
     ),
 
     moveDrawnTile(coordinate: HexCoordinate): void {
-      patchState(store, (state) => ({
-        drawnTile: state.drawnTile ? { ...state.drawnTile, coordinate } : null,
-      }));
+      const tile = store.drawnTile();
+
+      if (!tile || (tile.coordinate.q === coordinate.q && tile.coordinate.r === coordinate.r)) {
+        return;
+      }
+
+      patchState(store, { drawnTile: { ...tile, coordinate } });
     },
 
     async placeDrawnTile(coordinate: HexCoordinate): Promise<void> {

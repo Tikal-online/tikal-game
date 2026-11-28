@@ -44,8 +44,6 @@ export class BoardView {
   private readonly tileViews = new Map<string, TileView>();
 
   // Active turn helpers
-  private hoveredSlot: SlotView | null | undefined = undefined;
-
   private preview: TileView | null = null;
 
   // the drawing buffer follows the canvas' css size
@@ -119,13 +117,6 @@ export class BoardView {
       return;
     }
 
-    // a newly drawn tile does not know the place under a resting mouse yet
-    const hovered = this.hoveredSlot?.coordinate;
-
-    if (hovered && (tile.coordinate.q !== hovered.q || tile.coordinate.r !== hovered.r)) {
-      this.callbacks.onHoveredPlaceChanged(hovered);
-    }
-
     if (this.preview) {
       this.preview.update(tile);
     } else {
@@ -178,16 +169,9 @@ export class BoardView {
 
   private reportHoveredPlace(): void {
     const hovered = this.hover.current;
-    const slot = hovered instanceof SlotView ? hovered : null;
 
-    if (slot === this.hoveredSlot) {
-      return;
-    }
-
-    this.hoveredSlot = slot;
-
-    if (slot) {
-      this.callbacks.onHoveredPlaceChanged(slot.coordinate);
+    if (hovered instanceof SlotView) {
+      this.callbacks.onHoveredPlaceChanged(hovered.coordinate);
     }
   }
 

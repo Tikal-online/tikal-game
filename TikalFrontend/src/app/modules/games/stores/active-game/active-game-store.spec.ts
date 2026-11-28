@@ -203,12 +203,17 @@ describe('ActiveGameStore', () => {
   // ------------------------------------------------------------------------
 
   test.for<Game>(GAME_TESTCASES.filter(isMyTurnToPlaceTile))(
-    'given my drawn tile in game $id when placeDrawnTile then sends the place and its rotation',
+    'given my drawn tile in game $id when placeDrawnTile next to a placed tile then sends the place and its rotation',
     async (game: Game) => {
       // given
       const store = TestBed.inject(ActiveGameStore);
+      // (1, -2) needs a placed tile next to it, (1, -1) is right below
+      const gameWithNeighbour: Game = {
+        ...game,
+        tiles: [...game.tiles, { ...DEFAULT_TEST_GAME.tiles[0], coordinate: { q: 1, r: -1 } }],
+      };
 
-      activeGameService.getActiveGame.mockReturnValueOnce(of(game));
+      activeGameService.getActiveGame.mockReturnValueOnce(of(gameWithNeighbour));
       TestBed.runInInjectionContext(() => {
         store.loadActiveGame();
       });
@@ -234,8 +239,13 @@ describe('ActiveGameStore', () => {
     async (game: Game) => {
       // given
       const store = TestBed.inject(ActiveGameStore);
+      // (1, -2) needs a placed tile next to it, (1, -1) is right below
+      const gameWithNeighbour: Game = {
+        ...game,
+        tiles: [...game.tiles, { ...DEFAULT_TEST_GAME.tiles[0], coordinate: { q: 1, r: -1 } }],
+      };
 
-      activeGameService.getActiveGame.mockReturnValueOnce(of(game));
+      activeGameService.getActiveGame.mockReturnValueOnce(of(gameWithNeighbour));
       TestBed.runInInjectionContext(() => {
         store.loadActiveGame();
       });
