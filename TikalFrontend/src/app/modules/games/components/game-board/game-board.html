@@ -1,1 +1,10 @@
-<canvas #canvas tabindex="0" (keydown)="onKeyDown($event)"></canvas>
+<canvas
+  #canvas
+  tabindex="0"
+  (blur)="hasFocus.set(false)"
+  (focus)="hasFocus.set(true)"
+  (keydown)="onKeyDown($event)"
+></canvas>
+@if (!hasFocus()) {
+  <tikal-hint *transloco="let t; prefix: 'games.board'" [label]="t('focus-hint')" />
+}

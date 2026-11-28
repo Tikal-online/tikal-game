@@ -18,3 +18,14 @@ canvas {
   outline-offset: -2px;
   border-radius: inherit;
 }
+
+tikal-hint {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+
+  max-width: calc(100% - 2rem);
+
+  // only shows information, a click goes through to the board and focuses it
+  pointer-events: none;
+}

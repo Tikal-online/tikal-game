@@ -54,6 +54,9 @@
     "active": {
       "players-header": "Players",
       "my-turn": "Your turn"
+    },
+    "board": {
+      "focus-hint": "Click on the board to focus"
     }
   },
   "player-slot": {
