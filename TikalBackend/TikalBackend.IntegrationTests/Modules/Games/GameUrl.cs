@@ -22,4 +22,9 @@ internal static class GameUrl
     {
         return $"Games/{id}/Tiles";
     }
+
+    public static string EndTurn(long id)
+    {
+        return $"Games/{id}/Turn/End";
+    }
 }
