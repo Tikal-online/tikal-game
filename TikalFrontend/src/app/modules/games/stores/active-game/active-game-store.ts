@@ -88,6 +88,10 @@ export const ActiveGameStore = signalStore(
     }),
   })),
 
+  withComputed(({ currentPlayer, turnPhase }) => ({
+    canEndTurn: computed<boolean>(() => !!currentPlayer()?.isMe && turnPhase() === 'Actions'),
+  })),
+
   withMethods((store) => ({
     connect(): Promise<void> {
       return store._activeGameConnection.connect();
@@ -162,7 +166,7 @@ export const ActiveGameStore = signalStore(
     async endTurn(): Promise<void> {
       const game = store.game();
 
-      if (!game || !store.currentPlayer()?.isMe || store.turnPhase() !== 'Actions') {
+      if (!game || !store.canEndTurn()) {
         return;
       }
 

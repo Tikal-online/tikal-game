@@ -32,5 +32,13 @@
     @if (activeGameStore.turnPhase(); as turnPhase) {
       <tikal-turn-status [turnPhase]="turnPhase" />
     }
+    @if (activeGameStore.canEndTurn()) {
+      <tikal-button
+        type="button"
+        [isLoading]="isEndingTurn()"
+        [label]="t('end-turn-button-label')"
+        (clicked)="endTurn()"
+      />
+    }
   </aside>
 </ng-container>

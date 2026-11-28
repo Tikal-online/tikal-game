@@ -342,6 +342,57 @@ describe('ActiveGameStore', () => {
   // ------------------------------------------------------------------------
 
   test.for<Game>(GAME_TESTCASES.filter(isMyTurnInActionPhase))(
+    'given my turn in the action phase of game $id when canEndTurn then is true',
+    (game: Game) => {
+      // given
+      const store = TestBed.inject(ActiveGameStore);
+
+      activeGameService.getActiveGame.mockReturnValueOnce(of(game));
+      TestBed.runInInjectionContext(() => {
+        store.loadActiveGame();
+      });
+      TestBed.tick();
+
+      // when
+      const canEndTurn = store.canEndTurn();
+
+      // then
+      expect(canEndTurn).toBe(true);
+    },
+  );
+
+  test.for<Game>(GAME_TESTCASES.filter((game) => !isMyTurnInActionPhase(game)))(
+    'given not my turn or not the action phase in game $id when canEndTurn then is false',
+    (game: Game) => {
+      // given
+      const store = TestBed.inject(ActiveGameStore);
+
+      activeGameService.getActiveGame.mockReturnValueOnce(of(game));
+      TestBed.runInInjectionContext(() => {
+        store.loadActiveGame();
+      });
+      TestBed.tick();
+
+      // when
+      const canEndTurn = store.canEndTurn();
+
+      // then
+      expect(canEndTurn).toBe(false);
+    },
+  );
+
+  test('given no active game when canEndTurn then is false', () => {
+    // given
+    const store = TestBed.inject(ActiveGameStore);
+
+    // when
+    const canEndTurn = store.canEndTurn();
+
+    // then
+    expect(canEndTurn).toBe(false);
+  });
+
+  test.for<Game>(GAME_TESTCASES.filter(isMyTurnInActionPhase))(
     'given my turn in the action phase of game $id when endTurn then ends the turn of the game',
     async (game: Game) => {
       // given
