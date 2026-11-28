@@ -55,3 +55,6 @@ export * from './lib/components/countdown-overlay/countdown-overlay';
 
 // Hint
 export * from './lib/components/hint/hint';
+
+// Turn status
+export * from './lib/components/turn-status/turn-status';

@@ -17,5 +17,9 @@
   "active-session-link": {
     "lobby": "Your lobby: {{name}}",
     "game": "Your game: {{name}}"
+  },
+  "turn-status": {
+    "place-tile": "Place tile",
+    "actions": "Actions"
   }
 }

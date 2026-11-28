@@ -1,0 +1,62 @@
+:host {
+  display: block;
+
+  width: fit-content;
+  padding: 0.5rem 0.75rem;
+
+  border: 1px solid var(--p-content-border-color);
+  border-radius: var(--p-content-border-radius);
+
+  background-color: var(--p-content-background);
+}
+
+ol {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+
+  align-items: center;
+  gap: 1rem;
+
+  margin: 0;
+  padding: 0;
+
+  list-style: none;
+}
+
+li {
+  display: flex;
+  flex-direction: row;
+
+  align-items: center;
+  gap: 0.5rem;
+
+  color: var(--p-text-muted-color);
+}
+
+.number {
+  display: grid;
+  place-items: center;
+
+  width: 1.5rem;
+  height: 1.5rem;
+
+  border: 1px solid var(--p-content-border-color);
+  border-radius: 50%;
+
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+}
+
+// the phase the turn is in right now
+li.current {
+  color: var(--p-primary-color);
+  font-weight: 600;
+
+  .number {
+    border-color: var(--p-primary-color);
+
+    background-color: var(--p-primary-color);
+    color: var(--p-primary-contrast-color);
+  }
+}
