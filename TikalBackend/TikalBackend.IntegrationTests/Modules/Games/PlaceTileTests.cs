@@ -235,21 +235,7 @@ public sealed class PlaceTileTests(AppFactoryFixture fixture) : IntegrationTestF
         // given
         var dto = new PlaceTileDto() { Q = 1, R = -2, Rotation = 2 };
 
-        // create and start the lobby
-        await RunTracked(async () =>
-        {
-            await CreateUserAccount(TestUser.Default);
-            await CreateUserAccount(TestUser.TestUser1);
-
-            var lobby = await CreateAndGetLobby(createLobbyDto, TestUser.Default);
-
-            await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.TestUser1, null, TestContext.Current.CancellationToken);
-
-            await Client.PutAsyncWithUser(LobbyUrl.SetPlayerReady, TestUser.Default, null, TestContext.Current.CancellationToken);
-            await Client.PutAsyncWithUser(LobbyUrl.SetPlayerReady, TestUser.TestUser1, null, TestContext.Current.CancellationToken);
-
-            await Client.PostAsyncWithUser(LobbyUrl.StartLobby(lobby.Id), TestUser.Default, null, TestContext.Current.CancellationToken);
-        });
+        await CreateAndStartLobby([TestUser.Default, TestUser.TestUser1], createLobbyDto);
 
         await RunTracked(async () =>
         {

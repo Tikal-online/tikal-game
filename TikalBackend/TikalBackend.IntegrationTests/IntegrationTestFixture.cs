@@ -49,6 +49,31 @@ public abstract class IntegrationTestFixture(AppFactoryFixture appFactoryFixture
         return (await response.Content.ReadFromJsonAsync<GameDto>(TestContext.Current.CancellationToken))!;
     }
 
+    protected Task CreateAndStartLobby(IReadOnlyList<TestUser> users, CreateLobbyDto createLobbyDto)
+    {
+        return RunTracked(async () =>
+        {
+            foreach (var user in users)
+            {
+                await CreateUserAccount(user);
+            }
+
+            var lobby = await CreateAndGetLobby(createLobbyDto, users[0]);
+
+            foreach (var user in users.Skip(1))
+            {
+                await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), user, null, TestContext.Current.CancellationToken);
+            }
+
+            foreach (var user in users)
+            {
+                await Client.PutAsyncWithUser(LobbyUrl.SetPlayerReady, user, null, TestContext.Current.CancellationToken);
+            }
+
+            await Client.PostAsyncWithUser(LobbyUrl.StartLobby(lobby.Id), users[0], null, TestContext.Current.CancellationToken);
+        });
+    }
+
     protected Task<ITrackedSession> RunTracked(Func<Task> action)
     {
         return appFactoryFixture.WebApplicationFactory.Services
