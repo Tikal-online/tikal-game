@@ -185,4 +185,40 @@ public sealed class ActiveGameTests(AppFactoryFixture fixture) : IntegrationTest
             );
         });
     }
+
+    [Theory]
+    [ClassData(typeof(ValidCreateLobbyDtos))]
+    public async Task GivenGame_WhenEndTurn_ThenSendsTurnCompletedMessage(CreateLobbyDto createLobbyDto)
+    {
+        // given
+        var placeTileDto = new RestApi.Controllers.Games.Dtos.PlaceTileDto() { Q = 1, R = -2, Rotation = 2 };
+
+        await CreateAndStartLobby([TestUser.Default, TestUser.TestUser1], createLobbyDto);
+
+        await RunTracked(async () =>
+        {
+            await using var connection = await CreateConnection(GameUrl.ActiveGameHub, TestUser.TestUser1);
+
+            var turnCompletedSource = new TaskCompletionSource<GamePlayerDto>();
+            connection.On<GamePlayerDto>("TurnCompleted", turnCompletedSource.SetResult);
+
+            var game = await GetActiveGame(TestUser.Default);
+
+            var currentPlayer = game.Players.Single(p => p.TurnPosition == game.CurrentTurnPosition);
+            List<TestUser> users = [TestUser.Default, TestUser.TestUser1];
+            var currentUser = users.First(u => u.UserId == currentPlayer.UserId);
+
+            await Client.GetAsyncWithUser(GameUrl.GetNextTile(game.Id), currentUser, TestContext.Current.CancellationToken);
+
+            await Client.PostAsyncWithUser(GameUrl.PlaceTile(game.Id), currentUser, placeTileDto, TestContext.Current.CancellationToken);
+
+            // when
+            var response = await Client.PostAsyncWithUser(GameUrl.EndTurn(game.Id), currentUser, null, TestContext.Current.CancellationToken);
+
+            // then
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+            await turnCompletedSource.Task.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken);
+        });
+    }
 }
