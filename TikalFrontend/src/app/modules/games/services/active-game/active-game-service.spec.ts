@@ -247,4 +247,66 @@ describe('ActiveGameService', () => {
       await expect(promise).rejects.toMatchObject({ status: error.status });
     },
   );
+
+  // ------------------------------------------------------------------------
+  // endTurn
+  // ------------------------------------------------------------------------
+
+  test('endTurn sends POST /Api/Games/{id}/Turn/End without a body and returns ok', async () => {
+    // given
+    const promise = service.endTurn(DEFAULT_TEST_GAME.id);
+
+    // when & then
+    const req = http.expectOne({
+      method: 'POST',
+      url: `/Api/Games/${DEFAULT_TEST_GAME.id}/Turn/End`,
+    });
+    expect(req.request.body).toBeNull();
+    req.flush(null);
+
+    expect((await promise).isOk()).toBe(true);
+  });
+
+  test.for([
+    { response: NOT_FOUND, expected: 'GameNotFound' },
+    { response: FORBIDDEN, expected: 'NotCurrentPlayer' },
+    { response: CONFLICT, expected: 'InvalidTurnPhase' },
+  ])(
+    'endTurn returns $expected when POST /Api/Games/{id}/Turn/End returns $response.status',
+    async ({ response, expected }) => {
+      // given
+      const promise = service.endTurn(DEFAULT_TEST_GAME.id);
+
+      // when & then
+      const req = http.expectOne({
+        method: 'POST',
+        url: `/Api/Games/${DEFAULT_TEST_GAME.id}/Turn/End`,
+      });
+      req.flush('', response);
+
+      const result = await promise;
+
+      expect(result.isErr() && result.error.type).toEqual(expected);
+    },
+  );
+
+  test.for<HttpResponseData>(
+    ERROR_RESPONSES.filter((error) => ![403, 404, 409].includes(error.status)),
+  )(
+    'endTurn throws error when POST /Api/Games/{id}/Turn/End returns $status',
+    async (error: HttpResponseData) => {
+      // given
+      const promise = service.endTurn(DEFAULT_TEST_GAME.id);
+
+      // when
+      const req = http.expectOne({
+        method: 'POST',
+        url: `/Api/Games/${DEFAULT_TEST_GAME.id}/Turn/End`,
+      });
+      req.flush('', error);
+
+      // then
+      await expect(promise).rejects.toMatchObject({ status: error.status });
+    },
+  );
 });

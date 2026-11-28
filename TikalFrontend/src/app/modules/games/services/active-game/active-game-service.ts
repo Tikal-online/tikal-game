@@ -91,4 +91,25 @@ export class ActiveGameService {
 
     return firstValueFrom(request);
   }
+
+  endTurn(
+    gameId: number,
+  ): Promise<Result<void, GameNotFound | NotCurrentPlayer | InvalidTurnPhase>> {
+    const request = this.http.post<void>(`${this.url}/${gameId}/Turn/End`, null).pipe(
+      map(() => ok()),
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 404) {
+          return of(err({ type: 'GameNotFound' } as const));
+        } else if (error.status === 403) {
+          return of(err({ type: 'NotCurrentPlayer' } as const));
+        } else if (error.status === 409) {
+          return of(err({ type: 'InvalidTurnPhase' } as const));
+        }
+
+        return throwError(() => error);
+      }),
+    );
+
+    return firstValueFrom(request);
+  }
 }

@@ -21,12 +21,22 @@ function isMyTurnToPlaceTile(game: Game): boolean {
   return !!currentPlayer?.isMe && game.turnPhase === 'PlaceTile';
 }
 
+/** Is the authenticated player on turn and has placed the tile, so the turn can be ended? */
+function isMyTurnInActionPhase(game: Game): boolean {
+  const currentPlayer = game.players.find(
+    (player) => player.turnPosition === game.currentTurnPosition,
+  );
+
+  return !!currentPlayer?.isMe && game.turnPhase === 'Actions';
+}
+
 describe('ActiveGameStore', () => {
   // dependencies
   const activeGameService = {
     getActiveGame: vi.fn(),
     getNextTile: vi.fn(),
     placeTile: vi.fn(),
+    endTurn: vi.fn(),
   };
 
   const activeGameConnection = {
@@ -326,6 +336,113 @@ describe('ActiveGameStore', () => {
       expect(store.game()).toEqual(game);
     },
   );
+
+  // ------------------------------------------------------------------------
+  // ending the turn
+  // ------------------------------------------------------------------------
+
+  test.for<Game>(GAME_TESTCASES.filter(isMyTurnInActionPhase))(
+    'given my turn in the action phase of game $id when canEndTurn then is true',
+    (game: Game) => {
+      // given
+      const store = TestBed.inject(ActiveGameStore);
+
+      activeGameService.getActiveGame.mockReturnValueOnce(of(game));
+      TestBed.runInInjectionContext(() => {
+        store.loadActiveGame();
+      });
+      TestBed.tick();
+
+      // when
+      const canEndTurn = store.canEndTurn();
+
+      // then
+      expect(canEndTurn).toBe(true);
+    },
+  );
+
+  test.for<Game>(GAME_TESTCASES.filter((game) => !isMyTurnInActionPhase(game)))(
+    'given not my turn or not the action phase in game $id when canEndTurn then is false',
+    (game: Game) => {
+      // given
+      const store = TestBed.inject(ActiveGameStore);
+
+      activeGameService.getActiveGame.mockReturnValueOnce(of(game));
+      TestBed.runInInjectionContext(() => {
+        store.loadActiveGame();
+      });
+      TestBed.tick();
+
+      // when
+      const canEndTurn = store.canEndTurn();
+
+      // then
+      expect(canEndTurn).toBe(false);
+    },
+  );
+
+  test('given no active game when canEndTurn then is false', () => {
+    // given
+    const store = TestBed.inject(ActiveGameStore);
+
+    // when
+    const canEndTurn = store.canEndTurn();
+
+    // then
+    expect(canEndTurn).toBe(false);
+  });
+
+  test.for<Game>(GAME_TESTCASES.filter(isMyTurnInActionPhase))(
+    'given my turn in the action phase of game $id when endTurn then ends the turn of the game',
+    async (game: Game) => {
+      // given
+      const store = TestBed.inject(ActiveGameStore);
+
+      activeGameService.getActiveGame.mockReturnValueOnce(of(game));
+      activeGameService.endTurn.mockResolvedValueOnce(ok());
+      TestBed.runInInjectionContext(() => {
+        store.loadActiveGame();
+      });
+      TestBed.tick();
+
+      // when
+      await store.endTurn();
+
+      // then
+      expect(activeGameService.endTurn).toHaveBeenCalledExactlyOnceWith(game.id);
+    },
+  );
+
+  test.for<Game>(GAME_TESTCASES.filter((game) => !isMyTurnInActionPhase(game)))(
+    'given not my turn or not the action phase in game $id when endTurn then does not end the turn',
+    async (game: Game) => {
+      // given
+      const store = TestBed.inject(ActiveGameStore);
+
+      activeGameService.getActiveGame.mockReturnValueOnce(of(game));
+      TestBed.runInInjectionContext(() => {
+        store.loadActiveGame();
+      });
+      TestBed.tick();
+
+      // when
+      await store.endTurn();
+
+      // then
+      expect(activeGameService.endTurn).not.toHaveBeenCalled();
+    },
+  );
+
+  test('given no active game when endTurn then does not end a turn', async () => {
+    // given
+    const store = TestBed.inject(ActiveGameStore);
+
+    // when
+    await store.endTurn();
+
+    // then
+    expect(activeGameService.endTurn).not.toHaveBeenCalled();
+  });
 
   // ------------------------------------------------------------------------
   // tile placed

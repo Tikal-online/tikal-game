@@ -1,13 +1,19 @@
-import { Component, computed, DestroyRef, effect, inject } from '@angular/core';
+import { Component, computed, DestroyRef, effect, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslocoDirective } from '@jsverse/transloco';
-import { PlayerCardComponent, TurnStatusComponent } from 'tikal-ui-components';
+import { ButtonComponent, PlayerCardComponent, TurnStatusComponent } from 'tikal-ui-components';
 import { ActiveGameStore } from '../../stores/active-game/active-game-store';
 import { GameBoardComponent } from '../game-board/game-board';
 
 @Component({
   selector: 'tikal-active-game',
-  imports: [TranslocoDirective, PlayerCardComponent, TurnStatusComponent, GameBoardComponent],
+  imports: [
+    TranslocoDirective,
+    ButtonComponent,
+    PlayerCardComponent,
+    TurnStatusComponent,
+    GameBoardComponent,
+  ],
   templateUrl: './active-game.html',
   styleUrl: './active-game.scss',
 })
@@ -17,6 +23,8 @@ export class ActiveGameComponent {
   readonly activeGameStore = inject(ActiveGameStore);
 
   readonly boardTiles = computed(() => this.activeGameStore.game()?.tiles ?? []);
+
+  readonly isEndingTurn = signal(false);
 
   constructor() {
     this.activeGameStore.loadActiveGame();
@@ -36,5 +44,11 @@ export class ActiveGameComponent {
         this.router.navigate(['/Lobbies']);
       }
     });
+  }
+
+  async endTurn(): Promise<void> {
+    this.isEndingTurn.set(true);
+
+    await this.activeGameStore.endTurn().finally(() => this.isEndingTurn.set(false));
   }
 }

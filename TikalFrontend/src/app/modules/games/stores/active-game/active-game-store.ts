@@ -88,6 +88,10 @@ export const ActiveGameStore = signalStore(
     }),
   })),
 
+  withComputed(({ currentPlayer, turnPhase }) => ({
+    canEndTurn: computed<boolean>(() => !!currentPlayer()?.isMe && turnPhase() === 'Actions'),
+  })),
+
   withMethods((store) => ({
     connect(): Promise<void> {
       return store._activeGameConnection.connect();
@@ -157,6 +161,16 @@ export const ActiveGameStore = signalStore(
           drawnTileRotation: 0,
         }));
       }
+    },
+
+    async endTurn(): Promise<void> {
+      const game = store.game();
+
+      if (!game || !store.canEndTurn()) {
+        return;
+      }
+
+      await store._activeGameService.endTurn(game.id);
     },
 
     rotateDrawnTile(steps: number): void {
