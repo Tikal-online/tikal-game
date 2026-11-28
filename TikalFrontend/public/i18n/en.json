@@ -73,5 +73,9 @@
   "player-card": {
     "you": "You",
     "points": "pts"
+  },
+  "turn-status": {
+    "place-tile": "Place tile",
+    "actions": "Actions"
   }
 }
