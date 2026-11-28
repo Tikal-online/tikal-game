@@ -13,6 +13,7 @@ import { HexCoordinate, rotateCosts, Tile } from '../../models/tile';
 import { TurnPhase } from '../../models/turn-phase';
 import { computed, inject } from '@angular/core';
 import { ActiveGameService } from '../../services/active-game/active-game-service';
+import { EDGE_OFFSETS } from '../../board/hex-layout';
 import { ActiveGameConnection } from '../../services/active-game/active-game-connection';
 import { ConnectionStatus } from '../../../../core/types/connection-status';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
@@ -38,6 +39,16 @@ const initialState: ActiveGameState = {
   isCompleted: false,
 };
 
+function isNextToPlacedTile(tiles: readonly Tile[], coordinate: HexCoordinate): boolean {
+  return Object.values(EDGE_OFFSETS).some((offset) =>
+    tiles.some(
+      (tile) =>
+        tile.coordinate.q === coordinate.q + offset.q &&
+        tile.coordinate.r === coordinate.r + offset.r,
+    ),
+  );
+}
+
 export const ActiveGameStore = signalStore(
   withState(initialState),
 
@@ -46,7 +57,7 @@ export const ActiveGameStore = signalStore(
     _activeGameConnection: inject(ActiveGameConnection),
   })),
 
-  withComputed(({ game, loadingStatus }) => ({
+  withComputed(({ game, drawnTile, drawnTileRotation, loadingStatus }) => ({
     isLoading: computed(() => loadingStatus() === 'loading'),
 
     turnPhase: computed<TurnPhase | null>(() => game()?.turnPhase ?? null),
@@ -62,13 +73,18 @@ export const ActiveGameStore = signalStore(
         (player) => player.turnPosition === activeGame.currentTurnPosition,
       )!;
     }),
-  })),
 
-  withComputed(({ drawnTile, drawnTileRotation }) => ({
     rotatedDrawnTile: computed<Tile | null>(() => {
       const tile = drawnTile();
 
       return tile ? { ...tile, costs: rotateCosts(tile.costs, drawnTileRotation()) } : null;
+    }),
+
+    canPlaceDrawnTile: computed<boolean>(() => {
+      const activeGame = game();
+      const tile = drawnTile();
+
+      return !!activeGame && !!tile && isNextToPlacedTile(activeGame.tiles, tile.coordinate);
     }),
   })),
 
@@ -97,11 +113,21 @@ export const ActiveGameStore = signalStore(
       ),
     ),
 
+    moveDrawnTile(coordinate: HexCoordinate): void {
+      const tile = store.drawnTile();
+
+      if (!tile || (tile.coordinate.q === coordinate.q && tile.coordinate.r === coordinate.r)) {
+        return;
+      }
+
+      patchState(store, { drawnTile: { ...tile, coordinate } });
+    },
+
     async placeDrawnTile(coordinate: HexCoordinate): Promise<void> {
       const game = store.game();
       const rotatedTile = store.rotatedDrawnTile();
 
-      if (!game || !rotatedTile) {
+      if (!game || !rotatedTile || !isNextToPlacedTile(game.tiles, coordinate)) {
         return;
       }
 

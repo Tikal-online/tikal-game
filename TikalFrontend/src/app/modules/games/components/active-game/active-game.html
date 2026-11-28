@@ -1,9 +1,11 @@
 <ng-container *transloco="let t; prefix: 'games.active'">
   <div class="board">
     <tikal-game-board
+      [canPlacePendingTile]="activeGameStore.canPlaceDrawnTile()"
       [pendingTile]="activeGameStore.rotatedDrawnTile()"
       [tiles]="boardTiles()"
-      (placePendingTile)="activeGameStore.placeDrawnTile($event)"
+      (hoveredPlaceChange)="activeGameStore.moveDrawnTile($event)"
+      (placeClick)="activeGameStore.placeDrawnTile($event)"
       (rotatePendingTile)="activeGameStore.rotateDrawnTile($event)"
     />
     @if (activeGameStore.currentPlayer()?.isMe) {
