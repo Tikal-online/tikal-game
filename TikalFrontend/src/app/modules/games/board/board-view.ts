@@ -5,14 +5,17 @@ import { BoardClick } from './utils/board-click';
 import { BoardHover, Hoverable } from './utils/board-hover';
 import { boardCoordinates } from './board-layout';
 import { BoardResources } from './board-resources';
-import { coordinateKey, EDGE_OFFSETS } from './hex-layout';
+import { coordinateKey } from './hex-layout';
 import { SlotView } from './slot-view';
 import { TileView } from './tile-view';
 
 // how the board reports what the user does on it
 export type BoardViewCallbacks = {
-  /** A valid free place was clicked to put the pending tile on. */
-  onPlacePendingTile: (coordinate: HexCoordinate) => void;
+  /** The mouse moved onto another free place, the pending tile should follow it. */
+  onHoveredPlaceChanged: (coordinate: HexCoordinate) => void;
+
+  /** A free place was clicked. */
+  onPlaceClicked: (coordinate: HexCoordinate) => void;
 };
 
 export class BoardView {
@@ -24,7 +27,7 @@ export class BoardView {
   private readonly resources = new BoardResources();
 
   // Utils
-  private readonly boardCamera: BoardCamera;
+  private readonly camera: BoardCamera;
 
   private readonly hover: BoardHover;
 
@@ -40,13 +43,10 @@ export class BoardView {
 
   private readonly tileViews = new Map<string, TileView>();
 
-  // Pending tile
-  private pendingTile: Tile | null = null;
+  // Active turn helpers
+  private hoveredSlot: SlotView | null | undefined = undefined;
 
   private preview: TileView | null = null;
-
-  // the slot the pending tile is shown on
-  private previewSlot: SlotView | null | undefined = undefined;
 
   // the drawing buffer follows the canvas' css size
   private readonly resizeObserver = new ResizeObserver(() => this.resize());
@@ -58,11 +58,11 @@ export class BoardView {
     this.renderer = new WebGLRenderer({ canvas, antialias: true, alpha: true });
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-    this.boardCamera = new BoardCamera(canvas);
-    this.hover = new BoardHover(canvas, this.boardCamera.camera);
+    this.camera = new BoardCamera(canvas);
+    this.hover = new BoardHover(canvas, this.camera.camera);
     this.click = new BoardClick(
       canvas,
-      this.boardCamera.camera,
+      this.camera.camera,
       () => this.hoverables(),
       (target) => this.onBoardClick(target),
     );
@@ -72,7 +72,7 @@ export class BoardView {
     this.addLights();
 
     this.resize();
-    this.boardCamera.reset();
+    this.camera.reset();
     this.resizeObserver.observe(canvas);
 
     this.startRenderLoop();
@@ -109,16 +109,38 @@ export class BoardView {
     }
   }
 
-  setPendingTile(tile: Tile | null): void {
-    this.pendingTile = tile;
-    this.previewSlot = undefined;
+  setPendingTile(tile: Tile | null, invalid: boolean): void {
+    if (!tile) {
+      if (this.preview) {
+        this.scene.remove(this.preview.object);
+        this.preview = null;
+      }
+
+      return;
+    }
+
+    // a newly drawn tile does not know the place under a resting mouse yet
+    const hovered = this.hoveredSlot?.coordinate;
+
+    if (hovered && (tile.coordinate.q !== hovered.q || tile.coordinate.r !== hovered.r)) {
+      this.callbacks.onHoveredPlaceChanged(hovered);
+    }
+
+    if (this.preview) {
+      this.preview.update(tile);
+    } else {
+      this.preview = new TileView(tile, this.resources);
+      this.scene.add(this.preview.object);
+    }
+
+    this.preview.setInvalid(invalid);
   }
 
   dispose(): void {
     this.renderer.setAnimationLoop(null);
     this.resizeObserver.disconnect();
 
-    this.boardCamera.dispose();
+    this.camera.dispose();
     this.hover.dispose();
     this.click.dispose();
 
@@ -137,7 +159,7 @@ export class BoardView {
     // false: the canvas size is controlled by css, only the drawing buffer is resized
     this.renderer.setSize(width, height, false);
 
-    this.boardCamera.setAspect(width / height);
+    this.camera.setAspect(width / height);
   }
 
   private startRenderLoop(): void {
@@ -147,62 +169,32 @@ export class BoardView {
       const deltaSeconds = Math.min((time - (previousTime ?? time)) / 1000, 0.1);
       previousTime = time;
 
-      this.boardCamera.update(deltaSeconds);
+      this.camera.update(deltaSeconds);
       this.hover.update(this.hoverables());
-      this.updatePreview();
-      this.renderer.render(this.scene, this.boardCamera.camera);
+      this.reportHoveredPlace();
+      this.renderer.render(this.scene, this.camera.camera);
     });
   }
 
-  // moves the pending tile onto the hovered empty place, hides it anywhere else
-  private updatePreview(): void {
+  private reportHoveredPlace(): void {
     const hovered = this.hover.current;
-    const slot = this.pendingTile && hovered instanceof SlotView ? hovered : null;
+    const slot = hovered instanceof SlotView ? hovered : null;
 
-    if (slot === this.previewSlot) {
+    if (slot === this.hoveredSlot) {
       return;
     }
 
-    this.previewSlot = slot;
+    this.hoveredSlot = slot;
 
-    if (!slot || !this.pendingTile) {
-      if (this.preview) {
-        this.preview.object.visible = false;
-      }
-
-      return;
+    if (slot) {
+      this.callbacks.onHoveredPlaceChanged(slot.coordinate);
     }
-
-    // the drawn tile has no place yet, it takes the coordinate of the hovered slot
-    const tile: Tile = { ...this.pendingTile, coordinate: slot.coordinate };
-
-    if (this.preview) {
-      this.preview.update(tile);
-    } else {
-      this.preview = new TileView(tile, this.resources);
-      this.scene.add(this.preview.object);
-    }
-
-    this.preview.setInvalid(!this.isValidPlacement(slot.coordinate));
-    this.preview.object.visible = true;
   }
 
-  // a tile can only be set next to a tile that is already on the board
-  // a click on a free place the preview shows as valid puts the pending tile there
   private onBoardClick(target: Hoverable): void {
-    if (!this.pendingTile || !(target instanceof SlotView)) {
-      return;
+    if (target instanceof SlotView) {
+      this.callbacks.onPlaceClicked(target.coordinate);
     }
-
-    if (this.isValidPlacement(target.coordinate)) {
-      this.callbacks.onPlacePendingTile(target.coordinate);
-    }
-  }
-
-  private isValidPlacement({ q, r }: HexCoordinate): boolean {
-    return Object.values(EDGE_OFFSETS).some((offset) =>
-      this.tileViews.has(coordinateKey({ q: q + offset.q, r: r + offset.r })),
-    );
   }
 
   private hoverables(): Hoverable[] {

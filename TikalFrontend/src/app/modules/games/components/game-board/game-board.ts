@@ -21,14 +21,20 @@ import { HexCoordinate, Tile } from '../../models/tile';
 export class GameBoardComponent {
   readonly tiles = input.required<readonly Tile[]>();
 
-  /** The drawn tile that still has to be placed, shown on the empty place under the mouse. */
+  /** The drawn tile at its coordinate, shown while the mouse is over a free place. */
   readonly pendingTile = input<Tile | null>(null);
+
+  /** Whether the pending tile may be placed where it is, otherwise it is shown red. */
+  readonly canPlacePendingTile = input<boolean>(false);
+
+  /** Emits the free place under the mouse whenever it changes. */
+  readonly hoveredPlaceChange = output<HexCoordinate>();
+
+  /** Emits the free place the user clicked. */
+  readonly placeClick = output<HexCoordinate>();
 
   /** Emits 60 degree steps the pending tile should be turned by, positive is clockwise. */
   readonly rotatePendingTile = output<number>();
-
-  /** Emits the place the user clicked to put the pending tile on. */
-  readonly placePendingTile = output<HexCoordinate>();
 
   private readonly canvas = viewChild.required<ElementRef<HTMLCanvasElement>>('canvas');
 
@@ -37,14 +43,15 @@ export class GameBoardComponent {
   constructor() {
     afterNextRender(() => {
       const view = new BoardView(this.canvas().nativeElement, {
-        onPlacePendingTile: (coordinate): void => this.placePendingTile.emit(coordinate),
+        onHoveredPlaceChanged: (coordinate): void => this.hoveredPlaceChange.emit(coordinate),
+        onPlaceClicked: (coordinate): void => this.placeClick.emit(coordinate),
       });
       this.view.set(view);
     });
 
     effect(() => this.view()?.setTiles(this.tiles()));
 
-    effect(() => this.view()?.setPendingTile(this.pendingTile()));
+    effect(() => this.view()?.setPendingTile(this.pendingTile(), !this.canPlacePendingTile()));
 
     inject(DestroyRef).onDestroy(() => this.view()?.dispose());
   }
