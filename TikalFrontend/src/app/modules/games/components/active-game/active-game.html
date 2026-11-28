@@ -29,5 +29,8 @@
         }
       </ul>
     }
+    @if (activeGameStore.turnPhase(); as turnPhase) {
+      <tikal-turn-status [turnPhase]="turnPhase" />
+    }
   </aside>
 </ng-container>
