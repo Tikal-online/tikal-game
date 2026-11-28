@@ -49,10 +49,6 @@ export class ActiveGameComponent {
   async endTurn(): Promise<void> {
     this.isEndingTurn.set(true);
 
-    try {
-      return await this.activeGameStore.endTurn();
-    } finally {
-      return this.isEndingTurn.set(false);
-    }
+    await this.activeGameStore.endTurn().finally(() => this.isEndingTurn.set(false));
   }
 }
