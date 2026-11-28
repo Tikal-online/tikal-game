@@ -4,7 +4,6 @@ using RestApi.Controllers.Games.Dtos;
 using RestApi.Controllers.Lobbies.Dtos;
 using TikalBackend.IntegrationTests.Extensions;
 using TikalBackend.IntegrationTests.Modules.Games.Dtos;
-using TikalBackend.IntegrationTests.Modules.Lobbies;
 using TikalBackend.IntegrationTests.Modules.Lobbies.Dtos;
 
 namespace TikalBackend.IntegrationTests.Modules.Games;
@@ -80,22 +79,9 @@ public sealed class PlaceTileTests(AppFactoryFixture fixture) : IntegrationTestF
         // given
         var dto = new PlaceTileDto() { Q = 1, R = 1, Rotation = 1 };
 
-        // create and start the lobby
-        await RunTracked(async () =>
-        {
-            await CreateUserAccount(TestUser.Default);
-            await CreateUserAccount(TestUser.TestUser1);
-            await CreateUserAccount(TestUser.TestUser2);
+        await CreateAndStartLobby([TestUser.Default, TestUser.TestUser1], createLobbyDto);
 
-            var lobby = await CreateAndGetLobby(createLobbyDto, TestUser.Default);
-
-            await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.TestUser1, null, TestContext.Current.CancellationToken);
-
-            await Client.PutAsyncWithUser(LobbyUrl.SetPlayerReady, TestUser.Default, null, TestContext.Current.CancellationToken);
-            await Client.PutAsyncWithUser(LobbyUrl.SetPlayerReady, TestUser.TestUser1, null, TestContext.Current.CancellationToken);
-
-            await Client.PostAsyncWithUser(LobbyUrl.StartLobby(lobby.Id), TestUser.Default, null, TestContext.Current.CancellationToken);
-        });
+        await CreateUserAccount(TestUser.TestUser2);
 
         await RunTracked(async () =>
         {
@@ -116,21 +102,7 @@ public sealed class PlaceTileTests(AppFactoryFixture fixture) : IntegrationTestF
         // given
         var dto = new PlaceTileDto() { Q = 1, R = 1, Rotation = 1 };
 
-        // create and start the lobby
-        await RunTracked(async () =>
-        {
-            await CreateUserAccount(TestUser.Default);
-            await CreateUserAccount(TestUser.TestUser1);
-
-            var lobby = await CreateAndGetLobby(createLobbyDto, TestUser.Default);
-
-            await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.TestUser1, null, TestContext.Current.CancellationToken);
-
-            await Client.PutAsyncWithUser(LobbyUrl.SetPlayerReady, TestUser.Default, null, TestContext.Current.CancellationToken);
-            await Client.PutAsyncWithUser(LobbyUrl.SetPlayerReady, TestUser.TestUser1, null, TestContext.Current.CancellationToken);
-
-            await Client.PostAsyncWithUser(LobbyUrl.StartLobby(lobby.Id), TestUser.Default, null, TestContext.Current.CancellationToken);
-        });
+        await CreateAndStartLobby([TestUser.Default, TestUser.TestUser1], createLobbyDto);
 
         await RunTracked(async () =>
         {
@@ -155,21 +127,7 @@ public sealed class PlaceTileTests(AppFactoryFixture fixture) : IntegrationTestF
         // given
         var dto = new PlaceTileDto() { Q = 1, R = 1, Rotation = 1 };
 
-        // create and start the lobby
-        await RunTracked(async () =>
-        {
-            await CreateUserAccount(TestUser.Default);
-            await CreateUserAccount(TestUser.TestUser1);
-
-            var lobby = await CreateAndGetLobby(createLobbyDto, TestUser.Default);
-
-            await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.TestUser1, null, TestContext.Current.CancellationToken);
-
-            await Client.PutAsyncWithUser(LobbyUrl.SetPlayerReady, TestUser.Default, null, TestContext.Current.CancellationToken);
-            await Client.PutAsyncWithUser(LobbyUrl.SetPlayerReady, TestUser.TestUser1, null, TestContext.Current.CancellationToken);
-
-            await Client.PostAsyncWithUser(LobbyUrl.StartLobby(lobby.Id), TestUser.Default, null, TestContext.Current.CancellationToken);
-        });
+        await CreateAndStartLobby([TestUser.Default, TestUser.TestUser1], createLobbyDto);
 
         await RunTracked(async () =>
         {
@@ -194,21 +152,7 @@ public sealed class PlaceTileTests(AppFactoryFixture fixture) : IntegrationTestF
         // given
         var dto = new PlaceTileDto() { Q = 5, R = 5, Rotation = 1 };
 
-        // create and start the lobby
-        await RunTracked(async () =>
-        {
-            await CreateUserAccount(TestUser.Default);
-            await CreateUserAccount(TestUser.TestUser1);
-
-            var lobby = await CreateAndGetLobby(createLobbyDto, TestUser.Default);
-
-            await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.TestUser1, null, TestContext.Current.CancellationToken);
-
-            await Client.PutAsyncWithUser(LobbyUrl.SetPlayerReady, TestUser.Default, null, TestContext.Current.CancellationToken);
-            await Client.PutAsyncWithUser(LobbyUrl.SetPlayerReady, TestUser.TestUser1, null, TestContext.Current.CancellationToken);
-
-            await Client.PostAsyncWithUser(LobbyUrl.StartLobby(lobby.Id), TestUser.Default, null, TestContext.Current.CancellationToken);
-        });
+        await CreateAndStartLobby([TestUser.Default, TestUser.TestUser1], createLobbyDto);
 
         await RunTracked(async () =>
         {

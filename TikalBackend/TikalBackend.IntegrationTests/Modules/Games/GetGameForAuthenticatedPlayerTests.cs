@@ -3,7 +3,6 @@ using System.Net.Http.Json;
 using RestApi.Controllers.Games.Dtos;
 using RestApi.Controllers.Lobbies.Dtos;
 using TikalBackend.IntegrationTests.Extensions;
-using TikalBackend.IntegrationTests.Modules.Lobbies;
 using TikalBackend.IntegrationTests.Modules.Lobbies.Dtos;
 
 namespace TikalBackend.IntegrationTests.Modules.Games;
@@ -50,20 +49,7 @@ public sealed class GetGameForAuthenticatedPlayerTests(AppFactoryFixture fixture
     )
     {
         // given
-        await RunTracked(async () =>
-        {
-            await CreateUserAccount(TestUser.Default);
-            await CreateUserAccount(TestUser.TestUser1);
-
-            var lobby = await CreateAndGetLobby(createLobbyDto, TestUser.Default);
-
-            await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.TestUser1, null, TestContext.Current.CancellationToken);
-
-            await Client.PutAsyncWithUser(LobbyUrl.SetPlayerReady, TestUser.Default, null, TestContext.Current.CancellationToken);
-            await Client.PutAsyncWithUser(LobbyUrl.SetPlayerReady, TestUser.TestUser1, null, TestContext.Current.CancellationToken);
-
-            await Client.PostAsyncWithUser(LobbyUrl.StartLobby(lobby.Id), TestUser.Default, null, TestContext.Current.CancellationToken);
-        });
+        await CreateAndStartLobby([TestUser.Default, TestUser.TestUser1], createLobbyDto);
 
         // when
         var response = await Client.GetAsyncWithUser(GameUrl.GetActiveGame, TestUser.Default, TestContext.Current.CancellationToken);

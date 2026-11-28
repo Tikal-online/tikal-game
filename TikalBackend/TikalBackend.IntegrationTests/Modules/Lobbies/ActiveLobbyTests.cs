@@ -272,22 +272,7 @@ public sealed class ActiveLobbyTests(AppFactoryFixture fixture) : IntegrationTes
     public async Task GivenInGameLobby_WhenPlayerLeavesGame_ThenSendsPlayerLeftMessage(CreateLobbyDto createLobbyDto)
     {
         // given
-
-        // create and start the lobby
-        await RunTracked(async () =>
-        {
-            await CreateUserAccount(TestUser.Default);
-            await CreateUserAccount(TestUser.TestUser1);
-
-            var lobby = await CreateAndGetLobby(createLobbyDto, TestUser.Default);
-
-            await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.TestUser1, null, TestContext.Current.CancellationToken);
-
-            await Client.PutAsyncWithUser(LobbyUrl.SetPlayerReady, TestUser.Default, null, TestContext.Current.CancellationToken);
-            await Client.PutAsyncWithUser(LobbyUrl.SetPlayerReady, TestUser.TestUser1, null, TestContext.Current.CancellationToken);
-
-            await Client.PostAsyncWithUser(LobbyUrl.StartLobby(lobby.Id), TestUser.Default, null, TestContext.Current.CancellationToken);
-        });
+        await CreateAndStartLobby([TestUser.Default, TestUser.TestUser1], createLobbyDto);
 
         await RunTracked(async () =>
         {
@@ -317,25 +302,7 @@ public sealed class ActiveLobbyTests(AppFactoryFixture fixture) : IntegrationTes
     public async Task GivenInGameLobby_WhenLastOwnerLeavesGame_ThenPromotesPlayerAndSendsPlayerUpdatedNotification(CreateLobbyDto createLobbyDto)
     {
         // given
-
-        // create and start the lobby
-        await RunTracked(async () =>
-        {
-            await CreateUserAccount(TestUser.Default);
-            await CreateUserAccount(TestUser.TestUser1);
-            await CreateUserAccount(TestUser.TestUser2);
-
-            var lobby = await CreateAndGetLobby(createLobbyDto, TestUser.Default);
-
-            await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.TestUser1, null, TestContext.Current.CancellationToken);
-            await Client.PostAsyncWithUser(LobbyUrl.JoinLobby(lobby.Id), TestUser.TestUser2, null, TestContext.Current.CancellationToken);
-
-            await Client.PutAsyncWithUser(LobbyUrl.SetPlayerReady, TestUser.Default, null, TestContext.Current.CancellationToken);
-            await Client.PutAsyncWithUser(LobbyUrl.SetPlayerReady, TestUser.TestUser1, null, TestContext.Current.CancellationToken);
-            await Client.PutAsyncWithUser(LobbyUrl.SetPlayerReady, TestUser.TestUser2, null, TestContext.Current.CancellationToken);
-
-            await Client.PostAsyncWithUser(LobbyUrl.StartLobby(lobby.Id), TestUser.Default, null, TestContext.Current.CancellationToken);
-        });
+        await CreateAndStartLobby([TestUser.Default, TestUser.TestUser1, TestUser.TestUser2], createLobbyDto);
 
         await RunTracked(async () =>
         {
