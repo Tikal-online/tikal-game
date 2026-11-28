@@ -304,4 +304,64 @@ public sealed class GameTests
             () => Assert.Equal(domainEvent?.GameId, game.Id)
         );
     }
+
+    // ------------------------------------------------------------------------
+    // EndTurn
+    // ------------------------------------------------------------------------
+
+    [Theory]
+    [ClassData(typeof(PlaceTileGames))]
+    public void GivenGameInPlaceTilePhase_WhenEndTurn_ThenReturnsInvalidTurnPhaseError(Game game)
+    {
+        // when
+        var result = game.EndTurn();
+
+        // then
+        Assert.IsType<InvalidTurnPhaseDomainError>(result.Value);
+    }
+
+    [Theory]
+    [ClassData(typeof(ActionPhaseGames))]
+    public void GivenGameInActionPhase_WhenEndTurn_ThenReturnsSuccess(Game game)
+    {
+        // when
+        var result = game.EndTurn();
+
+        // then
+        Assert.IsType<Success>(result.Value);
+    }
+
+    [Theory]
+    [ClassData(typeof(ActionPhaseGames))]
+    public void GivenGameInActionPhase_WhenEndTurn_ThenAdvancesPlayerAndPhase(Game game)
+    {
+        // given
+        var currentPlayer = game.CurrentPlayer;
+
+        // when
+        game.EndTurn();
+
+        // then
+        Assert.Multiple(
+            () => Assert.Equal(TurnPhase.PlaceTile, game.TurnPhase),
+            () => Assert.NotEqual(currentPlayer, game.CurrentPlayer)
+        );
+    }
+
+    [Theory]
+    [ClassData(typeof(ActionPhaseGames))]
+    public void GivenGameInActionPhase_WhenEndTurn_ThenAddsTurnCompletedDomainEvent(Game game)
+    {
+        // when
+        game.EndTurn();
+
+        // then
+        var domainEvent = game.DomainEvents.OfType<TurnCompleteDomainEvent>().SingleOrDefault();
+
+        Assert.Multiple(
+            () => Assert.NotNull(domainEvent),
+            () => Assert.Equal(game.Id, domainEvent?.GameId),
+            () => Assert.Equal(game.CurrentPlayer.UserId, domainEvent?.NewPlayer.UserId)
+        );
+    }
 }

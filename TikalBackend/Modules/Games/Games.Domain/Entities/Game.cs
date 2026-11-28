@@ -142,6 +142,23 @@ public sealed class Game : Entity
         return new Success();
     }
 
+    public OneOf<Success, InvalidTurnPhaseDomainError> EndTurn()
+    {
+        if (TurnPhase != TurnPhase.Actions)
+        {
+            return new InvalidTurnPhaseDomainError();
+        }
+
+        var nextPlayer = GetNextPlayer();
+
+        TurnPhase = TurnPhase.PlaceTile;
+        CurrentTurnPosition = nextPlayer.TurnPosition;
+
+        AddDomainEvent(new TurnCompleteDomainEvent(PlayerMapper.PlayerToPlayerEventData(nextPlayer), Id));
+
+        return new Success();
+    }
+
     /// <summary>
     /// Forces the current turn to end even if the current player has not placed his tile.
     /// </summary>
