@@ -1,0 +1,8 @@
+<ol *transloco="let t; prefix: 'turn-status'">
+  @for (step of phases; track step.phase; let index = $index) {
+    <li [class.current]="step.phase === turnPhase()">
+      <span class="number">{{ index + 1 }}</span>
+      {{ t(step.key) }}
+    </li>
+  }
+</ol>
