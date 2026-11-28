@@ -111,4 +111,26 @@ public sealed partial class GamesController : ApiController
             tileCannotBePlaced => TileCannotBePlaced()
         );
     }
+
+    [HttpPost("{Id:long}/Turn/End")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    [EndpointDescription("Ends the current turn")]
+    public async Task<IActionResult> EndTurn(long Id, CancellationToken cancellationToken)
+    {
+        var command = new EndTurnCommand(accountContext.Account.UserId, Id);
+
+        var result = await bus.InvokeAsync<OneOf<Success, GameNotFound, Unprivileged, InvalidTurnPhase>>(
+            command,
+            cancellationToken
+        );
+
+        return result.Match<IActionResult>(
+            success => Ok(),
+            gameNotFound => GameNotFound(Id),
+            unpriviliged => Unprivileged(),
+            invalidTurnPhase => InvalidTurnPhase(Id)
+        );
+    }
 }
