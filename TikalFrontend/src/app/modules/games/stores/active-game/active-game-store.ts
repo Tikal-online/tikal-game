@@ -159,6 +159,16 @@ export const ActiveGameStore = signalStore(
       }
     },
 
+    async endTurn(): Promise<void> {
+      const game = store.game();
+
+      if (!game || !store.currentPlayer()?.isMe || store.turnPhase() !== 'Actions') {
+        return;
+      }
+
+      await store._activeGameService.endTurn(game.id);
+    },
+
     rotateDrawnTile(steps: number): void {
       if (!store.drawnTile()) {
         return;
