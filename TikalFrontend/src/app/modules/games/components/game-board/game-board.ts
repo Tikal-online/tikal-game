@@ -10,11 +10,14 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
+import { TranslocoDirective } from '@jsverse/transloco';
+import { HintComponent } from 'tikal-ui-components';
 import { BoardView } from '../../board/board-view';
 import { HexCoordinate, Tile } from '../../models/tile';
 
 @Component({
   selector: 'tikal-game-board',
+  imports: [TranslocoDirective, HintComponent],
   templateUrl: './game-board.html',
   styleUrl: './game-board.scss',
 })
@@ -35,6 +38,9 @@ export class GameBoardComponent {
 
   /** Emits 60 degree steps the pending tile should be turned by, positive is clockwise. */
   readonly rotatePendingTile = output<number>();
+
+  /** The keyboard controls only work while the board has the focus. */
+  readonly hasFocus = signal(false);
 
   private readonly canvas = viewChild.required<ElementRef<HTMLCanvasElement>>('canvas');
 
