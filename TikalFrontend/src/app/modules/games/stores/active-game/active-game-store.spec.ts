@@ -260,7 +260,7 @@ describe('ActiveGameStore', () => {
 
       // then
       expect(store.game()?.tiles).toEqual([
-        ...game.tiles,
+        ...gameWithNeighbour.tiles,
         { ...drawnTile, costs: rotateCosts(drawnTile.costs, 2), coordinate: { q: 1, r: -2 } },
       ]);
       expect(store.turnPhase()).toEqual('Actions');
